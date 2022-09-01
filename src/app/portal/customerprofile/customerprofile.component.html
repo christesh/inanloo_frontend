@@ -1,0 +1,68 @@
+<div class="main header">
+  <div class="banner">
+  </div>
+  <div class="discription">
+   
+    <h2>توضیحات</h2>
+    <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
+      چاپگرها و متون بلکه
+      روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
+      بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را
+      می طلبد.</p>
+  </div>
+  
+</div>
+<mat-divider></mat-divider>
+<div class="body">
+  <mat-form-field class="full-width-input" >
+    <input matInput placeholder=" نام " formControlName="fname" required style="font-size: 12px;">
+    <mat-error *ngIf="isFieldInvalid('fname')">
+      لطفا نام کاربری خود را وارد کنید!
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field class="full-width-input" >
+    <input matInput placeholder=" نام خانوادگی" formControlName="lname" required style="font-size: 12px;">
+    <mat-error *ngIf="isFieldInvalid('lname')">
+      لطفا شماره تلفن همراه خود را وارد کنید!
+    </mat-error>
+  </mat-form-field>
+  
+
+  <mat-form-field class="full-width-input" >
+    <input matInput placeholder="کد ملی" formControlName="nationalid" required style="font-size: 12px;">
+    <mat-error *ngIf="isFieldInvalid('nationalid')">
+      لطفا شماره تلفن همراه خود را وارد کنید!
+    </mat-error>
+  </mat-form-field>
+  <mat-divider></mat-divider>
+  <mat-form-field class="full-width-input" >
+    <input matInput placeholder="تاریخ تولد" formControlName="birthdate" required style="font-size: 12px;">
+    <mat-error *ngIf="isFieldInvalid('birthdate')">
+      لطفا شماره تلفن همراه خود را وارد کنید!
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field class="full-width-input" >
+    <input matInput placeholder="لوازم خانگی" formControlName="devices" required style="font-size: 12px;">
+    <mat-error *ngIf="isFieldInvalid('devices')">
+      لطفا شماره تلفن همراه خود را وارد کنید!
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field class="full-width-input" >
+    <input matInput placeholder=" موبایل" formControlName="mobilenumber" required style="font-size: 12px;">
+    <mat-error *ngIf="isFieldInvalid('mobilenumber')">
+      لطفا شماره تلفن همراه خود را وارد کنید!
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field class="full-width-input" >
+    <input matInput placeholder="تلفن" formControlName="tel" required style="font-size: 12px;">
+    <mat-error *ngIf="isFieldInvalid('tel')">
+      لطفا شماره تلفن همراه خود را وارد کنید!
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field class="full-width-input" >
+    <input matInput placeholder="آدرس" formControlName="address" required style="font-size: 12px;">
+    <mat-error *ngIf="isFieldInvalid('address')">
+      لطفا شماره تلفن همراه خود را وارد کنید!
+    </mat-error>
+  </mat-form-field>
+</div>

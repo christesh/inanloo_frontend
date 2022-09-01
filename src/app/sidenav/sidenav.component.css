@@ -21,6 +21,7 @@
 }
 
 .example-accordion-item-header {
+  
   display: flex;
   align-content: center;
   justify-content: space-between;
@@ -34,8 +35,12 @@
 
 .example-accordion-item-header,
 .example-accordion-item-body {
+  font-size: 12px;
   padding: 16px;
   transition: height 0ms 400ms, opacity 400ms 0ms;
+}
+.example-accordion-item-body {
+  margin-right: 20px;
 }
 div.example-accordion-item-body:focus, div.example-accordion-item-header:focus {
   font-weight: 600;

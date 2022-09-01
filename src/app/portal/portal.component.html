@@ -4,12 +4,12 @@
       <div class="toolbardiv right" *ngIf="!sideNavdesktop.opened">
         <div class="toolbaritems ">
           <i class="fa fa-bars" aria-hidden="true" (click)="sideNavdesktop.toggle()"><img
-              style="width:30px;height: 30px;margin: 5px 10px 5px 5px ;justify-items: center;" class="avatarnav "
+              style="cursor: pointer;width:30px;height: 30px;margin: 5px 10px 5px 5px ;justify-items: center;" class="avatarnav "
               src="../../assets/images/1.jpeg" />
           </i>
         </div>
         <div class="toolbaritems ">
-          <h4 class="name" style="margin-top:5px;">مسیح ابراهیم نژاد</h4>
+          <h4 class="name" style="margin-top:5px;cursor: pointer;">مسیح ابراهیم نژاد</h4>
         </div>
       </div>
 
@@ -29,9 +29,9 @@
   <mat-drawer-container class="example-container" [hasBackdrop]="false">
     <mat-drawer #sideNavdesktop class="sidenav" mode="side" opened="true" position="end">
       <mat-toolbar class="header">
-        <div class="col-md-12" style="padding:20px;margin:auto;text-align:center;">
+        <div class="col-md-12" style="cursor: pointer;padding:20px;margin:auto;text-align:center;">
           <img class="avatar " src="../../assets/images/1.jpeg" />
-          <h4 class="name" style="margin-top:5px;">مسیح ابراهیم نژاد</h4>
+          <h4 class="name" style="margin-top:5px;cursor: pointer;">مسیح ابراهیم نژاد</h4>
           <i class="fa fa-angle-double-right " aria-hidden="true" (click)="sideNavdesktop.close()"></i>
         </div>
 

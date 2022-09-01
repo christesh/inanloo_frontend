@@ -23,10 +23,7 @@ const appRoutes: Routes = [
     path: 'logout',
     component: LoginComponent
   },
-  {
-    path: 'portal',
-    component: PortalComponent,
-  },
+  
   { path: '', component: PortalComponent, data: { title: 'full Views' }, children: PORTAL_ROUTES },
   { path: '', component: MainpageComponent, data: { title: 'content Views' }, children: MAINPAGE_ROUTES },
   {

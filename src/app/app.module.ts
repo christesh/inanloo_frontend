@@ -17,7 +17,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatButtonToggleModule } from '@angular/material/button-toggle'
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonModule } from '@angular/material/button';
-
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MaterialExampleModule } from './material.module';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
@@ -34,7 +34,7 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
     
   ],
   imports: [
-
+    FlexLayoutModule,
     MaterialExampleModule,
     BrowserAnimationsModule,
     AccordionModule.forRoot(),

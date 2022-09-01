@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  selector: 'app-customerprofile',
+  templateUrl: './customerprofile.component.html',
+  styleUrls: ['./customerprofile.component.css']
 })
-export class DashboardComponent implements OnInit {
+export class CustomerprofileComponent implements OnInit {
 
   constructor(private fb: FormBuilder,) { }
   form!: FormGroup;

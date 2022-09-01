@@ -1,0 +1,185 @@
+<mat-stepper #stepper class="example-stepper" [orientation]="(stepperOrientation | async)!" [linear]="false">
+  <mat-step [stepControl]="firstFormGroup" label="انتخاب وسیله" [errorMessage]="secondFormGroupError"
+    [hasError]="firststeperror" [completed]="firstcomplete">
+    <div class="discription">
+      <h2>توضیحات</h2>
+      <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
+        چاپگرها و متون بلکه
+        روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
+        بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان
+        را
+        می طلبد.</p>
+    </div>
+    <div class="stepercontent">
+      <mat-card class="appliences" *ngFor="let app of applience;let i=index" [id]="i"
+        (click)="selectapplience(app.title)" [ngClass]="{'selectedCSSClass':app.title== title}">
+        <mat-card-header>
+          <mat-card-title>{{app.title}} </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <img class="applience" mat-card-image [src]="app.pic">
+          <p>
+            {{app.desc}}
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="selectbrand" *ngIf="showbrands">
+      <mat-divider></mat-divider>
+      <div class="discription">
+        <h2>توضیحات</h2>
+        <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
+          چاپگرها و متون بلکه
+          روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
+          بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان
+          را
+          می طلبد.</p>
+      </div>
+
+      <div class="stepercontent">
+        <mat-card class="barnds" *ngFor="let b of brands;let i=index" [id]="i" (click)="selectbrand(b.brand)"
+          [ngClass]="{'selectedbrandCSSClass':b.brand == brandtitle}">
+          <mat-card-header>
+            <mat-card-title>{{b.brand}} </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <img class="brand" mat-card-image [src]="b.brandpic">
+
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div id="selectbrand">
+      </div>
+    </div>
+
+    <div class="selectmodels" *ngIf="showmodels">
+      <mat-divider></mat-divider>
+      <div class="discription">
+        <h2>توضیحات</h2>
+        <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
+          چاپگرها و متون بلکه
+          روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
+          بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان
+          را
+          می طلبد.</p>
+      </div>
+      <form [formGroup]="firstFormGroup">
+        <mat-form-field appearance="fill" style="direction: rtl;text-align:right;">
+          <mat-label>مدل دستگاه</mat-label>
+          <mat-select>
+            <mat-option *ngFor="let m of models;let i=index" [value]="m.model">{{m.model}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="direction: rtl;text-align:right;">
+          <mat-label>شماره سریال دستگاه</mat-label>
+          <input matInput formControlName="firstCtrl" placeholder="">
+        </mat-form-field>
+      </form>
+      <div id="selectmodels">
+      </div>
+    </div>
+
+    <div style="direction: ltr;">
+      <button mat-raised-button color="accent" matStepperNext>مرحله بعد</button>
+    </div>
+  </mat-step>
+
+  <mat-step [stepControl]="secondFormGroup" label="انتخاب مشکل" [errorMessage]="secondFormGroupError"
+    [hasError]="secondsteperror" [completed]="secondcomplete">
+    <div class="discription">
+      <h2>توضیحات</h2>
+      <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
+        چاپگرها و متون بلکه
+        روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
+        بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان
+        را
+        می طلبد.</p>
+    </div>
+    <div class="costaccounting">
+
+    </div>
+    <div class="selecteddevice">
+      <h4 class="device">لباس شویی</h4>
+      <h4 class="device">سامسونگ</h4>
+      <div class="hasmodel" *ngIf="hasmodel">
+        <h4 class="device">مدل : AS232J</h4>
+      </div>
+    </div>
+    <span class="example-list-section">
+      <ul>
+        <li *ngFor="let subtask of subtasks">
+          <mat-checkbox [(ngModel)]="subtask.completed" color="warn" (ngModelChange)="updateAllComplete(subtask.name)">
+            {{subtask.name}}
+          </mat-checkbox>
+        </li>
+      </ul>
+    </span>
+    <form [formGroup]="secondFormGroup" *ngIf="showcomment">
+      <mat-form-field class="example-full-width" appearance="fill"
+        style="width:50%;text-align:right;margin-right:45px;margin-top:-15px;">
+        <mat-label>لطفا مشکل را شرح دهید:</mat-label>
+        <textarea matInput formControlName="secondCtrl" placeholder="توضیحات"></textarea>
+      </mat-form-field>
+    </form>
+<mat-divider></mat-divider>
+    <div class="row">
+      <div class="form-group col-12 mb-2">
+        <div class="form-group col-12 mb-2" style="direction: rtl;text-align: right;margin: 10px;">
+          <label style="margin: 10px;"> لطفا تصاویر مروبط به مشکلات وسیله را انتخاب کنید:</label>
+          <br />
+          <label for="file-upload" class="btn btn-raised btn-primary" style="cursor: pointer;margin-right: 35px;">
+            <i class="fa fa-upload" style="margin-left: 5px;"></i>انتخاب فایل
+          </label>
+          <input id="file-upload" type='file' (change)="onSelectFile($event)" resize-max-height="300"
+            resize-max-width="250" resize-quality="0.7" multiple>
+        </div>
+      </div>
+      <div class="form-group col-12 mb-2">
+        <div class="progress" *ngIf="progress">
+          <div class="progress-bar" [style.width]="progress + '%'">{{progress}}%</div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div *ngFor="let url of urls" style="margin:auto; text-align: center;">
+        <a style="font-size: 10px;padding-left: 4px;padding-right: 4px; border-radius: 4px;border: red solid 1px;text-align: center; color: red;"
+          (click)="deleteimg(url)">حذف</a>
+        <br>
+        <img [src]="url" height="200" style="margin:10px;">
+      </div>
+    </div>
+
+    <div style="direction: ltr;">
+      <button mat-raised-button color="accent" matStepperNext style="margin-right:10px ;">مرحله بعد</button>
+      <button mat-raised-button color="primary" matStepperPrevious>مرحله قبل</button>
+    </div>
+
+  </mat-step>
+  <mat-step [stepControl]="thirdFormGroup" label="انتخاب آدرس و زمان" [errorMessage]="thirdFormGroupError">
+    <form [formGroup]="thirdFormGroup">
+      <div class="stepercontent">
+        <button mat-raised-button color="accent" matStepperNext style="margin:10px ;">مرحله بعد</button>
+        <button mat-raised-button color="primary" matStepperPrevious style="margin:10px ;">مرحله قبل</button>
+        <button mat-raised-button color="primary" matStepperPrevious style="margin:10px ;">مرحله قبل</button>
+        <button mat-raised-button color="primary" matStepperPrevious style="margin:10px ;">مرحله قبل</button>
+        <button mat-raised-button color="primary" matStepperPrevious style="margin:10px ;">مرحله قبل</button>
+        <button mat-raised-button color="primary" matStepperPrevious style="margin:10px ;">مرحله قبل</button>
+        <button mat-raised-button color="primary" matStepperPrevious style="margin:10px ;">مرحله قبل</button>
+        <button mat-raised-button color="primary" matStepperPrevious style="margin:10px ;">مرحله قبل</button>
+      </div>
+      <div style="direction: ltr;">
+        <button mat-raised-button color="accent" matStepperNext style="margin-right:10px ;">مرحله بعد</button>
+        <button mat-raised-button color="primary" matStepperPrevious>مرحله قبل</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="fourthFormGroup" label="نهایی سازی سفارش" [errorMessage]="fourthFormGroupError">
+
+    <p>You are now done.</p>
+    <div style="direction: ltr;">
+      <button mat-raised-button color="accent" matStepperNext style="margin-right:10px ;">پرداخت و ثبت سفارش</button>
+      <button mat-raised-button color="primary" matStepperPrevious>مرحله قبل</button>
+    </div>
+  </mat-step>
+</mat-stepper>

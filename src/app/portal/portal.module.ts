@@ -5,12 +5,12 @@ import { SidenavComponent } from '../sidenav/sidenav.component';
 import { MaterialExampleModule } from '../material.module';
 import { PortalRoutingModule } from "./portal-routing.module";
 import { DashboardComponent } from './dashboard/dashboard.component';
-
 import { RouterModule, Routes } from "@angular/router";
-
+import { CustomerprofileComponent } from './customerprofile/customerprofile.component';
 
 const appRoutes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
+  { path: 'profile', component: CustomerprofileComponent },
 
 ];
 @NgModule({
@@ -31,6 +31,7 @@ const appRoutes: Routes = [
     PortalComponent,
     SidenavComponent,
     DashboardComponent,
+    CustomerprofileComponent
     // SidebarDirective,
    
   ]

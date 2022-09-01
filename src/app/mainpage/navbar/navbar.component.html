@@ -1,0 +1,89 @@
+<div id="desktop" class="container-fluid" style="direction: rtl;font-family:
+    iransans;">
+    <div class="row" style="height: 80px;">
+        <div class="col-sm-10" style="margin: auto;">
+            <nav class="navbar navbar-expand-md">
+                <a class="navbar-brand" href="#" >
+                  <strong style="color: red;">  اینانلو سرویس</strong>
+                </a>
+                <button class="navbar-toggler" type="button" (click)="toggleNavbar()" style="float:right;">
+                    <i class="fa fa-bars"></i>
+                </button>
+                <div class="collapse navbar-collapse" [ngClass]="{ 'show':
+                    navbarOpen }">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/services" style="float:
+                                right;font-family: iransans;color: rgb(173,
+                                146, 173);font-size:12px;">خدمات</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" style="float:
+                                right;font-family: iransans;color: rgb(173,
+                                146, 173);font-size:12px;">محصولات</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        <div class="col-sm-1 book" style="cursor: pointer;">
+            <div class="row" style="height:100% ; text-align: center;">
+                <div class="col-sm-12" style="margin:auto;">
+                    <h6 style="color: white;"><strong>ثبت سفارش </strong></h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-1" style="margin:auto;text-align: center;">
+            <h6 *ngIf="!isauth" id="login" style="cursor: pointer; color:
+                rgb(85, 31, 85);"><strong>ورود</strong></h6>
+
+            <div *ngIf="isauth" class="dropdown" style="direction: rtl;">
+                <img src="../../assets/img/profile.png" style="cursor: pointer;
+                    width: 50px;height: 50px;border-radius: 50%;">
+                <div class="dropdown-content">
+                    <a href="#">پنل کاربری</a>
+                    <a href="#">تغییر گذرواژه</a>
+                    <a href="#">خروج</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="mobile" class="container-fluid" style="direction: rtl;font-family:
+    iransans;background-color:#00016d">
+    <nav class="navbar navbar-expand-md" style="direction: ltr;background-color:
+    #00016d">
+        <div class="navbar-brand" style="margin: auto;text-align: center;">
+            <a href="/home" >
+                اینانلو سرویس
+            </a>
+            <br>
+            <a style="color:white;font-size:16px;font-family:iransans">خدمات
+                زیبایی در منزل</a>
+        </div>
+        <button class="navbar-toggler" type="button" (click)="toggleNavbar()" style="float:right;">
+            <i class="fa fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" [ngClass]="{ 'show':
+            navbarOpen }">
+            <ul class="navbar-nav">
+                <li *ngIf="!isauth" class="nav-item">
+                    <a class="nav-link" href="#" style="float:
+                        right;font-family: iransans;color: rgb(228, 214,
+                        228);font-size:16px;">ورود</a>
+                </li>
+                <li *ngIf="isauth" class="nav-item">
+                    <a class="nav-link" href="#" style="float:
+                        right;font-family: iransans;color: rgb(228, 214,
+                        228);font-size:16px;">صفحه کاربری</a>
+                </li>
+                <li *ngIf="isauth" class="nav-item">
+                    <a class="nav-link" href="#" style="float:
+                        right;font-family: iransans;color: rgb(228, 214,
+                        228);font-size:16px;">خروج</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>

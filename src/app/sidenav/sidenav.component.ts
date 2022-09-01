@@ -14,9 +14,9 @@ export class SidenavComponent {
   acc = document.getElementsByClassName("accordion")
   menu: { name: string, submenu?: { sub: string }[] }[]
   constructor() {
-    this.menu = [{ name: "item1", submenu: [{ sub: "subitem1" }, { sub: "subitem2" }] },
-    { name: "item2", submenu: [{ sub: "subitem1" }, { sub: "subitem2" }] },
-    { name: "item3", submenu: [] }
+    this.menu = [{ name: "داشبورد", submenu: [] },
+    { name: "سفارشات", submenu: [{ sub: "درحال اجرا" }, { sub: "اتمام" }] },
+    { name: "مالی", submenu: [{ sub: "پورسانت" }, { sub: "گردش مالی" }] }
   ]
 
     

@@ -1,0 +1,17 @@
+@media (max-width: 600px) {
+    #desktop {
+        display: none;
+    }
+    #mobile {
+        display: block;
+    }
+}
+
+@media (min-width: 600px) {
+    #desktop {
+        display: block;
+    }
+    #mobile {
+        display: none;
+    }
+}
