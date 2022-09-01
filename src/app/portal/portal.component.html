@@ -1,0 +1,72 @@
+<body class="desktop">
+  <mat-toolbar class="main header">
+    <div class="toolbar">
+      <div class="toolbardiv right" *ngIf="!sideNavdesktop.opened">
+        <div class="toolbaritems ">
+          <i class="fa fa-bars" aria-hidden="true" (click)="sideNavdesktop.toggle()"><img
+              style="width:30px;height: 30px;margin: 5px 10px 5px 5px ;justify-items: center;" class="avatarnav "
+              src="../../assets/images/1.jpeg" />
+          </i>
+        </div>
+        <div class="toolbaritems ">
+          <h4 class="name" style="margin-top:5px;">مسیح ابراهیم نژاد</h4>
+        </div>
+      </div>
+
+      <div class="toolbardiv left">
+        <div class="toolbaritems">
+
+          <i class="fa fa-bell-o" aria-hidden="true" matBadge="8" matBadgePosition="after" matBadgeColor="accent" matBadgeSize="small"
+            style="margin:15px;"></i>
+
+        </div>
+        <div class="toolbaritems">
+          <i class="fa fa-envelope-o" aria-hidden="true" style="margin:15px;"></i>
+        </div>
+      </div>
+    </div>
+  </mat-toolbar>
+  <mat-drawer-container class="example-container" [hasBackdrop]="false">
+    <mat-drawer #sideNavdesktop class="sidenav" mode="side" opened="true" position="end">
+      <mat-toolbar class="header">
+        <div class="col-md-12" style="padding:20px;margin:auto;text-align:center;">
+          <img class="avatar " src="../../assets/images/1.jpeg" />
+          <h4 class="name" style="margin-top:5px;">مسیح ابراهیم نژاد</h4>
+          <i class="fa fa-angle-double-right " aria-hidden="true" (click)="sideNavdesktop.close()"></i>
+        </div>
+
+      </mat-toolbar>
+      <app-sidenav></app-sidenav>
+    </mat-drawer>
+    <mat-drawer-content style="direction: rtl;">
+      <div class="main-content">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</body>
+
+<body class="mobile">
+  <mat-toolbar class="main header">
+    <i class="fa fa-bars" aria-hidden="true" *ngIf="!sideNav.opened" (click)="sideNav.toggle()"></i>
+  </mat-toolbar>
+  <mat-drawer-container class="example-container" [hasBackdrop]="false">
+    <mat-drawer #sideNav class="sidenav" mode="over" opened="false" position="end">
+      <mat-toolbar class="header">
+        <div class="col-md-12" style="padding:20px;margin:auto;text-align:center;">
+          <img class="avatar " src="https://source.unsplash.com/c_GmwfHBDzk/200x200" />
+          <h4 class="name" style="margin-top:5px;">مسیح ابراهیم نژاد شلمانی</h4>
+          <i class="fa fa-angle-double-right " aria-hidden="true" (click)="sideNav.close()"></i>
+        </div>
+
+      </mat-toolbar>
+      <app-sidenav></app-sidenav>
+    </mat-drawer>
+    <mat-drawer-content style="direction: rtl;">
+      <div class="main-content">
+        <button class="btn btn-close" (click)="closeside()"></button>
+        <router-outlet></router-outlet>
+      </div>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</body>

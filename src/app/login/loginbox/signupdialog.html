@@ -1,0 +1,81 @@
+<mat-card style="background-color: #ffffff;font-family: iransans;">
+    <mat-card-title>
+        <h4 style="font-family:iransans;font-weight: 600;color: #00016d;text-align: center;">
+            ثبت نام
+        </h4>
+        <hr>
+
+    </mat-card-title>
+    <mat-card-content>
+        <div class="container-fluid" style="margin: auto;text-align: center;">
+            <form [formGroup]="form">
+                <!-- <div id="logo"></div> -->
+                <h5 style="font-family:iransans ;margin: auto;font-size: 14px;font-weight: 500;">
+                    لطفا اطلاعات خود را وارد نمائید
+                </h5>
+                <br>
+                <h5 style="font-family:iransans ;margin: 10px;font-size: 14px;font-weight: 500;  color: #00016d;">
+                    نوع کاربری
+                </h5>
+
+                
+
+                <div class="btn-group" role="group" aria-label="Basic radio toggle button group"
+                    *ngFor="let uc of usercategory; let i = index;let l = count">
+                    <input type="radio" class="btn-check" name="btnradio" [attr.id]="uc.name" autocomplete="off"
+                        (click)="selectuserkind(uc.id)">
+                    <label class="btn btn-outline-primary" [attr.for]="uc.name"
+                        [ngStyle]="{'border-radius': (i==0) ? '4px 0px 0px 4px' :  (i==l-1) ? '0px 4px 4px 0px' : '0px 0px 0px 0px'}">{{uc.name}}</label>
+                </div>
+                <div *ngIf="alertshow" style="margin: auto;text-align:center;">
+                    <h6 style="color:red;font-size: 10px;">لطفا نوع کاربری خود را مشخص کنید</h6>
+                </div>
+                <br *ngIf="!alertshow">
+                <br>
+                <mat-form-field class="full-width-input"
+                    style="margin:auto;text-align:center;width:100%; direction:rtl;font-family:iransans ;">
+                    <input matInput placeholder=" تلفن همراه" formControlName="mobilenumber" required
+                        style="font-size: 12px;">
+                    <mat-error *ngIf="isFieldInvalid('mobilenumber')">
+                        لطفا شماره تلفن همراه خود را وارد کنید!
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field class="full-width-input"
+                    style="margin:auto;text-align:right;width: 100%; direction:rtl;font-family:iransans ;">
+                    <input matInput placeholder="کد  ملی" formControlName="nationalid" style="font-size: 12px;">
+                    <mat-error *ngIf="isFieldInvalid('nationalid')">
+                        لطفا کدملی خود را وارد کنید!
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field class="full-width-input"
+                    style="margin:auto;text-align:right;width: 100%; direction:rtl;font-family:iransans ;">
+                    <input matInput placeholder=" نام" formControlName="name" required style="font-size: 12px;">
+                    <mat-error *ngIf="isFieldInvalid('name')">
+                        لطفا نام خود را وارد کنید!
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field class="full-width-input"
+                    style="margin:auto;text-align:right;width: 100%; direction:rtl;font-family:iransans ;">
+                    <input matInput placeholder=" نام خانوادگی" formControlName="family" required
+                        style="font-size: 12px;">
+                    <mat-error *ngIf="isFieldInvalid('family')">
+                        لطفا نام خانوادگی خود را وارد کنید!
+                    </mat-error>
+                </mat-form-field>
+                <br>
+                <div class="row">
+                    <div class="col-md-12" style="margin:auto;text-align: center;font-family:iransans;direction: rtl;">
+
+                        <button id="butt1" mat-raised-button color="accent"
+                            style="font-size: 12px;font-family:iransans;margin:10px ;width: 70px;"
+                            (click)="signup()">ثبت
+                            نام</button>
+                        <button id="butt1" mat-raised-button color="primery"
+                            style="font-size: 12px;font-family:iransans;margin:10px ;width: 70px;"
+                            (click)="close()">انصراف</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </mat-card-content>
+</mat-card>
