@@ -1,4 +1,4 @@
-@media (max-width: 600px) {
+/* @media (max-width: 200px) {
     #desktop {
         display: none;
     }
@@ -6,9 +6,9 @@
     #mobile {
         display: block;
     }
-}
+} */
 
-@media (min-width: 600px) {
+/* @media (min-width: 10px) {
     #desktop {
         display: block;
     }
@@ -16,7 +16,7 @@
     #mobile {
         display: none;
     }
-}
+} */
 
 .header {
     height: 50px;

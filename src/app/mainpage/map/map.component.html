@@ -1,0 +1,10 @@
+<div id="container" style="width: 300px;height:200px;background-color: blueviolet;">
+  <mgl-map [zoom]="[15]" [center]="center" [centerWithPanTo]="true" [interactive]="true"
+    [apiKey]="apiKey" (click)="mapClicked($event)">
+    <mgl-marker [lngLat]="clickpoint">
+     <i class="fa fa-home fa-3x" style="color: red;"> </i>
+    </mgl-marker>
+    
+  </mgl-map>
+</div>
+{{clickpoint}}

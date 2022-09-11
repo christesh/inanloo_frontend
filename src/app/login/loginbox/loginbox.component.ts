@@ -2,7 +2,7 @@ import { Component, OnInit, Output, Input, ElementRef, EventEmitter, ViewChildre
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { ApiServicesService } from '../../api-services.service';
 import { Router } from '@angular/router';
-import {  MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 export interface DialogData {
@@ -18,7 +18,7 @@ export enum ToggleEnum {
   selector: 'app-loginbox',
   templateUrl: './loginbox.component.html',
   styleUrls: ['./loginbox.component.css'],
- 
+
 
 })
 export class LoginboxComponent implements OnInit {
@@ -36,15 +36,15 @@ export class LoginboxComponent implements OnInit {
   public token_expires!: Date;
   public username!: string;
   public errors: any = [];
-  
+
   public otpReSend: boolean = false;
   public loginByUserName: boolean = false;
   public getOtp: boolean = false;
-  form=new  FormGroup({     // {5}
-    mobilenumber:new FormControl('', Validators.required),
+  form = new FormGroup({     // {5}
+    mobilenumber: new FormControl('', Validators.required),
     otpcode: new FormControl('', Validators.required)
   })
-  userForm=new FormGroup({     // {5}
+  userForm = new FormGroup({     // {5}
     username: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required)
   })
@@ -60,7 +60,7 @@ export class LoginboxComponent implements OnInit {
   ) {
     this.otpForm = this.toFormGroup(this.formInput);
   }
-  toFormGroup(elements:any) {
+  toFormGroup(elements: any) {
     const group: any = {};
 
     elements.forEach((key: string | number) => {
@@ -80,7 +80,7 @@ export class LoginboxComponent implements OnInit {
     }
   }
   ngOnInit() {
-     this.getMobile = true;
+    this.getMobile = true;
   }
   userIsFieldInvalid(field: string) { // {6}
     return (
@@ -120,7 +120,7 @@ export class LoginboxComponent implements OnInit {
     this.login = true;
     this.api.sendsms(this.mobileforregister).subscribe(
       res => {
-        console.log( res)
+        console.log(res)
         if (res['result'] == 'mobile number not match') {
           this.form.reset();
           this.openSnackBar('شماره تلفن همراه وارد شده در سیستم ثبت نشده است!', '', 'red-snackbar', 5)
@@ -179,16 +179,33 @@ export class LoginboxComponent implements OnInit {
       res => {
         if (res['result'] == 'success') {
           if (this.login) {
-            this.router.navigate(['/home']);
-            this.openSnackBar('شما با موفقیت وارد شدید!', '', 'green-snackbar', 4)
+            this.api.login(this.mobileforregister!).subscribe(
+              res => {
+                console.log(res['key'])
+                this.router.navigate(['/home']);
+                this.openSnackBar('شما با موفقیت وارد شدید!', '', 'green-snackbar', 4)
+              },
+              err => {
+                console.log(err)
+                this.openSnackBar('خطا در ارتباط با سرور', '', 'red-snackbar', 5)
+              }
+            )
           }
           else {
             console.log(this.signupData)
             this.api.register(this.signupData.mn, this.signupData.name, this.signupData.family, this.signupData.nationalid, this.signupData.userKind).subscribe(
               res => {
-                console.log(res)
-                this.router.navigate(['/home']);
-                this.openSnackBar('شما با موفقیت ثبت نام شده اید!', '', 'green-snackbar', 4)
+                this.api.login(this.mobileforregister!).subscribe(
+                  res => {
+                    console.log(res['key'])
+                    this.router.navigate(['/home']);
+                    this.openSnackBar('شما با موفقیت وارد شدید!', '', 'green-snackbar', 4)
+                  },
+                  err => {
+                    console.log(err)
+                    this.openSnackBar('خطا در ارتباط با سرور', '', 'red-snackbar', 5)
+                  }
+                )
               },
               err => {
                 console.log(err)
@@ -324,11 +341,11 @@ export class SignUPDialog implements OnInit {
     console.log(this.data)
 
     this.api.GetPersonCategories().subscribe(
-      (      res: { id: string; name: string; }[]) => {
+      (res: { id: string; name: string; }[]) => {
         this.usercategory = res
         console.log(this.usercategory)
       },
-      (      err: any) => {
+      (err: any) => {
         console.log(err)
       }
     )
@@ -350,7 +367,7 @@ export class SignUPDialog implements OnInit {
     );
   }
   close() {
-    var data: {  btn: string} = { btn: "cancel" }
+    var data: { btn: string } = { btn: "cancel" }
     this.dialogRef.close(data);
 
   }

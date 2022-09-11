@@ -11,15 +11,26 @@ import { environment } from '../environments/environment';
 })
 export class ApiServicesService {
 
-  private baseurl= environment.API_URL;
+  // private baseurl= environment.API_URL;
+  
+  private baseurl= "https://api-is.mersa-group.ir";
   // baseurl = "http://localhost:8000";
   httpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
 
   constructor(private http: HttpClient) { }
-
+  getMapAddress(apikey:string,lat:string,lon:string) :Observable<any> {
+    return this.http.get("https://map.ir/reverse?lat="+lat+"&lon="+lon ,{headers: new HttpHeaders({
+      'x-api-key':  apikey 
+    })}); 
+  }
+  login(mob:string): Observable<any>{
+    const body={username:mob,password:mob}
+    return this.http.post(this.baseurl + '/api/v1/rest-auth/login/',body,{headers: new HttpHeaders({
+      'Content-Type':  'application/json' 
+    })}); 
+  }
   sendsms(mob:string |null |undefined): Observable<any> {
     const body = { mobile: mob };
-    console.log(body)
     return this.http.post(this.baseurl + '/personal/sendsms/',body,{headers: new HttpHeaders({
       'Content-Type':  'application/json' 
     })});   
@@ -32,7 +43,8 @@ export class ApiServicesService {
     })});
   }
   register(mob:string,fname:string,lname:string,nationalid:string,usercategory:number): Observable<any> {
-    const body = { username: mob,fname:fname,lname:lname,nationalid:nationalid,usercategory:usercategory };
+    const body = { username: mob,fname:fname,lname:lname,nationalid:nationalid,usercategory:usercategory.toString() };
+    console.log(body)
     return this.http.post(this.baseurl + '/personal/register/',body,{headers: new HttpHeaders({
       'Content-Type':  'application/json' 
     })});

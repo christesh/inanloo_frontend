@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { BrowserModule } from '@angular/platform-browser';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -31,9 +31,10 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
     LoginboxComponent,
     SignUPDialog,
     ForgetPassDialog
-    
+
   ],
   imports: [
+    
     FlexLayoutModule,
     MaterialExampleModule,
     BrowserAnimationsModule,
@@ -47,15 +48,20 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
     MatDialogModule,
     MatNativeDateModule,
     MatCardModule,
-    FormsModule, ReactiveFormsModule,
+    FormsModule,
+    ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-   
+
   ],
-  providers: [ApiServicesService, 
+
+  providers: [ApiServicesService,
   ],
   bootstrap: [AppComponent],
 
+
 })
-export class AppModule { }
+export class AppModule {
+
+}

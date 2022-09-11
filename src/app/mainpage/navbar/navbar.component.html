@@ -1,10 +1,10 @@
 <div id="desktop" class="container-fluid" style="direction: rtl;font-family:
     iransans;">
-    <div class="row" style="height: 80px;">
+    <div class="row" style="height: 50px;">
         <div class="col-sm-10" style="margin: auto;">
             <nav class="navbar navbar-expand-md">
-                <a class="navbar-brand" href="#" >
-                  <strong style="color: red;">  اینانلو سرویس</strong>
+                <a class="navbar-brand" href="#">
+                    <strong style="color: red;"> اینانلو سرویس</strong>
                 </a>
                 <button class="navbar-toggler" type="button" (click)="toggleNavbar()" style="float:right;">
                     <i class="fa fa-bars"></i>
@@ -26,24 +26,35 @@
                 </div>
             </nav>
         </div>
-        <div class="col-sm-1 book" style="cursor: pointer;">
-            <div class="row" style="height:100% ; text-align: center;">
-                <div class="col-sm-12" style="margin:auto;">
-                    <h6 style="color: white;"><strong>ثبت سفارش </strong></h6>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-1" style="margin:auto;text-align: center;">
-            <h6 *ngIf="!isauth" id="login" style="cursor: pointer; color:
-                rgb(85, 31, 85);"><strong>ورود</strong></h6>
+        <div class="col-sm-2">
+            <div style="display: flex;flex-direction: row;height: 100%;">
+                <div class="book">
 
-            <div *ngIf="isauth" class="dropdown" style="direction: rtl;">
-                <img src="../../assets/img/profile.png" style="cursor: pointer;
+                    <div class="col-sm-12" style="margin:auto;">
+                        <lord-icon src="https://cdn.lordicon.com/slkvcfos.json" trigger="hover"
+                            colors="primary:#121331,secondary:#c71f16" stroke="80" style="width:40px;height:40px">
+                        </lord-icon>
+                    </div>
+
+                </div>
+
+                <div class="book">
+
+                    <lord-icon *ngIf="female" src="https://cdn.lordicon.com/bwnhdkha.json" trigger="hover"
+                        colors="primary:#121331,secondary:#c71f16" stroke="70" style="width:40px;height:40px">
+                    </lord-icon>
+                    <lord-icon *ngIf="male" src="https://cdn.lordicon.com/eszyyflr.json" trigger="hover"
+                        colors="primary:#121331,secondary:#c71f16" stroke="70" style="width:40px;height:40px">
+                    </lord-icon>
+                    <div *ngIf="isauth" class="dropdown" style="direction: rtl;">
+                        <img src="../../assets/img/profile.png" style="cursor: pointer;
                     width: 50px;height: 50px;border-radius: 50%;">
-                <div class="dropdown-content">
-                    <a href="#">پنل کاربری</a>
-                    <a href="#">تغییر گذرواژه</a>
-                    <a href="#">خروج</a>
+                        <div class="dropdown-content">
+                            <a href="#">پنل کاربری</a>
+                            <a href="#">تغییر گذرواژه</a>
+                            <a href="#">خروج</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -51,16 +62,15 @@
 </div>
 
 <div id="mobile" class="container-fluid" style="direction: rtl;font-family:
-    iransans;background-color:#00016d">
+    iransans;background-color:#fff">
     <nav class="navbar navbar-expand-md" style="direction: ltr;background-color:
-    #00016d">
+    #fff">
         <div class="navbar-brand" style="margin: auto;text-align: center;">
-            <a href="/home" >
+            <a tyle="color: red;">
                 اینانلو سرویس
             </a>
             <br>
-            <a style="color:white;font-size:16px;font-family:iransans">خدمات
-                زیبایی در منزل</a>
+
         </div>
         <button class="navbar-toggler" type="button" (click)="toggleNavbar()" style="float:right;">
             <i class="fa fa-bars"></i>
@@ -69,17 +79,17 @@
             navbarOpen }">
             <ul class="navbar-nav">
                 <li *ngIf="!isauth" class="nav-item">
-                    <a class="nav-link" href="#" style="float:
+                    <a class="nav-link" style="float:
                         right;font-family: iransans;color: rgb(228, 214,
                         228);font-size:16px;">ورود</a>
                 </li>
                 <li *ngIf="isauth" class="nav-item">
-                    <a class="nav-link" href="#" style="float:
+                    <a class="nav-link" style="float:
                         right;font-family: iransans;color: rgb(228, 214,
                         228);font-size:16px;">صفحه کاربری</a>
                 </li>
                 <li *ngIf="isauth" class="nav-item">
-                    <a class="nav-link" href="#" style="float:
+                    <a class="nav-link" style="float:
                         right;font-family: iransans;color: rgb(228, 214,
                         228);font-size:16px;">خروج</a>
                 </li>

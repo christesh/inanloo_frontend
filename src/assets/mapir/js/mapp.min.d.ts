@@ -1,0 +1,1 @@
+export declare function Mapp(t:any):any;

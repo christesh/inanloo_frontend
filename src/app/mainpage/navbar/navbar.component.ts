@@ -10,11 +10,14 @@ export class NavbarComponent implements OnInit {
   constructor() { }
   public personname="مسیح"
   public isauth:boolean=false
+  female:boolean=false;
+  male:boolean=false;
   navbarOpen = false;
   toggleNavbar() {
     this.navbarOpen = !this.navbarOpen;
   }
   ngOnInit(): void {
+    this.female=true;
   }
 
 }
