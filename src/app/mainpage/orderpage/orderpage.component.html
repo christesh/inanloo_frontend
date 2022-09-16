@@ -1,7 +1,7 @@
 <mat-stepper id="desktop" #stepper class="example-stepper" [orientation]="(stepperOrientation | async)!"
   [linear]="false">
-  <mat-step [stepControl]="firstFormGroup" label="انتخاب وسیله" [errorMessage]="secondFormGroupError"
-    [hasError]="firststeperror" [completed]="firstcomplete">
+  <mat-step label="انتخاب وسیله" [errorMessage]="firstFormGroupError" [hasError]="firststeperror"
+    [completed]="firstcomplete">
     <div class="discription">
       <h2>توضیحات</h2>
       <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
@@ -67,24 +67,38 @@
           را
           می طلبد.</p>
       </div>
-      <form [formGroup]="firstFormGroup">
-        <mat-form-field appearance="fill" style="direction: rtl;text-align:right;">
-          <mat-label>مدل دستگاه</mat-label>
-          <mat-select>
-            <mat-option *ngFor="let m of models;let i=index" [value]="m.model">{{m.model}}</mat-option>
-          </mat-select>
+      <div class="modelscontent" style="display: flex;flex-direction: row; padding:20px;">
+        <form [formGroup]="firstFormGroup">
+          <mat-form-field style="direction: rtl;text-align:right;">
+            <mat-label>مدل دستگاه</mat-label>
+            <mat-select formControlName="selectedmodel" (selectionChange)="selectmodel()">
+              <mat-option *ngFor="let m of models;let i=index" [value]="m">{{m.model}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <!-- <mat-form-field class="full-width-input"
+          style="margin:auto;text-align:right;width: 100%; direction:rtl;font-family:iransans ;">
+          <input matInput placeholder="کد  ملی" formControlName="devicesreial" style="font-size: 12px;">
+        </mat-form-field> -->
+        </form>
+        <mat-form-field class="full-width-input"
+          style="margin:auto;text-align:right; direction:rtl;font-family:iransans ;">
+          <input matInput placeholder="شماره سریال دستگاه" value="{{modelserial}}" (change)="serialchange($event)"
+            style="font-size: 12px;">
+
         </mat-form-field>
-        <mat-form-field appearance="fill" style="direction: rtl;text-align:right;">
-          <mat-label>شماره سریال دستگاه</mat-label>
-          <input matInput formControlName="firstCtrl" placeholder="">
-        </mat-form-field>
-      </form>
-      <div id="selectmodels">
+        <div class="rules" style="display:flex;
+        flex-direction:row-reverse;padding:20px ;direction:rtl ;justify-content: right;">
+          <label for="rule" style="margin: 20px;">دستگاه دارای گارانتی معتبر است</label>
+          <input type="checkbox" id="rule" [checked]="hasguarantee" (change)="hasGuarantee()"
+            style="direction: rtl;cursor: pointer;">
+        </div>
       </div>
     </div>
 
+    <div id="selectmodelsdiv">
+    </div>
     <div style="direction: ltr;">
-      <button mat-raised-button color="accent" matStepperNext>مرحله بعد</button>
+      <button mat-raised-button color="accent" matStepperNext (click)="firststepnext()">مرحله بعد</button>
     </div>
   </mat-step>
 
@@ -108,7 +122,7 @@
           <!-- Item Column -->
           <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef style="text-align:right;"> خدمت/مشکل </th>
-            <td mat-cell *matCellDef="let selectedsubtasks"> {{selectedsubtasks.name}} </td>
+            <td mat-cell *matCellDef="let selectedsubtasks"> {{selectedsubtasks.title}} </td>
             <td mat-footer-cell *matFooterCellDef style="color: blue;"><strong>جمع</strong> </td>
           </ng-container>
 
@@ -139,13 +153,12 @@
 
       </div>
       <div class="problems" style="width:40% ;">
-        
+
         <span class="example-list-section">
           <ul>
             <li *ngFor="let subtask of subtasks;let i=index">
-              <mat-checkbox [(ngModel)]="subtask.completed" color="warn"
-                (ngModelChange)="updateAllComplete(subtask.name)">
-                {{subtask.name}}
+              <mat-checkbox [(ngModel)]="subtask.checked" color="warn" (ngModelChange)="problemSelect(subtask.title)">
+                {{subtask.title}}
               </mat-checkbox>
             </li>
           </ul>
@@ -178,16 +191,21 @@
         </div>
       </div>
     </div>
-    <div class="row">
-      <div *ngFor="let url of urls" style="margin:auto; text-align: center;">
-        <a style="font-size: 10px;padding-left: 4px;padding-right: 4px; border-radius: 4px;border: red solid 1px;text-align: center; color: red;"
-          (click)="deleteimg(url)">حذف</a>
+    <div class="row" style="display: flex;flex-direction: row;flex-wrap: wrap;justify-content: right;">
+      <div *ngFor="let url of urls"
+        style="margin:20px; text-align: center;border-radius: 10px; background-color: rgb(253, 252, 250);box-shadow: 0px 0px 5px 5px rgb(238, 236, 236); width: 350px;height: 300px; ">
+        <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="hover" (click)="deleteimg(url)"
+          style="width:40px;height:40px;cursor: pointer;margin-top: 20px;">
+        </lord-icon>
+        <!-- <a style="font-size: 10px;padding-left: 4px;padding-right: 4px; border-radius: 4px;border: red solid 1px;text-align: center; color: red;"
+          (click)="deleteimg(url)">حذف</a>-->
         <br>
-        <img [src]="url" height="200" style="margin:10px;">
+        <img [src]="url" height="200" width="300" style="margin:10px;">
       </div>
     </div>
     <div style="direction: ltr;">
-      <button mat-raised-button color="accent" matStepperNext style="margin-right:10px ;">مرحله بعد</button>
+      <button mat-raised-button color="accent" matStepperNext style="margin-right:10px ;" (click)="secondstepnext()">مرحله
+        بعد</button>
       <button mat-raised-button color="primary" matStepperPrevious>مرحله قبل</button>
     </div>
   </mat-step>
@@ -231,9 +249,9 @@
             <label id="example-radio-group-label">لطفا بازه زمانی مراجعه متخصص را مشخص نمائید:</label>
             <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
               [(ngModel)]="selectedtime" formControlName="radioCtrl">
-              <mat-radio-button class="example-radio-button" *ngFor="let times of timerange" [value]="times"
+              <mat-radio-button class="example-radio-button" *ngFor="let times of timerange" [value]="times.ID"
                 style="padding-left: 5px;">
-                <h6 style="padding-right: 10px;padding-top:5px;font-size:12px">{{times}}</h6>
+                <h6 style="padding-right: 10px;padding-top:5px;font-size:12px">{{times.title}}</h6>
               </mat-radio-button>
             </mat-radio-group>
           </form>
@@ -255,17 +273,22 @@
         </div>
         <div class="addresscontent" style="margin:20px">
           <mat-card style="width: 100%;min-height:200px ;">
-            <mat-card-content style="display: flex;flex-direction: row;">
-              <div class="addresstext">
-
+            <mat-card-content style="display: flex;flex-direction: row;justify-content: space-around;">
+              <input type="checkbox" checked style="width:20px ;">
+              <div class="addresstext" style="display: flex;flex-direction: column-reverse;
+              align-content: space-around;
+              justify-content: center;">
+                <div>
+                  <h3>آدرس:</h3>
+                  <br>
+                  <h6>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
+                    است،
+                    چاپگرها و متون بلکه</h6>
+                </div>
               </div>
               <div class="addressmap">
-                <app-map></app-map>
-                <!-- <div id="app"></div> -->
-                <!-- <iframe src="https://map.ir/lat/35.732560/lng/51.422552/z/15/p/'خونه'" title="description"></iframe> -->
+                <app-map [enable]="mapenable" [lat]="maplat" [long]="maplong"></app-map>
                 <div id="container">
-                  <!-- <mgl-map [zoom]="[5]" [center]="center" [centerWithPanTo]="true" [interactive]="true"
-                    [apiKey]="apiKey"></mgl-map> -->
                 </div>
               </div>
             </mat-card-content>
@@ -274,16 +297,117 @@
       </div>
 
       <div style="direction: ltr;">
-        <button mat-raised-button color="accent" matStepperNext style="margin-right:10px ;">مرحله بعد</button>
+        <button mat-raised-button color="accent" matStepperNext style="margin-right:10px ;"
+          (click)="thirdstepnext()">مرحله بعد</button>
         <button mat-raised-button color="primary" matStepperPrevious>مرحله قبل</button>
       </div>
     </form>
   </mat-step>
-  <mat-step [stepControl]="fourthFormGroup" label="نهایی سازی سفارش" [errorMessage]="fourthFormGroupError">
 
-    <p>You are now done.</p>
+  <mat-step [stepControl]="fourthFormGroup" label="نهایی سازی سفارش" [errorMessage]="fourthFormGroupError">
+    <div class="discription">
+      <h2>توضیحات</h2>
+      <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
+        است،
+        چاپگرها و متون بلکه
+        روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با
+        هدف
+        بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و
+        متخصصان
+        را
+        می طلبد.</p>
+    </div>
+    <div class="orderdetail">
+      <div class="content" style="border: gray dotted 1px; margin:10px; padding:10px; width: 100%;">
+        <div class="applience" style="display: flex;flex-direction: row;padding:20px ;">
+          <div class="kind">
+            <mat-card class="appliences">
+              <mat-card-header>
+                <mat-card-title>لباسشویی </mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <img class="applience" mat-card-image src="../../../assets/images/devices/01.png">
+              </mat-card-content>
+            </mat-card>
+          </div>
+          <div class="model" style="padding:20px ;display: flex;
+          flex-direction: column;
+          justify-content: center;border-left:rgb(189, 188, 188) solid 1px;">
+            <h5>برند: پارس خزر</h5>
+            <br>
+            <h6>مدل: </h6>
+          </div>
+          <div class="datetime" style="padding:20px ;display: flex;
+          flex-direction: column;
+          justify-content: center;">
+            <h5>تاریخ حضور متخصص: 30 شهریور 1401</h5>
+            <br>
+            <h6>بازه زمانی: 12 تا 15</h6>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+        <div style="padding: 20px;">
+          <h5>آدرس:</h5>
+
+          <h6>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
+            است،
+            چاپگرها و متون بلکه</h6>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="problem" style="padding:20px ;">
+          <div class="costaccounting">
+            <h5>مشکلات و خدمات مورد نیاز :</h5>
+            <hr>
+            <table mat-table #MatTable [dataSource]="selectedsubtasks2" style="width: 100%;">
+              <!-- Item Column -->
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef style="text-align:right;"> خدمت/مشکل </th>
+                <td mat-cell *matCellDef="let selectedsubtasks2"> {{selectedsubtasks2.title}} </td>
+                <td mat-footer-cell *matFooterCellDef style="color: blue;"><strong>جمع</strong> </td>
+              </ng-container>
+
+              <!-- lowprice Column -->
+              <ng-container matColumnDef="lowprice">
+                <th mat-header-cell *matHeaderCellDef style="text-align:right;"> کمترین هزینه </th>
+                <td mat-cell *matCellDef="let selectedsubtasks2">
+                  <p *ngIf="isNumber(selectedsubtasks2.lowprice)">{{selectedsubtasks2.lowprice | number}}</p>
+                  <p *ngIf="!isNumber(selectedsubtasks2.lowprice)">{{selectedsubtasks2.lowprice }}</p>
+                </td>
+                <td mat-footer-cell *matFooterCellDef style="color: blue;"> <strong>{{totlalowprice|number}}</strong>
+                </td>
+              </ng-container>
+              <!-- highprice Column -->
+              <ng-container matColumnDef="highprice">
+                <th mat-header-cell *matHeaderCellDef style="text-align:right;"> کمترین هزینه </th>
+                <td mat-cell *matCellDef="let selectedsubtasks2">
+                  <p *ngIf="isNumber(selectedsubtasks2.highprice)">{{selectedsubtasks2.highprice | number}}</p>
+                  <p *ngIf="!isNumber(selectedsubtasks2.highprice)">{{selectedsubtasks2.highprice }}</p>
+                </td>
+                <td mat-footer-cell *matFooterCellDef style="color: blue;"> <strong>{{totlahighprice|number }} </strong>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+            </table>
+
+          </div>
+        </div>
+
+        <mat-divider></mat-divider>
+        <div class="rules" style="display:flex;
+        flex-direction:row-reverse;padding:20px ;direction:rtl ;justify-content: right;">
+          <label for="rule" style="margin: 20px;">با <a herf="">قوانین و مقرارت </a> سایت موافقم.</label>
+          <input type="checkbox" id="rule" style="direction: rtl;">
+        </div>
+      </div>
+
+    </div>
+
     <div style="direction: ltr;">
-      <button mat-raised-button color="accent" matStepperNext style="margin-right:10px ;">پرداخت و ثبت سفارش</button>
+      <button mat-raised-button color="accent" matStepperNext style="margin-right:10px ;" (click)="registerOrder()">ثبت
+        سفارش</button>
       <button mat-raised-button color="primary" matStepperPrevious>مرحله قبل</button>
     </div>
   </mat-step>
@@ -291,293 +415,3 @@
 
 
 <!-- mobile -->
-<mat-stepper id="mobile" #stepper class="example-stepper" [orientation]="(stepperOrientation | async)!"
-  [linear]="false">
-  <mat-step [stepControl]="firstFormGroup" label="انتخاب وسیله" [errorMessage]="secondFormGroupError"
-    [hasError]="firststeperror" [completed]="firstcomplete">
-    <div class="discription">
-      <h2>توضیحات</h2>
-      <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
-        چاپگرها و متون بلکه
-        روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
-        بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان
-        را
-        می طلبد.</p>
-    </div>
-    <div class="stepercontent">
-      <mat-card class="appliences" *ngFor="let app of applience;let i=index" [id]="i"
-        (click)="selectapplience(app.title)" [ngClass]="{'selectedCSSClass':app.title== title}">
-        <mat-card-header>
-          <mat-card-title>{{app.title}} </mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <img class="applience" mat-card-image [src]="app.pic">
-          <p>
-            {{app.desc}}
-          </p>
-        </mat-card-content>
-      </mat-card>
-    </div>
-
-    <div class="selectbrand" *ngIf="showbrands">
-      <mat-divider></mat-divider>
-      <div class="discription">
-        <h2>توضیحات</h2>
-        <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
-          چاپگرها و متون بلکه
-          روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
-          بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان
-          را
-          می طلبد.</p>
-      </div>
-      <input type="text" class="form-control" style="width: 50%;" placeholder="جستجو" value="{{searchvalue}}"
-        (keyup)="searchChange($event)">
-
-      <div class="stepercontent">
-        <mat-card class="barnds" *ngFor="let b of brands;let i=index " [id]="i" (click)="selectbrand(b.brand)"
-          [ngClass]="{'selectedbrandCSSClass':b.brand == brandtitle}">
-          <mat-card-header>
-            <mat-card-title>{{b.brand}} </mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <img class="brand" mat-card-image [src]="b.brandpic">
-
-          </mat-card-content>
-        </mat-card>
-      </div>
-      <div id="selectbrand">
-      </div>
-    </div>
-
-    <div class="selectmodels" *ngIf="showmodels">
-      <mat-divider></mat-divider>
-      <div class="discription">
-        <h2>توضیحات</h2>
-        <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
-          چاپگرها و متون بلکه
-          روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
-          بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان
-          را
-          می طلبد.</p>
-      </div>
-      <form [formGroup]="firstFormGroup">
-        <mat-form-field appearance="fill" style="direction: rtl;text-align:right;">
-          <mat-label>مدل دستگاه</mat-label>
-          <mat-select>
-            <mat-option *ngFor="let m of models;let i=index" [value]="m.model">{{m.model}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field appearance="fill" style="direction: rtl;text-align:right;">
-          <mat-label>شماره سریال دستگاه</mat-label>
-          <input matInput formControlName="firstCtrl" placeholder="">
-        </mat-form-field>
-      </form>
-      <div id="selectmodels">
-      </div>
-    </div>
-
-    <div style="direction: ltr;">
-      <button mat-raised-button color="accent" matStepperNext>مرحله بعد</button>
-    </div>
-  </mat-step>
-
-  <mat-step [stepControl]="secondFormGroup" label="انتخاب مشکل" [errorMessage]="secondFormGroupError"
-    [hasError]="secondsteperror" [completed]="secondcomplete">
-    <div class="discription">
-      <h2>توضیحات</h2>
-      <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
-        چاپگرها و متون بلکه
-        روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
-        بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان
-        را
-        می طلبد.</p>
-    </div>
-    <div class="step2content">
-      <div class="costaccounting">
-        <h4>تخمیتن هزینه:</h4>
-        <hr>
-
-        <table mat-table #MatTable [dataSource]="selectedsubtasks" style="width: 100%;">
-          <!-- Item Column -->
-          <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef style="text-align:right;"> خدمت/مشکل </th>
-            <td mat-cell *matCellDef="let selectedsubtasks"> {{selectedsubtasks.name}} </td>
-            <td mat-footer-cell *matFooterCellDef style="color: blue;"><strong>جمع</strong> </td>
-          </ng-container>
-
-          <!-- lowprice Column -->
-          <ng-container matColumnDef="lowprice">
-            <th mat-header-cell *matHeaderCellDef style="text-align:right;"> کمترین هزینه </th>
-            <td mat-cell *matCellDef="let selectedsubtasks">
-              <p *ngIf="isNumber(selectedsubtasks.lowprice)">{{selectedsubtasks.lowprice | number}}</p>
-              <p *ngIf="!isNumber(selectedsubtasks.lowprice)">{{selectedsubtasks.lowprice }}</p>
-            </td>
-            <td mat-footer-cell *matFooterCellDef style="color: blue;"> <strong>{{totlalowprice|number}}</strong> </td>
-          </ng-container>
-          <!-- highprice Column -->
-          <ng-container matColumnDef="highprice">
-            <th mat-header-cell *matHeaderCellDef style="text-align:right;"> کمترین هزینه </th>
-            <td mat-cell *matCellDef="let selectedsubtasks">
-              <p *ngIf="isNumber(selectedsubtasks.highprice)">{{selectedsubtasks.highprice | number}}</p>
-              <p *ngIf="!isNumber(selectedsubtasks.highprice)">{{selectedsubtasks.highprice }}</p>
-            </td>
-            <td mat-footer-cell *matFooterCellDef style="color: blue;"> <strong>{{totlahighprice|number }} </strong>
-            </td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-          <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
-        </table>
-
-      </div>
-      <div class="problems" style="width:40% ;">
-        
-        <span class="example-list-section">
-          <ul>
-            <li *ngFor="let subtask of subtasks;let i=index">
-              <mat-checkbox [(ngModel)]="subtask.completed" color="warn"
-                (ngModelChange)="updateAllComplete(subtask.name)">
-                {{subtask.name}}
-              </mat-checkbox>
-            </li>
-          </ul>
-        </span>
-        <form [formGroup]="secondFormGroup" *ngIf="showcomment">
-          <mat-form-field class="example-full-width" appearance="fill"
-            style="width:100%;text-align:right;margin-right:45px;margin-top:-15px;">
-            <mat-label>لطفا مشکل را شرح دهید:</mat-label>
-            <textarea matInput formControlName="secondCtrl" placeholder="توضیحات"></textarea>
-          </mat-form-field>
-        </form>
-      </div>
-    </div>
-    <mat-divider></mat-divider>
-    <div class="row">
-      <div class="form-group col-12 mb-2">
-        <div class="form-group col-12 mb-2" style="direction: rtl;text-align: right;margin: 10px;">
-          <label style="margin: 10px;"> لطفا تصاویر مروبط به مشکلات وسیله را انتخاب کنید:</label>
-          <br />
-          <label for="file-upload" class="btn btn-raised btn-primary" style="cursor: pointer;margin-right: 35px;">
-            <i class="fa fa-upload" style="margin-left: 5px;"></i>انتخاب فایل
-          </label>
-          <input id="file-upload" type='file' (change)="onSelectFile($event)" resize-max-height="300"
-            resize-max-width="250" resize-quality="0.7" multiple>
-        </div>
-      </div>
-      <div class="form-group col-12 mb-2">
-        <div class="progress" *ngIf="progress">
-          <div class="progress-bar" [style.width]="progress + '%'">{{progress}}%</div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div *ngFor="let url of urls" style="margin:auto; text-align: center;">
-        <a style="font-size: 10px;padding-left: 4px;padding-right: 4px; border-radius: 4px;border: red solid 1px;text-align: center; color: red;"
-          (click)="deleteimg(url)">حذف</a>
-        <br>
-        <img [src]="url" height="200" style="margin:10px;">
-      </div>
-    </div>
-    <div style="direction: ltr;">
-      <button mat-raised-button color="accent" matStepperNext style="margin-right:10px ;">مرحله بعد</button>
-      <button mat-raised-button color="primary" matStepperPrevious>مرحله قبل</button>
-    </div>
-  </mat-step>
-
-  <mat-step [stepControl]="thirdFormGroup" label="انتخاب آدرس و زمان" [errorMessage]="thirdFormGroupError"
-    [hasError]="thirdsteperror" [completed]="thirdcomplete">
-    <form [formGroup]="thirdFormGroup">
-      <div class="discription">
-        <h2>توضیحات</h2>
-        <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
-          چاپگرها و متون بلکه
-          روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
-          بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان
-          را
-          می طلبد.</p>
-      </div>
-      <div class="steper3content">
-        <div class="servicedate">
-
-          <mat-card class="calender" (click)="showdatepicker()" placement="start" [ngbPopover]="popTemplate"
-            [autoClose]="'inside'">
-            <mat-card-header class="calenderheader">
-              <mat-card-title class="calendertitle">
-                <h3 class="month">{{calmonth}}</h3>
-              </mat-card-title>
-            </mat-card-header>
-            <mat-card-content class="calendercontent">
-              <h1 class="day">{{calday}}</h1>
-            </mat-card-content>
-          </mat-card>
-        </div>
-
-        <ng-template #popTemplate>
-          <ng-persian-datepicker [dateMin]="yesterday" [uiTheme]="customTheme" (dateOnSelect)="changedate($event)">
-            <input type="text" [formControl]="dateValue" />
-          </ng-persian-datepicker>
-        </ng-template>
-
-        <div class="servicetime">
-          <form [formGroup]="fourthFormGroup">
-            <label id="example-radio-group-label">لطفا بازه زمانی مراجعه متخصص را مشخص نمائید:</label>
-            <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
-              [(ngModel)]="selectedtime" formControlName="radioCtrl">
-              <mat-radio-button class="example-radio-button" *ngFor="let times of timerange" [value]="times"
-                style="padding-left: 5px;">
-                <h6 style="padding-right: 10px;padding-top:5px;font-size:12px">{{times}}</h6>
-              </mat-radio-button>
-            </mat-radio-group>
-          </form>
-        </div>
-      </div>
-      <mat-divider></mat-divider>
-      <div class="address">
-        <div class="discription">
-          <h2>توضیحات</h2>
-          <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
-            است،
-            چاپگرها و متون بلکه
-            روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با
-            هدف
-            بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و
-            متخصصان
-            را
-            می طلبد.</p>
-        </div>
-        <div class="addresscontent" style="margin:20px">
-          <mat-card style="width: 100%;min-height:200px ;">
-            <mat-card-content style="display: flex;flex-direction: row;">
-              <div class="addresstext">
-
-              </div>
-              <div class="addressmap">
-                <app-map></app-map>
-                <!-- <div id="app"></div> -->
-                <!-- <iframe src="https://map.ir/lat/35.732560/lng/51.422552/z/15/p/'خونه'" title="description"></iframe> -->
-                <div id="container">
-                  <!-- <mgl-map [zoom]="[5]" [center]="center" [centerWithPanTo]="true" [interactive]="true"
-                    [apiKey]="apiKey"></mgl-map> -->
-                </div>
-              </div>
-            </mat-card-content>
-          </mat-card>
-        </div>
-      </div>
-
-      <div style="direction: ltr;">
-        <button mat-raised-button color="accent" matStepperNext style="margin-right:10px ;">مرحله بعد</button>
-        <button mat-raised-button color="primary" matStepperPrevious>مرحله قبل</button>
-      </div>
-    </form>
-  </mat-step>
-  <mat-step [stepControl]="fourthFormGroup" label="نهایی سازی سفارش" [errorMessage]="fourthFormGroupError">
-
-    <p>You are now done.</p>
-    <div style="direction: ltr;">
-      <button mat-raised-button color="accent" matStepperNext style="margin-right:10px ;">پرداخت و ثبت سفارش</button>
-      <button mat-raised-button color="primary" matStepperPrevious>مرحله قبل</button>
-    </div>
-  </mat-step>
-</mat-stepper>

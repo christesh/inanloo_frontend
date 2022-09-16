@@ -21,9 +21,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MaterialExampleModule } from './material.module';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
-
-
-
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,7 +32,7 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
 
   ],
   imports: [
-    
+    NgxMatSelectSearchModule,
     FlexLayoutModule,
     MaterialExampleModule,
     BrowserAnimationsModule,

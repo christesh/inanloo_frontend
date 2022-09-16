@@ -1,10 +1,11 @@
 <div id="container" style="width: 300px;height:200px;background-color: blueviolet;">
-  <mgl-map [zoom]="[15]" [center]="center" [centerWithPanTo]="true" [interactive]="true"
-    [apiKey]="apiKey" (click)="mapClicked($event)">
+  <mgl-map [zoom]="[15]" [center]="center" [centerWithPanTo]="true" [interactive]="interact" [apiKey]="apiKey"
+    (click)="mapClicked($event)">
     <mgl-marker [lngLat]="clickpoint">
-     <i class="fa fa-home fa-3x" style="color: red;"> </i>
+      <lord-icon src="https://cdn.lordicon.com/fihkmkwt.json" trigger="hover" colors="primary:#121331,secondary:#16c72e"
+      state="hover-jump" style="width:70px;height:70px;margin-bottom: 50px;">
+      </lord-icon>
     </mgl-marker>
-    
+
   </mgl-map>
 </div>
-{{clickpoint}}

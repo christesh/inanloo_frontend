@@ -11,7 +11,8 @@ export class MainpageComponent implements OnInit {
 
   ngOnInit() {
     // this.router.navigate(['/home']);
-    this.router.navigate(['/home/order']);
+    // this.router.navigate(['/home/profile']);
+    this.router.navigate(['home/order']);
   }
   gotoorder(){
     

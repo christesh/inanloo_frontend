@@ -11,7 +11,7 @@ export class PortalComponent implements OnInit {
   constructor(private router: Router) { }
   isShowing:boolean;
   ngOnInit() {
-    this.router.navigate(['/portal/profile']);
+    this.router.navigate(['/portal/dashboard']);
   }
   ngAfterViewInit(){
     this.isShowing=true;

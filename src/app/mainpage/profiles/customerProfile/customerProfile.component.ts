@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-customerprofile',
-  templateUrl: './customerprofile.component.html',
-  styleUrls: ['./customerprofile.component.css']
+  selector: 'app-customerProfile',
+  templateUrl: './customerProfile.component.html',
+  styleUrls: ['./customerProfile.component.css']
 })
-export class CustomerprofileComponent implements OnInit {
+export class CustomerProfileComponent implements OnInit {
 
   constructor(private fb: FormBuilder,) { }
   form!: FormGroup;

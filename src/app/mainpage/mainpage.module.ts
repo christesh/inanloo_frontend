@@ -18,11 +18,26 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import * as $ from 'jquery';
 import { MapComponent } from './map/map.component';
 import { NgxMapboxGLModule } from 'mapir-angular-component';
+import { ProfilesComponent } from './profiles/profiles.component';
+import { HomeComponent } from './home/home.component';
+import {PROFILE_ROUTES} from './profiles/profiles.routing'
+import { TestComponent } from './test/test.component';
+import { CustomerProfileComponent } from './profiles/customerProfile/customerProfile.component';
+import { TechnicianProfileComponent } from './profiles/technicianProfile/technicianProfile.component';
 const appRoutes: Routes = [
+  // { path:'',component:HomeComponent },
   { path: 'order', component: OrderpageComponent },
-
-
-];
+  { path: 'profile', component: ProfilesComponent, children:[
+    {
+      path:'customer', component:CustomerProfileComponent
+    },
+    {
+      path:'technician', component: TechnicianProfileComponent
+    }
+  ]},
+  // { path: '', component: ProfilesComponent, data: { title: 'content Views' }, children: PROFILE_ROUTES },
+ 
+ ];
 @NgModule({
   imports: [
     NgxMapboxGLModule,
@@ -38,11 +53,16 @@ const appRoutes: Routes = [
     RouterModule.forChild(appRoutes)
   ],
   declarations: [
+    HomeComponent,
     MapComponent,
     MainpageComponent,
     NavbarComponent,
     FooterComponent,
-    OrderpageComponent
+    OrderpageComponent,
+    ProfilesComponent,
+    TestComponent,
+    CustomerProfileComponent,
+    TechnicianProfileComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

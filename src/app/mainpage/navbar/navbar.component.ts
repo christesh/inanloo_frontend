@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
   public personname="مسیح"
   public isauth:boolean=false
   female:boolean=false;
@@ -19,5 +20,7 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     this.female=true;
   }
-
+  profile(){
+    this.router.navigate(['home/profile/customer']);
+  }
 }

@@ -26,12 +26,38 @@
     ::ng-deep .holder-logo{
         display: none;
     }
+    input[type=checkbox] {
+        transform: scale(2.5);
+    }
     .map-wrapper {
         height: 100%;
         position: relative;
         width: 100%;
     }
-
+    ::ng-deep .popover {
+        --bs-popover-zindex: 1070;
+        --bs-popover-max-width: 400px !important;
+        --bs-popover-font-size: 0.875rem;
+        --bs-popover-bg: #fff;
+        --bs-popover-border-width: 1px;
+        --bs-popover-border-color: var(--bs-border-color-translucent);
+        --bs-popover-border-radius: 0.5rem;
+        --bs-popover-inner-border-radius: calc(0.5rem - 1px);
+        --bs-popover-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        --bs-popover-header-padding-x: 1rem;
+        --bs-popover-header-padding-y: 0.5rem;
+        --bs-popover-header-font-size: 1rem;
+        --bs-popover-header-color: var(--bs-heading-color);
+        --bs-popover-header-bg: #f0f0f0;
+        --bs-popover-body-padding-x: 1rem;
+        --bs-popover-body-padding-y: 1rem;
+        --bs-popover-body-color: #212529;
+        --bs-popover-arrow-width: 1rem;
+        --bs-popover-arrow-height: 0.5rem;
+    }
+    ::ng-deep .datepicker-outer-container{
+        min-width: 300px;
+    }
     .map-wrapper .mapboxgl-map {
         height: 100%;
         left: 0;

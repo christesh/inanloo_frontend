@@ -1,0 +1,41 @@
+/* @media (max-width: 200px) {
+    #desktop {
+        display: none;
+    }
+
+    #mobile {
+        display: block;
+    }
+} */
+
+/* @media (min-width: 10px) {
+    #desktop {
+        display: block;
+    }
+
+    #mobile {
+        display: none;
+    }
+} */
+
+.header {
+    height: 50px;
+    text-align: center;
+    background-color: #00016d;
+
+}
+/* 
+.mainbanner {
+    height: 420px;
+    background: url('../../assets/img/login-bg/loginpagebg1.jpg') no-repeat top center;
+    overflow: hidden;
+    background-color: #00026dc5;
+    background-blend-mode: multiply;
+    /* background-image: url('../../assets/img/login-bg/loginpagebg.jpg');
+    direction: rtl;
+   
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+} */
