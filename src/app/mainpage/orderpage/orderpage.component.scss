@@ -138,7 +138,7 @@
     }
 
     ::ng-deep .datepicker-outer-container {
-        display: block;
+        display: block !important;
     }
 
     ::ng-deep input.ng-pristine.ng-valid {

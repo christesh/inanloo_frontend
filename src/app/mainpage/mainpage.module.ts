@@ -24,6 +24,8 @@ import {PROFILE_ROUTES} from './profiles/profiles.routing'
 import { TestComponent } from './test/test.component';
 import { CustomerProfileComponent } from './profiles/customerProfile/customerProfile.component';
 import { TechnicianProfileComponent } from './profiles/technicianProfile/technicianProfile.component';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from "@angular/material/form-field";
 const appRoutes: Routes = [
   // { path:'',component:HomeComponent },
   { path: 'order', component: OrderpageComponent },
@@ -40,6 +42,8 @@ const appRoutes: Routes = [
  ];
 @NgModule({
   imports: [
+    MatInputModule,
+    MatFormFieldModule,
     NgxMapboxGLModule,
     NgbModule,
     PopoverModule,

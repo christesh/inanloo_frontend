@@ -144,6 +144,8 @@ export class OrderpageComponent {
     this.hasguarantee = false;
     // this.center.lng = 51.367918;
     // this.center.lat = 35.712706;  
+    this.dateValue = new FormControl(new Date().valueOf());
+    console.log(this.dateValue.value)
 
     this.timerange = [{ ID: 1, title: "بین 9 تا 12" }, { ID: 2, title: "بین 12 تا 15" }, { ID: 3, title: "بین 15 تا 18" }, { ID: 3, title: "بین 18 تا 21" }];
   }

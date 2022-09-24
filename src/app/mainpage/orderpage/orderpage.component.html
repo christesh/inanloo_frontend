@@ -75,10 +75,7 @@
               <mat-option *ngFor="let m of models;let i=index" [value]="m">{{m.model}}</mat-option>
             </mat-select>
           </mat-form-field>
-          <!-- <mat-form-field class="full-width-input"
-          style="margin:auto;text-align:right;width: 100%; direction:rtl;font-family:iransans ;">
-          <input matInput placeholder="کد  ملی" formControlName="devicesreial" style="font-size: 12px;">
-        </mat-form-field> -->
+         
         </form>
         <mat-form-field class="full-width-input"
           style="margin:auto;text-align:right; direction:rtl;font-family:iransans ;">
@@ -195,10 +192,8 @@
       <div *ngFor="let url of urls"
         style="margin:20px; text-align: center;border-radius: 10px; background-color: rgb(253, 252, 250);box-shadow: 0px 0px 5px 5px rgb(238, 236, 236); width: 350px;height: 300px; ">
         <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="hover" (click)="deleteimg(url)"
-          style="width:40px;height:40px;cursor: pointer;margin-top: 20px;">
+          style="width:40px;height:40px;cursor: pointer;margin-top: 20px;cursor: pointer;">
         </lord-icon>
-        <!-- <a style="font-size: 10px;padding-left: 4px;padding-right: 4px; border-radius: 4px;border: red solid 1px;text-align: center; color: red;"
-          (click)="deleteimg(url)">حذف</a>-->
         <br>
         <img [src]="url" height="200" width="300" style="margin:10px;">
       </div>
@@ -224,7 +219,6 @@
       </div>
       <div class="steper3content">
         <div class="servicedate">
-
           <mat-card class="calender" (click)="showdatepicker()" placement="start" [ngbPopover]="popTemplate"
             [autoClose]="'inside'">
             <mat-card-header class="calenderheader">
@@ -286,8 +280,8 @@
                     چاپگرها و متون بلکه</h6>
                 </div>
               </div>
-              <div class="addressmap">
-                <app-map [enable]="mapenable" [lat]="maplat" [long]="maplong"></app-map>
+              <div class="addressmap" style="width: 300px;height:200px">
+                <app-map [enable]="mapenable" [lat]="maplat" [long]="maplong" width="300px" height="200px"></app-map>
                 <div id="container">
                 </div>
               </div>

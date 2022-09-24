@@ -22,6 +22,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MaterialExampleModule } from './material.module';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { NgxMaskModule, IConfig } from 'ngx-mask'
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,6 +34,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
   ],
   imports: [
+    NgxMaskModule.forRoot(),
     NgxMatSelectSearchModule,
     FlexLayoutModule,
     MaterialExampleModule,

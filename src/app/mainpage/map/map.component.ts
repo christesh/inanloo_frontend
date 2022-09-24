@@ -12,6 +12,8 @@ export class MapComponent {
   @Input() enable: boolean;
   @Input() lat: number;
   @Input() long: number;
+  @Input() width: string;
+  @Input() height: string;
   constructor(private api: ApiServicesService) { }
   clickpoint: LngLatLike=[31,31];
 

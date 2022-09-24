@@ -17,3 +17,8 @@
     width: 100%;
   }
   
+  ::ng-deep .holder-logo ::ng-deep .map-logo{
+
+    opacity: 0 !important;
+    
+}

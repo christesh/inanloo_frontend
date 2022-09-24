@@ -6,7 +6,7 @@ import { MaterialExampleModule } from '../../material.module';
 import { TechnicianProfileComponent } from './technicianProfile/technicianProfile.component';
 import { Routes, RouterModule } from '@angular/router';
 import { ProfilesRoutingModule } from './profiles.routing';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 const appRoutes1: Routes = [
   { path: 'customer',  component: CustomerProfileComponent},
   { path: 'technician',  component: TechnicianProfileComponent }]
@@ -18,6 +18,8 @@ const appRoutes1: Routes = [
  
 ],
   imports: [
+    FormsModule,
+    ReactiveFormsModule,
     CommonModule,
     MaterialExampleModule,
     // ProfilesRoutingModule,
