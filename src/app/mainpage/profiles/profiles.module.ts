@@ -7,6 +7,7 @@ import { TechnicianProfileComponent } from './technicianProfile/technicianProfil
 import { Routes, RouterModule } from '@angular/router';
 import { ProfilesRoutingModule } from './profiles.routing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 const appRoutes1: Routes = [
   { path: 'customer',  component: CustomerProfileComponent},
   { path: 'technician',  component: TechnicianProfileComponent }]
@@ -26,7 +27,9 @@ const appRoutes1: Routes = [
     RouterModule.forChild(appRoutes1)
   ],
   
-    
+  providers: [
+    {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'fill'}}
+  ]
     
 })
 export class ProfilesModule { }

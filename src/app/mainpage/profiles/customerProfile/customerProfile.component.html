@@ -1,6 +1,80 @@
-<div class="main header" style="direction: rtl;">
-  <div class="banner">
+<div style="direction: rtl;">
+  <div class="main header" style="direction: rtl;">
+    <div class="banner">
+    </div>
+    <div class="headerbox">
+      <div class="discription">
+        <h2>توضیحات</h2>
+        <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
+          چاپگرها و متون بلکه
+          روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
+          بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان
+          را
+          می طلبد.</p>
+      </div>
+      <div>
+        <div *ngIf="!editName" style="display: flex; flex-direction:column; justify-content: center;    height: 100px;">
+          <button mat-raised-button color="accent" style="margin: 10px;width: 100px;height: 100%;"
+            (click)="editname()">ویرایش</button>
+        </div>
+        <div *ngIf="editName" style="display: flex; flex-direction:column; justify-content: center;    height: 100px;">
+          <button mat-raised-button color="accent" style="margin: 10px;width: 100px;"
+            (click)="savename()">ذخیره</button>
+          <button mat-raised-button color="primary" style="margin: 10px;width: 100px;"
+            (click)="cancelname()">انصراف</button>
+        </div>
+      </div>
+    </div>
   </div>
+
+  <div class="body">
+    <div
+      style="float:right;width: 100%; direction: rtl;padding-right: 10px;display:flex ;flex-direction: column;flex-wrap: wrap;">
+      <mat-form-field class="full-width-input" style="width: 300px;">
+        <input matInput placeholder=" نام " [value]="firstname" required style="font-size: 14px;" [disabled]="disabled">
+        <mat-error *ngIf="isFieldInvalid('firstnamefc')">
+          لطفا نام خود را وارد کنید!
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width-input" style="width: 300px;">
+        <input matInput placeholder=" نام خانوادگی" [value]="lastname" [disabled]="disabled" required
+          style="font-size: 14px;">
+        <mat-error *ngIf="isFieldInvalid('lastnamefc')">
+          لطفا نام خانوادگی خود را وارد کنید!
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width-input" style="width: 300px;">
+        <input matInput placeholder="کد ملی" maxlength="5" [value]="nationalid" [disabled]="disabled"
+          style="font-size: 14px;">
+        <mat-error *ngIf="isFieldInvalid('nationalid')">
+          لطفا کد ملی خود را وارد کنید!
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+
+  <div class="body">
+    <div style="float:right;direction: rtl;width: 100%;">
+      <div class="servicedate">
+        <mat-form-field #p="ngbPopover" class="full-width-input" style="width: 300px;" (click)="showdatepicker(p)"
+          placement="start" [ngbPopover]="popTemplate" [autoClose]="false " triggers="manual"
+          [disabled]="isDisabled(p)">
+          <span> <i class="fa fa-calendar fa-2x" aria-hidden="true" style="float: left;color: blue; cursor: pointer;"
+              [ngStyle]="{'color':disabled? 'gray':'blue','cursor':disabled? 'not-allowed':'pointer'}"></i></span>
+          <input matInput placeholder="تاریخ تولد" type="text" value="{{birthdate}}"
+            style="width: 100px;font-size: 14px;margin-top:10px;" [disabled]="disabled" />
+        </mat-form-field>
+      </div>
+      <ng-template #popTemplate>
+        <ng-persian-datepicker [uiTheme]="customTheme" triggers="outsideClick" (dateOnSelect)="changedate($event)">
+          <input type="text" [formControl]="dateValue1" />
+        </ng-persian-datepicker>
+      </ng-template>
+    </div>
+  </div>
+  <br>
+  <mat-divider></mat-divider>
   <div class="headerbox">
     <div class="discription">
       <h2>توضیحات</h2>
@@ -12,278 +86,227 @@
         می طلبد.</p>
     </div>
     <div>
-      <div *ngIf="!editName" style="display: flex; flex-direction:column; justify-content: center;    height: 100px;">
+      <div *ngIf="!editMobile" style="display: flex; flex-direction:column; justify-content: center;    height: 100px;">
         <button mat-raised-button color="accent" style="margin: 10px;width: 100px;height: 100%;"
-          (click)="editname()">ویرایش</button>
+          (click)="editmobile()">ویرایش</button>
       </div>
-      <div *ngIf="editName" style="display: flex; flex-direction:column; justify-content: center;    height: 100px;">
-        <button mat-raised-button color="accent" style="margin: 10px;width: 100px;" (click)="savename()">ذخیره</button>
+      <div *ngIf="editMobile" style="display: flex; flex-direction:column; justify-content: center;    height: 100px;">
+        <button mat-raised-button color="accent" style="margin: 10px;width: 100px;"
+          (click)="savemobile()">ذخیره</button>
         <button mat-raised-button color="primary" style="margin: 10px;width: 100px;"
-          (click)="cancelname()">انصراف</button>
+          (click)="cancelmobile()">انصراف</button>
       </div>
     </div>
   </div>
-</div>
 
-<div class="body">
-  <div  [formGroup]="detailformgroup"
-    style="float:right;width: 100%; direction: rtl;padding-right: 10px;display:flex ;flex-direction: column;flex-wrap: wrap;">
-    <mat-form-field class = "tp-full-width">
-      <input matInput placeholder = "Favorite Food" value = "Pasta" required>
-      <mat-error *ngIf="true">
-        Email is <strong>required</strong>
-      </mat-error>
-   </mat-form-field>
-    <mat-form-field >
-      <mat-label>Email</mat-label>
-      <input type="email" matInput value = "Pasta" placeholder="Ex. pat@example.com" defaultValue="firstname">
-      <!-- <mat-error *ngIf="fname.hasError('email') && !fname.hasError('required')">
-        Please enter a valid email address
-      </mat-error> -->
-      <!-- <mat-error *ngIf="emailFormControl.hasError('required')">
-        Email is <strong>required</strong>
-      </mat-error> -->
-    </mat-form-field>
-    <mat-form-field class="full-width-input" style="width: 300px;">
-      <input matInput placeholder=" نام " [value]="firstname"  required style="font-size: 12px;">
-      <mat-error *ngIf="isFieldInvalid('firstnamefc')">
-        لطفا نام کاربری خود را وارد کنید!
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field class="full-width-input" style="width: 300px;">
-      <input matInput placeholder=" نام خانوادگی" formControlName="lastnamefc" required style="font-size: 12px;">
-      <mat-error *ngIf="isFieldInvalid('lastnamefc')">
-        لطفا نام خانوادگی خود را وارد کنید!
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field class="full-width-input" style="width: 300px;">
-      <input matInput placeholder="کد ملی" maxlength="5" [value]="nationalid" style="font-size: 12px;">
-      <mat-error *ngIf="isFieldInvalid('nationalid')">
-        لطفا کد ملی خود را وارد کنید!
-      </mat-error>
-    </mat-form-field>
-  </div>
-</div>
-
-
-<div class="body">
-  <div  style="float:right;direction: rtl;width: 100%;">
-    <div class="servicedate">
-      <mat-form-field #p="ngbPopover" class="full-width-input" style="width: 300px;" (click)="showdatepicker()"
-        placement="start" [ngbPopover]="popTemplate" [autoClose]="false">
-        <span> <i class="fa fa-calendar fa-2x" aria-hidden="true"
-            style="float: left;color: blue; cursor: pointer;"></i></span>
-        <input matInput placeholder="تاریخ تولد" type="text" value="{{birthdate}}"
-          style="width: 100px;font-size: 14px;margin-top:10px;" />
-      </mat-form-field>
-    </div>
-    <ng-template #popTemplate>
-      <ng-persian-datepicker [uiIsVisible]="true" [uiTheme]="customTheme" triggers="outsideClick"
-        (dateOnSelect)="changedate($event)">
-        <input type="text" [formControl]="dateValue1" />
-      </ng-persian-datepicker>
-    </ng-template>
-  </div>
-</div>
-<br>
-<mat-divider></mat-divider>
-<div class="discription" style="direction: rtl;">
-  <h2>توضیحات</h2>
-  <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
-    چاپگرها و متون بلکه
-    روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
-    بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را
-    می طلبد.</p>
-</div>
-<div class="body" style="display: flex;flex-direction: column;">
-  <div class="mobiles" style="display: flex;flex-direction: column;direction: rtl;">
-    <div class="mobilebox" *ngFor="let mob of mobiles; let i=index">
-      <lord-icon *ngIf="!mob.ismain" src="https://cdn.lordicon.com/gsqxdxog.json" trigger="hover"
-        (click)="deletemobile(i)" style="width:25px;height:25px;cursor: pointer;"></lord-icon>
-      <p *ngIf="mob.ismain" style="margin: 10px;font-size: 12px;font-weight: 900;color: red;">اصلی</p>
-      <p style="margin: 10px;
+  <div class="body" style="display: flex;flex-direction: column;">
+    <div class="mobiles" style="display: flex;flex-direction: column;direction: rtl;">
+      <div class="mobilebox" *ngFor="let mob of mobiles; let i=index">
+        <p style="margin: 10px;
               font-size: 14px;
-        font-weight: 800;"> {{mob.number}}</p>
+        font-weight: 800;" [ngStyle]="{'justify-self': mobiledisabled? 'right':'left'}"> {{mob.number}}</p>
+        <lord-icon *ngIf="!mob.ismain && !mobiledisabled" src="https://cdn.lordicon.com/gsqxdxog.json" trigger="hover"
+          (click)="deletemobile(i)" style="width:25px;height:25px;cursor: pointer;"></lord-icon>
+        <p *ngIf="mob.ismain" style="margin: 10px;font-size: 12px;font-weight: 900;color: red;">اصلی</p>
+      </div>
+    </div>
+    <br>
+    <div style="float:right;direction: rtl;" *ngIf="!mobiledisabled">
+      <mat-form-field class="full-width-input" style="width: 300px;">
+        <span> <i class="fa fa-plus-square-o fa-2x" aria-hidden="true" style="float: left; cursor: pointer;"
+            [ngStyle]="{'color': mobilenumberisvalid ? 'rgb(37, 155, 27)': 'grey', 'cursor': mobilenumberisvalid ? 'pointer': 'not-allowed'}"
+            (click)="addmobile()"></i></span>
+        <input matInput maxlength="11" placeholder="شماره موبایل" value="{{mobilenumber}}"
+          (keyup)="checkmobilevalidation($event)" style="width: 100px;font-size: 14px;margin-top:10px;">
+      </mat-form-field>
+      <p class="msgerror" *ngIf="!mobilenumberisvalid && typevalue">
+        لطفا شماره تلفن همراه را به صورت صحیح وارد کنید!
+      </p>
     </div>
   </div>
-  <br>
-  <div style="float:right;direction: rtl;">
-    <mat-form-field class="full-width-input" style="width: 300px;">
-      <span> <i class="fa fa-plus-square-o fa-2x" aria-hidden="true" style="float: left; cursor: pointer;"
-          [ngStyle]="{'color': mobilenumberisvalid ? 'rgb(37, 155, 27)': 'grey', 'cursor': mobilenumberisvalid ? 'pointer': 'not-allowed'}"
-          (click)="addmobile()"></i></span>
-      <input matInput maxlength="10" placeholder="شماره موبایل" value="{{mobilenumber}}"
-        (keyup)="checkmobilevalidation($event)" style="width: 100px;font-size: 14px;margin-top:10px;">
-    </mat-form-field>
-    <p class="msgerror" *ngIf="!mobilenumberisvalid && typevalue">
-      لطفا شماره تلفن همراه را به صورت صحیح وارد کنید!
-    </p>
+  <mat-divider></mat-divider>
+  <div class="discription" style="direction: rtl;">
+    <div class="headerbox">
+      <div class="discription">
+        <h2>توضیحات</h2>
+        <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
+          چاپگرها و متون بلکه
+          روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
+          بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان
+          را
+          می طلبد.</p>
+      </div>
+      <div>
+        <div *ngIf="!editTel" style="display: flex; flex-direction:column; justify-content: center;    height: 100px;">
+          <button mat-raised-button color="accent" style="margin: 10px;width: 100px;height: 100%;"
+            (click)="edittel()">ویرایش</button>
+        </div>
+        <div *ngIf="editTel"
+          style="display: flex; flex-direction:column; justify-content: center;    height: 100px;">
+          <button mat-raised-button color="accent" style="margin: 10px;width: 100px;" (click)="savetel()">ذخیره</button>
+          <button mat-raised-button color="primary" style="margin: 10px;width: 100px;"
+            (click)="canceltel()">انصراف</button>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
-<mat-divider></mat-divider>
+  <div class="body" style="display: flex;flex-direction: column;">
+    <div class="telephone" style="display: flex;flex-direction: column;direction: rtl;">
+      <div class="mobilebox" *ngFor="let tel of tels; let i=index">
 
-<div class="discription" style="direction: rtl;">
-  <h2>توضیحات</h2>
-  <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
-    چاپگرها و متون بلکه
-    روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
-    بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را
-    می طلبد.</p>
-</div>
-<div class="body" style="display: flex;flex-direction: column;">
-  <div class="telephone" style="display: flex;flex-direction: column;direction: rtl;">
-    <div class="mobilebox" *ngFor="let tel of tels; let i=index">
-      <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="hover" (click)="deletetel(i)"
-        style="width:25px;height:25px;cursor: pointer;"></lord-icon>
-      <p style="margin: 10px;
+        <p style="margin: 10px;
               font-size: 14px;
         font-weight: 800;"> {{tel.number}}</p>
+        <lord-icon *ngIf="!teldisabled"src="https://cdn.lordicon.com/gsqxdxog.json" trigger="hover" (click)="deletetel(i)"
+          style="width:25px;height:25px;cursor: pointer;"></lord-icon>
+      </div>
+    </div>
+    <br>
+    <div style="float:right;direction: rtl;" *ngIf="!teldisabled">
+      <mat-form-field class="full-width-input" style="width: 300px;">
+        <span> <i class="fa fa-plus-square-o fa-2x" aria-hidden="true" style="float: left; cursor: pointer;"
+            [ngStyle]="{'color': telnumberisvalid ? 'rgb(37, 155, 27)': 'grey', 'cursor': telnumberisvalid ? 'pointer': 'not-allowed'}"
+            (click)="addtel()"></i></span>
+        <input matInput placeholder="شماره تلفن" value="{{telnumber}}" (keyup)="checktelvalidation($event)"
+          style="width: 100px;font-size: 14px;margin-top:10px;">
+      </mat-form-field>
+      <p class="msgerror" *ngIf="!telnumberisvalid && teltypevalue">
+        لطفا شماره تلفن را به صورت صحیح وارد کنید!
+      </p>
     </div>
   </div>
-  <br>
-  <div style="float:right;direction: rtl;">
-    <mat-form-field class="full-width-input" style="width: 300px;">
-      <span> <i class="fa fa-plus-square-o fa-2x" aria-hidden="true" style="float: left; cursor: pointer;"
-          [ngStyle]="{'color': telnumberisvalid ? 'rgb(37, 155, 27)': 'grey', 'cursor': telnumberisvalid ? 'pointer': 'not-allowed'}"
-          (click)="addtel()"></i></span>
-      <input matInput placeholder="شماره تلفن" value="{{telnumber}}" (keyup)="checktelvalidation($event)"
-        style="width: 100px;font-size: 14px;margin-top:10px;">
-    </mat-form-field>
-    <p class="msgerror" *ngIf="!telnumberisvalid && teltypevalue">
-      لطفا شماره تلفن را به صورت صحیح وارد کنید!
-    </p>
-  </div>
-</div>
-<mat-divider></mat-divider>
-<div class="body">
-  <div class="discription" style="direction: rtl;">
-    <h2>توضیحات</h2>
-    <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
-      چاپگرها و متون بلکه
-      روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
-      بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را
-      می طلبد.</p>
-    <button id="createaddress" mat-raised-button color="primary" (click)="createaddress()">ایجاد آدرس جدید</button>
-  </div>
-  <div *ngIf="shownewaddress" class="addresscontent" style="margin:20px">
-    <mat-card style="width: 100%;min-height:200px ;">
-      <mat-card-content style="display: flex;flex-direction: row;justify-content: space-around;">
-        <div class="addresstext" style="display: flex;flex-direction: column;
+  <mat-divider></mat-divider>
+  <div class="body">
+    <div class="discription" style="direction: rtl;">
+      <h2>توضیحات</h2>
+      <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
+        چاپگرها و متون بلکه
+        روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
+        بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان
+        را
+        می طلبد.</p>
+      <button id="createaddress" mat-raised-button color="primary" (click)="createaddress()">ایجاد آدرس جدید</button>
+    </div>
+    <div *ngIf="shownewaddress" class="addresscontent" style="margin:20px">
+      <mat-card style="width: 100%;min-height:200px ;">
+        <mat-card-content style="display: flex;flex-direction: row;justify-content: space-around;">
+          <div class="addresstext" style="display: flex;flex-direction: column;
         align-content: space-around;
         justify-content: center;direction: rtl;">
-          <h3>آدرس:</h3>
-          <br>
-          <div  style="display: flex; flex-direction: row;flex-wrap: wrap;">
-            <mat-form-field style="direction: rtl;text-align:right; margin: 10px;">
-              <mat-label>استان </mat-label>
-              <mat-select formControlName="province" (selectionChange)="selectprovince()">
-                <mat-option *ngFor="let p of province;let i=index" [value]="p">{{p.name}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field style="direction: rtl;text-align:right; margin: 10px;">
-              <mat-label>شهرستان </mat-label>
-              <mat-select formControlName="shahrestan" (selectionChange)="selectshahrestan()">
-                <mat-option *ngFor="let sh of shahrestan;let i=index" [value]="sh">{{sh.name}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field style="direction: rtl;text-align:right; margin: 10px;">
-              <mat-label>شهر </mat-label>
-              <mat-select formControlName="city" (selectionChange)="selectcity()">
-                <mat-option *ngFor="let c of city;let i=index" [value]="c">{{c.name}}</mat-option>
-              </mat-select>
-            </mat-form-field>
+            <h3>آدرس:</h3>
+            <br>
+            <div style="display: flex; flex-direction: row;flex-wrap: wrap;">
+              <mat-form-field style="direction: rtl;text-align:right; margin: 10px;">
+                <mat-label>استان </mat-label>
+                <mat-select  (selectionChange)="selectprovince()">
+                  <mat-option *ngFor="let p of province;let i=index" [value]="p">{{p.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field style="direction: rtl;text-align:right; margin: 10px;">
+                <mat-label>شهرستان </mat-label>
+                <mat-select  (selectionChange)="selectshahrestan()">
+                  <mat-option *ngFor="let sh of shahrestan;let i=index" [value]="sh">{{sh.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field style="direction: rtl;text-align:right; margin: 10px;">
+                <mat-label>شهر </mat-label>
+                <mat-select  (selectionChange)="selectcity()">
+                  <mat-option *ngFor="let c of city;let i=index" [value]="c">{{c.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
 
-            <mat-form-field class="full-width-input" style="width: 300px;">
-              <input matInput placeholder="منطقه" formControlName="region" style="font-size: 12px;">
-              <mat-error *ngIf="isFieldInvalid('region')">
-                لطفا منطقه خود را وارد کنید!
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field class="full-width-input" style="width: 300px;">
-              <input matInput placeholder="خیابان اصلی" formControlName="mainstreet" style="font-size: 12px;">
-              <mat-error *ngIf="isFieldInvalid('mainstreet')">
-                لطفا خیابان اصلی خود را وارد کنید!
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field class="full-width-input" style="width: 300px;">
-              <input matInput placeholder="خیابان فرعی" formControlName="substreet" style="font-size: 12px;">
-              <mat-error *ngIf="isFieldInvalid('substreet')">
-                لطفا خیابان فرعی خود را وارد کنید!
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field class="full-width-input" style="width: 300px;">
-              <input matInput placeholder="کوچه" formControlName="lane" style="font-size: 12px;">
-              <mat-error *ngIf="isFieldInvalid('lane')">
-                لطفا کوچه خود را وارد کنید!
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field class="full-width-input" style="width: 300px;">
-              <input matInput placeholder="ساختمان" formControlName="building" style="font-size: 12px;">
-              <mat-error *ngIf="isFieldInvalid('building')">
-                لطفا ساختمان خود را وارد کنید!
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field class="full-width-input" style="width: 300px;">
-              <input matInput placeholder="پلاک" formControlName="no" style="font-size: 12px;">
-              <mat-error *ngIf="isFieldInvalid('no')">
-                لطفا پلاک خود را وارد کنید!
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field class="full-width-input" style="width: 300px;">
-              <input matInput placeholder="واحد" formControlName="unit" style="font-size: 12px;">
-              <mat-error *ngIf="isFieldInvalid('unit')">
-                لطفا واحد خود را وارد کنید!
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field class="full-width-input" style="width: 300px;">
-              <input matInput placeholder="توضیحات" formControlName="desciription" style="font-size: 12px;">
-              <mat-error *ngIf="isFieldInvalid('desciription')">
-                لطفا توضیحات خود را وارد کنید!
-              </mat-error>
-            </mat-form-field>
+              <mat-form-field class="full-width-input" style="width: 300px;">
+                <input matInput placeholder="منطقه" [value]="region" style="font-size: 12px;">
+                <mat-error *ngIf="isFieldInvalid('region')">
+                  لطفا منطقه خود را وارد کنید!
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="full-width-input" style="width: 300px;">
+                <input matInput placeholder="خیابان اصلی" [value]="mainstreet" style="font-size: 12px;">
+                <mat-error *ngIf="isFieldInvalid('mainstreet')">
+                  لطفا خیابان اصلی خود را وارد کنید!
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="full-width-input" style="width: 300px;">
+                <input matInput placeholder="خیابان فرعی" [value]="substreet" style="font-size: 12px;">
+                <mat-error *ngIf="isFieldInvalid('substreet')">
+                  لطفا خیابان فرعی خود را وارد کنید!
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="full-width-input" style="width: 300px;">
+                <input matInput placeholder="کوچه" [value]="lane" style="font-size: 12px;">
+                <mat-error *ngIf="isFieldInvalid('lane')">
+                  لطفا کوچه خود را وارد کنید!
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="full-width-input" style="width: 300px;">
+                <input matInput placeholder="ساختمان" [value]="building" style="font-size: 12px;">
+                <mat-error *ngIf="isFieldInvalid('building')">
+                  لطفا ساختمان خود را وارد کنید!
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="full-width-input" style="width: 300px;">
+                <input matInput placeholder="پلاک" [value]="no" style="font-size: 12px;">
+                <mat-error *ngIf="isFieldInvalid('no')">
+                  لطفا پلاک خود را وارد کنید!
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="full-width-input" style="width: 300px;">
+                <input matInput placeholder="واحد" [value]="unit" style="font-size: 12px;">
+                <mat-error *ngIf="isFieldInvalid('unit')">
+                  لطفا واحد خود را وارد کنید!
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="full-width-input" style="width: 300px;">
+                <input matInput placeholder="توضیحات" [value]="desciription" style="font-size: 12px;">
+                <mat-error *ngIf="isFieldInvalid('desciription')">
+                  لطفا توضیحات خود را وارد کنید!
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div style="direction: rtl;width: 100%;">
+              <input id="mainaddress" type="checkbox" style="width:20px ;">
+              <label for="mainaddress">انتخاب به عنوان آدرس اصلی</label>
+              <a id="showmap" (click)="showmap()" style="margin:20px ;">انتخاب آدرس از روی نقشه</a>
+            </div>
+            <div *ngIf="showMap" class="addressmap"
+              style="margin:20px ;display: flex;flex-direction: row;justify-content: center;">
+              <app-map [enable]="true" [lat]="maplat" [long]="maplong" width="500px" height="300px"></app-map>
+              <div id="container">
+              </div>
+            </div>
+            <div style="display: flex; flex-direction: row-reverse; justify-content: end;">
+              <button mat-raised-button color="accent" style="margin: 10px;width: 100px;"
+                (click)="saveaddress()">ذخیره</button>
+              <button mat-raised-button color="primary" style="margin: 10px;width: 100px;"
+                (click)="canceladdress()">انصراف</button>
+            </div>
           </div>
-          <div style="direction: rtl;width: 100%;">
-            <input id="mainaddress" type="checkbox" style="width:20px ;">
-            <label for="mainaddress">انتخاب به عنوان آدرس اصلی</label>
-            <a id="showmap" (click)="showmap()" style="margin:20px ;">انتخاب آدرس از روی نقشه</a>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="addresscontent" style="margin:20px;direction: rtl;width: 100%;">
+      <mat-card style="width: 100%;min-height:200px ;">
+        <mat-card-content style="display: flex;flex-direction: row;justify-content: space-around;align-items: center;">
+          <input id="maincheckbox" type="checkbox" style="width:20px ;margin: 10px;">
+          <div class="addresstext" style="margin: 10px;display: flex;flex-direction: column-reverse;
+        align-content: space-around;
+        justify-content: center;">
+            <div>
+              <h3>آدرس:</h3>
+              <br>
+              <h6>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
+                است،
+                چاپگرها و متون بلکه</h6>
+            </div>
           </div>
-          <div *ngIf="showMap" class="addressmap"
-            style="margin:20px ;display: flex;flex-direction: row;justify-content: center;">
-            <app-map [enable]="true" [lat]="maplat" [long]="maplong" width="500px" height="300px"></app-map>
+          <div class="addressmap" style="margin: 10px;width: 300px;height:200px">
+            <app-map [enable]="mapenable" [lat]="maplat" [long]="maplong" width="300px" height="200px"></app-map>
             <div id="container">
             </div>
           </div>
-          <div style="display: flex; flex-direction: row-reverse; justify-content: end;">
-            <button mat-raised-button color="accent" style="margin: 10px;width: 100px;"
-              (click)="saveaddress()">ذخیره</button>
-            <button mat-raised-button color="primary" style="margin: 10px;width: 100px;"
-              (click)="canceladdress()">انصراف</button>
-          </div>
-        </div>
-      </mat-card-content>
-    </mat-card>
-  </div>
-  <div class="addresscontent" style="margin:20px;direction: rtl;width: 100%;">
-    <mat-card style="width: 100%;min-height:200px ;">
-      <mat-card-content style="display: flex;flex-direction: row;justify-content: space-around;align-items: center;">
-        <input id="maincheckbox" type="checkbox" style="width:20px ;margin: 10px;">
-        <div class="addresstext" style="margin: 10px;display: flex;flex-direction: column-reverse;
-        align-content: space-around;
-        justify-content: center;">
-          <div>
-            <h3>آدرس:</h3>
-            <br>
-            <h6>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
-              است،
-              چاپگرها و متون بلکه</h6>
-          </div>
-        </div>
-        <div class="addressmap" style="margin: 10px;width: 300px;height:200px">
-          <app-map [enable]="mapenable" [lat]="maplat" [long]="maplong" width="300px" height="200px"></app-map>
-          <div id="container">
-          </div>
-        </div>
-      </mat-card-content>
-    </mat-card>
+        </mat-card-content>
+      </mat-card>
+    </div>
   </div>
 </div>

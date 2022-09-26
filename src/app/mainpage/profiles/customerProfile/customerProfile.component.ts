@@ -7,7 +7,7 @@ import { hide } from '@popperjs/core';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { faListSquares } from '@fortawesome/free-solid-svg-icons';
-
+import { CustomerProfile,Address,Mobile,Telephone,Shahrestan,Province,City } from '../profile';
 @Component({
   selector: 'app-customerProfile',
   templateUrl: './customerProfile.component.html',
@@ -22,6 +22,7 @@ export class CustomerProfileComponent implements OnInit {
   @ViewChild("p", { static: false }) popover1: NgbPopover;
 
   constructor(private fb: FormBuilder, private _snackBar: MatSnackBar,) { }
+  addressForm:FormGroup;
   form1!: FormGroup;
   form2!: FormGroup;
   form3!: FormGroup;
@@ -36,55 +37,53 @@ export class CustomerProfileComponent implements OnInit {
   dateValue1 = new FormControl();
   showdatep: boolean = false;
   showpopover: boolean = false;
-  mobiles: { number: string, ismain: boolean }[] = [];
-  tels: { number: string }[] = [];
+  mobiles: Mobile[] = [];
+  tels: Telephone[] = [];
   showMap: boolean = false;
-  province: { id: number, name: string }[] = []
-  shahrestan: { id: number, name: string }[] = []
-  city: { id: number, name: string }[] = []
+  province: Province[] = []
+  shahrestan: Shahrestan[] = []
+  city: City[] = []
   disabled: boolean = true;
   firstname: string = "";
   lastname: string = "";
   nationalid: string = "";
   birthdate: string = "";
-
-  detailformgroup: FormGroup;
   
-  ngOnInit() {
-    this.detailformgroup = this.fb.group({
-      emailFormControl: new FormControl('asdasdasd', [Validators.required]),
-      firstnamefc: new FormControl(null, [Validators.required]),
-      lastnamefc: new FormControl(null, [Validators.required]),
-    })
-    // var fname: new FormControl({ value: '', disabled: this.disabled })
-    this.province = [{ id: 1, name: "تهران" }, { id: 2, name: "البرز" }]
-    this.shahrestan = [{ id: 1, name: "کرج" }, { id: 2, name: "هشتگرد" }]
-    this.city = [{ id: 1, name: "کرج" }, { id: 2, name: "فردیس" }]
+  fullAddress:Address[];
 
-    this.typevalue = false;
-    this.initdateforcal(Jalali.now().toString().substring(0, 10))
-    this.mobiles = [{ number: '09120762744', ismain: true }, { number: '09365472389', ismain: false }]
-    this.tels = [{ number: '02122380377' }, { number: '02122380277' }]
-    this.disabled = false;
-    this.firstname = "مسیح";
-    this.lastname = "ابراهیم نژاد";
-
-    // this.firstnamefc.setValue(this.firstname)
-    // this.lastnamefc.setValue(this.lastname)
-    // this.form1.value.lname.setValue(this.lastname)
-    this.nationalid = "12123123";
-    this.birthdate = "1363/03/29"
-    this.dateValue1.setValue(this.birthdate)
-  }
+  region:string="";
+  mainstreet:string="";
+  substreet:string="";
+  lane:string="";
+  building:string="";
+  no:string="";
+  unit:string="";
+  desciription:string="";
+ 
   openSnackBar(message: string, action: string, alertkind: string, showtime: number, hp?: MatSnackBarHorizontalPosition, vp?: MatSnackBarVerticalPosition) {
     this._snackBar.open(message, action, {
       duration: showtime * 1000,
       panelClass: [alertkind],
       horizontalPosition: hp,
       verticalPosition: vp
-
     });
   }
+
+  ngOnInit() {
+    this.province = [{ id: 1, name: "تهران" }, { id: 2, name: "البرز" }]
+    this.shahrestan = [{ id: 1, name: "کرج" }, { id: 2, name: "هشتگرد" }]
+    this.city = [{ id: 1, name: "کرج" }, { id: 2, name: "فردیس" }]
+    this.typevalue = false;
+    this.mobiles = [{ number: '09120762744', ismain: true }, { number: '09365472389', ismain: false }]
+    this.tels = [{ number: '02122380377' }, { number: '02122380277' }]
+    this.disabled = true;
+    this.firstname = "مسیح";
+    this.lastname = "ابراهیم نژاد";
+    this.nationalid = "12123123";
+    this.birthdate = "1363/03/29";
+    
+  }
+ 
   selectprovince() {
 
   }
@@ -121,60 +120,58 @@ export class CustomerProfileComponent implements OnInit {
   mapenable: boolean = false;
   maplat: number = 51.367918;
   maplong: number = 35.712706;
-  initdateforcal(date: string) {
-    this.selectedDate = date;
-    var month = date.substring(5, 7)
-    this.calday = date.substring(8, 10)
-    switch (month) {
-      case "01":
-        this.calmonth = "فروردین";
-        break;
-      case "02":
-        this.calmonth = "اردیبهشت";
-        break;
-      case "03":
-        this.calmonth = "خرداد";
-        break;
-      case "04":
-        this.calmonth = "تیر";
-        break;
-      case "05":
-        this.calmonth = "مرداد";
-        break;
-      case "06":
-        this.calmonth = "شهریور";
-        break;
-      case "07":
-        this.calmonth = "مهر";
-        break;
-      case "08":
-        this.calmonth = "آبان";
-        break;
-      case "09":
-        this.calmonth = "آذر";
-        break;
-      case "10":
-        this.calmonth = "دی";
-        break;
-      case "11":
-        this.calmonth = "بهمن";
-        break;
-      case "12":
-        this.calmonth = "اسفند";
-        break;
-
+  editMobile:boolean=false;
+  mobiledisabled:boolean=true;
+  editTel:boolean=false;
+  teldisabled:boolean=true;
+  
+  datepickeropen:boolean=false;
+  showdatepicker(pp:any) {
+    if (!this.disabled && !this.datepickeropen) {  
+    pp.open();
+    this.datepickeropen=true;
     }
+    else
+    {
+      pp.close();
+      this.datepickeropen=false;
+    }
+  
   }
-  showdatepicker() {
-    this.showpopover = false;
+  editmobile(){
+    this.editMobile = true;
+    this.mobiledisabled = false;
   }
-  changedate(event: any) {
-    console.log(this.dateValue1.value)
+  savemobile(){
+    this.editMobile = false;
+    this.mobiledisabled = true;
+  }
+  cancelmobile(){
+    this.editMobile = false;
+    this.teldisabled = true;
+  }
+  edittel(){
+    this.editTel = true;
+    this.teldisabled = false;
+  }
+  savetel(){
+    this.editTel = false;
+    this.teldisabled = true;
+  }
+  canceltel(){
+    this.editTel = false;
+    this.teldisabled = true;
+  }
 
+  changedate(event: any) {
     this.birthdate = event['shamsi'];
-    this.initdateforcal(event['shamsi']);
     this.showpopover = true;
     this.popover1.close();
+    this.datepickeropen=false;
+  }
+  isDisabled(po:any){
+    
+    return this.disabled;
   }
   addmobile() {
     if (this.mobilenumberisvalid) {
@@ -247,13 +244,6 @@ export class CustomerProfileComponent implements OnInit {
   editname() {
     this.editName = true;
     this.disabled = false;
-
-    // this.detailformgroup.setValue({
-    //   emailFormControl :'sa@as.com' ,
-    //   firstnamefc :'masih' ,
-    //   lastnamefc :'ebi' ,
-    // })
-  this.detailformgroup.get('firstnamefc')?.patchValue('masih')
   }
   savename() {
     this.editName = false;
