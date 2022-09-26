@@ -18,10 +18,17 @@ export class ApiServicesService {
   httpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
 
   constructor(private http: HttpClient) { }
+  
   getMapAddress(apikey:string,lat:string,lon:string) :Observable<any> {
     return this.http.get("https://map.ir/reverse?lat="+lat+"&lon="+lon ,{headers: new HttpHeaders({
       'x-api-key':  apikey 
     })}); 
+  }
+  loginWithUser(user:string,pass:string): Observable<any>{
+    const body={username:user,password:pass}
+    return this.http.post(this.baseurl + '/api/v1/rest-auth/login/',body,{headers: new HttpHeaders({
+      'Content-Type':  'application/json' 
+    })});  
   }
   login(mob:string): Observable<any>{
     const body={username:mob,password:mob}

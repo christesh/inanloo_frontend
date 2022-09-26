@@ -22,7 +22,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MaterialExampleModule } from './material.module';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { NgxMaskModule, IConfig } from 'ngx-mask'
+import { NgxMaskModule, IConfig } from 'ngx-mask';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,7 @@ import { NgxMaskModule, IConfig } from 'ngx-mask'
 
   ],
 
-  providers: [ApiServicesService,
+  providers: [ApiServicesService,CookieService,
   ],
   bootstrap: [AppComponent],
 

@@ -4,6 +4,7 @@ import { ApiServicesService } from '../../api-services.service';
 import { Router } from '@angular/router';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { CookieService } from 'ngx-cookie-service';
 
 export interface DialogData {
   mobilenumber: string;
@@ -56,6 +57,7 @@ export class LoginboxComponent implements OnInit {
     private api: ApiServicesService,
     private _snackBar: MatSnackBar,
     public signupdialog: MatDialog,
+    public tokencookie:CookieService,
     public forgetpassdialog: MatDialog
   ) {
     this.otpForm = this.toFormGroup(this.formInput);
@@ -182,6 +184,7 @@ export class LoginboxComponent implements OnInit {
             this.api.login(this.mobileforregister!).subscribe(
               res => {
                 console.log(res['key'])
+                this.tokencookie.set('T',res['key'])
                 this.router.navigate(['/home']);
                 this.openSnackBar('شما با موفقیت وارد شدید!', '', 'green-snackbar', 4)
               },
@@ -198,6 +201,7 @@ export class LoginboxComponent implements OnInit {
                 this.api.login(this.mobileforregister!).subscribe(
                   res => {
                     console.log(res['key'])
+                    this.tokencookie.set('T',res['key'])
                     this.router.navigate(['/home']);
                     this.openSnackBar('شما با موفقیت وارد شدید!', '', 'green-snackbar', 4)
                   },
@@ -264,14 +268,20 @@ export class LoginboxComponent implements OnInit {
   }
   usersignin() {
     //check username and password exist in db
-    if (this.userForm.controls.username.value == "masih" && this.userForm.controls.password.value == "1234") {
-      this.router.navigate(['portal']);
-      this.openSnackBar('شما با موفقیت وارد شدید!', '', 'green-snackbar', 4)
-    }
-    else {
-      this.otpForm.reset();
-      this.openSnackBar('نام کاربری و یا گذرواژه وارد شده صحیح نمی باشد!', '', 'red-snackbar', 7)
-    }
+    var user=this.userForm.controls.username.value;
+    var pass=this.userForm.controls.password.value;
+    this.api.loginWithUser(user!,pass!).subscribe(
+      res => {
+        this.tokencookie.set('T',res['key'])
+        this.router.navigate(['portal']);
+        this.openSnackBar('شما با موفقیت وارد شدید!', '', 'green-snackbar', 4)
+      },
+      err => {
+        console.log(err)
+        this.openSnackBar('خطا در ارتباط با سرور', '', 'red-snackbar', 5)
+      }
+    )
+  
   }
   forgetpass(): void {
     const dialogRef1 = this.forgetpassdialog.open(ForgetPassDialog, {
