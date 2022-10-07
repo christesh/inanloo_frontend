@@ -24,6 +24,7 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { CookieService } from 'ngx-cookie-service';
+import { Ng2SmartTableModule } from 'ng2-smart-table';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { CookieService } from 'ngx-cookie-service';
 
   ],
   imports: [
+    
     NgxMaskModule.forRoot(),
     NgxMatSelectSearchModule,
     FlexLayoutModule,
@@ -55,7 +57,7 @@ import { CookieService } from 'ngx-cookie-service';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-
+    Ng2SmartTableModule,
   ],
 
   providers: [ApiServicesService,CookieService,

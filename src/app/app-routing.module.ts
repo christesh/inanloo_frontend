@@ -18,6 +18,7 @@ const appRoutes: Routes = [
   {
     path: 'portal',
     component: PortalComponent,
+    
   },
   {
     path: 'logout',

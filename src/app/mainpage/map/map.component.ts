@@ -16,7 +16,7 @@ export class MapComponent {
   @Input() height: string;
   constructor(private api: ApiServicesService) { }
   clickpoint: LngLatLike=[31,31];
-
+  address:string="";
   interact: boolean = false;
   title = "mapir-angular-test";
   center: LngLatLike=[31,31];
@@ -27,11 +27,13 @@ export class MapComponent {
     this.center =  [this.lat, this.long]
     
   }
+
   mapClicked(e: any) {
     if ("lngLat" in e) this.clickpoint = [e.lngLat.lng, e.lngLat.lat]
     this.api.getMapAddress(this.apiKey, e.lngLat.lat, e.lngLat.lng).subscribe(
       res => {
         console.log(res)
+        this.address=res['address']
       },
       err => {
         console.log(err)

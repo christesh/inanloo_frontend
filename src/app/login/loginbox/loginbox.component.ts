@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CookieService } from 'ngx-cookie-service';
+import { GlobalvarService } from 'src/app/globalvar.service';
 
 export interface DialogData {
   mobilenumber: string;
@@ -51,13 +52,14 @@ export class LoginboxComponent implements OnInit {
   })
   private formSubmitAttempt!: boolean;
   constructor(
+    private globalVar:GlobalvarService,
     private fb: FormBuilder,
     private fbuser: FormBuilder,
     private router: Router,
     private api: ApiServicesService,
     private _snackBar: MatSnackBar,
     public signupdialog: MatDialog,
-    public tokencookie:CookieService,
+    public tokencookie: CookieService,
     public forgetpassdialog: MatDialog
   ) {
     this.otpForm = this.toFormGroup(this.formInput);
@@ -184,9 +186,20 @@ export class LoginboxComponent implements OnInit {
             this.api.login(this.mobileforregister!).subscribe(
               res => {
                 console.log(res['key'])
-                this.tokencookie.set('T',res['key'])
-                this.router.navigate(['/home']);
-                this.openSnackBar('شما با موفقیت وارد شدید!', '', 'green-snackbar', 4)
+                this.tokencookie.set('T', res['key'])
+                var token=res['key'].toString()
+                this.api.getPersonAuth(token).subscribe(
+                  res => {
+                    localStorage.setItem('userID',res[0]['person'])
+                    this.router.navigate(['/home'])
+                    this.openSnackBar('شما با موفقیت وارد شدید!', '', 'green-snackbar', 4)
+                  },
+                  err => {
+                    console.log(err)
+                    this.openSnackBar('خطا در ارتباط با سرور', '', 'red-snackbar', 5)
+                  }
+                )
+
               },
               err => {
                 console.log(err)
@@ -201,9 +214,20 @@ export class LoginboxComponent implements OnInit {
                 this.api.login(this.mobileforregister!).subscribe(
                   res => {
                     console.log(res['key'])
-                    this.tokencookie.set('T',res['key'])
-                    this.router.navigate(['/home']);
-                    this.openSnackBar('شما با موفقیت وارد شدید!', '', 'green-snackbar', 4)
+                    this.tokencookie.set('T', res['key'])
+                    var token=res['key'].toString()
+                    this.api.getPersonAuth(token).subscribe(
+                      res => {
+                        localStorage.setItem('userID',res[0]['person'])
+                        this.router.navigate(['/home'])
+                        this.openSnackBar('شما با موفقیت وارد شدید!', '', 'green-snackbar', 4)
+                      },
+                      err => {
+                        console.log(err)
+                        this.openSnackBar('خطا در ارتباط با سرور', '', 'red-snackbar', 5)
+                      }
+                    )
+    
                   },
                   err => {
                     console.log(err)
@@ -268,20 +292,30 @@ export class LoginboxComponent implements OnInit {
   }
   usersignin() {
     //check username and password exist in db
-    var user=this.userForm.controls.username.value;
-    var pass=this.userForm.controls.password.value;
-    this.api.loginWithUser(user!,pass!).subscribe(
+    var user = this.userForm.controls.username.value;
+    var pass = this.userForm.controls.password.value;
+    this.api.loginWithUser(user!, pass!).subscribe(
       res => {
-        this.tokencookie.set('T',res['key'])
-        this.router.navigate(['portal']);
-        this.openSnackBar('شما با موفقیت وارد شدید!', '', 'green-snackbar', 4)
+        this.tokencookie.set('T', res['key'])
+        var token=res['key'].toString()
+        this.api.getPersonAuth(token).subscribe(
+          res => {
+            localStorage.setItem('userID',res[0]['person'])
+            this.router.navigate(['portal'])
+            this.openSnackBar('شما با موفقیت وارد شدید!', '', 'green-snackbar', 4)
+          },
+          err => {
+            console.log(err)
+            this.openSnackBar('خطا در ارتباط با سرور', '', 'red-snackbar', 5)
+          }
+        )
       },
       err => {
         console.log(err)
         this.openSnackBar('خطا در ارتباط با سرور', '', 'red-snackbar', 5)
       }
     )
-  
+
   }
   forgetpass(): void {
     const dialogRef1 = this.forgetpassdialog.open(ForgetPassDialog, {
@@ -352,8 +386,9 @@ export class SignUPDialog implements OnInit {
 
     this.api.GetPersonCategories().subscribe(
       (res: { id: string; name: string; }[]) => {
-        this.usercategory = res
-        console.log(this.usercategory)
+        this.usercategory.push( res[0]);
+        this.usercategory.push( res[1]);
+        console.log(this.usercategory);
       },
       (err: any) => {
         console.log(err)

@@ -33,13 +33,14 @@ export class Models{
     ID:number;
     brand: string;
     brandpic: string;
+    description: string;
     models:Models[]
 }
 export class Applience{
     ID: number;
     title: string;
     pic: string;
-    desc: string;
+    description: string;
     brands:Brands[]
 }
 export class TimeRange{

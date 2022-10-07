@@ -23,4 +23,7 @@ export class NavbarComponent implements OnInit {
   profile(){
     this.router.navigate(['home/profile/customer']);
   }
+  tech(){
+    this.router.navigate(['home/profile/technician']);
+  }
 }

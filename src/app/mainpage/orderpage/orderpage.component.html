@@ -20,7 +20,7 @@
         <mat-card-content>
           <img class="applience" mat-card-image [src]="app.pic">
           <p>
-            {{app.desc}}
+            {{app.description}}
           </p>
         </mat-card-content>
       </mat-card>
@@ -75,7 +75,7 @@
               <mat-option *ngFor="let m of models;let i=index" [value]="m">{{m.model}}</mat-option>
             </mat-select>
           </mat-form-field>
-         
+
         </form>
         <mat-form-field class="full-width-input"
           style="margin:auto;text-align:right; direction:rtl;font-family:iransans ;">
@@ -191,7 +191,7 @@
     <div class="row" style="display: flex;flex-direction: row;flex-wrap: wrap;justify-content: right;">
       <div *ngFor="let url of urls"
         style="margin:20px; text-align: center;border-radius: 10px; background-color: rgb(253, 252, 250);box-shadow: 0px 0px 5px 5px rgb(238, 236, 236); width: 350px;height: 300px; ">
-        <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="hover" (click)="deleteimg(url)"
+        <lord-icon src="../../../assets/json/bin.json" trigger="hover" (click)="deleteimg(url)"
           style="width:40px;height:40px;cursor: pointer;margin-top: 20px;cursor: pointer;">
         </lord-icon>
         <br>
@@ -199,7 +199,8 @@
       </div>
     </div>
     <div style="direction: ltr;">
-      <button mat-raised-button color="accent" matStepperNext style="margin-right:10px ;" (click)="secondstepnext()">مرحله
+      <button mat-raised-button color="accent" matStepperNext style="margin-right:10px ;"
+        (click)="secondstepnext()">مرحله
         بعد</button>
       <button mat-raised-button color="primary" matStepperPrevious>مرحله قبل</button>
     </div>
@@ -207,95 +208,93 @@
 
   <mat-step [stepControl]="thirdFormGroup" label="انتخاب آدرس و زمان" [errorMessage]="thirdFormGroupError"
     [hasError]="thirdsteperror" [completed]="thirdcomplete">
-    <form [formGroup]="thirdFormGroup">
+    <div class="discription">
+      <h2>توضیحات</h2>
+      <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
+        است،
+        چاپگرها و متون بلکه
+        روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با
+        هدف
+        بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و
+        متخصصان
+        را
+        می طلبد.</p>
+    </div>
+    <div class="steper3content">
+      <div class="servicedate">
+        <mat-card class="calender" (click)="showdatepicker()" placement="start" [ngbPopover]="popTemplate"
+          [autoClose]="'inside'">
+          <mat-card-header class="calenderheader">
+            <mat-card-title class="calendertitle">
+              <h3 class="month">{{calmonth}}</h3>
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="calendercontent">
+            <h1 class="day">{{calday}}</h1>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <ng-template #popTemplate>
+        <ng-persian-datepicker [dateMin]="yesterday" [uiTheme]="customTheme" (dateOnSelect)="changedate($event)">
+          <input type="text" [formControl]="dateValue" />
+        </ng-persian-datepicker>
+      </ng-template>
+      <div class="servicetime">
+        <label id="example-radio-group-label">لطفا بازه زمانی مراجعه متخصص را مشخص نمائید:</label>
+        <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
+          [(ngModel)]="selectedtime">
+          <mat-radio-button class="example-radio-button" *ngFor="let times of timerange" [value]="times.ID"
+            style="padding-left: 5px;">
+            <h6 style="padding-right: 10px;padding-top:5px;font-size:12px">{{times.title}}</h6>
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="address">
       <div class="discription">
         <h2>توضیحات</h2>
-        <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
+        <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
+          است،
           چاپگرها و متون بلکه
-          روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
-          بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان
+          روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با
+          هدف
+          بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و
+          متخصصان
           را
           می طلبد.</p>
       </div>
-      <div class="steper3content">
-        <div class="servicedate">
-          <mat-card class="calender" (click)="showdatepicker()" placement="start" [ngbPopover]="popTemplate"
-            [autoClose]="'inside'">
-            <mat-card-header class="calenderheader">
-              <mat-card-title class="calendertitle">
-                <h3 class="month">{{calmonth}}</h3>
-              </mat-card-title>
-            </mat-card-header>
-            <mat-card-content class="calendercontent">
-              <h1 class="day">{{calday}}</h1>
-            </mat-card-content>
-          </mat-card>
-        </div>
-
-        <ng-template #popTemplate>
-          <ng-persian-datepicker [dateMin]="yesterday" [uiTheme]="customTheme" (dateOnSelect)="changedate($event)">
-            <input type="text" [formControl]="dateValue" />
-          </ng-persian-datepicker>
-        </ng-template>
-
-        <div class="servicetime">
-          <form [formGroup]="fourthFormGroup">
-            <label id="example-radio-group-label">لطفا بازه زمانی مراجعه متخصص را مشخص نمائید:</label>
-            <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
-              [(ngModel)]="selectedtime" formControlName="radioCtrl">
-              <mat-radio-button class="example-radio-button" *ngFor="let times of timerange" [value]="times.ID"
-                style="padding-left: 5px;">
-                <h6 style="padding-right: 10px;padding-top:5px;font-size:12px">{{times.title}}</h6>
-              </mat-radio-button>
-            </mat-radio-group>
-          </form>
-        </div>
-      </div>
-      <mat-divider></mat-divider>
-      <div class="address">
-        <div class="discription">
-          <h2>توضیحات</h2>
-          <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
-            است،
-            چاپگرها و متون بلکه
-            روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با
-            هدف
-            بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و
-            متخصصان
-            را
-            می طلبد.</p>
-        </div>
-        <div class="addresscontent" style="margin:20px">
-          <mat-card style="width: 100%;min-height:200px ;">
-            <mat-card-content style="display: flex;flex-direction: row;justify-content: space-around;">
-              <input type="checkbox" checked style="width:20px ;">
-              <div class="addresstext" style="display: flex;flex-direction: column-reverse;
+      <div class="addresscontent" style="margin:20px">
+        <mat-card style="width: 100%;min-height:200px ;">
+          <mat-card-content style="display: flex;flex-direction: row;justify-content: space-around;">
+            <input type="checkbox" checked style="width:20px ;">
+            <div class="addresstext" style="display: flex;flex-direction: column-reverse;
               align-content: space-around;
               justify-content: center;">
-                <div>
-                  <h3>آدرس:</h3>
-                  <br>
-                  <h6>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
-                    است،
-                    چاپگرها و متون بلکه</h6>
-                </div>
+              <div>
+                <h3>آدرس:</h3>
+                <br>
+                <h6>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
+                  است،
+                  چاپگرها و متون بلکه</h6>
               </div>
-              <div class="addressmap" style="width: 300px;height:200px">
-                <app-map [enable]="mapenable" [lat]="maplat" [long]="maplong" width="300px" height="200px"></app-map>
-                <div id="container">
-                </div>
+            </div>
+            <div class="addressmap" style="width: 300px;height:200px">
+              <app-map [enable]="mapEnable" [lat]="maplat" [long]="maplong" width="300px" height="200px"></app-map>
+              <div id="container">
               </div>
-            </mat-card-content>
-          </mat-card>
-        </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
       </div>
+    </div>
 
-      <div style="direction: ltr;">
-        <button mat-raised-button color="accent" matStepperNext style="margin-right:10px ;"
-          (click)="thirdstepnext()">مرحله بعد</button>
-        <button mat-raised-button color="primary" matStepperPrevious>مرحله قبل</button>
-      </div>
-    </form>
+    <div style="direction: ltr;">
+      <button mat-raised-button color="accent" matStepperNext style="margin-right:10px ;"
+        (click)="thirdstepnext()">مرحله بعد</button>
+      <button mat-raised-button color="primary" matStepperPrevious>مرحله قبل</button>
+    </div>
+
   </mat-step>
 
   <mat-step [stepControl]="fourthFormGroup" label="نهایی سازی سفارش" [errorMessage]="fourthFormGroupError">

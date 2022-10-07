@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { IDatepickerTheme } from 'ng-persian-datepicker';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AnimationStyleMetadata } from '@angular/animations';
@@ -7,7 +7,13 @@ import { hide } from '@popperjs/core';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { faListSquares } from '@fortawesome/free-solid-svg-icons';
-import { CustomerProfile,Address,Mobile,Telephone,Shahrestan,Province,City } from '../profile';
+import { CustomerProfile, Address, Mobile, Telephone, Counties, Province, Cities, Regions,Nighbourhoods } from '../profile';
+import { ApiServicesService } from 'src/app/api-services.service';
+import { CookieOptions, CookieService } from 'ngx-cookie-service';
+import { GlobalvarService } from 'src/app/globalvar.service';
+import { control } from 'leaflet';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-customerProfile',
   templateUrl: './customerProfile.component.html',
@@ -21,8 +27,15 @@ export class CustomerProfileComponent implements OnInit {
 
   @ViewChild("p", { static: false }) popover1: NgbPopover;
 
-  constructor(private fb: FormBuilder, private _snackBar: MatSnackBar,) { }
-  addressForm:FormGroup;
+  constructor(
+    private router: Router,
+    private globalVar: GlobalvarService,
+    private fb: FormBuilder,
+    private _snackBar: MatSnackBar,
+    private api: ApiServicesService,
+    private tokencookie: CookieService) { }
+
+  addressForm: FormGroup;
   form1!: FormGroup;
   form2!: FormGroup;
   form3!: FormGroup;
@@ -41,25 +54,34 @@ export class CustomerProfileComponent implements OnInit {
   tels: Telephone[] = [];
   showMap: boolean = false;
   province: Province[] = []
-  shahrestan: Shahrestan[] = []
-  city: City[] = []
-  disabled: boolean = true;
-  firstname: string = "";
-  lastname: string = "";
-  nationalid: string = "";
-  birthdate: string = "";
-  
-  fullAddress:Address[];
+  shahrestan: Counties[] = []
+  city: Cities[] = []
+  region: Regions[]=[];
+  neighbourhood:Nighbourhoods[]=[]
 
-  region:string="";
-  mainstreet:string="";
-  substreet:string="";
-  lane:string="";
-  building:string="";
-  no:string="";
-  unit:string="";
-  desciription:string="";
+
+  disabled: boolean = true;
+  firstname = new FormControl('');
+  lastname = new FormControl('');
+  nationalid = new FormControl('');
+  nationalid1: string = "";
+  birthdate: string = "";
+  mapEnable:boolean=true;
+  fullAddress: Address[];
+
  
+  mainstreet: string = "";
+  substreet: string = "";
+  lane: string = "";
+  building: string = "";
+  no: string = "";
+  unit: string = "";
+  floor: string = "";
+  address: Address[] = []
+  addresses: { text: string, isMainAddress: boolean, maplong: number, maplat: number }[] = []
+  maplat: number = 51.367918;
+    maplong: number = 35.712706;
+  curentCustomer: CustomerProfile;
   openSnackBar(message: string, action: string, alertkind: string, showtime: number, hp?: MatSnackBarHorizontalPosition, vp?: MatSnackBarVerticalPosition) {
     this._snackBar.open(message, action, {
       duration: showtime * 1000,
@@ -67,31 +89,118 @@ export class CustomerProfileComponent implements OnInit {
       horizontalPosition: hp,
       verticalPosition: vp
     });
-  }
 
+  }
+  userid: any;
+  name: any;
   ngOnInit() {
-    this.province = [{ id: 1, name: "تهران" }, { id: 2, name: "البرز" }]
-    this.shahrestan = [{ id: 1, name: "کرج" }, { id: 2, name: "هشتگرد" }]
-    this.city = [{ id: 1, name: "کرج" }, { id: 2, name: "فردیس" }]
-    this.typevalue = false;
-    this.mobiles = [{ number: '09120762744', ismain: true }, { number: '09365472389', ismain: false }]
-    this.tels = [{ number: '02122380377' }, { number: '02122380277' }]
-    this.disabled = true;
-    this.firstname = "مسیح";
-    this.lastname = "ابراهیم نژاد";
-    this.nationalid = "12123123";
-    this.birthdate = "1363/03/29";
     
-  }
- 
-  selectprovince() {
+    this.name = new FormControl('');
+    var token = this.tokencookie.get('T')
+    this.api.getRegins(token).subscribe(
+      res => {
+        console.log(res)
+        this.province=res
+        this.userid = localStorage.getItem('userID');
+        this.api.getCustomersDetails(token, this.userid!).subscribe(
+          res => {
+            this.curentCustomer = res[0]
+            console.log(this.curentCustomer)
+            this.mobiles = this.curentCustomer.mobile;
+            this.tels = this.curentCustomer.phones;
+            this.address = this.curentCustomer.address;
+            for (let i = 0; i < this.address.length; i++) {
+              var addtext = ""
+              if (this.address[i].province.provinceName != "")
+                addtext += "استان: " + this.address[i].province.provinceName;
+             
+              if (this.address[i].province.counties[0].countyName!= "")
+                addtext += ", شهرستان: " + this.address[i].province.counties[0].countyName;
+
+              if (this.address[i].province.counties[0].cities[0].cityName != "")
+                addtext += ", شهر: " + this.address[i].province.counties[0].cities[0].cityName;
+
+              if (this.address[i].province.counties[0].cities[0].regions[0].regionName != "")
+                addtext += ", " + this.address[i].province.counties[0].cities[0].regions[0].regionName;
+
+              if (this.address[i].province.counties[0].cities[0].regions[0].neighbourhoods[0].neighbourhoodName != "")
+                addtext += ", " + this.address[i].province.counties[0].cities[0].regions[0].neighbourhoods[0].neighbourhoodName;
+
+              if (this.address[i].addressStreet != "")
+                addtext += ", " + this.address[i].addressStreet;
+
+              if (this.address[i].addressLane != "")
+                addtext += ", " + this.address[i].addressLane;
+
+              if (this.address[i].addressNo != "")
+                addtext += ", پلاک: " + this.address[i].addressNo;
+
+              if (this.address[i].addressUnit != "")
+                addtext += ", واحد: " + this.address[i].addressUnit;
+
+              if (this.address[i].addressFloor != "")
+                addtext += ", طبقه: " + this.address[i].addressFloor;
+              this.addresses.push({ text: addtext, maplat: Number(this.address[i].addressLat), maplong: Number(this.address[i].addressLong), isMainAddress: Boolean(this.address[i].isMain) })
+            }
+            this.typevalue = false;
+            this.firstname.patchValue(this.curentCustomer.firstName);
+            this.firstname.markAsDirty();
+
+            this.lastname.patchValue(this.curentCustomer.lastName);
+            this.lastname.markAsDirty();
+
+            this.nationalid.patchValue(this.curentCustomer.nationalId);
+            this.nationalid.markAsDirty();
+
+
+            this.birthdate = this.curentCustomer.birthDate;
+            this.disabled = true;
+          },
+          err => {
+            console.log(err)
+          }
+        )
+      },
+      err => {
+        console.log(err)
+      }
+    )
 
   }
-  selectshahrestan() {
-
+  ngAfterViewInit() {
+    // alert("salam")
+    this.nationalid.disable();
+    this.lastname.disable();
+    this.firstname.disable();
   }
-  selectcity() {
-
+  provincechange(event:any)
+  {
+    console.log(event)
+  }
+  selectprovince(event:any) {
+    console.log(event)
+    this.shahrestan=event.value.counties;
+    this.city=[]
+    this.region=[]
+    this.neighbourhood=[]
+  }
+  selectshahrestan(event:any) {
+    console.log(event)
+    this.city=event.value.cities;
+    this.region=[]
+    this.neighbourhood=[]
+  }
+  selectcity(event:any) {
+    console.log(event)
+    this.region=event.value.regions;
+    this.neighbourhood=[]
+  }
+  selectregion(event:any){
+    console.log(event)
+    this.neighbourhood=event.value.neighbourhoods;
+  }
+  selectneighbour(event:any){
+    console.log(event)
   }
   showmap() {
     this.showMap = true;
@@ -118,47 +227,45 @@ export class CustomerProfileComponent implements OnInit {
   selectedtime: string = "";
   selectedDate: string;
   mapenable: boolean = false;
-  maplat: number = 51.367918;
-  maplong: number = 35.712706;
-  editMobile:boolean=false;
-  mobiledisabled:boolean=true;
-  editTel:boolean=false;
-  teldisabled:boolean=true;
-  
-  datepickeropen:boolean=false;
-  showdatepicker(pp:any) {
-    if (!this.disabled && !this.datepickeropen) {  
-    pp.open();
-    this.datepickeropen=true;
+
+  editMobile: boolean = false;
+  mobiledisabled: boolean = true;
+  editTel: boolean = false;
+  teldisabled: boolean = true;
+
+  datepickeropen: boolean = false;
+  showdatepicker(pp: any) {
+    if (!this.disabled && !this.datepickeropen) {
+      pp.open();
+      this.datepickeropen = true;
     }
-    else
-    {
+    else {
       pp.close();
-      this.datepickeropen=false;
+      this.datepickeropen = false;
     }
-  
+
   }
-  editmobile(){
+  editmobile() {
     this.editMobile = true;
     this.mobiledisabled = false;
   }
-  savemobile(){
+  savemobile() {
     this.editMobile = false;
     this.mobiledisabled = true;
   }
-  cancelmobile(){
+  cancelmobile() {
     this.editMobile = false;
     this.teldisabled = true;
   }
-  edittel(){
+  edittel() {
     this.editTel = true;
     this.teldisabled = false;
   }
-  savetel(){
+  savetel() {
     this.editTel = false;
     this.teldisabled = true;
   }
-  canceltel(){
+  canceltel() {
     this.editTel = false;
     this.teldisabled = true;
   }
@@ -167,17 +274,18 @@ export class CustomerProfileComponent implements OnInit {
     this.birthdate = event['shamsi'];
     this.showpopover = true;
     this.popover1.close();
-    this.datepickeropen=false;
+    this.datepickeropen = false;
   }
-  isDisabled(po:any){
-    
+  isDisabled(po: any) {
+
     return this.disabled;
   }
   addmobile() {
     if (this.mobilenumberisvalid) {
-      var index = this.mobiles.find(item => item.number == this.mobilenumber)
+      var index = this.mobiles.find(item => item.mobileNumber == this.mobilenumber)
+      var idIndex = this.mobiles.length
       if (index == null) {
-        this.mobiles.push({ number: this.mobilenumber, ismain: false });
+        this.mobiles.push({ id: idIndex, mobileNumber: this.mobilenumber, isMain: false, person: this.userid });
         this.mobilenumber = '';
         this.mobilenumberisvalid = false;
         this.typevalue = false;
@@ -189,9 +297,10 @@ export class CustomerProfileComponent implements OnInit {
   }
   addtel() {
     if (this.telnumberisvalid) {
-      var index = this.tels.find(item => item.number == this.telnumber)
+      var index = this.tels.find(item => item.phoneNumber == this.telnumber)
+      var telidx = this.tels.length
       if (index == null) {
-        this.tels.push({ number: this.telnumber });
+        this.tels.push({ id: telidx, phoneNumber: this.telnumber });
         this.telnumber = '';
         this.telnumberisvalid = false;
         this.teltypevalue = false;
@@ -244,13 +353,37 @@ export class CustomerProfileComponent implements OnInit {
   editname() {
     this.editName = true;
     this.disabled = false;
+    this.firstname.enable();
+    this.lastname.enable();
+    this.nationalid.enable();
+
   }
   savename() {
+    this.curentCustomer.firstName = this.firstname.value!;
+    this.curentCustomer.lastName = this.lastname.value!;
+    this.curentCustomer.nationalId = this.nationalid.value!;
+    this.curentCustomer.birthDate = this.birthdate;
     this.editName = false;
     this.disabled = true;
+    this.firstname.disable();
+    this.lastname.disable();
+    this.nationalid.disable();
+    // this.router.navigate(['home/profile/technician']);
   }
+  lastn: string = "fdsd";
   cancelname() {
     this.editName = false;
     this.disabled = true;
+    this.firstname.patchValue(this.curentCustomer.firstName);
+    this.firstname.markAsDirty();
+    this.lastname.patchValue(this.curentCustomer.lastName);
+    this.lastname.markAsDirty();
+    this.nationalid.patchValue(this.curentCustomer.nationalId);
+    this.nationalid.markAsDirty();
+    this.birthdate = this.curentCustomer.birthDate;
+    this.firstname.disable();
+    this.lastname.disable();
+    this.nationalid.disable();
+
   }
 }

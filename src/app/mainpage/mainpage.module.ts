@@ -26,6 +26,9 @@ import { CustomerProfileComponent } from './profiles/customerProfile/customerPro
 import { TechnicianProfileComponent } from './profiles/technicianProfile/technicianProfile.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from "@angular/material/form-field";
+import { EditaddressComponent } from './editaddress/editaddress.component';
+
+
 const appRoutes: Routes = [
   // { path:'',component:HomeComponent },
   { path: 'order', component: OrderpageComponent },
@@ -57,6 +60,7 @@ const appRoutes: Routes = [
     RouterModule.forChild(appRoutes)
   ],
   declarations: [
+    EditaddressComponent,
     HomeComponent,
     MapComponent,
     MainpageComponent,

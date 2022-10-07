@@ -17,6 +17,9 @@ import { Jalali } from 'jalali-ts';
 import { IDatepickerTheme } from 'ng-persian-datepicker';
 import Swal from 'sweetalert2';
 import { Order, Applience, Brands, Models, Problem, TimeRange } from './Order'
+import { ApiServicesService } from 'src/app/api-services.service';
+import { CookieService } from 'ngx-cookie-service';
+import { GlobalvarService } from 'src/app/globalvar.service';
 
 declare var $: any;
 
@@ -34,7 +37,7 @@ declare var $: any;
 })
 export class OrderpageComponent {
   // timenow:{hour: number, minute: number}={hour: 12, minute: 12};
-  mapenable: boolean = false;
+  mapEnable: boolean = false;
   maplat: number = 51.367918;
   maplong: number = 35.712706;
   maptitle = 'mapir-angular-test';
@@ -84,7 +87,7 @@ export class OrderpageComponent {
   showmodels: boolean = false;
   showbrands: boolean = false;
   firstFormGroupError: string = "";
-  firstFormGroup:FormGroup;
+  firstFormGroup: FormGroup;
   searchvalue: string = "";
   secondFormGroupError: string = "";
   secondFormGroup = this._formBuilder.group({
@@ -106,14 +109,23 @@ export class OrderpageComponent {
   hasmodel: boolean = false;
   stepperOrientation: Observable<StepperOrientation>;
   applience: Applience[] = []
-  constructor(private scroller: ViewportScroller, private _formBuilder: FormBuilder, breakpointObserver: BreakpointObserver) {
+  constructor(
+    private globalVar:GlobalvarService,
+    private scroller: ViewportScroller,
+    private _formBuilder: FormBuilder,
+    breakpointObserver: BreakpointObserver,
+    private api: ApiServicesService,
+    private tokencookie: CookieService
+  ) {
     this.stepperOrientation = breakpointObserver
       .observe('(min-width: 800px)')
       .pipe(map(({ matches }) => (matches ? 'horizontal' : 'vertical')));
 
   }
   order = new Order();
+  public picurl: string = "";
   ngOnInit() {
+    this.picurl = "http://"
     this.firstFormGroup = this._formBuilder.group({
       selectedmodel: [null],
     });
@@ -121,24 +133,44 @@ export class OrderpageComponent {
     this.secondFormGroupError = "فرآیند انتخاب مشکل ناقص است!";
     this.thirdFormGroupError = "فرآیند انتخاب تاریخ، زمان و آدرس ناقص است!";
     this.fourthFormGroupError = "فرآیند نهایی ثبت سفارش ناقص است!";
-    this.applience.push({ ID: 1, title: "ساید بای ساید", pic: "../../../assets/images/devices/refrigerator-1.png", desc: "", brands: [{ ID: 1, brand: "Bosch", brandpic: "../../../assets/images/brands/bosch.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 4, brand: "AEG", brandpic: "../../../assets/images/brands/aeg.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 5, brand: "Samsung", brandpic: "../../../assets/images/brands/samsung.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }] });
-    this.applience.push({ ID: 2, title: "لباس شویی", pic: "../../../assets/images/devices/01.png", desc: "", brands: [{ ID: 1, brand: "Bosch", brandpic: "../../../assets/images/brands/bosch.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 4, brand: "AEG", brandpic: "../../../assets/images/brands/aeg.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 7, brand: "پارس خزر", brandpic: "../../../assets/images/brands/pars.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }] });
-    this.applience.push({ ID: 3, title: "جارو برقی", pic: "../../../assets/images/devices/washing-machine-2.png", desc: "", brands: [{ ID: 1, brand: "Bosch", brandpic: "../../../assets/images/brands/bosch.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 5, brand: "Samsung", brandpic: "../../../assets/images/brands/samsung.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }] });
-    this.applience.push({ ID: 4, title: "ظرفشویی", pic: "../../../assets/images/devices/dish-washer.png", desc: "", brands: [{ ID: 1, brand: "Bosch", brandpic: "../../../assets/images/brands/bosch.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 4, brand: "AEG", brandpic: "../../../assets/images/brands/aeg.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 5, brand: "Samsung", brandpic: "../../../assets/images/brands/samsung.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }] });
-    this.applience.push({ ID: 5, title: "یخچال", pic: "../../../assets/images/devices/washing-machine-1.png", desc: "", brands: [{ ID: 2, brand: "هایر", brandpic: "../../../assets/images/brands/haier.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 4, brand: "AEG", brandpic: "../../../assets/images/brands/aeg.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 5, brand: "Samsung", brandpic: "../../../assets/images/brands/samsung.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }] });
-    this.applience.push({ ID: 6, title: "ماکروویر", pic: "../../../assets/images/devices/washing-machine-10.png", desc: "", brands: [{ ID: 3, brand: "miele", brandpic: "../../../assets/images/brands/miele.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 4, brand: "AEG", brandpic: "../../../assets/images/brands/aeg.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 5, brand: "Samsung", brandpic: "../../../assets/images/brands/samsung.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }] });
-    this.applience.push({ ID: 7, title: "کولر گازی", pic: "../../../assets/images/devices/fan-2.png", desc: "", brands: [{ ID: 1, brand: "Bosch", brandpic: "../../../assets/images/brands/bosch.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 4, brand: "AEG", brandpic: "../../../assets/images/brands/aeg.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 5, brand: "Samsung", brandpic: "../../../assets/images/brands/samsung.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }] });
-    this.applience.push({ ID: 8, title: "تصفیه آب", pic: "../../../assets/images/devices/icon01-2.png", desc: "", brands: [{ ID: 1, brand: "Bosch", brandpic: "../../../assets/images/brands/bosch.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 6, brand: "LG", brandpic: "../../../assets/images/brands/lg.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 5, brand: "Samsung", brandpic: "../../../assets/images/brands/samsung.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }] });
-    this.applience = this.applience.slice(0);
-    this.subtasks = [
-      { ID: 1, title: 'نصب اولیه گارانتی', description: '', checked: false, lowprice: '1000000', highprice: '2000000' },
-      { ID: 2, title: 'نصب مجدد و آموزش', description: '', checked: false, lowprice: '2000000', highprice: '3000000' },
-      { ID: 3, title: 'تایمر شستشو خراب', description: '', checked: false, lowprice: '1500000', highprice: '2500000' },
-      { ID: 4, title: 'وان شستشو شکسته', description: '', checked: false, lowprice: '100000', highprice: '200000' },
-      { ID: 5, title: 'آب را تخلیه نمیکند', description: '', checked: false, lowprice: '1800000', highprice: '2800000' },
-      { ID: 6, title: 'روشن نمیشود', checked: false, description: '', lowprice: '1100000', highprice: '1200000' },
-      { ID: 7, title: 'سایر', checked: false, description: '', lowprice: 'نامشخص', highprice: 'نامشخص' },
-    ]
+    var token = this.tokencookie.get('T');
+    this.api.getAllApplience(token).subscribe(
+      res => {
+        this.applience = res
+        console.log(this.applience)
+      },
+      err => {
+        console.log(err)
+      }
+    )
+    var userId=localStorage.getItem('userID')
+    this.api.getCustomersDetails(token,userId!).subscribe(
+      res=>{
+        console.log(res)
+      },
+      err=>
+      {
+        console.log(err)
+      }
+    )
+    // this.applience.push({ ID: 1, title: "ساید بای ساید", pic: "../../../assets/images/devices/refrigerator-1.png", desc: "", brands: [{ ID: 1, brand: "Bosch", brandpic: "../../../assets/images/brands/bosch.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 4, brand: "AEG", brandpic: "../../../assets/images/brands/aeg.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 5, brand: "Samsung", brandpic: "../../../assets/images/brands/samsung.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }] });
+    // this.applience.push({ ID: 2, title: "لباس شویی", pic: "../../../assets/images/devices/01.png", desc: "", brands: [{ ID: 1, brand: "Bosch", brandpic: "../../../assets/images/brands/bosch.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 4, brand: "AEG", brandpic: "../../../assets/images/brands/aeg.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 7, brand: "پارس خزر", brandpic: "../../../assets/images/brands/pars.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }] });
+    // this.applience.push({ ID: 3, title: "جارو برقی", pic: "../../../assets/images/devices/washing-machine-2.png", desc: "", brands: [{ ID: 1, brand: "Bosch", brandpic: "../../../assets/images/brands/bosch.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 5, brand: "Samsung", brandpic: "../../../assets/images/brands/samsung.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }] });
+    // this.applience.push({ ID: 4, title: "ظرفشویی", pic: "../../../assets/images/devices/dish-washer.png", desc: "", brands: [{ ID: 1, brand: "Bosch", brandpic: "../../../assets/images/brands/bosch.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 4, brand: "AEG", brandpic: "../../../assets/images/brands/aeg.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 5, brand: "Samsung", brandpic: "../../../assets/images/brands/samsung.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }] });
+    // this.applience.push({ ID: 5, title: "یخچال", pic: "../../../assets/images/devices/washing-machine-1.png", desc: "", brands: [{ ID: 2, brand: "هایر", brandpic: "../../../assets/images/brands/haier.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 4, brand: "AEG", brandpic: "../../../assets/images/brands/aeg.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 5, brand: "Samsung", brandpic: "../../../assets/images/brands/samsung.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }] });
+    // this.applience.push({ ID: 6, title: "ماکروویر", pic: "../../../assets/images/devices/washing-machine-10.png", desc: "", brands: [{ ID: 3, brand: "miele", brandpic: "../../../assets/images/brands/miele.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 4, brand: "AEG", brandpic: "../../../assets/images/brands/aeg.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 5, brand: "Samsung", brandpic: "../../../assets/images/brands/samsung.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }] });
+    // this.applience.push({ ID: 7, title: "کولر گازی", pic: "../../../assets/images/devices/fan-2.png", desc: "", brands: [{ ID: 1, brand: "Bosch", brandpic: "../../../assets/images/brands/bosch.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 4, brand: "AEG", brandpic: "../../../assets/images/brands/aeg.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 5, brand: "Samsung", brandpic: "../../../assets/images/brands/samsung.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }] });
+    // this.applience.push({ ID: 8, title: "تصفیه آب", pic: "../../../assets/images/devices/icon01-2.png", desc: "", brands: [{ ID: 1, brand: "Bosch", brandpic: "../../../assets/images/brands/bosch.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 6, brand: "LG", brandpic: "../../../assets/images/brands/lg.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 5, brand: "Samsung", brandpic: "../../../assets/images/brands/samsung.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }] });
+    // this.applience = this.applience.slice(0);
+    // this.subtasks = [
+    //   { ID: 1, title: 'نصب اولیه گارانتی', description: '', checked: false, lowprice: '1000000', highprice: '2000000' },
+    //   { ID: 2, title: 'نصب مجدد و آموزش', description: '', checked: false, lowprice: '2000000', highprice: '3000000' },
+    //   { ID: 3, title: 'تایمر شستشو خراب', description: '', checked: false, lowprice: '1500000', highprice: '2500000' },
+    //   { ID: 4, title: 'وان شستشو شکسته', description: '', checked: false, lowprice: '100000', highprice: '200000' },
+    //   { ID: 5, title: 'آب را تخلیه نمیکند', description: '', checked: false, lowprice: '1800000', highprice: '2800000' },
+    //   { ID: 6, title: 'روشن نمیشود', checked: false, description: '', lowprice: '1100000', highprice: '1200000' },
+    //   { ID: 7, title: 'سایر', checked: false, description: '', lowprice: 'نامشخص', highprice: 'نامشخص' },
+    // ]
     this.yesterday = Jalali.parse(Jalali.now().add(-1, 'day').toString()).valueOf()
     this.initdateforcal(Jalali.now().toString().substring(0, 10))
     this.hasguarantee = false;
@@ -204,16 +236,15 @@ export class OrderpageComponent {
     this.hasmodel = true;
     this.brandID = this.brands!.find(item => item.brand == i)!.ID
     this.models = this.brands?.find(item => item.brand == i)?.models
-    
+
   }
-  
-  selectmodel(){
+
+  selectmodel() {
     console.log(this.firstFormGroup.value.selectedmodel)
   }
-  modelserial:string="";
-  serialchange(event:any)
-  {
-    this.modelserial=event.target.value
+  modelserial: string = "";
+  serialchange(event: any) {
+    this.modelserial = event.target.value
   }
   problemSelect(name: string) {
     let ch = this.subtasks.find(item => item.title == name)?.checked
@@ -247,18 +278,44 @@ export class OrderpageComponent {
     this.table.renderRows();
   }
   hasGuarantee() {
-    this.hasguarantee=!this.hasguarantee;
-   
+    this.hasguarantee = !this.hasguarantee;
+
   }
 
   firststepnext() {
-  
-    this.order.applienceID = this.applienceID!;
-    this.order.brandID = this.brandID!;
-
-    this.order.modelID =this.firstFormGroup.value.selectedmodel['ID'];
+    var token = this.tokencookie.get('T')
+    var app = "";
+    var brand = "";
+    var model = "";
+    if (this.applienceID != null) {
+      this.order.applienceID = this.applienceID!;
+      app = this.applienceID!.toString();
+    }
+    if (this.brandID != null) {
+      this.order.brandID = this.brandID!;
+      brand=this.brandID!.toString();
+    }
+    if (this.firstFormGroup.value.selectedmodel != null){
+      this.order.modelID = this.firstFormGroup.value.selectedmodel;
+      model=this.firstFormGroup.value.selectedmodel['ID'].toString()
+    }
+    
+    this.subtasks = []
     this.order.deviceSerial = this.modelserial;
     this.order.hasGuarantee = this.hasguarantee!;
+    this.api.getProblems(token, app, brand, model).subscribe(
+      res => {
+        for (let i = 0; i < res.length; i++) {
+          this.subtasks.push({ ID: i, title: res[i]['problemTitle'], description: res[i]['problemDescription'], checked: false, lowprice: res[i]['lowPrice'], highprice: res[i]['highPrice'] })
+        }
+        this.subtasks.push({ ID: res.length, title: 'سایر', checked: false, description: '', lowprice: 'نامشخص', highprice: 'نامشخص' });
+        console.log(this.subtasks)
+      }
+      ,
+      err => {
+        console.log(err)
+      }
+    )
   }
   secondstepnext() {
     this.problem();
@@ -268,7 +325,7 @@ export class OrderpageComponent {
   }
   thirdstepnext() {
     console.log(this.selectedtime)
-    var timerange = this.selectedtime;
+    var timerangeid = this.selectedtime;
     if (this.selectedtime == "") {
       this.thirdsteperror = true
     }
@@ -276,7 +333,7 @@ export class OrderpageComponent {
       this.thirdsteperror = false
     }
     this.order.orderDate = this.selectedDate
-    this.order.timeRange = Number(timerange!);
+    this.order.timeRange = Number(timerangeid!);
     console.log(this.order)
   }
   onSelectFile(event: any) {

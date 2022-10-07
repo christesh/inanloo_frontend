@@ -1,0 +1,89 @@
+<mat-card style="width: 100%;min-height:200px ;">
+  <mat-card-content style="display: flex;flex-direction: row;justify-content: space-around;">
+    <div class="addresstext" style="display: flex;flex-direction: column;
+align-content: space-around;
+justify-content: center;direction: rtl;">
+      <h3>آدرس:</h3>
+      <br>
+      <form>
+        <div style="display: flex; flex-direction: row;flex-wrap: wrap;">
+          <mat-form-field style="direction: rtl;text-align:right; margin: 10px;">
+            <mat-label>استان </mat-label>
+            <mat-select (selectionChange)="selectprovince($event)">
+              <mat-option *ngFor="let p of province;let i=index" [value]="p">{{p.provinceName}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field style="direction: rtl;text-align:right; margin: 10px;">
+            <mat-label>شهرستان </mat-label>
+            <mat-select (selectionChange)="selectshahrestan($event)">
+              <mat-option *ngFor="let sh of shahrestan;let i=index" [value]="sh">{{sh.countyName}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field style="direction: rtl;text-align:right; margin: 10px;">
+            <mat-label>شهر </mat-label>
+            <mat-select (selectionChange)="selectcity($event)">
+              <mat-option *ngFor="let c of city;let i=index" [value]="c">{{c.cityName}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="full-width-input" style="width: 300px;">
+            <mat-label>منطقه </mat-label>
+            <mat-select (selectionChange)="selectregion($event)">
+              <mat-option *ngFor="let r of region;let i=index" [value]="r">{{r.regionName}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="full-width-input" style="width: 300px;">
+            <mat-label>محله </mat-label>
+            <mat-select (selectionChange)="selectneighbour($event)">
+              <mat-option *ngFor="let r of neighbourhood;let i=index" [value]="r">{{r.neighbourhoodName}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="full-width-input" style="width: 300px;">
+            <input matInput placeholder="خیابان اصلی" [value]="mainstreet" style="font-size: 12px;">
+
+          </mat-form-field>
+          <mat-form-field class="full-width-input" style="width: 300px;">
+            <input matInput placeholder="خیابان فرعی" [value]="substreet" style="font-size: 12px;">
+
+          </mat-form-field>
+          <mat-form-field class="full-width-input" style="width: 300px;">
+            <input matInput placeholder="کوچه" [value]="lane" style="font-size: 12px;">
+
+          </mat-form-field>
+          <mat-form-field class="full-width-input" style="width: 300px;">
+            <input matInput placeholder="ساختمان" [value]="building" style="font-size: 12px;">
+
+          </mat-form-field>
+          <mat-form-field class="full-width-input" style="width: 300px;">
+            <input matInput placeholder="پلاک" [value]="no" style="font-size: 12px;">
+
+          </mat-form-field>
+          <mat-form-field class="full-width-input" style="width: 300px;">
+            <input matInput placeholder="واحد" [value]="unit" style="font-size: 12px;">
+
+          </mat-form-field>
+          <mat-form-field class="full-width-input" style="width: 300px;">
+            <input matInput placeholder="طبقه" [value]="floor" style="font-size: 12px;">
+
+          </mat-form-field>
+        </div>
+      </form>
+      <div style="direction: rtl;width: 100%;">
+        <input id="mainaddress" type="checkbox" style="width:20px ;">
+        <label for="mainaddress">انتخاب به عنوان آدرس اصلی</label>
+        <a id="showmap" (click)="showmap()" style="margin:20px ;">انتخاب آدرس از روی نقشه</a>
+      </div>
+      <div *ngIf="showMap" class="addressmap"
+        style="margin:20px ;display: flex;flex-direction: row;justify-content: center;">
+        <app-map [enable]="mapEnable" [lat]="maplat" [long]="maplong" width="500px" height="300px"></app-map>
+        <div id="container">
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: row-reverse; justify-content: end;">
+        <button mat-raised-button color="accent" style="margin: 10px;width: 100px;"
+          (click)="saveaddress()">ذخیره</button>
+        <button mat-raised-button color="primary" style="margin: 10px;width: 100px;"
+          (click)="canceladdress()">انصراف</button>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
