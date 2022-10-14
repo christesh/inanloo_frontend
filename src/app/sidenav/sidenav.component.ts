@@ -39,6 +39,9 @@ export class SidenavComponent {
       case "مناطق جغرافیایی":
           this.router.navigate(['/portal/geo']);
           break;
+      case "مدیریت لوازم خانگی":
+            this.router.navigate(['/portal/appliance']);
+            break;
 
     }
     

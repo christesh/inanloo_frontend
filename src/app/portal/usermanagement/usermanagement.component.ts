@@ -243,7 +243,7 @@ export class CreateUserDialog implements OnInit {
           var data: { btn: string } = { btn: "save" }
           Swal.fire({
             title: 'ایجاد کاربر جدید',
-            text: '!با موفقیت حذف شد',
+            text: '!با موفقیت انجام شد',
             icon: 'success',
             confirmButtonText: '!متوجه شدم',
           }

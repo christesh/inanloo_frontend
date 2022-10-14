@@ -1,3 +1,189 @@
-<p>
-  appliencemanagement works!
-</p>
+<body style="direction: rtl;">
+  <div class="banner">
+  </div>
+  <div class="headerbox">
+    <div class="discription">
+      <h2>توضیحات</h2>
+      <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
+        چاپگرها و متون بلکه
+        روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
+        بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان
+        را
+        می طلبد.</p>
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+  <div class="main" style="display:flex ;flex-direction: column;margin-top: 10px;font-size: 12px !important;">
+    <div class="title" style="margin:5px;width:120px">
+      <h6>لوازم خانگی
+        <i class="fa fa-plus-square" style="color:green ;margin-right:5px ;cursor: pointer;"
+          (click)="createAppliance()"></i>
+      </h6>
+    </div>
+    <div class="content" style="margin:5px;width: 100%;">
+      <div class="create" *ngIf="createAppliancehow" style="display: flex;flex-direction: row;">
+        <form [formGroup]="applianceForm">
+          <mat-form-field class="full-width-input"
+            style="margin:auto;text-align:right;width: 100%; direction:rtl;font-family:iransans ;">
+            <input matInput placeholder="عنوان لوازم خانگی" formControlName="appllianceName" required
+              style="font-size: 12px;">
+            <mat-error *ngIf="isFieldInvalid('appllianceName')">
+              لطفا عنوان لوازم خانگی را وارد کنید!
+            </mat-error>
+          </mat-form-field>
+        </form>
+        <button mat-raised-button color="accent" style="margin-right: 20px; width: 80px;height: 40px;"
+          (click)="saveAppliance()">ذخیره</button>
+        <button mat-raised-button color="primary" style="margin-right: 10px;width: 80px;height: 40px;"
+          (click)="cancelAppliance()">انصراف</button>
+      </div>
+
+      <mat-accordion class="example-headers-align" multi style="z-index: 100;">
+        <mat-expansion-panel *ngFor="let a of applience; let i=index" (opened)="openapp(a.ID)">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div class="title">
+                {{a.title}}
+              </div>
+              <div class="actions" style="margin-right: 20px;">
+                <i class="fa fa-edit" style="color:blue ;margin:10px ;cursor: pointer;" (click)="editAppliance(a)"></i>
+                <i class="fa fa-minus-square" style="color:red ;margin:10px ;cursor: pointer;"
+                  (click)="deleteAppliance(a)"></i>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="detail" style="display: flex;flex-direction: row;">
+            <div class="problem" style="width: 50%;">
+              <div class="main header" style="direction: rtl;">
+                <div>
+                  <button class="btn btn-raised btn-primary" style="margin: 10px;width: 120px;font-size: 12px;"
+                    (click)="creaatAppProblem(a,i)">ایجاد
+                    مشکل جدید</button>
+                </div>
+              </div>
+              <div class="table">
+                <div class="container" style=" border-radius: 8px;box-shadow: rgb(102, 102, 102) 5px;">
+                  <div class="row">
+                    <div class="col-sm-12" style="direction: rtl;text-align: right;">
+                      <ng2-smart-table [settings]="applianceTableSetting" [source]="applianceTablevalues[i]"
+                        id="excel-table" style="font-family: 'iransans'"
+                        style="font-family: 'iransans';font-size: 12px;" (custom)="appedit($event,i)"></ng2-smart-table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="picture" style="width: 50%;font-size: 12px;">
+              <div class="form-group col-12 mb-2" *ngIf="a.pic===''">
+                <div class="form-group col-12 mb-2" style="direction: rtl;text-align: right;margin: 10px;">
+                  <label style="margin: 10px;"> لطفا تصویر مروبط به لوازم خانگی را انتخاب کنید:</label>
+                  <label for="file-upload" class="btn btn-raised btn-primary" style="cursor: pointer;margin-right: 35px;font-size: 12px;">
+                    <i class="fa fa-upload" style="margin-left: 5px;"></i>انتخاب فایل
+                  </label>
+                  <input id="file-upload" type='file' (change)="onSelectFile($event , i)" resize-max-height="300"
+                    resize-max-width="250" resize-quality="0.7" >
+                </div>
+              </div>
+              <div class="row" *ngIf="a.pic!==''" style="display: flex;flex-direction: row;flex-wrap: wrap;justify-content: center;">
+                <div 
+                  style="margin:20px; text-align: center;border-radius: 10px; background-color: rgb(253, 252, 250);box-shadow: 0px 0px 5px 5px rgb(238, 236, 236); width: 350px;height: 300px; ">
+                  <lord-icon src="../../../assets/json/bin.json" trigger="hover" (click)="deleteimg(a.pic,i)"
+                    style="width:40px;height:40px;cursor: pointer;margin-top: 20px;cursor: pointer;">
+                  </lord-icon>
+                  <br>
+                  <img [src]="a.pic" height="200" width="300" style="margin:10px;">
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="main" style="display:flex ;flex-direction: column;">
+            <div class="title" style="margin:5px;width:100px">
+              <h6>برند
+                <i class="fa fa-plus-square" style="color:green ;margin-right:5px ;cursor: pointer;"
+                  (click)="createBrand()"></i>
+              </h6>
+            </div>
+            <div class="content" style="margin:5px;width: 100%;">
+              <div class="create" *ngIf="createBrandshow" style="display: flex;flex-direction: row;">
+                <form [formGroup]="applianceForm">
+                  <mat-form-field class="full-width-input"
+                    style="margin:auto;text-align:right;width: 100%;  direction:rtl;font-family:iransans ;">
+                    <input matInput placeholder="عنوان برند" formControlName="brandName" required
+                      style="font-size: 12px;">
+                    <mat-error *ngIf="isFieldInvalid('brandName')">
+                      لطفا عنوان برند را وارد کنید!
+                    </mat-error>
+                  </mat-form-field>
+                </form>
+                <button mat-raised-button color="accent" style="margin-right: 20px; width: 80px;height: 40px;"
+                  (click)="saveBrand(a)">ذخیره</button>
+                <button mat-raised-button color="primary" style="margin-right: 10px;width: 80px;height: 40px;"
+                  (click)="cancelBrand()">انصراف</button>
+              </div>
+              <mat-expansion-panel *ngFor="let b of a.brands; let j=index">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <div class="title">
+                      {{b.brand}}
+                    </div>
+                    <div class="actions" style="margin-right: 20px;">
+                      <i class="fa fa-edit" style="color:blue ;margin:10px ;cursor: pointer;"
+                        (click)="editBrand(b)"></i>
+                      <i class="fa fa-minus-square" style="color:red ;margin:10px ;cursor: pointer;"
+                        (click)="deleteBrand(b)"></i>
+                    </div>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="main" style="display:flex ;flex-direction: column;">
+                  <div class="title" style="margin:5px;width:80px">
+                    <h6>مدل
+                      <i class="fa fa-plus-square" style="color:green ;margin-right:5px ;cursor: pointer;"
+                        (click)="createModel()"></i>
+                    </h6>
+                  </div>
+                  <div class="content" style="margin:5px;width: 100%;">
+                    <div class="create" *ngIf="createModelshow" style="display: flex;flex-direction: row;">
+                      <form [formGroup]="applianceForm">
+                        <mat-form-field class="full-width-input"
+                          style="margin:auto;text-align:right;width: 100%; direction:rtl;font-family:iransans ;">
+                          <input matInput placeholder="عنوان مدل" formControlName="modelName" required
+                            style="font-size: 12px;">
+                          <mat-error *ngIf="isFieldInvalid('modelName')">
+                            لطفا عنوان مدل را وارد کنید!
+                          </mat-error>
+                        </mat-form-field>
+                      </form>
+                      <button mat-raised-button color="accent" style="margin-right: 20px; width: 80px;height: 40px;"
+                        (click)="saveModel(b)">ذخیره</button>
+                      <button mat-raised-button color="primary"
+                        style="margin-top: o20px;margin-right: 10px;width: 80px;height: 40px;"
+                        (click)="cancelModel()">انصراف</button>
+                    </div>
+                    <mat-expansion-panel *ngFor="let m of b.models; let k=index">
+                      <mat-expansion-panel-header>
+                        <mat-panel-title>
+                          <div class="title">
+                            {{m.model}}
+                          </div>
+                          <div class="actions" style="margin-right: 20px;">
+                            <i class="fa fa-edit" style="color:blue ;margin:10px ;cursor: pointer;"
+                              (click)="editModel(m)"></i>
+                            <i class="fa fa-minus-square" style="color:red ;margin:10px ;cursor: pointer;"
+                              (click)="deleteModel(m)"></i>
+                          </div>
+                        </mat-panel-title>
+                      </mat-expansion-panel-header>
+
+                    </mat-expansion-panel>
+                  </div>
+                </div>
+
+              </mat-expansion-panel>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </div>
+</body>

@@ -220,20 +220,18 @@ export class ApiServicesService {
       })
     })
   }
-  createMemberGroup(token:string,groupname:string,per:any): Observable<any>
-  {
-    const body = { groupname: groupname,permissions:per }
-    return this.http.post(this.baseurl + '/personal/createmembergroup/',body, {
+  createMemberGroup(token: string, groupname: string, per: any): Observable<any> {
+    const body = { groupname: groupname, permissions: per }
+    return this.http.post(this.baseurl + '/personal/createmembergroup/', body, {
       headers: new HttpHeaders({
         'Authorization': 'Token  ' + token,
         'Content-Type': 'application/json',
       })
     })
   }
-  editMemberGroup(token:string,groupid:string, groupname:string,per:any): Observable<any>
-  {
-    const body = { groupname: groupname,groupid:groupid,permissions:per }
-    return this.http.post(this.baseurl + '/personal/editmembergroup/',body, {
+  editMemberGroup(token: string, groupid: string, groupname: string, per: any): Observable<any> {
+    const body = { groupname: groupname, groupid: groupid, permissions: per }
+    return this.http.post(this.baseurl + '/personal/editmembergroup/', body, {
       headers: new HttpHeaders({
         'Authorization': 'Token  ' + token,
         'Content-Type': 'application/json',
@@ -258,8 +256,8 @@ export class ApiServicesService {
       })
     })
   }
-  createcounty(token: string, coname: string,pid:string): Observable<any> {
-    const body = { countyname: coname,provinceid:pid }
+  createcounty(token: string, coname: string, pid: string): Observable<any> {
+    const body = { countyname: coname, provinceid: pid }
     return this.http.post(this.baseurl + '/baseinfo/createcounty/', body, {
       headers: new HttpHeaders({
         'Authorization': 'Token  ' + token,
@@ -267,8 +265,8 @@ export class ApiServicesService {
       })
     })
   }
-  createcity(token: string, cname: string,coid:string): Observable<any> {
-    const body = { cityname: cname,countyid:coid }
+  createcity(token: string, cname: string, coid: string): Observable<any> {
+    const body = { cityname: cname, countyid: coid }
     return this.http.post(this.baseurl + '/baseinfo/createcity/', body, {
       headers: new HttpHeaders({
         'Authorization': 'Token  ' + token,
@@ -276,8 +274,8 @@ export class ApiServicesService {
       })
     })
   }
-  createregion(token: string, rname: string,cid:string): Observable<any> {
-    const body = { regionname: rname,cityid:cid }
+  createregion(token: string, rname: string, cid: string): Observable<any> {
+    const body = { regionname: rname, cityid: cid }
     return this.http.post(this.baseurl + '/baseinfo/createregion/', body, {
       headers: new HttpHeaders({
         'Authorization': 'Token  ' + token,
@@ -285,8 +283,8 @@ export class ApiServicesService {
       })
     })
   }
-  createneighbourhood(token: string, nname: string,rid:string): Observable<any> {
-    const body = { neighbourhoodname: nname,regionid:rid }
+  createneighbourhood(token: string, nname: string, rid: string): Observable<any> {
+    const body = { neighbourhoodname: nname, regionid: rid }
     return this.http.post(this.baseurl + '/baseinfo/createneighbourhood/', body, {
       headers: new HttpHeaders({
         'Authorization': 'Token  ' + token,
@@ -294,8 +292,8 @@ export class ApiServicesService {
       })
     })
   }
-  editprovince(token: string, pname: string,pid:string): Observable<any> {
-    const body = { pname: pname,pid:pid }
+  editprovince(token: string, pname: string, pid: string): Observable<any> {
+    const body = { pname: pname, pid: pid }
     return this.http.post(this.baseurl + '/baseinfo/editprovince/', body, {
       headers: new HttpHeaders({
         'Authorization': 'Token  ' + token,
@@ -303,8 +301,8 @@ export class ApiServicesService {
       })
     })
   }
-  editcounty(token: string, coname: string,coid:string): Observable<any> {
-    const body = { coname: coname,coid:coid }
+  editcounty(token: string, coname: string, coid: string): Observable<any> {
+    const body = { coname: coname, coid: coid }
     return this.http.post(this.baseurl + '/baseinfo/editcounty/', body, {
       headers: new HttpHeaders({
         'Authorization': 'Token  ' + token,
@@ -312,8 +310,8 @@ export class ApiServicesService {
       })
     })
   }
-  editcity(token: string, cname: string,cid:string): Observable<any> {
-    const body = { cname: cname,cid:cid }
+  editcity(token: string, cname: string, cid: string): Observable<any> {
+    const body = { cname: cname, cid: cid }
     return this.http.post(this.baseurl + '/baseinfo/editcity/', body, {
       headers: new HttpHeaders({
         'Authorization': 'Token  ' + token,
@@ -321,8 +319,8 @@ export class ApiServicesService {
       })
     })
   }
-  editregion(token: string, rname: string,rid:string): Observable<any> {
-    const body = { rname: rname,rid:rid }
+  editregion(token: string, rname: string, rid: string): Observable<any> {
+    const body = { rname: rname, rid: rid }
     return this.http.post(this.baseurl + '/baseinfo/editregion/', body, {
       headers: new HttpHeaders({
         'Authorization': 'Token  ' + token,
@@ -330,8 +328,8 @@ export class ApiServicesService {
       })
     })
   }
-  editneighbourhood(token: string, nname: string,nid:string): Observable<any> {
-    const body = { nname: nname,nid:nid }
+  editneighbourhood(token: string, nname: string, nid: string): Observable<any> {
+    const body = { nname: nname, nid: nid }
     return this.http.post(this.baseurl + '/baseinfo/editneighbourhood/', body, {
       headers: new HttpHeaders({
         'Authorization': 'Token  ' + token,
@@ -339,8 +337,8 @@ export class ApiServicesService {
       })
     })
   }
-  deleteprovince(token: string,pid:string): Observable<any> {
-    const body = { pid:pid }
+  deleteprovince(token: string, pid: string): Observable<any> {
+    const body = { pid: pid }
     return this.http.post(this.baseurl + '/baseinfo/deleteprovince/', body, {
       headers: new HttpHeaders({
         'Authorization': 'Token  ' + token,
@@ -348,8 +346,8 @@ export class ApiServicesService {
       })
     })
   }
-  deletecounty(token: string, coid:string): Observable<any> {
-    const body = { coid:coid }
+  deletecounty(token: string, coid: string): Observable<any> {
+    const body = { coid: coid }
     return this.http.post(this.baseurl + '/baseinfo/deletecounty/', body, {
       headers: new HttpHeaders({
         'Authorization': 'Token  ' + token,
@@ -357,8 +355,8 @@ export class ApiServicesService {
       })
     })
   }
-  deletecity(token: string, cid:string): Observable<any> {
-    const body = { cid:cid }
+  deletecity(token: string, cid: string): Observable<any> {
+    const body = { cid: cid }
     return this.http.post(this.baseurl + '/baseinfo/deletecity/', body, {
       headers: new HttpHeaders({
         'Authorization': 'Token  ' + token,
@@ -366,8 +364,8 @@ export class ApiServicesService {
       })
     })
   }
-  deleteregion(token: string, rid:string): Observable<any> {
-    const body = {rid:rid }
+  deleteregion(token: string, rid: string): Observable<any> {
+    const body = { rid: rid }
     return this.http.post(this.baseurl + '/baseinfo/deleteregion/', body, {
       headers: new HttpHeaders({
         'Authorization': 'Token  ' + token,
@@ -375,9 +373,133 @@ export class ApiServicesService {
       })
     })
   }
-  deleteneighbourhood(token: string, nid:string): Observable<any> {
-    const body = {nid:nid }
+  deleteneighbourhood(token: string, nid: string): Observable<any> {
+    const body = { nid: nid }
     return this.http.post(this.baseurl + '/baseinfo/deleteneighbourhood/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    })
+  }
+  createAppliance(token: string, aname: string): Observable<any> {
+    const body = { appliancename: aname }
+    return this.http.post(this.baseurl + '/baseinfo/createappliance/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    })
+  }
+  editAppliance(token: string, aname: string, aid: string): Observable<any> {
+    const body = { aname: aname, aid: aid }
+    return this.http.post(this.baseurl + '/baseinfo/editappliance/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    })
+  }
+  deleteAppliance(token: string, aid: string): Observable<any> {
+    const body = { aid: aid }
+    return this.http.post(this.baseurl + '/baseinfo/deleteappliance/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    })
+  }
+  createBrand(token: string, bname: string, bid: string): Observable<any> {
+    const body = { bname: bname, bid: bid }
+    return this.http.post(this.baseurl + '/baseinfo/createbrand/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    })
+  }
+  editBrand(token: string, bname: string, bid: string): Observable<any> {
+    const body = { bname: bname, bid: bid }
+    return this.http.post(this.baseurl + '/baseinfo/editbrand/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    })
+  }
+  deleteBrand(token: string, bid: string): Observable<any> {
+    const body = { bid: bid }
+    return this.http.post(this.baseurl + '/baseinfo/deletebrand/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    })
+  }
+  createModel(token: string, mname: string, mid: string): Observable<any> {
+    const body = { mname: mname, mid: mid }
+    return this.http.post(this.baseurl + '/baseinfo/createmodel/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    })
+  }
+  editModel(token: string, mname: string, mid: string): Observable<any> {
+    const body = { mname: mname, mid: mid }
+    return this.http.post(this.baseurl + '/baseinfo/editmodel/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    })
+  }
+  deleteModel(token: string, mid: string): Observable<any> {
+    const body = { mid: mid }
+    return this.http.post(this.baseurl + '/baseinfo/deletemodel/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    })
+  }
+  createappliancecategoryproblem(token: string, appcat: string, ptitle: string, pdes: string, pkind: string, lp: string, hp: string): Observable<any> {
+    const body = {
+      appliance: appcat,
+      title: ptitle,
+      description: pdes,
+      kind: pkind,
+      lowprice: lp,
+      highprice: hp
+    }
+    return this.http.post(this.baseurl + '/baseinfo/createappliancecategoryproblem/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    })
+  }
+  editappliancecategoryproblem(token: string, id: string, ptitle: string, pdes: string, pkind: string, lp: string, hp: string): Observable<any> {
+    const body = {
+      id: id,
+      problemTitle: ptitle,
+      problemDescription: pdes,
+      problemKind: pkind,
+      lowPrice: lp,
+      highPrice: hp
+    }
+    return this.http.post(this.baseurl + '/baseinfo/editappliancecategoryproblem/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    })
+  }
+  deleteapplianceaategoryproblem(token: string, pid: string): Observable<any> {
+    const body = {
+      id: pid,
+    }
+    return this.http.post(this.baseurl + '/baseinfo/deleteapplianceaategoryproblem/', body, {
       headers: new HttpHeaders({
         'Authorization': 'Token  ' + token,
         'Content-Type': 'application/json',

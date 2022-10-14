@@ -18,6 +18,10 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { UsergroupComponent } from './usergroup/usergroup.component';
 import {CreateUserGroupDialog} from './usergroup/usergroup.component';
 import {EditItemDialog} from './baseinfo/baseinfo.component';
+import {EditApplianceItemDialog}from './appliencemanagement/appliencemanagement.component';
+import {CreateProblemDialog } from './appliencemanagement/appliencemanagement.component';
+import lottie from 'lottie-web';
+import { defineLordIconElement } from 'lord-icon-element';
 const appRoutes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   {
@@ -31,6 +35,10 @@ const appRoutes: Routes = [
   {
     path: 'geo',
     component: BaseinfoComponent,
+  },
+  {
+    path: 'appliance',
+    component: AppliencemanagementComponent,
   },
 ];
 @NgModule({
@@ -48,6 +56,8 @@ const appRoutes: Routes = [
     RouterModule.forChild(appRoutes)
   ],
   declarations: [
+    CreateProblemDialog,
+    EditApplianceItemDialog,
     EditItemDialog,
     CreateUserGroupDialog,
     UsergroupComponent,
@@ -62,6 +72,10 @@ const appRoutes: Routes = [
     UsermanagementComponent,
     CreateUserDialog,
   ],
-
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class PortalModule { }
+export class PortalModule {
+  constructor() {
+    defineLordIconElement(lottie.loadAnimation);
+  }
+ }
