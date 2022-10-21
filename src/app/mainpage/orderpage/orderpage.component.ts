@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, assertPlatform } from '@angular/core';
+import { Component, ViewChild, OnInit, assertPlatform, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { StepperOrientation } from '@angular/material/stepper';
@@ -36,6 +36,7 @@ declare var $: any;
   ],
 })
 export class OrderpageComponent {
+  @Output() newOrderEvent = new EventEmitter<Order>();
   // timenow:{hour: number, minute: number}={hour: 12, minute: 12};
   mapEnable: boolean = false;
   maplat: number = 51.367918;
@@ -153,24 +154,7 @@ export class OrderpageComponent {
         console.log(err)
       }
     )
-    // this.applience.push({ ID: 1, title: "ساید بای ساید", pic: "../../../assets/images/devices/refrigerator-1.png", desc: "", brands: [{ ID: 1, brand: "Bosch", brandpic: "../../../assets/images/brands/bosch.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 4, brand: "AEG", brandpic: "../../../assets/images/brands/aeg.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 5, brand: "Samsung", brandpic: "../../../assets/images/brands/samsung.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }] });
-    // this.applience.push({ ID: 2, title: "لباس شویی", pic: "../../../assets/images/devices/01.png", desc: "", brands: [{ ID: 1, brand: "Bosch", brandpic: "../../../assets/images/brands/bosch.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 4, brand: "AEG", brandpic: "../../../assets/images/brands/aeg.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 7, brand: "پارس خزر", brandpic: "../../../assets/images/brands/pars.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }] });
-    // this.applience.push({ ID: 3, title: "جارو برقی", pic: "../../../assets/images/devices/washing-machine-2.png", desc: "", brands: [{ ID: 1, brand: "Bosch", brandpic: "../../../assets/images/brands/bosch.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 5, brand: "Samsung", brandpic: "../../../assets/images/brands/samsung.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }] });
-    // this.applience.push({ ID: 4, title: "ظرفشویی", pic: "../../../assets/images/devices/dish-washer.png", desc: "", brands: [{ ID: 1, brand: "Bosch", brandpic: "../../../assets/images/brands/bosch.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 4, brand: "AEG", brandpic: "../../../assets/images/brands/aeg.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 5, brand: "Samsung", brandpic: "../../../assets/images/brands/samsung.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }] });
-    // this.applience.push({ ID: 5, title: "یخچال", pic: "../../../assets/images/devices/washing-machine-1.png", desc: "", brands: [{ ID: 2, brand: "هایر", brandpic: "../../../assets/images/brands/haier.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 4, brand: "AEG", brandpic: "../../../assets/images/brands/aeg.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 5, brand: "Samsung", brandpic: "../../../assets/images/brands/samsung.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }] });
-    // this.applience.push({ ID: 6, title: "ماکروویر", pic: "../../../assets/images/devices/washing-machine-10.png", desc: "", brands: [{ ID: 3, brand: "miele", brandpic: "../../../assets/images/brands/miele.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 4, brand: "AEG", brandpic: "../../../assets/images/brands/aeg.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 5, brand: "Samsung", brandpic: "../../../assets/images/brands/samsung.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }] });
-    // this.applience.push({ ID: 7, title: "کولر گازی", pic: "../../../assets/images/devices/fan-2.png", desc: "", brands: [{ ID: 1, brand: "Bosch", brandpic: "../../../assets/images/brands/bosch.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 4, brand: "AEG", brandpic: "../../../assets/images/brands/aeg.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 5, brand: "Samsung", brandpic: "../../../assets/images/brands/samsung.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }] });
-    // this.applience.push({ ID: 8, title: "تصفیه آب", pic: "../../../assets/images/devices/icon01-2.png", desc: "", brands: [{ ID: 1, brand: "Bosch", brandpic: "../../../assets/images/brands/bosch.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 6, brand: "LG", brandpic: "../../../assets/images/brands/lg.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }, { ID: 5, brand: "Samsung", brandpic: "../../../assets/images/brands/samsung.png", models: [{ ID: 1, model: "1", description: "" }, { ID: 2, model: "2", description: "" }, { ID: 3, model: "3", description: "" }] }] });
-    // this.applience = this.applience.slice(0);
-    // this.subtasks = [
-    //   { ID: 1, title: 'نصب اولیه گارانتی', description: '', checked: false, lowprice: '1000000', highprice: '2000000' },
-    //   { ID: 2, title: 'نصب مجدد و آموزش', description: '', checked: false, lowprice: '2000000', highprice: '3000000' },
-    //   { ID: 3, title: 'تایمر شستشو خراب', description: '', checked: false, lowprice: '1500000', highprice: '2500000' },
-    //   { ID: 4, title: 'وان شستشو شکسته', description: '', checked: false, lowprice: '100000', highprice: '200000' },
-    //   { ID: 5, title: 'آب را تخلیه نمیکند', description: '', checked: false, lowprice: '1800000', highprice: '2800000' },
-    //   { ID: 6, title: 'روشن نمیشود', checked: false, description: '', lowprice: '1100000', highprice: '1200000' },
-    //   { ID: 7, title: 'سایر', checked: false, description: '', lowprice: 'نامشخص', highprice: 'نامشخص' },
-    // ]
+   
     this.yesterday = Jalali.parse(Jalali.now().add(-1, 'day').toString()).valueOf()
     this.initdateforcal(Jalali.now().toString().substring(0, 10))
     this.hasguarantee = false;
@@ -462,6 +446,7 @@ export class OrderpageComponent {
     }
   }
   registerOrder() {
+    this.newOrderEvent.emit(this.order);
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
         confirmButton: 'btn btn-success',

@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, Input } from '@angular/core';
 import { IDatepickerTheme } from 'ng-persian-datepicker';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AnimationStyleMetadata } from '@angular/animations';
@@ -7,7 +7,7 @@ import { hide } from '@popperjs/core';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { faListSquares } from '@fortawesome/free-solid-svg-icons';
-import { CustomerProfile, Address, Mobile, Telephone, Counties, Province, Cities, Regions,Nighbourhoods } from '../profile';
+import { CustomerProfile, Address, Mobile, Telephone, Counties, Province, Cities, Regions, Nighbourhoods } from '../profile';
 import { ApiServicesService } from 'src/app/api-services.service';
 import { CookieOptions, CookieService } from 'ngx-cookie-service';
 import { GlobalvarService } from 'src/app/globalvar.service';
@@ -26,7 +26,7 @@ export class CustomerProfileComponent implements OnInit {
   };
 
   @ViewChild("p", { static: false }) popover1: NgbPopover;
-
+  @Input() showBanner: boolean;
   constructor(
     private router: Router,
     private globalVar: GlobalvarService,
@@ -34,7 +34,7 @@ export class CustomerProfileComponent implements OnInit {
     private _snackBar: MatSnackBar,
     private api: ApiServicesService,
     private tokencookie: CookieService) { }
-
+  showbanner: boolean = true;
   addressForm: FormGroup;
   form1!: FormGroup;
   form2!: FormGroup;
@@ -56,8 +56,8 @@ export class CustomerProfileComponent implements OnInit {
   province: Province[] = []
   shahrestan: Counties[] = []
   city: Cities[] = []
-  region: Regions[]=[];
-  neighbourhood:Nighbourhoods[]=[]
+  region: Regions[] = [];
+  neighbourhood: Nighbourhoods[] = []
 
 
   disabled: boolean = true;
@@ -66,10 +66,10 @@ export class CustomerProfileComponent implements OnInit {
   nationalid = new FormControl('');
   nationalid1: string = "";
   birthdate: string = "";
-  mapEnable:boolean=true;
+  mapEnable: boolean = true;
   fullAddress: Address[];
 
- 
+
   mainstreet: string = "";
   substreet: string = "";
   lane: string = "";
@@ -80,7 +80,7 @@ export class CustomerProfileComponent implements OnInit {
   address: Address[] = []
   addresses: { text: string, isMainAddress: boolean, maplong: number, maplat: number }[] = []
   maplat: number = 51.367918;
-    maplong: number = 35.712706;
+  maplong: number = 35.712706;
   curentCustomer: CustomerProfile;
   openSnackBar(message: string, action: string, alertkind: string, showtime: number, hp?: MatSnackBarHorizontalPosition, vp?: MatSnackBarVerticalPosition) {
     this._snackBar.open(message, action, {
@@ -94,13 +94,14 @@ export class CustomerProfileComponent implements OnInit {
   userid: any;
   name: any;
   ngOnInit() {
-    
+    if(!this.showBanner)
+      this.showbanner=false;
     this.name = new FormControl('');
     var token = this.tokencookie.get('T')
     this.api.getRegins(token).subscribe(
       res => {
         console.log(res)
-        this.province=res
+        this.province = res
         this.userid = localStorage.getItem('userID');
         this.api.getCustomersDetails(token, this.userid!).subscribe(
           res => {
@@ -113,8 +114,8 @@ export class CustomerProfileComponent implements OnInit {
               var addtext = ""
               if (this.address[i].province.provinceName != "")
                 addtext += "استان: " + this.address[i].province.provinceName;
-             
-              if (this.address[i].province.counties[0].countyName!= "")
+
+              if (this.address[i].province.counties[0].countyName != "")
                 addtext += ", شهرستان: " + this.address[i].province.counties[0].countyName;
 
               if (this.address[i].province.counties[0].cities[0].cityName != "")
@@ -173,33 +174,32 @@ export class CustomerProfileComponent implements OnInit {
     this.lastname.disable();
     this.firstname.disable();
   }
-  provincechange(event:any)
-  {
+  provincechange(event: any) {
     console.log(event)
   }
-  selectprovince(event:any) {
+  selectprovince(event: any) {
     console.log(event)
-    this.shahrestan=event.value.counties;
-    this.city=[]
-    this.region=[]
-    this.neighbourhood=[]
+    this.shahrestan = event.value.counties;
+    this.city = []
+    this.region = []
+    this.neighbourhood = []
   }
-  selectshahrestan(event:any) {
+  selectshahrestan(event: any) {
     console.log(event)
-    this.city=event.value.cities;
-    this.region=[]
-    this.neighbourhood=[]
+    this.city = event.value.cities;
+    this.region = []
+    this.neighbourhood = []
   }
-  selectcity(event:any) {
+  selectcity(event: any) {
     console.log(event)
-    this.region=event.value.regions;
-    this.neighbourhood=[]
+    this.region = event.value.regions;
+    this.neighbourhood = []
   }
-  selectregion(event:any){
+  selectregion(event: any) {
     console.log(event)
-    this.neighbourhood=event.value.neighbourhoods;
+    this.neighbourhood = event.value.neighbourhoods;
   }
-  selectneighbour(event:any){
+  selectneighbour(event: any) {
     console.log(event)
   }
   showmap() {

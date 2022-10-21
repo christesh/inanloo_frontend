@@ -20,7 +20,7 @@ import { MapComponent } from './map/map.component';
 import { NgxMapboxGLModule } from 'mapir-angular-component';
 import { ProfilesComponent } from './profiles/profiles.component';
 import { HomeComponent } from './home/home.component';
-import {PROFILE_ROUTES} from './profiles/profiles.routing'
+import { PROFILE_ROUTES } from './profiles/profiles.routing'
 import { TestComponent } from './test/test.component';
 import { CustomerProfileComponent } from './profiles/customerProfile/customerProfile.component';
 import { TechnicianProfileComponent } from './profiles/technicianProfile/technicianProfile.component';
@@ -32,18 +32,21 @@ import { EditaddressComponent } from './editaddress/editaddress.component';
 const appRoutes: Routes = [
   // { path:'',component:HomeComponent },
   { path: 'order', component: OrderpageComponent },
-  { path: 'profile', component: ProfilesComponent, children:[
-    {
-      path:'customer', component:CustomerProfileComponent
-    },
-    {
-      path:'technician', component: TechnicianProfileComponent
-    }
-  ]},
+  {
+    path: 'profile', component: ProfilesComponent, children: [
+      {
+        path: 'customer', component: CustomerProfileComponent
+      },
+      {
+        path: 'technician', component: TechnicianProfileComponent
+      }
+    ]
+  },
   // { path: '', component: ProfilesComponent, data: { title: 'content Views' }, children: PROFILE_ROUTES },
- 
- ];
+
+];
 @NgModule({
+  
   imports: [
     MatInputModule,
     MatFormFieldModule,
@@ -71,6 +74,10 @@ const appRoutes: Routes = [
     TestComponent,
     CustomerProfileComponent,
     TechnicianProfileComponent,
+  ],
+  exports: [
+    OrderpageComponent,
+    CustomerProfileComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

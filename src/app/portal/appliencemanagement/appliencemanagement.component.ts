@@ -20,6 +20,9 @@ export interface DialogData {
   styleUrls: ['./appliencemanagement.component.css']
 })
 export class AppliencemanagementComponent implements OnInit {
+  image: File[] = [];
+  urls: any = [];
+  brandurls: any = [];
   applience: Applience[] = []
   createAppliancehow: boolean = false;
   createBrandshow: boolean = false;
@@ -31,7 +34,9 @@ export class AppliencemanagementComponent implements OnInit {
   province: Province[] = [];
   hasPictuer: boolean = false;
   applianceTablevalues: LocalDataSource[] = [];
-  applianceTableSetting: any;
+  brandTablevalues: LocalDataSource[][] = [];
+  problemTableSetting: any;
+  picbaseurl = "E:/home/mersagro/public_html/media/"
   applianceForm = new FormGroup({     // {5}
     appllianceName: new FormControl('', Validators.required),
     brandName: new FormControl('', Validators.required),
@@ -45,7 +50,7 @@ export class AppliencemanagementComponent implements OnInit {
     public createUser: MatDialog,
   ) { }
   ngOnInit() {
-    this.applianceTableSetting = {
+    this.problemTableSetting = {
       editable: false,
       pager: {
         display: true,
@@ -86,35 +91,28 @@ export class AppliencemanagementComponent implements OnInit {
   }
   FillTable() {
     var token = this.tokencookies.get('T')
+
     this.api.getAllApplience(token).subscribe(
       res => {
-        this.applience = res
+        this.applience = res;
 
-        console.log(this.applience)
-        this.subtasks = [];
-        var token = this.tokencookies.get('T');
-        for (let j = 0; j < this.applience.length; j++) {
-          var app = this.applience[j]['ID'].toString();
-          var brand = "";
-          var model = "";
-          this.api.getProblems(token, app, brand, model).subscribe(
-            res => {
-              this.subtasks = []
-
-              for (let i = 0; i < res.length; i++) {
-                this.subtasks.push({ ID: res[i]['id'], title: res[i]['problemTitle'], description: res[i]['problemDescription'], checked: false, lowprice: res[i]['lowPrice'], highprice: res[i]['highPrice'] })
-                this.urls.push(res[i]['pic'])
-              }
-              var atv = new LocalDataSource(this.subtasks)
-              this.applianceTablevalues.push(atv)
-              console.log(this.applianceTablevalues)
+        for (let i = 0; i < res.length; i++) {
+          this.applience[i].pic = this.picbaseurl + this.applience[i].pic
+          var appproblem = []
+          for (let j = 0; j < res[i]['appCatProblem'].length; j++) {
+            appproblem.push({ ID: res[i]['appCatProblem'][j]['id'], title: res[i]['appCatProblem'][j]['problemTitle'], description: res[i]['appCatProblem'][j]['problemDescription'], checked: false, lowprice: res[i]['appCatProblem'][j]['lowPrice'], highprice: res[i]['appCatProblem'][j]['highPrice'] })
+          }
+          this.applience[i].appProblems = new LocalDataSource(appproblem)
+          for (let k = 0; k < res[i]['brands'].length; k++) {
+            var brand = res[i]['brands'][k];
+            var barndproblem = []
+            for (let l = 0; l < brand['brandProblem'].length; l++) {
+              barndproblem.push({ ID: brand['brandProblem'][l]['id'], title: brand['brandProblem'][l]['problemTitle'], description: brand['brandProblem'][l]['problemDescription'], checked: false, lowprice: brand['brandProblem'][l]['lowPrice'], highprice: brand['brandProblem'][l]['highPrice'] })
             }
-            ,
-            err => {
-              console.log(err)
-            }
-          )
+            this.applience[i].brands[k].brandProblems = new LocalDataSource(barndproblem)
+          }
         }
+
       },
       err => {
         console.log(err)
@@ -122,7 +120,6 @@ export class AppliencemanagementComponent implements OnInit {
 
     )
   }
-
   isFieldInvalid(field: string) { // {6}
     return (
       (!this.applianceForm.get(field)?.valid && this.applianceForm.get(field)?.touched) ||
@@ -152,7 +149,7 @@ export class AppliencemanagementComponent implements OnInit {
     this.createAppliancehow = false;
   }
   editAppliance(a: any) {
-    var data = { id: a.id, titleName: a.provinceName, titr: "ویرایش لوازم خانگی", itemName: "لوازم خانگی" }
+    var data = { id: a.ID, titleName: a.title, titr: "ویرایش لوازم خانگی", itemName: "لوازم خانگی" }
     const dialogRef = this.createUser.open(EditApplianceItemDialog, {
       width: '400px',
       height: 'auto',
@@ -214,7 +211,7 @@ export class AppliencemanagementComponent implements OnInit {
       }
     })
   }
-  creaatAppProblem(app: any,tableIndex:any) {
+  creaatAppProblem(app: any, tableIndex: any) {
     var data = { appid: app.ID, problemId: '', problemTitle: '', lowPrice: '', highPrice: '', description: '', titleOfDialog: "ایجاد مشکل", buttonTitle: "ایجاد" }
     const dialogRef = this.createUser.open(CreateProblemDialog, {
       width: '600px',
@@ -224,30 +221,76 @@ export class AppliencemanagementComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result.btn == "save") {
-        var appproblem = result.item       
-        this.applianceTablevalues[tableIndex].append({
-          ID: result.id, title: appproblem.problemTitle.value,
-          description: appproblem.description.value, checked: false, lowprice: appproblem.lowPrice.value, highprice: appproblem.highPrice.value
-        })
+        var appproblem = result.item
+        var ptitle = appproblem.problemTitle.value?.toString();
+        var lp = appproblem.lowPrice.value?.toString();
+        var hp = appproblem.highPrice.value?.toString();
+        var pdes = appproblem.description.value?.toString();
+        var appid = app.ID;
+        var token = this.tokencookies.get('T')
+        this.api.createappliancecategoryproblem(token, appid!, ptitle!, pdes!, "", lp!, hp!).subscribe(
+          res => {
+            console.log(res)
+            Swal.fire({
+              title: 'ایجاد مشکل جدید',
+              text: '!با موفقیت انجام شد',
+              icon: 'success',
+              confirmButtonText: '!متوجه شدم',
+            }
+            )
+            this.applience[tableIndex].appProblems.append({
+              ID: result.id, title: appproblem.problemTitle.value,
+              description: appproblem.description.value, checked: false, lowprice: appproblem.lowPrice.value, highprice: appproblem.highPrice.value
+            })
+          },
+          err => {
+            console.log(err)
+          }
+        )
       }
     });
   }
-  appedit(event: any,tableIndex:any) {
+  appedit(event: any, tableIndex: any) {
     console.log(event.data)
     switch (event.action) {
       case 'editrecord':
-        // console.log(event)
-        // var data = { id: event.data.id, firstname: event.data.f_name, lastname: event.data.l_name, nationaid: event.data.national_id, mobile: event.data.mobile, kind: 'edit' };
-        // const dialogRef = this.createUser.open(CreateUserDialog, {
-        //   width: '700px',
-        //   data: { userdata: data },
-        //   disableClose: true
-        // });
-        // dialogRef.afterClosed().subscribe(result => {
-        //   if (result.btn == "save") {
-        //     this.FillTable();
-        //   }
-        // });
+        var data = { appid: tableIndex, problemId: event.data.ID, problemTitle: event.data.title, lowPrice: event.data.lowprice, highPrice: event.data.highprice, description: event.data.description, titleOfDialog: "ویرایش مشکل", buttonTitle: "ذخیره" }
+        const dialogRef = this.createUser.open(CreateProblemDialog, {
+          width: '600px',
+          height: 'auto',
+          data: { problemData: data },
+          disableClose: true
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          if (result.btn == "edit") {
+            var appproblem = result.item
+            var ptitle = appproblem.problemTitle.value?.toString();
+            var lp = appproblem.lowPrice.value?.toString();
+            var hp = appproblem.highPrice.value?.toString();
+            var pdes = appproblem.description.value?.toString();
+            var pid = event.data.ID;
+            var token = this.tokencookies.get('T')
+            this.api.editappliancecategoryproblem(token, pid, ptitle!, pdes!, "", lp!, hp!).subscribe(
+              res => {
+                var appproblemvalue: any[] = [];
+                appproblemvalue.push({
+                  ID: result.id, title: appproblem.problemTitle.value,
+                  description: appproblem.description.value, checked: false, lowprice: appproblem.lowPrice.value, highprice: appproblem.highPrice.value
+                })
+                this.applience[tableIndex].appProblems.update(event.data, appproblemvalue[0])
+                Swal.fire({
+                  title: 'ویرایش مشکل',
+                  text: '!با موفقیت انجام شد',
+                  icon: 'success',
+                  confirmButtonText: '!متوجه شدم',
+                }
+                )
+              },
+              err => {
+                console.log(err)
+              });
+          }
+        });
         break;
       case 'deleterecord':
         var name = event.data.title
@@ -269,11 +312,11 @@ export class AppliencemanagementComponent implements OnInit {
           cancelButtonText: 'نه، بی خیال'
         }).then((result) => {
           if (result.isConfirmed) {
-            var token=this.tokencookies.get('T')
-            this.api.deleteapplianceaategoryproblem(token, event.data.ID).subscribe(
+            var token = this.tokencookies.get('T')
+            this.api.deleteappliancecategoryproblem(token, event.data.ID).subscribe(
               res => {
                 console.log(res)
-                this.applianceTablevalues[tableIndex].remove(event.data)
+                this.applience[tableIndex].appProblems.remove(event.data)
                 Swal.fire({
                   title: name,
                   text: '!با موفقیت حذف شد',
@@ -281,7 +324,6 @@ export class AppliencemanagementComponent implements OnInit {
                   confirmButtonText: '!متوجه شدم',
                 }
                 )
-                // this.FillTable()
               },
               err => {
                 console.log(err)
@@ -289,13 +331,12 @@ export class AppliencemanagementComponent implements OnInit {
             )
           }
         })
-
-
         break;
     }
   }
   onSelectFile(event: any, appindex: any) {
     console.log(appindex);
+
     if (event.target.files && event.target.files[0]) {
       var filesAmount = event.target.files.length;
       for (let i = 0; i < filesAmount; i++) {
@@ -309,8 +350,6 @@ export class AppliencemanagementComponent implements OnInit {
       }
     }
   }
-  image: File[] = [];
-  urls: any = [];
   deleteimg(url: any, appIndex: any) {
     if (url != null) {
 
@@ -348,6 +387,9 @@ export class AppliencemanagementComponent implements OnInit {
         }
       })
     }
+  }
+  openapp(id: number) {
+
   }
   ////Brand///
   createBrand() {
@@ -434,8 +476,194 @@ export class AppliencemanagementComponent implements OnInit {
       }
     })
   }
+  creaatBrandProblem(brand: any, tableIndex: any, brandindex: any) {
+    var data = { appid: brand.ID, problemId: '', problemTitle: '', lowPrice: '', highPrice: '', description: '', titleOfDialog: "ایجاد مشکل", buttonTitle: "ایجاد" }
+    const dialogRef = this.createUser.open(CreateProblemDialog, {
+      width: '600px',
+      height: 'auto',
+      data: { problemData: data },
+      disableClose: true
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result.btn == "save") {
+
+        var appproblem = result.item
+        var ptitle = appproblem.problemTitle.value?.toString();
+        var lp = appproblem.lowPrice.value?.toString();
+        var hp = appproblem.highPrice.value?.toString();
+        var pdes = appproblem.description.value?.toString();
+        var appid = brand.ID;
+        var token = this.tokencookies.get('T')
+        this.api.createbrandproblem(token, appid!, ptitle!, pdes!, "", lp!, hp!).subscribe(
+          res => {
+            console.log(res)
+            Swal.fire({
+              title: 'ایجاد مشکل جدید',
+              text: '!با موفقیت انجام شد',
+              icon: 'success',
+              confirmButtonText: '!متوجه شدم',
+            }
+            )
+            this.applience[tableIndex].brands[brandindex].brandProblems.append({
+              ID: result.id, title: appproblem.problemTitle.value,
+              description: appproblem.description.value, checked: false, lowprice: appproblem.lowPrice.value, highprice: appproblem.highPrice.value
+            })
+          },
+          err => {
+            console.log(err)
+          }
+        )
+      }
+    });
 
 
+  }
+  brandedit(event: any, tableIndex: any, brandindex: any) {
+    console.log(event.data)
+    switch (event.action) {
+      case 'editrecord':
+        var data = { appid: tableIndex, problemId: event.data.ID, problemTitle: event.data.title, lowPrice: event.data.lowprice, highPrice: event.data.highprice, description: event.data.description, titleOfDialog: "ویرایش مشکل", buttonTitle: "ذخیره" }
+        const dialogRef = this.createUser.open(CreateProblemDialog, {
+          width: '600px',
+          height: 'auto',
+          data: { problemData: data },
+          disableClose: true
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          if (result.btn == "edit") {
+            var appproblem = result.item
+            var ptitle = appproblem.problemTitle.value?.toString();
+            var lp = appproblem.lowPrice.value?.toString();
+            var hp = appproblem.highPrice.value?.toString();
+            var pdes = appproblem.description.value?.toString();
+            var pid = event.data.ID;
+            var token = this.tokencookies.get('T')
+            this.api.editbrandproblem(token, pid, ptitle!, pdes!, "", lp!, hp!).subscribe(
+              res => {
+                var appproblemvalue: any[] = [];
+                appproblemvalue.push({
+                  ID: result.id, title: appproblem.problemTitle.value,
+                  description: appproblem.description.value, checked: false, lowprice: appproblem.lowPrice.value, highprice: appproblem.highPrice.value
+                })
+                this.applience[tableIndex].brands[brandindex].brandProblems.update(event.data, appproblemvalue[0])
+                Swal.fire({
+                  title: 'ویرایش مشکل',
+                  text: '!با موفقیت انجام شد',
+                  icon: 'success',
+                  confirmButtonText: '!متوجه شدم',
+                }
+                )
+              },
+              err => {
+                console.log(err)
+              });
+          }
+        });
+        break;
+      case 'deleterecord':
+        var name = event.data.title
+        const swalWithBootstrapButtons = Swal.mixin({
+          customClass: {
+            confirmButton: 'btn btn-danger',
+            cancelButton: 'btn btn-success'
+          },
+
+        })
+        swalWithBootstrapButtons.fire({
+          title: 'حذف مشکل',
+          text: "آیا از حذف " + name + " اطمینان دارید؟",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: '!آره, حذفش کن',
+          cancelButtonText: 'نه، بی خیال'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            var token = this.tokencookies.get('T')
+            this.api.deletebrandproblem(token, event.data.ID).subscribe(
+              res => {
+                console.log(res)
+                this.applience[tableIndex].brands[brandindex].brandProblems.remove(event.data)
+                Swal.fire({
+                  title: name,
+                  text: '!با موفقیت حذف شد',
+                  icon: 'success',
+                  confirmButtonText: '!متوجه شدم',
+                }
+                )
+                // this.FillTable()
+              },
+              err => {
+                console.log(err)
+              }
+            )
+          }
+        })
+
+
+        break;
+    }
+  }
+  brandonSelectFile(event: any, appindex: any, brandindex: any) {
+    console.log(event)
+    console.log(brandindex)
+    var ax = this.applience.findIndex(item => item.ID == appindex.ID)
+    if (event.target.files && event.target.files[0]) {
+      var filesAmount = event.target.files.length;
+      for (let i = 0; i < filesAmount; i++) {
+        var reader = new FileReader();
+        this.image[i] = event.target.files[i]
+        reader.onload = (event: any) => {
+          var bx = this.applience[ax].brands.findIndex(item => item.ID == brandindex.ID)
+          this.applience[ax].brands[bx].brandpic = event.target.result;
+          console.log(this.applience[ax].brands)
+        }
+        reader.readAsDataURL(event.target.files[i]);
+      }
+    }
+  }
+  deletebarndimg(url: any, appIndex: any, brandindex: any) {
+    var ax = this.applience.findIndex(item => item.ID == appIndex.ID)
+    var bx = this.applience[ax].brands.findIndex(item => item.ID == brandindex.ID)
+    if (url != null) {
+      const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: 'btn btn-danger',
+          cancelButton: 'btn btn-success'
+        },
+      })
+      swalWithBootstrapButtons.fire({
+        title: 'حذف تصویر',
+        text: "آیا از حذف تصویر «" + this.applience[ax].brands[bx].brand + "» اطمینان دارید؟",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '!آره, حذفش کن',
+        cancelButtonText: 'نه، بی خیال'
+      }).then((result) => {
+        if (result.isConfirmed) {
+
+          if (appIndex !== -1) {
+            this.applience[ax].brands[bx].brandpic = "";
+
+            this.hasPictuer = false;
+            Swal.fire({
+              title: 'تصویر ' + this.applience[ax].brands[bx].brand,
+              text: '!با موفقیت حذف شد',
+              icon: 'success',
+              confirmButtonText: '!متوجه شدم',
+            }
+            )
+
+          }
+        }
+      })
+    }
+  }
+  openbarnd(id: any, appindex: any, brandindex: any) {
+  }
   ////Model///
   createModel() {
     this.createModelshow = true;
@@ -531,10 +759,8 @@ export class AppliencemanagementComponent implements OnInit {
     );
 
   }
-  subtasks: Problem[] = [];
-  openapp(id: number) {
-    console.log(this.applience)
-  }
+
+
 
 
 }
@@ -627,32 +853,8 @@ export class CreateProblemDialog implements OnInit {
   }
   create() {
     if (this.titleOfDialog == "ایجاد مشکل") {
-      var ptitle = this.form.controls.problemTitle.value?.toString();
-      var lp = this.form.controls.lowPrice.value?.toString();
-      var hp = this.form.controls.highPrice.value?.toString();
-      var pdes = this.form.controls.description.value?.toString();
-      var appid = this.data.problemData.appid;
-      var token = this.tokencookie.get('T')
-     
-      this.api.createappliancecategoryproblem(token, appid!, ptitle!, pdes!, "", lp!, hp!).subscribe(
-        res => {
-          console.log(res)
-          var data = { btn: "save", item: this.form.controls, id: res['ID'] }
-          Swal.fire({
-            title: 'ایجاد مشکل جدید',
-            text: '!با موفقیت انجام شد',
-            icon: 'success',
-            confirmButtonText: '!متوجه شدم',
-          }
-          )
-          this.dialogRef.close(data);
-         
-        },
-        err => {
-          console.log(err)
-        }
-      )
-
+      var data = { btn: "save", item: this.form.controls }
+      this.dialogRef.close(data);
     }
     else {
       var data = { btn: "edit", item: this.form.controls }

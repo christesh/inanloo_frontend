@@ -43,3 +43,12 @@ input[type="file"] {
   cursor: pointer;
   color: white;
 }
+.custom-brand-file-upload {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  display: inline-block;
+  padding: 6px 12px;
+  background-color: #4cb53f;
+  cursor: pointer;
+  color: white;
+}

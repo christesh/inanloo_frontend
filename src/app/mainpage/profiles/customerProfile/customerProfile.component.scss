@@ -1,7 +1,7 @@
 .main.header {
     
     width: 100%;
-    min-height: 350px;
+    
     display: flex;
     flex-direction: column;
     direction: rtl;
@@ -14,6 +14,7 @@
 .banner {
     width: 100%;
     flex: 50%;
+    min-height: 300px;
     border-radius: 10px;
     background-image: url('../../../../assets/images/4565.jpg');
     background-position: center;

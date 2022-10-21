@@ -1,3 +1,5 @@
+import { LocalDataSource } from "ng2-smart-table";
+
 export class Problem{
     ID:number;
     title:string;
@@ -28,12 +30,15 @@ export class Order {
 export class Models{
     ID:number;
     model: string;
-    description: string 
-}export class Brands{
+    description: string;
+    modelProblems:LocalDataSource;
+}
+export class Brands{
     ID:number;
     brand: string;
     brandpic: string;
     description: string;
+    brandProblems:LocalDataSource;
     models:Models[]
 }
 export class Applience{
@@ -41,6 +46,7 @@ export class Applience{
     title: string;
     pic: string;
     description: string;
+    appProblems:LocalDataSource;
     brands:Brands[]
 }
 export class TimeRange{

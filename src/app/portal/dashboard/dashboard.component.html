@@ -1,15 +1,25 @@
-<div class="main header">
-  <div class="banner">
+<div class="body">
+  <div class="main header">
+    <button mat-raised-button color="accent" style="margin: 10px;width: 150px;height: 50px;" (click)="createorder()">
+      <i class="fa fa-plus-square" style="color: white;margin-left: 10px;"></i>ثبت سفارش</button>
+
   </div>
-  <div class="discription">
-   
-    <h2>توضیحات</h2>
-    <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
-      چاپگرها و متون بلکه
-      روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
-      بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را
-      می طلبد.</p>
+
+  <div class="chart-wrapper">
+    <div
+      style="width: 40%;font-family: iransans;display: flex;flex-direction: row;
+    background-color: white;padding: 10px;border-radius: 10px;margin: 10px;box-shadow: 0px 0px 20px 8px rgb(215, 215, 215);">
+      <canvas baseChart  [data]="barChartData0" [options]="barChartOptions0" [type]="barChartType0"
+        (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+      </canvas>
+    </div>
+    <div
+      style="width: 40%;font-family: iransans;display: flex;flex-direction: row;
+    background-color: white;padding: 10px;border-radius: 10px;margin: 10px;box-shadow: 0px 0px 20px 8px rgb(215, 215, 215);">
+      <canvas baseChart  [data]="barChartData1" [options]="barChartOptions1" [type]="barChartType1"
+        (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+      </canvas>
+    </div>
   </div>
-  asdasd
+  <mat-divider></mat-divider>
 </div>
-<mat-divider></mat-divider>

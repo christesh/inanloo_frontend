@@ -479,14 +479,15 @@ export class ApiServicesService {
       })
     })
   }
+  
   editappliancecategoryproblem(token: string, id: string, ptitle: string, pdes: string, pkind: string, lp: string, hp: string): Observable<any> {
     const body = {
       id: id,
-      problemTitle: ptitle,
-      problemDescription: pdes,
-      problemKind: pkind,
-      lowPrice: lp,
-      highPrice: hp
+      title: ptitle,
+      description: pdes,
+      kind: pkind,
+      lowprice: lp,
+      highprice: hp
     }
     return this.http.post(this.baseurl + '/baseinfo/editappliancecategoryproblem/', body, {
       headers: new HttpHeaders({
@@ -495,11 +496,63 @@ export class ApiServicesService {
       })
     })
   }
-  deleteapplianceaategoryproblem(token: string, pid: string): Observable<any> {
+  deleteappliancecategoryproblem(token: string, pid: string): Observable<any> {
     const body = {
       id: pid,
     }
-    return this.http.post(this.baseurl + '/baseinfo/deleteapplianceaategoryproblem/', body, {
+    return this.http.post(this.baseurl + '/baseinfo/deleteappliancecategoryproblem/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    })
+  }
+  createbrandproblem(token: string, brand: string, ptitle: string, pdes: string, pkind: string, lp: string, hp: string): Observable<any> {
+    const body = {
+      brand: brand,
+      title: ptitle,
+      description: pdes,
+      kind: pkind,
+      lowprice: lp,
+      highprice: hp
+    }
+    return this.http.post(this.baseurl + '/baseinfo/createbrandproblem/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    })
+  }
+  editbrandproblem(token: string, id: string, ptitle: string, pdes: string, pkind: string, lp: string, hp: string): Observable<any> {
+    const body = {
+      id: id,
+      title: ptitle,
+      description: pdes,
+      kind: pkind,
+      lowprice: lp,
+      highprice: hp
+    }
+    return this.http.post(this.baseurl + '/baseinfo/editbrandproblem/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    })
+  }
+  deletebrandproblem(token: string, pid: string): Observable<any> {
+    const body = {
+      id: pid,
+    }
+    return this.http.post(this.baseurl + '/baseinfo/deletebrandproblem/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    })
+  }
+  getallcustomersdetails(token:string): Observable<any>
+  {
+    return this.http.get(this.baseurl + '/personal/getallcustomersdetails/',  {
       headers: new HttpHeaders({
         'Authorization': 'Token  ' + token,
         'Content-Type': 'application/json',

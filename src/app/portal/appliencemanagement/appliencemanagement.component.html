@@ -65,9 +65,9 @@
                 <div class="container" style=" border-radius: 8px;box-shadow: rgb(102, 102, 102) 5px;">
                   <div class="row">
                     <div class="col-sm-12" style="direction: rtl;text-align: right;">
-                      <ng2-smart-table [settings]="applianceTableSetting" [source]="applianceTablevalues[i]"
-                        id="excel-table" style="font-family: 'iransans'"
-                        style="font-family: 'iransans';font-size: 12px;" (custom)="appedit($event,i)"></ng2-smart-table>
+                      <ng2-smart-table [settings]="problemTableSetting" [source]="a.appProblems" id="excel-table"
+                        style="font-family: 'iransans'" style="font-family: 'iransans';font-size: 12px;"
+                        (custom)="appedit($event,i)"></ng2-smart-table>
                     </div>
                   </div>
                 </div>
@@ -77,24 +77,28 @@
               <div class="form-group col-12 mb-2" *ngIf="a.pic===''">
                 <div class="form-group col-12 mb-2" style="direction: rtl;text-align: right;margin: 10px;">
                   <label style="margin: 10px;"> لطفا تصویر مروبط به لوازم خانگی را انتخاب کنید:</label>
-                  <label for="file-upload" class="btn btn-raised btn-primary" style="cursor: pointer;margin-right: 35px;font-size: 12px;">
+                  <label for="file-upload" class="btn btn-raised btn-primary"
+                    style="cursor: pointer;margin-right: 35px;font-size: 12px;">
                     <i class="fa fa-upload" style="margin-left: 5px;"></i>انتخاب فایل
                   </label>
                   <input id="file-upload" type='file' (change)="onSelectFile($event , i)" resize-max-height="300"
-                    resize-max-width="250" resize-quality="0.7" >
+                    resize-max-width="250" resize-quality="0.7">
                 </div>
               </div>
-              <div class="row" *ngIf="a.pic!==''" style="display: flex;flex-direction: row;flex-wrap: wrap;justify-content: center;">
-                <div 
+
+              <div class="row" *ngIf="a.pic!==''"
+                style="display: flex;flex-direction: row;flex-wrap: wrap;justify-content: center;">
+                <div
                   style="margin:20px; text-align: center;border-radius: 10px; background-color: rgb(253, 252, 250);box-shadow: 0px 0px 5px 5px rgb(238, 236, 236); width: 350px;height: 300px; ">
                   <lord-icon src="../../../assets/json/bin.json" trigger="hover" (click)="deleteimg(a.pic,i)"
                     style="width:40px;height:40px;cursor: pointer;margin-top: 20px;cursor: pointer;">
                   </lord-icon>
                   <br>
                   <img [src]="a.pic" height="200" width="300" style="margin:10px;">
+                  <!-- <img src="E:/home/mersagro/public_html/media/images/ApplianceCategories/washing-machine-1_2l5jaNP.png" height="200" width="300" style="margin:10px;"> -->
                 </div>
-              </div>
 
+              </div>
             </div>
           </div>
           <div class="main" style="display:flex ;flex-direction: column;">
@@ -121,7 +125,7 @@
                 <button mat-raised-button color="primary" style="margin-right: 10px;width: 80px;height: 40px;"
                   (click)="cancelBrand()">انصراف</button>
               </div>
-              <mat-expansion-panel *ngFor="let b of a.brands; let j=index">
+              <mat-expansion-panel *ngFor="let b of a.brands; let j=index" (opened)="openbarnd(b.ID,i,j)">
                 <mat-expansion-panel-header>
                   <mat-panel-title>
                     <div class="title">
@@ -135,6 +139,56 @@
                     </div>
                   </mat-panel-title>
                 </mat-expansion-panel-header>
+                <div class="detail" style="display: flex;flex-direction: row;">
+                  <div class="problem" style="width: 50%;">
+                    <div class="main header" style="direction: rtl;">
+                      <div>
+                        <button class="btn btn-raised btn-primary" style="margin: 10px;width: 120px;font-size: 12px;"
+                          (click)="creaatBrandProblem(b,i,j)">ایجاد
+                          مشکل جدید</button>
+                      </div>
+                    </div>
+                    <div class="table">
+                      <div class="container" style=" border-radius: 8px;box-shadow: rgb(102, 102, 102) 5px;">
+                        <div class="row">
+                          <div class="col-sm-12" style="direction: rtl;text-align: right;">
+                            <ng2-smart-table [settings]="problemTableSetting" [source]="b.brandProblems"
+                              id="excel-table" style="font-family: 'iransans'"
+                              style="font-family: 'iransans';font-size: 12px;" (custom)="brandedit($event,i,j)">
+                            </ng2-smart-table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="picture" style="width: 50%;font-size: 12px;">
+                    <div class="form-group col-12 mb-2" *ngIf="b.brandpic===''">
+                      <div class="form-group col-12 mb-2" style="direction: rtl;text-align: right;margin: 10px;">
+                        <label style="margin: 10px;"> لطفا تصویر مروبط به برند را انتخاب کنید:</label>
+
+                        <label for="{{'brand-file-upload'+j}}" class="btn btn-raised btn-primary"
+                          style="cursor: pointer;margin-right: 35px;font-size: 12px;">
+                          <i class="fa fa-upload" style="margin-left: 5px;"></i>انتخاب فایل
+                        </label>
+                        <input id="{{'brand-file-upload'+j}}" type='file' (change)="brandonSelectFile($event ,a , b)"
+                          resize-max-height="300" resize-max-width="250" resize-quality="0.7">
+                      </div>
+                    </div>
+                    <div class="row" *ngIf="b.brandpic!==''"
+                      style="display: flex;flex-direction: row;flex-wrap: wrap;justify-content: center;">
+                      <div
+                        style="margin:20px; text-align: center;border-radius: 10px; background-color: rgb(253, 252, 250);box-shadow: 0px 0px 5px 5px rgb(238, 236, 236); width: 350px;height: 300px; ">
+                        <lord-icon src="../../../assets/json/bin.json" trigger="hover"
+                          (click)="deletebarndimg(b.brandpic,a,b)"
+                          style="width:40px;height:40px;cursor: pointer;margin-top: 20px;cursor: pointer;">
+                        </lord-icon>
+                        <br>
+                        <img [src]="b.brandpic" height="200" width="300" style="margin:10px;">
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
                 <div class="main" style="display:flex ;flex-direction: column;">
                   <div class="title" style="margin:5px;width:80px">
                     <h6>مدل
