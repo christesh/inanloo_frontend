@@ -1,6 +1,6 @@
 <mat-card style="background-color: #ffffff;font-family: iransans;direction: rtl;overflow-y: auto;">
   <mat-card-title>
-    <h4 style="font-family:iransans;font-weight: 600;color: #00016d;text-align: center;">{{titleOfDialog}}   </h4>
+    <h4 style="font-family:iransans;font-weight: 600;color: #00016d;text-align: center;">{{titleOfDialog}} </h4>
     <hr>
 
   </mat-card-title>
@@ -10,36 +10,45 @@
         <h5 style="font-family:iransans ;margin: auto;font-size: 14px;font-weight: 500;">
           لطفا اطلاعات زیر را تکمیل نمائید
         </h5>
-
+        <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
+          [(ngModel)]="selectedKind">
+          <mat-radio-button class="example-radio-button" *ngFor="let times of serviceKind" [value]="times.ID"
+            style="padding-left: 5px;">
+            <h6 style="padding-right: 10px;padding-top:5px;font-size:12px">{{times.title}}</h6>
+          </mat-radio-button>
+        </mat-radio-group>
         <mat-form-field class="full-width-input"
           style="margin:auto;text-align:right;width: 100%; margin: 10px; direction:rtl;font-family:iransans ;">
           <input matInput placeholder="عنوان مشکل" formControlName="problemTitle" required style="font-size: 12px;">
           <mat-error *ngIf="isFieldInvalid('problemTitle')">
             لطفا عنوان مشکل را وارد کنید!
-        </mat-error>
+          </mat-error>
         </mat-form-field>
         <mat-form-field class="full-width-input"
           style="margin:auto;text-align:right;margin: 10px; direction:rtl;font-family:iransans ;">
-          <input matInput type="number" placeholder="کمترین هزینه (ريال)" formControlName="lowPrice" required style="font-size: 12px;">
+          <input matInput type="number" placeholder="کمترین هزینه (ريال)" formControlName="lowPrice" required
+            style="font-size: 12px;">
           <mat-error *ngIf="isFieldInvalid('lowPrice')">
             لطفا میزان کمترین هزینه را وارد کنید!
-        </mat-error>
+          </mat-error>
         </mat-form-field>
         <mat-form-field class="full-width-input"
           style="margin:auto;text-align:right;margin: 10px; direction:rtl;font-family:iransans ;">
-          <input matInput type="number" placeholder="بیشترین هزینه (ريال)" formControlName="highPrice" required style="font-size: 12px;">
+          <input matInput type="number" placeholder="بیشترین هزینه (ريال)" formControlName="highPrice" required
+            style="font-size: 12px;">
           <mat-error *ngIf="isFieldInvalid('highPrice')">
             لطفا میزان بیشترین هزینه را وارد کنید!
-        </mat-error>
+          </mat-error>
         </mat-form-field>
         <mat-form-field class="full-width-input"
           style="margin:auto;text-align:right;width: 100%;margin: 10px; direction:rtl;font-family:iransans ;">
-          <textarea matInput placeholder="توضیحات" formControlName="description" required style="font-size: 12px;"></textarea>
+          <textarea matInput placeholder="توضیحات" formControlName="description" required
+            style="font-size: 12px;"></textarea>
           <mat-error *ngIf="isFieldInvalid('description')">
             لطفا توضیحات را وارد کنید!
-        </mat-error>
+          </mat-error>
         </mat-form-field>
-       
+
 
         <div class="row">
           <div class="col-md-12" style="margin:auto;text-align: center;font-family:iransans;direction: rtl;">

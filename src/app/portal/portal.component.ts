@@ -73,7 +73,7 @@ export class PortalComponent implements OnInit {
 
     }
   }
-  signuout() {
+  signout() {
     this.api.logout().subscribe(
       res => {
         this.router.navigate(['']);

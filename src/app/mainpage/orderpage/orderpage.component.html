@@ -1,7 +1,22 @@
+<div class="main header" style="direction: rtl;">
+  <div class="banner" *ngIf="showbanner">
+  </div>
+  <div class="headerbox">
+    <div class="discription">
+      <h2>توضیحات</h2>
+      <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
+        چاپگرها و متون بلکه
+        روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
+        بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان
+        را
+        می طلبد.</p>
+    </div>
+  </div>
+</div>
 <mat-stepper id="desktop" #stepper class="example-stepper" [orientation]="(stepperOrientation | async)!"
-  [linear]="false">
-  <mat-step label="انتخاب وسیله" [errorMessage]="firstFormGroupError" [hasError]="firststeperror"
-    [completed]="firstcomplete">
+  [linear]="true">
+  <mat-step label="انتخاب وسیله" [stepControl]="firstFormGroup" [errorMessage]="firstFormGroupError"
+    [hasError]="firststeperror">
     <div class="discription">
       <h2>توضیحات</h2>
       <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
@@ -67,29 +82,114 @@
           را
           می طلبد.</p>
       </div>
-      <div class="modelscontent" style="display: flex;flex-direction: row; padding:20px;">
+      <div class="modelscontent">
         <form [formGroup]="firstFormGroup">
-          <mat-form-field style="direction: rtl;text-align:right;">
-            <mat-label>مدل دستگاه</mat-label>
-            <mat-select formControlName="selectedmodel" (selectionChange)="selectmodel()">
-              <mat-option *ngFor="let m of models;let i=index" [value]="m">{{m.model}}</mat-option>
-            </mat-select>
-          </mat-form-field>
+          <div style="display: flex;flex-direction: row; padding:20px;">
+            <mat-form-field style="direction: rtl;text-align:right;width: 30%;">
+              <mat-label>مدل دستگاه</mat-label>
+              <mat-select formControlName="selectedmodel" (selectionChange)="selectmodel()" required="{{hasguarantee}}">
+                <mat-option *ngFor="let m of models;let i=index" [value]="m.ID">{{m.model}}</mat-option>
+              </mat-select>
+              <mat-error *ngIf="isFieldInvalid('selectedmodel')">
+                برای استفاده از گارانتی مشخص کردن مدل دستگاه الزامیست
+              </mat-error>
+            </mat-form-field>
 
-        </form>
-        <mat-form-field class="full-width-input"
-          style="margin:auto;text-align:right; direction:rtl;font-family:iransans ;">
-          <input matInput placeholder="شماره سریال دستگاه" value="{{modelserial}}" (change)="serialchange($event)"
-            style="font-size: 12px;">
 
-        </mat-form-field>
-        <div class="rules" style="display:flex;
+            <mat-form-field class="full-width-input"
+              style="margin:auto;text-align:right; direction:rtl;font-family:iransans ;width: 30%;">
+              <input matInput placeholder="شماره سریال دستگاه" formControlName="modelserial" style="font-size: 12px;"
+                required="{{hasguarantee}}">
+              <mat-error *ngIf="isFieldInvalid('modelserial') ">
+                برای استفاده از گارانتی مشخص کردن مدل دستگاه الزامیست
+              </mat-error>
+            </mat-form-field>
+
+            <div class="rules" style="display:flex;
         flex-direction:row-reverse;padding:20px ;direction:rtl ;justify-content: right;">
-          <label for="rule" style="margin: 20px;">دستگاه دارای گارانتی معتبر است</label>
-          <input type="checkbox" id="rule" [checked]="hasguarantee" (change)="hasGuarantee()"
-            style="direction: rtl;cursor: pointer;">
-        </div>
+              <label for="rule" style="margin: 20px;">دستگاه دارای گارانتی معتبر است</label>
+              <input type="checkbox" id="rule" [checked]="hasguarantee" (change)="hasGuarantee()"
+                style="direction: rtl;cursor: pointer;">
+            </div>
+          </div>
+        </form>
       </div>
+    </div>
+    <div class="selectmodels" *ngIf="hasguarantee">
+      <mat-divider></mat-divider>
+      <div class="discription">
+        <h2>توضیحات</h2>
+        <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
+          چاپگرها و متون بلکه
+          روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
+          بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان
+          را
+          می طلبد.</p>
+      </div>
+      <form [formGroup]="firstFormGroup">
+        <div class="guaramtee" style="display: flex;flex-direction: row;justify-content: space-around;">
+
+          <div class="form-group" style="margin:10px;display: flex;flex-direction: column;">
+            <div class="form-group col-12 mb-2" style="direction: rtl;text-align: right;margin: 10px;">
+              <label style="margin: 10px;"> لطفا تصویر کارت گارانتی را بارگذاری کنید:</label>
+              <br />
+              <label for="gaurantee-file-upload" class="btn btn-raised btn-primary"
+                style="cursor: pointer;margin-right: 35px;">
+                <i class="fa fa-upload" style="margin-left: 5px;"></i> کارت گارنتی
+              </label>
+
+              <input id="gaurantee-file-upload" type='file' formControlName="gfile" (change)="onSelectGaurantee($event)"
+                resize-max-height="300" resize-max-width="250" resize-quality="0.7">
+            </div>
+            <mat-error *ngIf="isFieldInvalid('gfile')">
+              بارگذاری تصویر کارت گارانتی الزامیست
+            </mat-error>
+            <div class="progress" *ngIf="progress">
+              <div class="progress-bar" [style.width]="progress + '%'">{{progress}}%</div>
+            </div>
+            <div>
+              <div *ngFor="let gurl of gurls"
+                style="margin:20px; text-align: center;border-radius: 10px; background-color: rgb(253, 252, 250);box-shadow: 0px 0px 5px 5px rgb(238, 236, 236); width: 350px;height: 400px; ">
+                <lord-icon src="../../../assets/json/bin.json" trigger="hover" (click)="deletegimg(gurl)"
+                  style="width:40px;height:40px;cursor: pointer;margin-top: 20px;cursor: pointer;">
+                </lord-icon>
+                <br>
+                <img [src]="gurl" height="300" width="300" style="margin:10px;">
+              </div>
+            </div>
+
+          </div>
+          <div class="form-group" style="margin:10px;display: flex;flex-direction: column;">
+            <div class="form-group col-12 mb-2" style="direction: rtl;text-align: right;margin: 10px;">
+              <label style="margin: 10px;"> لطفا تصویر فاکتور خرید را بارگذاری کنید:</label>
+              <br />
+              <label for="invoice-file-upload" class="btn btn-raised btn-primary"
+                style="cursor: pointer;margin-right: 35px;">
+                <i class="fa fa-upload" style="margin-left: 5px;"></i> فاکتور خرید
+              </label>
+              <input id="invoice-file-upload" type='file' formControlName="ifile" (change)="onSelectInvoice($event)"
+                resize-max-height="300" resize-max-width="250" resize-quality="0.7">
+            </div>
+            <mat-error *ngIf="isFieldInvalid('ifile')">
+              بارگذاری تصویر فاکتور خرید الزامیست
+            </mat-error>
+            <div class="progress" *ngIf="progress">
+              <div class="progress-bar" [style.width]="progress + '%'">{{progress}}%</div>
+            </div>
+            <div>
+              <div *ngFor="let iurl of iurls"
+                style="margin:20px; text-align: center;border-radius: 10px; background-color: rgb(253, 252, 250);box-shadow: 0px 0px 5px 5px rgb(238, 236, 236); width: 350px;height:400px; ">
+                <lord-icon src="../../../assets/json/bin.json" trigger="hover" (click)="deleteiimg(iurl)"
+                  style="width:40px;height:40px;cursor: pointer;margin-top: 20px;cursor: pointer;">
+                </lord-icon>
+                <br>
+                <img [src]="iurl" height="300" width="300" style="margin:10px;">
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+
     </div>
 
     <div id="selectmodelsdiv">
@@ -206,7 +306,7 @@
     </div>
   </mat-step>
 
-  <mat-step [stepControl]="thirdFormGroup" label="انتخاب آدرس و زمان" [errorMessage]="thirdFormGroupError"
+  <mat-step  label="انتخاب آدرس و زمان" [errorMessage]="thirdFormGroupError"
     [hasError]="thirdsteperror" [completed]="thirdcomplete">
     <div class="discription">
       <h2>توضیحات</h2>
@@ -263,24 +363,34 @@
           متخصصان
           را
           می طلبد.</p>
+        <button id="createaddress" mat-raised-button color="primary" (click)="createaddress()">ایجاد آدرس جدید</button>
       </div>
-      <div class="addresscontent" style="margin:20px">
+      <div *ngIf="shownewaddress" class="addresscontent" style="margin:20px">
         <mat-card style="width: 100%;min-height:200px ;">
           <mat-card-content style="display: flex;flex-direction: row;justify-content: space-around;">
-            <input type="checkbox" checked style="width:20px ;">
-            <div class="addresstext" style="display: flex;flex-direction: column-reverse;
-              align-content: space-around;
-              justify-content: center;">
+            <app-editaddress></app-editaddress>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="addresscontent" style="margin:20px">
+        <mat-card style="width: 100%;min-height:200px ;" *ngFor="let address of addresses;let iadd= index">
+          <mat-card-content style="display: flex;flex-direction: row;justify-content: space-around;">
+            <mat-checkbox  type="checkbox" style="width:20px ;margin: 10px;"  [(ngModel)]="address.isMainAddress" (change)="seletAddress(address)"></mat-checkbox>
+            <div class="addresstext" style="margin: 10px;display: flex;flex-direction: column-reverse;
+        align-content: space-around;
+        justify-content: center;">
               <div>
                 <h3>آدرس:</h3>
                 <br>
-                <h6>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
-                  است،
-                  چاپگرها و متون بلکه</h6>
+                <h6>{{address.text}}</h6>
+                <br>
+                <label class="editsingleaddress" (click)="EditAddress(address.id)">ویرایش</label>
               </div>
             </div>
-            <div class="addressmap" style="width: 300px;height:200px">
-              <app-map [enable]="mapEnable" [lat]="maplat" [long]="maplong" width="300px" height="200px"></app-map>
+            <div class="addressmap" style="margin: 10px;width: 300px;height:200px">
+              <app-map [enable]="mapEnable" [lat]="address.maplat" [long]="address.maplong" width="300px"
+                height="200px">
+              </app-map>
               <div id="container">
               </div>
             </div>
@@ -316,35 +426,35 @@
           <div class="kind">
             <mat-card class="appliences">
               <mat-card-header>
-                <mat-card-title>لباسشویی </mat-card-title>
+                <mat-card-title>{{summery.appcat}} </mat-card-title>
               </mat-card-header>
               <mat-card-content>
-                <img class="applience" mat-card-image src="../../../assets/images/devices/01.png">
+                <img class="applience" mat-card-image [src]="summery.appcatpic">
               </mat-card-content>
             </mat-card>
           </div>
           <div class="model" style="padding:20px ;display: flex;
           flex-direction: column;
           justify-content: center;border-left:rgb(189, 188, 188) solid 1px;">
-            <h5>برند: پارس خزر</h5>
+            <h5>برند: {{summery.brand}}</h5>
             <br>
-            <h6>مدل: </h6>
+            <h6 *ngIf="summery.model!==''">مدل:{{summery.model}} </h6>
+            <br>
+            <h6 *ngIf="summery.serial!==''">شماره سریال:{{summery.serial}} </h6>
           </div>
           <div class="datetime" style="padding:20px ;display: flex;
           flex-direction: column;
           justify-content: center;">
-            <h5>تاریخ حضور متخصص: 30 شهریور 1401</h5>
+            <h5>تاریخ حضور متخصص: {{summery.orderDate}}  </h5>
             <br>
-            <h6>بازه زمانی: 12 تا 15</h6>
+            <h6>بازه زمانی: {{summery.ordeTime}}</h6>
           </div>
         </div>
         <mat-divider></mat-divider>
         <div style="padding: 20px;">
           <h5>آدرس:</h5>
 
-          <h6>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
-            است،
-            چاپگرها و متون بلکه</h6>
+          <h6>{{summery.orderAdd}}</h6>
         </div>
         <mat-divider></mat-divider>
         <div class="problem" style="padding:20px ;">

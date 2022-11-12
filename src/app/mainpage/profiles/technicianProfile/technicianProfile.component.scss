@@ -1,24 +1,28 @@
 .main.header {
-    
+
     width: 100%;
-    
+
     display: flex;
     flex-direction: column;
     direction: rtl;
 }
-.headerbox{
+
+.headerbox {
     display: flex;
     flex-direction: row;
 
 }
-.editsingleaddress{
+
+.editsingleaddress {
     color: #484aff;
     cursor: pointer;
 }
-.editsingleaddress:hover{
+
+.editsingleaddress:hover {
     color: #cc2b91;
     cursor: pointer;
 }
+
 .banner {
     width: 100%;
     flex: 50%;
@@ -36,16 +40,18 @@
     width: 100%;
 }
 
-.discription > p {
-    
+.discription>p {
+
     font-size: 12px;
     color: black;
 }
-.discription > h2 {
+
+.discription>h2 {
     font-size: 16px;
     color: rgb(64, 22, 119);
 }
-.body{
+
+.body {
     width: 100%;
     display: flex;
     flex-direction: row-reverse;
@@ -53,14 +59,16 @@
 
     font-size: 12px;
     margin-top: 10px;
-    
-   
+
+
 }
+
 .servicedate {
     display: flex;
     flex-direction: row;
     padding: 10px;
 }
+
 ::ng-deep .popover {
     --bs-popover-zindex: 1070;
     --bs-popover-max-width: 400px !important;
@@ -82,41 +90,49 @@
     --bs-popover-arrow-width: 1rem;
     --bs-popover-arrow-height: 0.5rem;
 }
-::ng-deep .datepicker-outer-container{
+
+::ng-deep .datepicker-outer-container {
     min-width: 300px;
 }
+
 ::ng-deep .datepicker-outer-container {
     display: block !important;
 }
+
 ::ng-deep input.ng-pristine.ng-valid {
     color: #7a7bad !important;
     text-align: center;
     display: none;
 
 }
-#showmap{
+
+#showmap {
     float: left;
     color: #313394;
     cursor: pointer;
-    padding:10px ;
-   
+    padding: 10px;
+
 }
-#showmap:hover{
+
+#showmap:hover {
     color: #00016d;
     cursor: pointer;
     border-radius: 8px;
     box-shadow: 0px 0px 5px 5px rgb(133, 156, 185);
 }
+
 #maincheckbox {
     transform: scale(2.5);
 }
-.msgerror{
+
+.msgerror {
     color: red;
     font-size: 9px;
     margin-top: -21px;
     margin-right: 10px;
 }
-.mobilebox{
+
+.mobilebox {
     width: 300px;
     height: 40px;
     background-color: #fcfcf9;
@@ -149,6 +165,7 @@
     padding: 10px 10px 1px 10px;
 
 }
+
 .calendercontent {
     background-color: #ffffff;
     border-bottom-left-radius: 8px;
@@ -156,13 +173,70 @@
     margin: auto;
     padding: 10px 10px 1px 10px;
 }
-.full-width-input{
-    padding:10px;
-    text-align:right;
+
+.full-width-input {
+    padding: 10px;
+    text-align: right;
     width: 30%;
-    direction:rtl;
+    direction: rtl;
 }
 
 input[type="file"] {
     display: none;
+}
+
+::ng-deep .mat-tab-body.mat-tab-body-active {
+    position: relative;
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+    z-index: 1;
+    flex-grow: 1;
+    min-height: 400px !important;
+}
+
+::ng-deep .ng-optgroup {
+    display: flex !important;
+    font-weight: 700 !important;
+}
+
+::ng-deep .ng-option {
+    display: flex !important;
+    font-weight: 400 !important;
+    font-size: 12px;
+    margin-right: 20px !important;
+}
+
+.selectskill {
+    display: flex;
+    flex-direction: row;
+}
+
+.skills {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.skilldetail {
+    margin: 10px;
+
+
+}
+
+div .detail {
+    display: flex;
+}
+
+img.applience {
+    margin: auto;
+    width: 80px;
+    height: 80px;
+}
+
+.appliences {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-start;
 }

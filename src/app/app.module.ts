@@ -26,6 +26,13 @@ import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { CookieService } from 'ngx-cookie-service';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 
+
+import { environment } from '../environments/environment';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+
+import { initializeApp } from "firebase/app";
+initializeApp(environment.firebaseConfig);
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,7 +43,8 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
 
   ],
   imports: [
-    
+   
+ 
     NgxMaskModule.forRoot(),
     NgxMatSelectSearchModule,
     FlexLayoutModule,
@@ -60,7 +68,7 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
     Ng2SmartTableModule,
   ],
 
-  providers: [ApiServicesService,CookieService,
+  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy},ApiServicesService,CookieService,
   ],
   bootstrap: [AppComponent],
 

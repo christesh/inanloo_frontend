@@ -1,7 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatError } from '@angular/material/form-field';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { LocalDataSource } from 'ng2-smart-table';
 import { CookieService } from 'ngx-cookie-service';
 import { ApiServicesService } from 'src/app/api-services.service';
+import { Applience } from 'src/app/mainpage/orderpage/Order';
+import { DialogData } from '../usermanagement/usermanagement.component';
 
 @Component({
   selector: 'app-stafforder',
@@ -10,10 +16,12 @@ import { ApiServicesService } from 'src/app/api-services.service';
 })
 export class StafforderComponent implements OnInit {
   searchText = ""
-  customerdetailfromstaff:boolean=false;
+  customerdetailfromstaff: boolean = false;
   constructor(
     private api: ApiServicesService,
     private tokencookies: CookieService,
+    public signupdialog: MatDialog,
+    private _snackBar: MatSnackBar,
   ) { }
   customertablevalue: LocalDataSource;
   customerTable: any;
@@ -21,11 +29,12 @@ export class StafforderComponent implements OnInit {
   ordersTable: any;
   showorder: boolean = false;
   showCustomerDetail: boolean = false;
+  showOrderDetail: boolean = false;
   showOrders: boolean = false;
   customerName = "";
   customerFamily = "";
   ngOnInit() {
-    this.customerdetailfromstaff=false;
+    this.customerdetailfromstaff = false;
     this.customerTable = {
       editable: false,
       pager: {
@@ -40,7 +49,6 @@ export class StafforderComponent implements OnInit {
         position: 'left',
         custom: [
           { name: 'viewrecord', title: '<i class="fa fa-eye"  ></i>' },
-          { name: 'editrecord', title: '&nbsp;&nbsp;<i class="fa  fa-pencil" style="color:grean" ></i>' },
           { name: 'makeorder', title: '&nbsp;&nbsp;<i class="fa fa-plus-square" ></i>' }]
       },
       columns: {
@@ -109,8 +117,17 @@ export class StafforderComponent implements OnInit {
     this.showorder = false;
     this.FillTable();
   }
+  applience: Applience[] = []
   FillTable() {
     var token = this.tokencookies.get('T')
+    this.api.getAllApplience(token).subscribe(
+      res => {
+        this.applience = res
+        console.log(this.applience)
+      }, err => {
+        console.log(err)
+      }
+    )
     this.api.getallcustomersdetails(token).subscribe(
       res => {
         console.log(res)
@@ -141,13 +158,17 @@ export class StafforderComponent implements OnInit {
           })
         }
         this.customertablevalue = new LocalDataSource(ct)
+
       },
       err => {
         console.log(err)
       }
     )
   }
-  CreateCustomer() {
+
+
+
+  OrderTableAction(event: any) {
 
   }
   TableAction(event: any) {
@@ -156,15 +177,47 @@ export class StafforderComponent implements OnInit {
         localStorage.setItem('userID', event.data.id);
         this.customerName = event.data.f_name;
         this.customerFamily = event.data.l_name;
-
+        var token = this.tokencookies.get('T');
         var ot: { id: string, status: string, statusID: string, appliance: string, applianceID: string, date: string, technician: string, technicianID: string, payment: string }[] = [];
-        ot.push({ id: '1', status: "اتمام", statusID: '1', appliance: "یخچال سامسونگ", applianceID: "1", date: "1401/07/04", technician: "حسین رامشینی", technicianID: "1", payment: "10000000" });
-        ot.push({ id: '2', status: "منتظر قطعه", statusID: '1', appliance: "ظرفشویی سامسونگ", applianceID: "1", date: "1401/03/16", technician: "علی محمدی", technicianID: "1", payment: "15000000" });
-        this.orderstablevalue = new LocalDataSource(ot);
-        if (ot.length != 0)
-          this.showOrders = true;
-        else
-          this.showOrders = false;
+        this.api.getcustomerorders(token, event.data.id).subscribe(
+          res => {
+            console.log(res)
+
+            ot = [];
+            for (let i = 0; i < res.length; i++) {
+              var appcat = this.applience.find(item => item.ID == res[i]['applianceBrand']['a_barndCategory'])?.title
+              var techfullname = ""
+              var techid = ""
+              if (res[i]['technician'] != null) {
+                techfullname = res[i]['technician']['firstName'] + " " + res[i]['technician']['lastName'];
+                techid = res[i]['technician']['id']
+              }
+              else {
+                techfullname = ""
+                techid = ""
+              }
+              ot.push({ id: res[i]['id'], status: res[i]['orderStatus']['status'], statusID: res[i]['orderStatus']['id'], appliance: res[i]['applianceBrand']['brand'] + " " + appcat, applianceID: res[i]['applianceBrand']['ID'], date: res[i]['orderDate'], technician: techfullname, technicianID: techid, payment: "" });
+            }
+            this.orderstablevalue = new LocalDataSource(ot);
+            if (ot.length != 0)
+              this.showOrders = true;
+            else
+              this.showOrders = false;
+            this.showOrderDetail = true;
+          },
+          err => {
+            console.log(err)
+          }
+
+        )
+
+
+        break;
+      case "viewrecord":
+
+        localStorage.setItem('userID', event.data.id);
+        this.customerName = event.data.f_name;
+        this.customerFamily = event.data.l_name;
         this.showCustomerDetail = true;
         break;
     }
@@ -177,5 +230,127 @@ export class StafforderComponent implements OnInit {
     this.showorder = true;
 
   }
+  CancelOrder() {
+    this.showOrderDetail = false;
+    this.showorder = false;
 
+  }
+  CancelProfile() {
+    this.showCustomerDetail = false;
+  }
+  public signupData!: { mn: string; nationalid: string; name: string; family: string; btn: string; userKind: number; };
+  CreateCustomer() {
+    const dialogRef = this.signupdialog.open(SignUPCustomerDialog, {
+      width: '400px',
+      data: { mobilenumber: "" },
+      disableClose: true
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result.btn == "ok") {
+        this.signupData = result;
+        console.log(this.signupData)
+        this.api.register(this.signupData.mn, this.signupData.name, this.signupData.family, this.signupData.nationalid, 1).subscribe(
+          res => {
+            console.log(res)
+            this.FillTable();
+          },
+          err => {
+            console.log(err)
+            this.openSnackBar('خطا در ارتباط با سرور', '', 'red-snackbar', 5)
+
+          }
+        )
+      }
+    });
+  }
+  openSnackBar(message: string, action: string, alertkind: string, showtime: number, hp?: MatSnackBarHorizontalPosition, vp?: MatSnackBarVerticalPosition) {
+    this._snackBar.open(message, action, {
+      duration: showtime * 1000,
+      panelClass: [alertkind],
+      horizontalPosition: hp,
+      verticalPosition: vp
+
+    });
+  }
 }
+
+
+
+@Component({
+  selector: 'sign-uP-Dialog',
+  templateUrl: 'signupdialog.html',
+})
+export class SignUPCustomerDialog implements OnInit {
+  public alertshow: boolean = false;
+  public userkind: string = "null";
+  horizontalPosition: MatSnackBarHorizontalPosition = 'start';
+  verticalPosition: MatSnackBarVerticalPosition = 'bottom';
+  constructor(
+    private api: ApiServicesService,
+    private fb: FormBuilder,
+    private _snackBar: MatSnackBar,
+    public dialogRef: MatDialogRef<SignUPCustomerDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+  ) { }
+  form!: FormGroup;
+  private formSubmitAttempt!: boolean;
+  public isCustomer: boolean = true;
+  public usercategory!: { id: string; name: string; }[];
+  public uc = 0;
+  radioModel: any;
+  ngOnInit() {
+    console.log(this.data)
+
+    this.api.GetPersonCategories().subscribe(
+      (res: { id: string; name: string; }[]) => {
+        this.usercategory.push(res[0]);
+        this.usercategory.push(res[1]);
+        console.log(this.usercategory);
+      },
+      (err: any) => {
+        console.log(err)
+      }
+    )
+    this.form = this.fb.group({
+      nationalid: [''],    // {5}
+      mobilenumber: ['', Validators.required],
+      name: ['', Validators.required],
+      family: ['', Validators.required]
+    });
+  }
+  selectuserkind(uk: string) {
+    this.uc = Number(uk)
+  }
+
+  isFieldInvalid(field: string) { // {6}
+    return (
+      (!this.form.get(field)?.valid && this.form.get(field)?.touched) ||
+      (this.form.get(field)?.untouched && this.formSubmitAttempt)
+    );
+  }
+  close() {
+    var data: { btn: string } = { btn: "cancel" }
+    this.dialogRef.close(data);
+
+  }
+  signup(): void {
+    var nationalid = this.form.value['nationalid']
+    var mobileNumaber = this.form.value['mobilenumber']
+    var name = this.form.value['name']
+    var family = this.form.value['family']
+
+    var data: { mn: string, nationalid: string, name: string, family: string, btn: string, userKind: number } = { mn: mobileNumaber, nationalid: nationalid, name: name, family: family, btn: "ok", userKind: this.uc }
+    this.dialogRef.close(data);
+
+  }
+
+  openSnackBar(message: string, action: string, alertkind: string, showtime: number, hp?: MatSnackBarHorizontalPosition, vp?: MatSnackBarVerticalPosition) {
+    this._snackBar.open(message, action, {
+      duration: showtime * 1000,
+      panelClass: [alertkind],
+      horizontalPosition: hp = 'start',
+      verticalPosition: vp = 'bottom',
+    });
+  }
+}
+

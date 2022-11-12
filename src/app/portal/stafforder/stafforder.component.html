@@ -1,5 +1,5 @@
 <body>
-  <div *ngIf="!showCustomerDetail" class="searchCustomer">
+  <div class="searchCustomer">
     <div class="main header" style="direction: rtl;">
       <div class="banner">
       </div>
@@ -35,22 +35,16 @@
       </div>
     </div>
   </div>
-  <div *ngIf="showCustomerDetail" class="customerdetails">
-    <div class="details">
-      <mat-accordion class="example-headers-align" *ngIf="showOrders" multi style="z-index: 100;">
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              <div class="title">
-                <h6> اطلاعات فردی : {{customerName}} {{customerFamily}}</h6>
-              </div>
-            </mat-panel-title>
-          </mat-expansion-panel-header>
+  <div class="customerdetails">
+    <div *ngIf="showCustomerDetail" class="details">
+      <button mat-raised-button color="primary" style="margin: 10px;width: 150px;height: 50px;"
+        (click)="CancelProfile()">
+        <i class="fa fa-plus-square" style="color: white;margin-left: 10px;"></i>انصراف </button>
+      
           <app-customerProfile [showBanner]="customerdetailfromstaff"></app-customerProfile>
-        </mat-expansion-panel>
-      </mat-accordion>
+      
     </div>
-    <div class="orders">
+    <div *ngIf="showOrderDetail" class="orders">
       <mat-accordion class="example-headers-align" *ngIf="showOrders" multi style="z-index: 100;">
         <mat-expansion-panel>
           <mat-expansion-panel-header>
@@ -62,16 +56,19 @@
           </mat-expansion-panel-header>
           <div class="col-sm-12" style="direction: rtl;text-align: right;">
             <ng2-smart-table [settings]="ordersTable" [source]="orderstablevalue" id="excel-table"
-              style="font-family: 'iransans'" style="font-family: 'iransans'" (custom)="TableAction($event)">
+              style="font-family: 'iransans'" style="font-family: 'iransans'" (custom)="OrderTableAction($event)">
             </ng2-smart-table>
           </div>
         </mat-expansion-panel>
       </mat-accordion>
+      <button mat-raised-button color="accent" style="margin: 10px;width: 150px;height: 50px;" (click)="CreateOrder()">
+        <i class="fa fa-plus-square" style="color: white;margin-left: 10px;"></i>ثبت سفارش</button>
+      <button mat-raised-button color="primary" style="margin: 10px;width: 150px;height: 50px;" (click)="CancelOrder()">
+        <i class="fa fa-plus-square" style="color: white;margin-left: 10px;"></i>انصراف </button>
     </div>
-    <button mat-raised-button color="accent" style="margin: 10px;width: 150px;height: 50px;" (click)="CreateOrder()">
-      <i class="fa fa-plus-square" style="color: white;margin-left: 10px;"></i>ثبت سفارش</button>
   </div>
   <div *ngIf="showorder" class="createOrder">
-    <app-orderpage (newOrderEvent)="addOrder($event)"></app-orderpage>
+    <mat-divider></mat-divider>
+    <app-orderpage (newOrderEvent)="addOrder($event)" [showBanner]="customerdetailfromstaff"></app-orderpage>
   </div>
 </body>

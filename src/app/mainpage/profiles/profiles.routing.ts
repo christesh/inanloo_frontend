@@ -2,6 +2,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { NgModule, Component } from '@angular/core';
 import { CustomerProfileComponent } from './customerProfile/customerProfile.component';
 import { TechnicianProfileComponent } from './technicianProfile/technicianProfile.component';
+
 export const PROFILE_ROUTES: Routes = [
   {
     path: 'profile',

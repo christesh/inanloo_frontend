@@ -2,6 +2,7 @@ import { LocalDataSource } from "ng2-smart-table";
 
 export class Problem{
     ID:number;
+    kind:string;
     title:string;
     checked:boolean;
     description:string;
@@ -10,22 +11,28 @@ export class Problem{
 }
 export class Order {
     customerID:number;
+    registerID:number;
     orderNumber:string;
     applienceID:number;
     brandID:number;
     modelID?:number;
     deviceSerial:string;
     hasGuarantee:boolean;
+    guaranteePic:File;
+    guaranteeStartDate:string;
+    guaranteeEndDate:string;
+    invoicePic:File;
     problem:Problem[];
     problemComment:string;
-    problemPics:string[];
+    problemPics:File[];
     orderDate:string;
     timeRange:number;
     orderAddressID:number;
-    orderComfirm:boolean;
+    orderConfirm:boolean;
     orderCost:number;
     statusID:number;
-    technicianID:number 
+    technicianID:number;
+
 }
 export class Models{
     ID:number;

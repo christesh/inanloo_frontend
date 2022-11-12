@@ -3,11 +3,22 @@
   <mgl-map [zoom]="[15]" [center]="center" [centerWithPanTo]="true" [interactive]="interact" [apiKey]="apiKey"
     (click)="mapClicked($event)">
     <mgl-marker [lngLat]="clickpoint">
-      <lord-icon src="https://cdn.lordicon.com/fihkmkwt.json" trigger="hover" colors="primary:#121331,secondary:#16c72e"
+      <lord-icon src="../../../assets/json/mappointer.json" trigger="hover" colors="primary:#121331,secondary:#16c72e"
       state="hover-jump" style="width:70px;height:70px;margin-bottom: 50px;">
       </lord-icon>
     </mgl-marker>
+    <mgl-geojson-source id="branch-points">
+      <mgl-feature
+          *ngFor="let geometry of branchData;index as i"
+          [id]="i"
+          [properties]="{'name':'salam'}"
+          [geometry]="geometry">
+      </mgl-feature>
+  </mgl-geojson-source>
+  <mgl-layer id="route" type="line" source="branch-points" type="fill" [paint]="{
+    'fill-color': '#000000',
+    'fill-opacity':0.15
+  }"></mgl-layer>
   </mgl-map>
-  
-{{address}}
+
 </div>

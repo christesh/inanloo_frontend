@@ -73,6 +73,7 @@ export class UsermanagementComponent implements OnInit {
   }
   FillTable() {
     this.token = this.tokencookie.get('T');
+    console.log(this.token)
     this.api.getAllCompanyMembers(this.token).subscribe(
       res => {
         // this.allCompanymembers = res;

@@ -7,6 +7,11 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { CookieService } from 'ngx-cookie-service';
 import { GlobalvarService } from 'src/app/globalvar.service';
 
+import { mergeMapTo, mergeMap } from 'rxjs/operators';
+import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import { environment } from '../../../environments/environment';
+
+
 export interface DialogData {
   mobilenumber: string;
 }
@@ -52,7 +57,7 @@ export class LoginboxComponent implements OnInit {
   })
   private formSubmitAttempt!: boolean;
   constructor(
-    private globalVar:GlobalvarService,
+    private globalVar: GlobalvarService,
     private fb: FormBuilder,
     private fbuser: FormBuilder,
     private router: Router,
@@ -60,7 +65,8 @@ export class LoginboxComponent implements OnInit {
     private _snackBar: MatSnackBar,
     public signupdialog: MatDialog,
     public tokencookie: CookieService,
-    public forgetpassdialog: MatDialog
+    public forgetpassdialog: MatDialog,
+
   ) {
     this.otpForm = this.toFormGroup(this.formInput);
   }
@@ -85,6 +91,8 @@ export class LoginboxComponent implements OnInit {
   }
   ngOnInit() {
     this.getMobile = true;
+    // this.requestPermission();
+    this.listen();
   }
   userIsFieldInvalid(field: string) { // {6}
     return (
@@ -182,72 +190,70 @@ export class LoginboxComponent implements OnInit {
     this.api.checksms(otp, this.mobileforregister).subscribe(
       res => {
         if (res['result'] == 'success') {
-          if (this.login) {
-            this.api.login(this.mobileforregister!).subscribe(
-              res => {
-                console.log(res['key'])
-                this.tokencookie.set('T', res['key'])
-                var token=res['key'].toString()
-                this.api.getPersonAuth(token).subscribe(
-                  res => {
-                    localStorage.setItem('userID',res[0]['person'])
-                    this.router.navigate(['/home'])
-                    this.openSnackBar('شما با موفقیت وارد شدید!', '', 'green-snackbar', 4)
-                  },
-                  err => {
-                    console.log(err)
-                    this.openSnackBar('خطا در ارتباط با سرور', '', 'red-snackbar', 5)
-                  }
-                )
+          console.log(this.signupData)
+          this.api.register(this.signupData.mn, this.signupData.name, this.signupData.family, this.signupData.nationalid, this.signupData.userKind).subscribe(
+            res => {
+              this.api.login(this.mobileforregister!).subscribe(
+                res => {
+                  console.log(res['key'])
+                  this.tokencookie.set('T', res['key'])
+                  var token = res['key'].toString()
+                  this.api.getPersonAuth(token).subscribe(
+                    res => {
+                      localStorage.setItem('userID', res[0]['person'])
+                      if (res[0]['category__name'] == 'مشتری')
+                        this.router.navigate(['/home/order'])
+                      if (res[0]['category__name'] == 'تکنسین' && res[0]['fillProfile'] == false)
+                        this.router.navigate(['/home/profile/technician'])
+                      this.openSnackBar('شما با موفقیت وارد شدید!', '', 'green-snackbar', 4)
+                      this.requestPermission(res[0]['person'])
+                    },
+                    err => {
+                      console.log(err)
+                      this.openSnackBar('خطا در ارتباط با سرور', '', 'red-snackbar', 5)
+                    }
+                  )
 
-              },
-              err => {
-                console.log(err)
-                this.openSnackBar('خطا در ارتباط با سرور', '', 'red-snackbar', 5)
-              }
-            )
+                },
+                err => {
+                  console.log(err)
+                  this.openSnackBar('خطا در ارتباط با سرور', '', 'red-snackbar', 5)
+                }
+              )
+            },
+            err => {
+              console.log(err)
+              this.openSnackBar('خطا در ارتباط با سرور', '', 'red-snackbar', 5)
+
+            }
+          )
+        }
+        else {
+          if (res['result'] == 'code does not match') {
+            this.otpForm.reset();
+            this.openSnackBar('کد وارد شده صحیح  نیست', '', 'red-snackbar', 5)
           }
           else {
-            console.log(this.signupData)
-            this.api.register(this.signupData.mn, this.signupData.name, this.signupData.family, this.signupData.nationalid, this.signupData.userKind).subscribe(
+            this.tokencookie.set('T', res['result'])
+            var token = res['result']
+            this.api.getPersonAuth(token).subscribe(
               res => {
-                this.api.login(this.mobileforregister!).subscribe(
-                  res => {
-                    console.log(res['key'])
-                    this.tokencookie.set('T', res['key'])
-                    var token=res['key'].toString()
-                    this.api.getPersonAuth(token).subscribe(
-                      res => {
-                        localStorage.setItem('userID',res[0]['person'])
-                        this.router.navigate(['/home'])
-                        this.openSnackBar('شما با موفقیت وارد شدید!', '', 'green-snackbar', 4)
-                      },
-                      err => {
-                        console.log(err)
-                        this.openSnackBar('خطا در ارتباط با سرور', '', 'red-snackbar', 5)
-                      }
-                    )
-    
-                  },
-                  err => {
-                    console.log(err)
-                    this.openSnackBar('خطا در ارتباط با سرور', '', 'red-snackbar', 5)
-                  }
-                )
+                localStorage.setItem('userID', res[0]['person'])
+                if (res[0]['category__name'] == 'مشتری')
+                  this.router.navigate(['/home/order'])
+                if (res[0]['category__name'] == 'تکنسین' && res[0]['fillProfile'] == false)
+                  this.router.navigate(['/home/profile/technician'])
+                this.openSnackBar('شما با موفقیت وارد شدید!', '', 'green-snackbar', 4)
+                this.requestPermission(res[0]['person'])
               },
               err => {
                 console.log(err)
                 this.openSnackBar('خطا در ارتباط با سرور', '', 'red-snackbar', 5)
-
               }
             )
           }
-        } else {
-          this.otpForm.reset();
-          this.openSnackBar('کد وارد شده صحیح  نیست', '', 'red-snackbar', 5)
         }
-      }
-      ,
+      },
       err => {
         this.otpForm.reset();
         this.openSnackBar('خطا در ارتباط با سرور', '', 'red-snackbar', 5)
@@ -297,12 +303,13 @@ export class LoginboxComponent implements OnInit {
     this.api.loginWithUser(user!, pass!).subscribe(
       res => {
         this.tokencookie.set('T', res['key'])
-        var token=res['key'].toString()
+        var token = res['key'].toString()
         this.api.getPersonAuth(token).subscribe(
           res => {
-            localStorage.setItem('userID',res[0]['person'])
+            localStorage.setItem('staffID', res[0]['person'])
             this.router.navigate(['portal'])
             this.openSnackBar('شما با موفقیت وارد شدید!', '', 'green-snackbar', 4)
+            this.requestPermission(res[0]['person'])
           },
           err => {
             console.log(err)
@@ -326,6 +333,7 @@ export class LoginboxComponent implements OnInit {
 
     dialogRef1.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
+
 
     });
   }
@@ -354,6 +362,68 @@ export class LoginboxComponent implements OnInit {
 
     });
   }
+  FCMtoken: any;
+  requestPermission(id: string) {
+
+    const messaging = getMessaging();
+
+    getToken(messaging, { vapidKey: environment.firebaseConfig.vapidKey }).then((currentToken) => {
+      if (currentToken) {
+        console.log("Hurraaa!!! we got the token.....")
+        console.log(currentToken);
+        var token = this.tokencookie.get('T');
+        console.log(token);
+        this.api.createFCMdevice(token, currentToken, id).subscribe(
+          res => {
+            console.log(res)
+          },
+          err => {
+            this.openSnackBar(err, '', 'red-snackbar', 5)
+          }
+        )
+      } else {
+        // Show permission request UI
+        console.log('No registration token available. Request permission to generate one.');
+        // ...
+      }
+    }).catch((err) => {
+      console.log('An error occurred while retrieving token. ', err);
+      // ...
+    });
+
+  }
+  message: any = null;
+  listen() {
+    const messaging = getMessaging();
+    onMessage(messaging, (payload) => {
+      console.log('Message received. ', payload);
+      this.message = payload;
+      this.openSnackBar(this.message.notification.title, '', 'red-snackbar', 5)
+    });
+  }
+  //   // console.log(navigator.serviceWorker.getRegistrations)
+  //   // navigator.serviceWorker.register("firebase-messaging-sw.js")
+  //   // console.log(navigator.serviceWorker.getRegistrations)
+  //   this.afMessaging.requestPermission
+  //     .pipe(
+  //       mergeMapTo(this.afMessaging.tokenChanges)
+  //       )
+  //     .subscribe(
+  //       (token) => { console.log('Permission granted! Save to the server!', token); this.FCMtoken = token },
+  //       (error) => { console.error(error); },
+  //     );
+  // }
+  // deleteToken() {
+  //   this.afMessaging.getToken
+  //     .pipe(mergeMap(token => this.afMessaging.deleteToken(this.token)))
+  //     .subscribe(
+  //       (token) => { console.log('Token deleted!'); },
+  //     );
+  // }
+  // listen() {
+  //   this.afMessaging.messages
+  //     .subscribe((message) => { console.log(message); });
+  // }
 }
 
 
@@ -378,28 +448,32 @@ export class SignUPDialog implements OnInit {
   form!: FormGroup;
   private formSubmitAttempt!: boolean;
   public isCustomer: boolean = true;
-  public usercategory!: { id: string; name: string; }[];
+  public usercategory: { id: string; name: string; }[] = [];
   public uc = 0;
   radioModel: any;
   ngOnInit() {
     console.log(this.data)
-
-    this.api.GetPersonCategories().subscribe(
-      (res: { id: string; name: string; }[]) => {
-        this.usercategory.push( res[0]);
-        this.usercategory.push( res[1]);
-        console.log(this.usercategory);
-      },
-      (err: any) => {
-        console.log(err)
-      }
-    )
     this.form = this.fb.group({
       nationalid: [''],    // {5}
       mobilenumber: [this.data.mobilenumber, Validators.required],
       name: ['', Validators.required],
       family: ['', Validators.required]
     });
+    this.api.GetPersonCategories().subscribe(
+      (res) => {
+        console.log(res)
+        for (let i = 0; i < res.length; i++) {
+          if (res[i]['name'] == 'مشتری' || res[i]['name'] == 'تکنسین')
+            this.usercategory.push(res[i]);
+        }
+
+        console.log(this.usercategory);
+      },
+      (err: any) => {
+        console.log(err)
+      }
+    )
+
   }
   selectuserkind(uk: string) {
     this.uc = Number(uk)
@@ -448,22 +522,47 @@ export class SignUPDialog implements OnInit {
 })
 export class ForgetPassDialog implements OnInit {
   constructor(
+    private api: ApiServicesService,
+    private tokencookie: CookieService,
     private fb: FormBuilder,
+    private _snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<ForgetPassDialog>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ) { }
-  form!: FormGroup;
+  form = this.fb.group({     // {5}
+    mobilenumber: ['', Validators.required],
+    username: ['', Validators.required]
+  });
+
+  public getmobile: boolean = false
+  public getsms: boolean = false
+  public changepass: boolean = false
+  public errbox: boolean = false
+  public token_parts = ""
+  public user = ""
+  public mobile = ""
+  public smscode = ""
+  public pass1 = ""
+  public pass2 = ""
+  public recivesms = ""
+  public errmsg = ""
+  public showpass: boolean = false
+  public passok: boolean = false
   private formSubmitAttempt!: boolean;
-  public getmobile!: boolean;
-  public getsms!: boolean;
-  public changepassword!: boolean;
-  public passok!: boolean;
+  signin: FormGroup = new FormGroup({
+
+    password: new FormControl('', [Validators.required, Validators.min(3)])
+  });
+  hide = true;
+
   ngOnInit() {
+    this.token_parts = this.tokencookie.get('T');
     this.getmobile = true;
-    this.form = this.fb.group({     // {5}
-      mobilenumber: ['', Validators.required],
-      username: ['', Validators.required]
-    });
+    this.getsms = false
+    this.changepass = false
+    this.errbox = false
+    this.showpass = false
+    this.passok = false;
   }
   isFieldInvalid(field: string) { // {6}
     return (
@@ -474,14 +573,87 @@ export class ForgetPassDialog implements OnInit {
   close() {
     this.dialogRef.close();
   }
-  sendsms() {
-
+  showpass1() {
+    this.showpass != this.showpass
   }
-  changepass(): void {
-    var mobileNumaber = this.form.value['mobilenumber']
-    var name = this.form.value['username']
-    ////call singup api to register user in db
-    this.dialogRef.close();
+
+  sendsms() {
+    this.user = this.form.controls.username.value!
+    this.api.ForgetSendSms(this.mobile, this.user).subscribe(
+      res => {
+        console.log(res)
+        if (res['result'] == 'mobile number not match') {
+          this.form.reset();
+          this.openSnackBar('شماره تلفن همراه وارد شده در سیستم ثبت نشده است!', '', 'red-snackbar', 5)
+          this.errmsg = res['result']
+          this.errbox = true
+        }
+        else {
+          this.passok = false;
+          this.errbox = false
+          this.getsms = true
+          this.getmobile = false
+          this.changepass = false
+        }
+      },
+      err => {
+        console.log(err)
+      }
+    )
+  }
+  openSnackBar(message: string, action: string, alertkind: string, showtime: number, hp?: MatSnackBarHorizontalPosition, vp?: MatSnackBarVerticalPosition) {
+    this._snackBar.open(message, action, {
+      duration: showtime * 1000,
+      panelClass: [alertkind],
+      horizontalPosition: hp,
+      verticalPosition: vp
+
+    });
+  }
+  checksms() {
+    console.log(this.user, this.mobile, this.smscode)
+    this.api.checksms(this.smscode, this.mobile).subscribe(
+      res => {
+        console.log(res)
+        if (res['result'] != 'success') {
+          this.errmsg = res['result']
+          this.errbox = true
+        }
+        else {
+          this.passok = false;
+          this.errbox = false
+          this.getsms = false
+          this.getmobile = false
+          this.changepass = true
+        }
+      },
+      err => {
+        console.log(err)
+      }
+    )
+  }
+
+  changepass1() {
+    this.user = this.form.controls.username.value!
+    if (this.pass1 == this.pass2) {
+      this.api.changepass(this.user, this.pass1).subscribe(
+        res => {
+          console.log(res['result'])
+          this.passok = true;
+          this.errbox = false
+          this.getsms = false
+          this.getmobile = false
+          this.changepass = false
+        },
+        err => {
+          console.log(err)
+        }
+      )
+    }
+    else {
+      this.errbox = true
+      this.errmsg = "تکرار گذرواژه با گذرواژه وارد شده تطابق ندارد!"
+    }
   }
 }
 

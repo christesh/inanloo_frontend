@@ -23,11 +23,19 @@
 }
 
 #desktop {
+    .editsingleaddress{
+        color: #484aff;
+        cursor: pointer;
+    }
+    .editsingleaddress:hover{
+        color: #cc2b91;
+        cursor: pointer;
+    }
     ::ng-deep .holder-logo{
         display: none;
     }
     input[type=checkbox] {
-        transform: scale(2.5);
+        transform: scale(1.5);
     }
     .map-wrapper {
         height: 100%;

@@ -13,11 +13,11 @@
                     navbarOpen }">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" [routerLink]="'/home/order'" style="float:
+                            <a class="nav-link" [routerLink]="['/home/order',{userId:userId}]" style="float:
                                 right;font-family: iransans;color: rgb(173,
                                 146, 173);font-size:12px;">ثبت سفارش</a>
                         </li>
-                        
+
                     </ul>
                 </div>
             </nav>
@@ -27,8 +27,9 @@
                 <div class="book">
 
                     <div class="col-sm-12" style="margin:auto;">
-                        <lord-icon src="https://cdn.lordicon.com/slkvcfos.json" trigger="hover"
-                            colors="primary:#121331,secondary:#c71f16" stroke="80" style="width:40px;height:40px "  (click)="tech()">
+                        <lord-icon src="../../../assets/json/shop.json" trigger="hover"
+                            colors="primary:#121331,secondary:#c71f16" stroke="80" style="width:40px;height:40px "
+                            (click)="tech()">
                         </lord-icon>
                     </div>
 
@@ -36,18 +37,27 @@
 
                 <div class="book">
 
-                    <lord-icon *ngIf="female" src="https://cdn.lordicon.com/bwnhdkha.json" trigger="hover"
-                        colors="primary:#121331,secondary:#c71f16" stroke="70" style="width:40px;height:40px;cursor: pointer;" (click)="profile()">
-                        
+                    <lord-icon *ngIf="female" src="../../../assets/json/female.json" trigger="hover"
+                        colors="primary:#121331,secondary:#c71f16" stroke="70"
+                        style="width:40px;height:40px;cursor: pointer;" (click)="profile()">
+
                     </lord-icon>
-                    <lord-icon *ngIf="male" src="https://cdn.lordicon.com/eszyyflr.json" trigger="hover"
-                        colors="primary:#121331,secondary:#c71f16" stroke="70" style="width:40px;height:40px;cursor: pointer;">
+
+                    <lord-icon *ngIf="male" src="../../../assets/json/male.json" trigger="hover"
+                        colors="primary:#121331,secondary:#c71f16" stroke="70"
+                        style="width:40px;height:40px;cursor: pointer;" (click)="profile()">
                     </lord-icon>
+
+                    <lord-icon src="../../../assets/json/exit.json" 
+                        colors="primary:#121331,secondary:#c71f16" trigger="loop-on-hover"
+                        style="width:40px;height:40px;cursor: pointer;margin-right: 10px;" (click)="signout()">
+                    </lord-icon>
+                    
                     <!-- <div  class="dropdown" style="direction: rtl;">
                         <img src="../../assets/img/profile.png" style="cursor: pointer;
                     width: 50px;height: 50px;border-radius: 50%;"> -->
 
-                        <!-- <div class="dropdown-content">
+                    <!-- <div class="dropdown-content">
                             <a [routerLink]="'/home/profile/customer'">پنل کاربری</a>
                             <a href="#">تغییر گذرواژه</a>
                             <a href="#">خروج</a>

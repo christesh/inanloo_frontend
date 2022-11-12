@@ -27,7 +27,11 @@ import { TechnicianProfileComponent } from './profiles/technicianProfile/technic
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { EditaddressComponent } from './editaddress/editaddress.component';
-
+import {EditAddressDialog} from  './orderpage/orderpage.component';
+import { EditAddressDialogProfile} from './profiles/customerProfile/customerProfile.component';
+import { TechEditAddressDialogProfile} from './profiles/technicianProfile/technicianProfile.component';
+import { Ng2ImgMaxModule } from 'ng2-img-max';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 const appRoutes: Routes = [
   // { path:'',component:HomeComponent },
@@ -48,6 +52,8 @@ const appRoutes: Routes = [
 @NgModule({
   
   imports: [
+    NgSelectModule,
+    Ng2ImgMaxModule,
     MatInputModule,
     MatFormFieldModule,
     NgxMapboxGLModule,
@@ -63,6 +69,9 @@ const appRoutes: Routes = [
     RouterModule.forChild(appRoutes)
   ],
   declarations: [
+    TechEditAddressDialogProfile,
+    EditAddressDialogProfile,
+    EditAddressDialog,
     EditaddressComponent,
     HomeComponent,
     MapComponent,

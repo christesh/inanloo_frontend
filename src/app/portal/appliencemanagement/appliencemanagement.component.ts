@@ -36,6 +36,7 @@ export class AppliencemanagementComponent implements OnInit {
   applianceTablevalues: LocalDataSource[] = [];
   brandTablevalues: LocalDataSource[][] = [];
   problemTableSetting: any;
+  serviceKind:any;
   picbaseurl = "E:/home/mersagro/public_html/media/"
   applianceForm = new FormGroup({     // {5}
     appllianceName: new FormControl('', Validators.required),
@@ -91,12 +92,13 @@ export class AppliencemanagementComponent implements OnInit {
   }
   FillTable() {
     var token = this.tokencookies.get('T')
-
+   
     this.api.getAllApplience(token).subscribe(
       res => {
         this.applience = res;
-
+        console.log(res)
         for (let i = 0; i < res.length; i++) {
+          if(this.applience[i].pic!='')
           this.applience[i].pic = this.picbaseurl + this.applience[i].pic
           var appproblem = []
           for (let j = 0; j < res[i]['appCatProblem'].length; j++) {
@@ -222,13 +224,14 @@ export class AppliencemanagementComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result.btn == "save") {
         var appproblem = result.item
+        var pk=result.pkind
         var ptitle = appproblem.problemTitle.value?.toString();
         var lp = appproblem.lowPrice.value?.toString();
         var hp = appproblem.highPrice.value?.toString();
         var pdes = appproblem.description.value?.toString();
         var appid = app.ID;
         var token = this.tokencookies.get('T')
-        this.api.createappliancecategoryproblem(token, appid!, ptitle!, pdes!, "", lp!, hp!).subscribe(
+        this.api.createappliancecategoryproblem(token, appid!, ptitle!, pdes!, pk, lp!, hp!).subscribe(
           res => {
             console.log(res)
             Swal.fire({
@@ -264,13 +267,14 @@ export class AppliencemanagementComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
           if (result.btn == "edit") {
             var appproblem = result.item
+            var pk=result.pkind
             var ptitle = appproblem.problemTitle.value?.toString();
             var lp = appproblem.lowPrice.value?.toString();
             var hp = appproblem.highPrice.value?.toString();
             var pdes = appproblem.description.value?.toString();
             var pid = event.data.ID;
             var token = this.tokencookies.get('T')
-            this.api.editappliancecategoryproblem(token, pid, ptitle!, pdes!, "", lp!, hp!).subscribe(
+            this.api.editappliancecategoryproblem(token, pid, ptitle!, pdes!, pk, lp!, hp!).subscribe(
               res => {
                 var appproblemvalue: any[] = [];
                 appproblemvalue.push({
@@ -818,6 +822,8 @@ export class EditApplianceItemDialog implements OnInit {
 export class CreateProblemDialog implements OnInit {
   titleOfDialog: string;
   buttonTitle: string;
+  selectedKind:any;
+  serviceKind:any[]=[];
   private formSubmitAttempt!: boolean;
   form = new FormGroup({
     problemTitle: new FormControl('', Validators.required),
@@ -826,13 +832,13 @@ export class CreateProblemDialog implements OnInit {
     description: new FormControl('', Validators.required),
   })
   constructor(
+    private tokencookies:CookieService,
     private api: ApiServicesService,
     private tokencookie: CookieService,
     public dialogRef: MatDialogRef<EditApplianceItemDialog>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ) { }
   ngOnInit(): void {
-
     this.titleOfDialog = this.data.problemData.titleOfDialog;
     this.buttonTitle = this.data.problemData.buttonTitle;
     this.form.controls.problemTitle.patchValue(this.data.problemData.problemTitle);
@@ -843,7 +849,15 @@ export class CreateProblemDialog implements OnInit {
     this.form.controls.highPrice.markAsDirty();
     this.form.controls.description.patchValue(this.data.problemData.description);
     this.form.controls.description.markAsDirty();
-
+    var token = this.tokencookies.get('T')
+    this.api.getproblemkind(token).subscribe(
+      res=>{
+        this.serviceKind=res
+      },
+      err=>{
+        console.log(err)
+      }
+    )
   }
   isFieldInvalid(field: string) {
     return (
@@ -853,11 +867,11 @@ export class CreateProblemDialog implements OnInit {
   }
   create() {
     if (this.titleOfDialog == "ایجاد مشکل") {
-      var data = { btn: "save", item: this.form.controls }
+      var data = { btn: "save", item: this.form.controls,pkin:this.selectedKind }
       this.dialogRef.close(data);
     }
     else {
-      var data = { btn: "edit", item: this.form.controls }
+      var data = { btn: "edit", item: this.form.controls,pkin:this.selectedKind }
       this.dialogRef.close(data);
     }
   }

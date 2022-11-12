@@ -26,10 +26,39 @@ export class Nighbourhoods {
     neighbourhoodName: string;
     neighbourhoodDescription:string;
 }
+
+export class ProvinceV2 {
+    id: number;
+    provinceName: string;
+   
+}
+
+export class CountiesV2 {
+    id: number;
+    countyName: string;
+    
+}
+
+export class CitiesV2 {
+    id: number;
+    cityName: string;
+  
+}
+export class RegionsV2 {
+    id: number;
+    regionName: string;
+   
+}
 export class Address{
-    id:number
-    province: Province;
+    id:number;
+    province: ProvinceV2;
+    county:CountiesV2;
+    city:CitiesV2;
+    region:RegionsV2;
+    neighbourhood:Nighbourhoods;
     addressStreet: string;
+    addressSubStreet: string;
+    addressBuilding:string;
     addressLane: string;
     addressNo: string;
     addressUnit: string;
@@ -75,7 +104,7 @@ export class ThechnicianProfile{
     phones: Telephone[];
     address: Address[];
     technicianCategory:number;
-    technicianSkills:[];
+    technicianBrands:[];
     technicianRate:number;
 }
 

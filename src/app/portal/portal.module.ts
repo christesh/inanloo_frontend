@@ -27,7 +27,7 @@ var CanvasJSChart = CanvasJSAngularChart.CanvasJSChart;
 import { NgChartsModule } from 'ng2-charts';
 import { StafforderComponent } from './stafforder/stafforder.component';
 import { MainpageModule } from '../mainpage/mainpage.module';
-
+import {SignUPCustomerDialog} from './stafforder/stafforder.component'
 const appRoutes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   {
@@ -69,7 +69,7 @@ const appRoutes: Routes = [
     RouterModule.forChild(appRoutes)
   ],
   declarations: [
-
+    SignUPCustomerDialog,
     StafforderComponent,
     CanvasJSChart,
     CreateProblemDialog,

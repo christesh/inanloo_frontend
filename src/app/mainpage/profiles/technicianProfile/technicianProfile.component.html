@@ -1,21 +1,478 @@
-<p>
-  technicianProfile works!
-</p>
-<form class="example-form">
-  <mat-form-field class="example-full-width" appearance="fill">
-    <mat-label>Email</mat-label>
-    <input type="email" matInput [formControl]="emailFormControl" [errorStateMatcher]="matcher"
-           placeholder="Ex. pat@example.com" [disabled]="true">
-    <mat-hint>Errors appear instantly!</mat-hint>
-    <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
-      Please enter a valid email address
-    </mat-error>
-    <mat-error *ngIf="emailFormControl.hasError('required')">
-      Email is <strong>required</strong>
-    </mat-error>
-  </mat-form-field>
-</form>
+<mat-tab-group style="direction: rtl;min-height: 500px;">
+  <mat-tab label="اطلاعات شخصی">
+    <div style="direction: rtl;">
+      <div class="main header" style="direction: rtl;">
+        <div class="banner" *ngIf="showbanner">
+        </div>
+        <div class="headerbox">
+          <div class="discription">
+            <h2>توضیحات</h2>
+            <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
+              است،
+              چاپگرها و متون بلکه
+              روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با
+              هدف
+              بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و
+              متخصصان
+              را
+              می طلبد.</p>
+          </div>
+          <div>
+            <div *ngIf="!editName"
+              style="display: flex; flex-direction:column; justify-content: center;    height: 100px;">
+              <button mat-raised-button color="accent" style="margin: 10px;width: 100px;height: 100%;"
+                (click)="editname()">ویرایش</button>
+            </div>
+            <div *ngIf="editName"
+              style="display: flex; flex-direction:column; justify-content: center;    height: 100px;">
+              <button mat-raised-button color="accent" style="margin: 10px;width: 100px;"
+                (click)="savename()">ذخیره</button>
+              <button mat-raised-button color="primary" style="margin: 10px;width: 100px;"
+                (click)="cancelname()">انصراف</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="editpro" style="display: flex;flex-direction: row-reverse;">
+        <div class="pic" style="margin: auto;text-align: center;">
+          <div class="form-group" style="margin:10px;display: flex;flex-direction: column;">
+            <div class="form-group col-12 mb-2" style="direction: rtl;text-align: right;margin: 10px;">
+              <label style="margin: 10px;"> لطفا تصویر پروفایل خود را بارگذاری کنید:</label>
+              <br />
+              <label for="gaurantee-file-upload" class="btn btn-raised btn-primary"
+                style="cursor: pointer;margin-right: 35px;">
+                <i class="fa fa-upload" style="margin-left: 5px;"></i>
+              </label>
 
-<button mat-raised-button color="primary" style="margin: 10px;width: 100px;" (click)="change()">change</button>
+              <input id="gaurantee-file-upload" type='file' formControlName="gfile" (change)="onSelectprofile($event)"
+                resize-max-height="300" resize-max-width="250" resize-quality="0.7">
+            </div>
 
-  
+            <div class="progress" *ngIf="progress">
+              <div class="progress-bar" [style.width]="progress + '%'">{{progress}}%</div>
+            </div>
+            <div>
+              <div *ngFor="let gurl of gurls"
+                style="margin:20px; text-align: center;border-radius: 10px; background-color: rgb(253, 252, 250);box-shadow: 0px 0px 5px 5px rgb(238, 236, 236); width: 350px;height: 400px; ">
+                <lord-icon src="../../../assets/json/bin.json" trigger="hover" (click)="deletegimg(gurl)"
+                  style="width:40px;height:40px;cursor: pointer;margin-top: 20px;cursor: pointer;">
+                </lord-icon>
+                <br>
+                <img [src]="gurl" height="300" width="300" style="margin:10px;">
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="pro">
+
+          <div class="body">
+            <form class="example-form" [formGroup]="info"
+              style="float:right;width: 100%; direction: rtl;padding-right: 10px;display:flex ;flex-direction: column;flex-wrap: wrap;">
+
+              <mat-form-field class="full-width-input" style="width: 300px;">
+                <input matInput placeholder=" نام " id="firstnameinput" [formControl]="firstname" required
+                  style="font-size: 14px;" [disabled]="disabled">
+              </mat-form-field>
+
+              <mat-form-field class="full-width-input" style="width: 300px;" triggers="manual">
+                <input matInput placeholder=" نام خانوادگی" type="text" [formControl]="lastname" required
+                  [disabled]="disabled" style="font-size: 14px;">
+              </mat-form-field>
+
+              <mat-form-field class="full-width-input" style="width: 300px;">
+                <input matInput placeholder="کد ملی" maxlength="10" [formControl]="nationalid" [disabled]="disabled"
+                  style="font-size: 14px;">
+              </mat-form-field>
+
+            </form>
+
+          </div>
+
+          <div class="body">
+            <div style="float:right;direction: rtl;width: 100%;">
+
+              <div class="datepicker">
+
+                <mat-form-field #p="ngbPopover" class="full-width-input" style="width: 300px;"
+                  (click)="showdatepicker(p)" placement="start" [ngbPopover]="popTemplate" [autoClose]="false "
+                  triggers="manual" [disabled]="isDisabled(p)">
+                  <span> <i class="fa fa-calendar fa-2x" aria-hidden="true"
+                      style="float: left;color: blue; cursor: pointer;"
+                      [ngStyle]="{'color':disabled? 'gray':'blue','cursor':disabled? 'not-allowed':'pointer'}"></i></span>
+                  <input matInput placeholder="تاریخ تولد" type="text" value="{{birthdate}}"
+                    style="width: 100px;font-size: 14px;margin-top:10px;" [disabled]="disabled" />
+                </mat-form-field>
+
+              </div>
+
+              <ng-template #popTemplate>
+                <ng-persian-datepicker [uiTheme]="customTheme" triggers="outsideClick"
+                  (dateOnSelect)="changedate($event)">
+                  <input type="text" [formControl]="dateValue1" />
+                </ng-persian-datepicker>
+              </ng-template>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+      <mat-divider></mat-divider>
+      <div class="headerbox">
+        <div class="discription">
+          <h2>توضیحات</h2>
+          <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
+            است،
+            چاپگرها و متون بلکه
+            روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با
+            هدف
+            بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و
+            متخصصان
+            را
+            می طلبد.</p>
+        </div>
+        <div>
+          <div *ngIf="!editMobile"
+            style="display: flex; flex-direction:column; justify-content: center;    height: 100px;">
+            <button mat-raised-button color="accent" style="margin: 10px;width: 100px;height: 100%;"
+              (click)="editmobile()">ویرایش</button>
+          </div>
+          <div *ngIf="editMobile"
+            style="display: flex; flex-direction:column; justify-content: center;    height: 100px;">
+            <button mat-raised-button color="accent" style="margin: 10px;width: 100px;"
+              (click)="savemobile()">ذخیره</button>
+            <button mat-raised-button color="primary" style="margin: 10px;width: 100px;"
+              (click)="cancelmobile()">انصراف</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="body" style="display: flex;flex-direction: column;">
+        <div class="mobiles" style="display: flex;flex-direction: column;direction: rtl;">
+          <div class="mobilebox" *ngFor="let mob of mobiles; let i=index">
+            <p style="margin: 10px;
+              font-size: 14px;
+        font-weight: 800;" [ngStyle]="{'justify-self': mobiledisabled? 'right':'left'}"> {{mob.mobileNumber}}</p>
+            <lord-icon *ngIf="!mob.isMain && !mobiledisabled" src="../../../../assets/json/bin.json" trigger="hover"
+              (click)="deletemobile(i)" style="width:25px;height:25px;cursor: pointer;"></lord-icon>
+            <p *ngIf="mob.isMain" style="margin: 10px;font-size: 12px;font-weight: 900;color: red;">اصلی</p>
+          </div>
+        </div>
+        <br>
+        <div style="float:right;direction: rtl;" *ngIf="!mobiledisabled">
+          <mat-form-field class="full-width-input" style="width: 300px;">
+            <span> <i class="fa fa-plus-square-o fa-2x" aria-hidden="true" style="float: left; cursor: pointer;"
+                [ngStyle]="{'color': mobilenumberisvalid ? 'rgb(37, 155, 27)': 'grey', 'cursor': mobilenumberisvalid ? 'pointer': 'not-allowed'}"
+                (click)="addmobile()"></i></span>
+            <input matInput maxlength="11" placeholder="شماره موبایل" value="{{mobilenumber}}"
+              (keyup)="checkmobilevalidation($event)" style="width: 100px;font-size: 14px;margin-top:10px;">
+          </mat-form-field>
+          <p class="msgerror" *ngIf="!mobilenumberisvalid && typevalue">
+            لطفا شماره تلفن همراه را به صورت صحیح وارد کنید!
+          </p>
+        </div>
+      </div>
+      <mat-divider></mat-divider>
+      <div class="discription" style="direction: rtl;">
+        <div class="headerbox">
+          <div class="discription">
+            <h2>توضیحات</h2>
+            <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
+              است،
+              چاپگرها و متون بلکه
+              روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با
+              هدف
+              بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و
+              متخصصان
+              را
+              می طلبد.</p>
+          </div>
+          <div>
+            <div *ngIf="!editTel"
+              style="display: flex; flex-direction:column; justify-content: center;    height: 100px;">
+              <button mat-raised-button color="accent" style="margin: 10px;width: 100px;height: 100%;"
+                (click)="edittel()">ویرایش</button>
+            </div>
+            <div *ngIf="editTel"
+              style="display: flex; flex-direction:column; justify-content: center;    height: 100px;">
+              <button mat-raised-button color="accent" style="margin: 10px;width: 100px;"
+                (click)="savetel()">ذخیره</button>
+              <button mat-raised-button color="primary" style="margin: 10px;width: 100px;"
+                (click)="canceltel()">انصراف</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="body" style="display: flex;flex-direction: column;">
+        <div class="telephone" style="display: flex;flex-direction: column;direction: rtl;">
+          <div class="mobilebox" *ngFor="let tel of tels; let i=index">
+
+            <p style="margin: 10px;
+              font-size: 14px;
+        font-weight: 800;"> {{tel.phoneNumber}}</p>
+            <lord-icon *ngIf="!teldisabled" src="https://cdn.lordicon.com/gsqxdxog.json" trigger="hover"
+              (click)="deletetel(i)" style="width:25px;height:25px;cursor: pointer;"></lord-icon>
+          </div>
+        </div>
+        <br>
+        <div style="float:right;direction: rtl;" *ngIf="!teldisabled">
+          <mat-form-field class="full-width-input" style="width: 300px;">
+            <span> <i class="fa fa-plus-square-o fa-2x" aria-hidden="true" style="float: left; cursor: pointer;"
+                [ngStyle]="{'color': telnumberisvalid ? 'rgb(37, 155, 27)': 'grey', 'cursor': telnumberisvalid ? 'pointer': 'not-allowed'}"
+                (click)="addtel()"></i></span>
+            <input matInput placeholder="شماره تلفن" value="{{telnumber}}" (keyup)="checktelvalidation($event)"
+              style="width: 100px;font-size: 14px;margin-top:10px;">
+          </mat-form-field>
+          <p class="msgerror" *ngIf="!telnumberisvalid && teltypevalue">
+            لطفا شماره تلفن را به صورت صحیح وارد کنید!
+          </p>
+        </div>
+      </div>
+      <mat-divider></mat-divider>
+      <div class="body">
+        <div class="discription" style="direction: rtl;">
+          <h2>توضیحات</h2>
+          <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
+            است،
+            چاپگرها و متون بلکه
+            روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با
+            هدف
+            بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و
+            متخصصان
+            را
+            می طلبد.</p>
+          <button id="createaddress" mat-raised-button color="primary" (click)="createaddress()">ایجاد آدرس
+            جدید</button>
+        </div>
+        <div *ngIf="shownewaddress" class="addresscontent" style="margin:20px">
+          <mat-card style="width: 100%;min-height:200px ;">
+            <mat-card-content style="display: flex;flex-direction: row;justify-content: space-around;">
+              <app-editaddress [userId]="userid" (editAddressEvent)="createadd($event)"></app-editaddress>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <div class="addresscontent" style="margin:20px;direction: rtl;width: 100%;">
+          <mat-card style="width: 100%;min-height:200px ;" *ngFor="let address of addresses;let i= index">
+            <mat-card-content
+              style="display: flex;flex-direction: row;justify-content: space-around;align-items: center;">
+              <mat-checkbox type="checkbox" style="width:20px ;margin: 10px;" [(ngModel)]="address.isMainAddress"
+                (change)="seletAddress(address)"></mat-checkbox>
+              <div class="addresstext" style="margin: 10px;display: flex;flex-direction: column-reverse;
+        align-content: space-around;
+        justify-content: center;">
+                <div>
+                  <h3>آدرس:</h3>
+                  <br>
+                  <h6>{{address.text}}</h6>
+                  <label class="editsingleaddress" (click)="EditAddress(address.id)">ویرایش</label>
+                </div>
+              </div>
+              <div class="addressmap" style="margin: 10px;width: 300px;height:200px">
+                <app-map [enable]="mapEnable" [lat]="address.maplat" [long]="address.maplong" width="300px"
+                  height="200px">
+                </app-map>
+                <div id="container">
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="تخصص" style="min-height: 500px;">
+    <div class="headerbox">
+      <div class="discription">
+        <h2>توضیحات</h2>
+        <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
+          است،
+          چاپگرها و متون بلکه
+          روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با
+          هدف
+          بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و
+          متخصصان
+          را
+          می طلبد.</p>
+      </div>
+      <div>
+        <div *ngIf="!editName" style="display: flex; flex-direction:column; justify-content: center;    height: 100px;">
+          <button mat-raised-button color="accent" style="margin: 10px;width: 100px;height: 100%;"
+            (click)="editskill()">ویرایش</button>
+        </div>
+        <div *ngIf="editName" style="display: flex; flex-direction:column; justify-content: center;    height: 100px;">
+          <button mat-raised-button color="accent" style="margin: 10px;width: 100px;"
+            (click)="saveskill()">ذخیره</button>
+          <button mat-raised-button color="primary" style="margin: 10px;width: 100px;"
+            (click)="cancelskill()">انصراف</button>
+        </div>
+      </div>
+    </div>
+    <div class="selectskill">
+      <ng-select [items]="appliances" bindLabel="title" bindValue="ID" id="appselect"
+        (change)="getAppValues(appselected )" [(ngModel)]="appselected" style="width: 30%;margin: 10px;"
+        placeholder="لوازم خانگی">
+      </ng-select>
+      <ng-select style="direction: rtl;text-align: right;" [items]="brands" bindLabel="job" groupBy="brand"
+        bindValue="id" [multiple]="true" [selectableGroup]="true" [selectableGroupAsModel]="false"
+        [closeOnSelect]="false" [searchFn]="ngSearchFn" [(ngModel)]="brandselected" style="width: 30%;margin: 10px;"
+        placeholder="برند">
+
+        <ng-template ng-label-tmp let-item="item" let-clear="clear">
+          <div class="ng-value-wrapper default">
+            <span class="ng-value-icon left" (click)="clear(item)" *ngIf="item.disabled !== true"
+              style="margin:5px ;">×</span>
+            <span class="ng-value-label"><b>{{item.brand}}</b> {{item.job}}</span>
+          </div>
+        </ng-template>
+
+        <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+          <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+            style="display: block;margin-left: 5px;" /> {{item.brand}}
+        </ng-template>
+
+        <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index"
+          style="text-align: right;direction: rtl;display: flex;flex-direction: row;justify-content: end;">
+          <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+            style="display: block;margin-left: 5px;" /> <b style="text-align: right;">{{item.job}}</b>
+        </ng-template>
+      </ng-select>
+      <button mat-raised-button color="primary" style="margin: 10px;height: 50px;" (click)="addskill()">اضافه کردن
+      </button>
+    </div>
+    <div class="skills" *ngIf="showskills">
+      <div *ngFor="let skill of skills">
+        <mat-card class="skilldetail">
+          <mat-card-content>
+            <div class="applience" style="display: flex;flex-direction: row;padding:20px ;align-items: center;">
+              <div class="kind">
+                <mat-card class="appliences">
+                  <mat-card-header>
+                    <mat-card-title>{{skill.app}} </mat-card-title>
+                  </mat-card-header>
+                  <mat-card-content>
+                    <img class="applience" mat-card-image [src]="skill.apppic">
+                  </mat-card-content>
+                  <lord-icon src="../../../assets/json/bin.json" trigger="hover" (click)="deletegapp(skill.app)"
+                    style="width:20px;height:20px;cursor: pointer;cursor: pointer;">
+                  </lord-icon>
+                </mat-card>
+              </div>
+              <div class="model" style="padding:20px ;display: flex;
+              flex-direction: column;
+              justify-content: center;">
+                <div *ngFor="let job of skill.kind"
+                  style="display: flex;flex-direction: row; justify-content: space-between;   align-items: center; border-radius: 8px;box-shadow: 0px 0px 5px 5px rgb(242, 242, 242);margin:5px;">
+                  <div class="brand" style="padding: 10px; display: flex;flex-direction: column;align-items: center;">
+                    <div>
+                      <h6>{{job.brand}}</h6>
+                    </div>
+
+                  </div>
+                  <div class="skill"
+                    style="display: flex;flex-direction: column;padding: 10px;align-items: center;border-right:gray solid 1px ;">
+
+                    <div style="margin: 5px;">
+                      <div *ngFor="let kind of job.skill" style="display: flex;
+                      align-items: flex-end;"> {{kind}}
+                        <lord-icon src="../../../assets/json/bin.json" trigger="hover"
+                          (click)="deletegskill(kind,job.brand)"
+                          style="width:20px;height:20px;cursor: pointer;margin-right:20px; cursor: pointer;">
+                        </lord-icon>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+
+  </mat-tab>
+  <mat-tab label="محدوده کاری">
+    <div class="headerbox">
+      <div class="discription">
+        <h2>توضیحات</h2>
+        <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
+          است،
+          چاپگرها و متون بلکه
+          روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با
+          هدف
+          بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و
+          متخصصان
+          را
+          می طلبد.</p>
+      </div>
+      <div>
+        <div *ngIf="!editName" style="display: flex; flex-direction:column; justify-content: center;    height: 100px;">
+          <button mat-raised-button color="accent" style="margin: 10px;width: 100px;height: 100%;"
+            (click)="editskill()">ویرایش</button>
+        </div>
+        <div *ngIf="editName" style="display: flex; flex-direction:column; justify-content: center;    height: 100px;">
+          <button mat-raised-button color="accent" style="margin: 10px;width: 100px;"
+            (click)="saveskill()">ذخیره</button>
+          <button mat-raised-button color="primary" style="margin: 10px;width: 100px;"
+            (click)="cancelskill()">انصراف</button>
+        </div>
+      </div>
+    </div>
+    <div style="display: flex; flex-direction: row;flex-wrap: wrap;">
+      <mat-form-field style="direction: rtl;text-align:right; margin: 10px;">
+        <mat-label>استان </mat-label>
+        <mat-select (selectionChange)="selectprovince($event)" [(value)]="selectedProvince">
+          <mat-option *ngFor="let p of province;let i=index" value="{{p.id}}">{{p.provinceName}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field style="direction: rtl;text-align:right; margin: 10px;">
+        <mat-label>شهرستان </mat-label>
+        <mat-select (selectionChange)="selectshahrestan($event)" [(value)]="selectedCounty">
+          <mat-option *ngFor="let sh of shahrestan;let i1=index" value="{{sh.id}}">{{sh.countyName}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field style="direction: rtl;text-align:right; margin: 10px;">
+        <mat-label>شهر </mat-label>
+        <mat-select (selectionChange)="selectcity($event)" [(value)]="selectedCity">
+          <mat-option *ngFor="let c of city;let i2=index" value="{{c.id}}">{{c.cityName}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="full-width-input" style="width: 300px;">
+        <mat-label>منطقه </mat-label>
+        <mat-select (selectionChange)="selectregion($event)" [(value)]="selectedRegion">
+          <mat-option *ngFor="let r of region;let i3=index" value="{{r.id}}">{{r.regionName}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="full-width-input" style="width: 300px;">
+        <mat-label>محله </mat-label>
+        <mat-select (selectionChange)="selectneighbour($event)" [(value)]="selectedNeighbour">
+          <mat-option *ngFor="let n of neighbourhood;let i4=index" value="{{n.id}}">{{n.neighbourhoodName}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-raised-button color="primary" style="margin: 10px;height: 50px;" (click)="adddomaintion()">اضافه کردن
+      </button>
+    </div>
+    <!-- <div id="container" style="min-width: 300px; min-height:200px;background-color: rgb(253, 253, 253);">
+      <mgl-map [zoom]="[15]" [center]="center" [centerWithPanTo]="true" [interactive]="interact" [apiKey]="apiKey">
+        
+        <mgl-marker [lngLat]="clickpoint">
+          <lord-icon src="../../../assets/json/mappointer.json" trigger="hover"
+            colors="primary:#121331,secondary:#16c72e" state="hover-jump"
+            style="width:70px;height:70px;margin-bottom: 50px;">
+          </lord-icon>
+        </mgl-marker>
+        <mgl-geojson-source id="branch-points">
+          <mgl-feature [geometry]="geometry1">
+          </mgl-feature>
+        </mgl-geojson-source>
+      </mgl-map>
+
+    </div> -->
+    <div class="addressmap" style="margin:20px ;display: flex;flex-direction: row;justify-content: center;">
+      <app-map [enable]="mapEnable" [lat]="maplat" [long]="maplong" width="500px" height="300px" [geometry]="geometry1"></app-map>
+    </div>
+  </mat-tab>
+  <mat-tab label="علاقه مندی ها">
+
+  </mat-tab>
+</mat-tab-group>

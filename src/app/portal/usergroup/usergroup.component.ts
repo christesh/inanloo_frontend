@@ -13,6 +13,7 @@ export interface DialogData {
   selector: 'app-usergroup',
   templateUrl: './usergroup.component.html',
   styleUrls: ['./usergroup.component.css']
+  
 })
 export class UsergroupComponent implements OnInit {
   memberGroup: { id: string, group: string, description: string, permissions: { id: number, title: string, active: string, description: string } }[] = []
