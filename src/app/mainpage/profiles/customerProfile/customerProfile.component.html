@@ -26,37 +26,26 @@
       </div>
     </div>
   </div>
-  <div class="editpro" style="display: flex;flex-direction: row-reverse;">
-    <div class="pic" style="margin: auto;text-align: center;">
-      <div class="form-group" style="margin:10px;display: flex;flex-direction: column;">
-        <div class="form-group col-12 mb-2" style="direction: rtl;text-align: right;margin: 10px;">
-          <label style="margin: 10px;"> لطفا تصویر پروفایل خود را بارگذاری کنید:</label>
-          <br />
-          <label for="gaurantee-file-upload" class="btn btn-raised btn-primary"
-            style="cursor: pointer;margin-right: 35px;">
-            <i class="fa fa-upload" style="margin-left: 5px;"></i>
-          </label>
+  <div class="editpro" style="display: flex;flex-direction: row-reverse;justify-content: space-around;">
+    <div class="profilepic">
+      <div class="avatar-upload">
+        <div class="avatar-edit" *ngIf="editName">
+          <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" (change)="onSelectprofile($event)" />
+          <label for="imageUpload"></label>
+        </div>
+        <div class="avatar-delete" *ngIf="editName && hasImage">
+          <button></button>
+          <label for="imagedelete" (click)="deletegimg()"></label>
+        </div>
+        <div class="avatar-preview">
 
-          <input id="gaurantee-file-upload" type='file' formControlName="gfile" (change)="onSelectprofile($event)"
-            resize-max-height="300" resize-max-width="250" resize-quality="0.7">
-        </div>
-        
-        <div class="progress" *ngIf="progress">
-          <div class="progress-bar" [style.width]="progress + '%'">{{progress}}%</div>
-        </div>
-        <div>
-          <div *ngFor="let gurl of gurls"
-            style="margin:20px; text-align: center;border-radius: 10px; background-color: rgb(253, 252, 250);box-shadow: 0px 0px 5px 5px rgb(238, 236, 236); width: 350px;height: 400px; ">
-            <lord-icon src="../../../assets/json/bin.json" trigger="hover" (click)="deletegimg(gurl)"
-              style="width:40px;height:40px;cursor: pointer;margin-top: 20px;cursor: pointer;">
-            </lord-icon>
-            <br>
-            <img [src]="gurl" height="300" width="300" style="margin:10px;">
+          <div id="imagePreview" [ngStyle]="{'background-image': 'url(' + profilePic + ')'}"
+            style="background-size: contain;">
+
           </div>
+
         </div>
-
       </div>
-
     </div>
     <div class="pro">
       <div class="body">

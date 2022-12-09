@@ -23,7 +23,6 @@ const appRoutes1: Routes = [
 ],
   imports: [
     // FormsModule,
-   
     ReactiveFormsModule,
     CommonModule,
     MaterialExampleModule,

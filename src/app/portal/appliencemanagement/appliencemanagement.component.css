@@ -52,3 +52,13 @@ input[type="file"] {
   cursor: pointer;
   color: white;
 }
+
+
+
+::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
+    width: 110% !important;
+    border-radius: 8px !important;
+    padding: 0.75em 0.75em 0 0.75em !important;
+    background-color: white !important;
+    border: whitesmoke 1px solid !important;
+}

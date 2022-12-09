@@ -11,10 +11,10 @@ import { environment } from '../environments/environment';
 })
 export class ApiServicesService {
 
-  // private baseurl= environment.API_URL;
+  private baseurl = environment.API_URL;
 
   // private baseurl = "https://api-is.mersa-group.ir";
-  private baseurl = "http://localhost:8000";
+  // private baseurl = "http://localhost:8000";
   httpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
 
   constructor(private http: HttpClient) { }
@@ -59,8 +59,8 @@ export class ApiServicesService {
       })
     });
   }
-  ForgetSendSms(mob: string | null | undefined, uid:string): Observable<any> {
-    const body = { mobile: mob ,uid:uid};
+  ForgetSendSms(mob: string | null | undefined, uid: string): Observable<any> {
+    const body = { mobile: mob, uid: uid };
     return this.http.post(this.baseurl + '/personal/ForgetSendSms/', body, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
@@ -139,7 +139,7 @@ export class ApiServicesService {
       })
     });
   }
-  
+
   getRegins(token: string): Observable<any> {
     return this.http.get(this.baseurl + '/baseinfo/getregions/', {
       headers: new HttpHeaders({
@@ -498,7 +498,7 @@ export class ApiServicesService {
       })
     })
   }
-  
+
   editappliancecategoryproblem(token: string, id: string, ptitle: string, pdes: string, pkind: string, lp: string, hp: string): Observable<any> {
     const body = {
       id: id,
@@ -520,6 +520,44 @@ export class ApiServicesService {
       id: pid,
     }
     return this.http.post(this.baseurl + '/baseinfo/deleteappliancecategoryproblem/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    })
+  }
+  createappliancecategorychecklist(token: string, appcat: string, chtitle: string, chdes: string): Observable<any> {
+    const body = {
+      appliance: appcat,
+      title: chtitle,
+      description: chdes,
+    }
+    return this.http.post(this.baseurl + '/baseinfo/createappliancecategorychecklist/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    })
+  }
+
+  editappliancecategorychecklist(token: string, id: string, chtitle: string, chdes: string): Observable<any> {
+    const body = {
+      id: id,
+      title: chtitle,
+      description: chdes
+    }
+    return this.http.post(this.baseurl + '/baseinfo/editappliancecategorychecklist/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    })
+  }
+  deleteappliancecategorycheckliast(token: string, pid: string): Observable<any> {
+    const body = {
+      id: pid,
+    }
+    return this.http.post(this.baseurl + '/baseinfo/deleteappliancecategorychecklist/', body, {
       headers: new HttpHeaders({
         'Authorization': 'Token  ' + token,
         'Content-Type': 'application/json',
@@ -558,6 +596,7 @@ export class ApiServicesService {
       })
     })
   }
+
   deletebrandproblem(token: string, pid: string): Observable<any> {
     const body = {
       id: pid,
@@ -569,95 +608,267 @@ export class ApiServicesService {
       })
     })
   }
-  getallcustomersdetails(token:string): Observable<any>
-  {
-    return this.http.get(this.baseurl + '/personal/getallcustomersdetails/',  {
-      headers: new HttpHeaders({
-        'Authorization': 'Token  ' + token,
-        'Content-Type': 'application/json',
-      })
-    })
-  }
-  CreateCustomerAddress(token:string,body:any): Observable<any>
-  {
-    return this.http.post(this.baseurl + '/personal/createcustomeraddress/',body,  {
-      headers: new HttpHeaders({
-        'Authorization': 'Token  ' + token,
-        'Content-Type': 'application/json',
-      })
-    })
-  }
-  EditCustomerAddress(token:string,body:any): Observable<any>
-  {
 
-    return this.http.post(this.baseurl + '/personal/editcustomeraddress/',body,  {
+  createmodelproblem(token: string, brand: string, ptitle: string, pdes: string, pkind: string, lp: string, hp: string): Observable<any> {
+    const body = {
+      brand: brand,
+      title: ptitle,
+      description: pdes,
+      kind: pkind,
+      lowprice: lp,
+      highprice: hp
+    }
+    return this.http.post(this.baseurl + '/baseinfo/createmodelproblem/', body, {
       headers: new HttpHeaders({
         'Authorization': 'Token  ' + token,
         'Content-Type': 'application/json',
       })
     })
   }
-  DeleteCustomerAddress(token:string,addid:any): Observable<any>
-  {
-    const body={addid:addid}
-    return this.http.post(this.baseurl + '/personal/deletecustomeraddress/',body,  {
+  editmodelproblem(token: string, id: string, ptitle: string, pdes: string, pkind: string, lp: string, hp: string): Observable<any> {
+    const body = {
+      id: id,
+      title: ptitle,
+      description: pdes,
+      kind: pkind,
+      lowprice: lp,
+      highprice: hp
+    }
+    return this.http.post(this.baseurl + '/baseinfo/editmodelproblem/', body, {
       headers: new HttpHeaders({
         'Authorization': 'Token  ' + token,
         'Content-Type': 'application/json',
       })
     })
   }
-  createorder(token:string,order:any): Observable<any>{
-    const body={order:order};
-    return this.http.post(this.baseurl + '/order/createorder/',body,  {
-      headers: new HttpHeaders({
-        'Authorization': 'Token  ' + token,
-        'Content-Type': 'application/json',
-      })
-    })
-  }
-  createFCMdevice(token:string,tokenfcm:any,userid:string): Observable<any>{
-    const body={tokenFcm:tokenfcm,userId:userid};
-    return this.http.post(this.baseurl + '/baseinfo/createFCMdevice/',body,  {
-      headers: new HttpHeaders({
-        'Authorization': 'Token  ' + token,
-        'Content-Type': 'application/json',
-      })
-    })
-  }
-  createcustomerappliance(token:string,uid:any,aid:string,serial:string): Observable<any>{
-    const body={cid:uid,aid:aid,aserial:serial};
-    return this.http.post(this.baseurl + '/order/createcustomerappliance/',body,  {
-      headers: new HttpHeaders({
-        'Authorization': 'Token  ' + token,
-        'Content-Type': 'application/json',
-      })
-    })
-  }
-  getcustomerorders(token:string,cid:any): Observable<any>{
-    const body={cid:cid};
-    return this.http.post(this.baseurl + '/order/getcustomerorders/',body,  {
-      headers: new HttpHeaders({
-        'Authorization': 'Token  ' + token,
-        'Content-Type': 'application/json',
-      })
-    })
-  }
-  changepass(user:string,pass:string): Observable<any> {
-    const body = { uid: user,pass: pass };
-    return this.http.post(this.baseurl + '/personal/changepass/',body,{headers: new HttpHeaders({
-      'Content-Type':  'application/json',  
-      
-    })});
-  }
-  getproblemkind(token:string): Observable<any>{
 
-    return this.http.get(this.baseurl + '/baseinfo/getproblemkind/',  {
+  deletemodelproblem(token: string, pid: string): Observable<any> {
+    const body = {
+      id: pid,
+    }
+    return this.http.post(this.baseurl + '/baseinfo/deletemodelproblem/', body, {
       headers: new HttpHeaders({
         'Authorization': 'Token  ' + token,
         'Content-Type': 'application/json',
       })
     })
+  }
+  getallcustomersdetails(token: string): Observable<any> {
+    return this.http.get(this.baseurl + '/personal/getallcustomersdetails/', {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    })
+  }
+  CreateCustomerAddress(token: string, body: any): Observable<any> {
+    return this.http.post(this.baseurl + '/personal/createcustomeraddress/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    })
+  }
+  EditCustomerAddress(token: string, body: any): Observable<any> {
+
+    return this.http.post(this.baseurl + '/personal/editcustomeraddress/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    })
+  }
+  DeleteCustomerAddress(token: string, addid: any): Observable<any> {
+    const body = { addid: addid }
+    return this.http.post(this.baseurl + '/personal/deletecustomeraddress/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    })
+  }
+  createorder(token: string, order: any): Observable<any> {
+    const body = { order: order };
+    return this.http.post(this.baseurl + '/order/createorder/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    })
+  }
+  createFCMdevice(token: string, tokenfcm: any, userid: string): Observable<any> {
+    const body = { tokenFcm: tokenfcm, userId: userid };
+    return this.http.post(this.baseurl + '/baseinfo/createFCMdevice/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    })
+  }
+  createcustomerappliance(token: string, uid: any, aid: string, serial: string): Observable<any> {
+    const body = { cid: uid, aid: aid, aserial: serial };
+    return this.http.post(this.baseurl + '/order/createcustomerappliance/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    })
+  }
+  getcustomerorders(token: string, cid: any): Observable<any> {
+    const body = { cid: cid };
+    return this.http.post(this.baseurl + '/order/getcustomerorders/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    })
+  }
+  changepass(user: string, pass: string): Observable<any> {
+    const body = { uid: user, pass: pass };
+    return this.http.post(this.baseurl + '/personal/changepass/', body, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+
+      })
+    });
+  }
+  getproblemkind(token: string): Observable<any> {
+
+    return this.http.get(this.baseurl + '/baseinfo/getproblemkind/', {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    })
+  }
+
+  setlog(token: string, action: string): Observable<any> {
+    const body = { action: action };
+    return this.http.post(this.baseurl + '/baseinfo/setlog/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  deletetechnicianskill(token: string, skillsid: string,): Observable<any> {
+    const body = { skillsid: skillsid };
+    return this.http.post(this.baseurl + '/personal/deletetechnicianskill/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+
+  createtechniciandistricts(token: string, techid: string, districts: any): Observable<any> {
+    const body = { techid: techid, districts: districts };
+    return this.http.post(this.baseurl + '/personal/createtechniciandistricts/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+
+  deletetechniciandistrict(token: string, districtsid: string): Observable<any> {
+    const body = { districtsid: districtsid };
+    return this.http.post(this.baseurl + '/personal/deletetechniciandistrict/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  createtechnicianskills(token: string, techid: string, skills: any): Observable<any> {
+    const body = { techid: techid, skills: skills };
+    return this.http.post(this.baseurl + '/personal/createtechnicianskills/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  gettechniciandistricts(token: string, techid: string): Observable<any> {
+    const body = { techid: techid };
+    return this.http.post(this.baseurl + '/personal/gettechniciandistricts/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  gettechnicianskills(token: string, techid: string): Observable<any> {
+    const body = { techid: techid };
+    return this.http.post(this.baseurl + '/personal/gettechnicianskills/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  editprofile(token: string, uid: string, fname: string, lname: string, nid: string, bdate: string): Observable<any> {
+    const body = { uid: uid, fname: fname, lname: lname, nid: nid, bdate: bdate };
+    return this.http.post(this.baseurl + '/personal/editprofile/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  saveusersmobile(token: string, uid: string, mobiles: string[]): Observable<any> {
+    const body = { uid: uid, mobiles: mobiles };
+    return this.http.post(this.baseurl + '/personal/saveusersmobile/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  saveuserstel(token: string, uid: string, tels: string[]): Observable<any> {
+    const body = { uid: uid, tels: tels };
+    return this.http.post(this.baseurl + '/personal/saveuserstel/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  edittechnicianfav(token: string, uid: string, fav: string): Observable<any> {
+    const body = { uid: uid, fav: fav };
+    return this.http.post(this.baseurl + '/personal/edittechnicianfav/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  edittechnicianrank(token: string, uid: string, rank: string): Observable<any> {
+    const body = { uid: uid, rank: rank };
+    return this.http.post(this.baseurl + '/personal/edittechnicianrank/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  edittechnicianactivation(token: string, uid: string, act: boolean): Observable<any> {
+    const body = { uid: uid, act: act };
+    return this.http.post(this.baseurl + '/personal/edittechnicianactivation/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  edittechnicianstatus(token: string, uid: string, status: string): Observable<any> {
+    const body = { uid: uid, status: status };
+    return this.http.post(this.baseurl + '/personal/edittechnicianstatus/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
   }
 }
 

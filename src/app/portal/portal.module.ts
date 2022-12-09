@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PortalComponent } from './portal.component';
 import { SidenavComponent } from '../sidenav/sidenav.component';
@@ -27,7 +27,14 @@ var CanvasJSChart = CanvasJSAngularChart.CanvasJSChart;
 import { NgChartsModule } from 'ng2-charts';
 import { StafforderComponent } from './stafforder/stafforder.component';
 import { MainpageModule } from '../mainpage/mainpage.module';
-import {SignUPCustomerDialog} from './stafforder/stafforder.component'
+import { SignUPCustomerDialog } from './stafforder/stafforder.component';
+import { CreateChecklistDialog } from './appliencemanagement/appliencemanagement.component';
+
+
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+
+import { TicketingComponent } from './ticketing/ticketing.component';
+
 const appRoutes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   {
@@ -50,7 +57,10 @@ const appRoutes: Routes = [
     path: 'orderbystaff',
     component: StafforderComponent,
   },
- 
+  {
+    path: 'chatbox',
+    component: TicketingComponent
+  }
 ];
 @NgModule({
   exports: [
@@ -58,6 +68,7 @@ const appRoutes: Routes = [
     SidenavComponent,
   ],
   imports: [
+   
     MainpageModule,
     NgChartsModule,
     NgSelectModule,
@@ -66,9 +77,11 @@ const appRoutes: Routes = [
     Ng2SmartTableModule,
     CommonModule,
     MaterialExampleModule,
-    RouterModule.forChild(appRoutes)
+    RouterModule.forChild(appRoutes),
+    PerfectScrollbarModule
   ],
   declarations: [
+    CreateChecklistDialog,
     SignUPCustomerDialog,
     StafforderComponent,
     CanvasJSChart,

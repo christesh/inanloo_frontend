@@ -7,7 +7,7 @@
       state="hover-jump" style="width:70px;height:70px;margin-bottom: 50px;">
       </lord-icon>
     </mgl-marker>
-    <mgl-geojson-source id="branch-points">
+    <!-- <mgl-geojson-source id="branch-points">
       <mgl-feature
           *ngFor="let geometry of branchData;index as i"
           [id]="i"
@@ -18,7 +18,7 @@
   <mgl-layer id="route" type="line" source="branch-points" type="fill" [paint]="{
     'fill-color': '#000000',
     'fill-opacity':0.15
-  }"></mgl-layer>
+  }"></mgl-layer> -->
   </mgl-map>
 
 </div>

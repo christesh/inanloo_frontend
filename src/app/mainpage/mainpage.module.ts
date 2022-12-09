@@ -32,7 +32,7 @@ import { EditAddressDialogProfile} from './profiles/customerProfile/customerProf
 import { TechEditAddressDialogProfile} from './profiles/technicianProfile/technicianProfile.component';
 import { Ng2ImgMaxModule } from 'ng2-img-max';
 import { NgSelectModule } from '@ng-select/ng-select';
-
+import { Ng2SmartTableModule } from 'ng2-smart-table';
 const appRoutes: Routes = [
   // { path:'',component:HomeComponent },
   { path: 'order', component: OrderpageComponent },
@@ -52,6 +52,7 @@ const appRoutes: Routes = [
 @NgModule({
   
   imports: [
+    Ng2SmartTableModule,
     NgSelectModule,
     Ng2ImgMaxModule,
     MatInputModule,

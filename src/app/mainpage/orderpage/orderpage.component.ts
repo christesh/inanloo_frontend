@@ -76,7 +76,7 @@ export class OrderpageComponent {
   // baseurl=environment.API_URL;
   // baseurl = "http://localhost:8000";
   baseurl = "http://api-is.mersa-group.ir";
-  imgurl="http://mersa-group.ir/media/";
+  imgurl="http://mersa-group.ir";
   // timenow:{hour: number, minute: number}={hour: 12, minute: 12};
   showbanner: boolean = true;
   mapEnable: boolean = false;
@@ -186,6 +186,7 @@ export class OrderpageComponent {
   hasmodel: boolean = false;
   stepperOrientation: Observable<StepperOrientation>;
   applience: Applience[] = []
+  userid: any;
   constructor(
     private http: HttpClient,
     private ng2ImgMax: Ng2ImgMaxService,
@@ -213,6 +214,7 @@ export class OrderpageComponent {
     ifile: new FormControl(''),
   });
   ngOnInit() {
+    this.userid = localStorage.getItem('userID');
     if (!this.showBanner)
       this.showbanner = false; 
     this.order = new Order();

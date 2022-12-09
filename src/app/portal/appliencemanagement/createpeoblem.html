@@ -11,10 +11,10 @@
           لطفا اطلاعات زیر را تکمیل نمائید
         </h5>
         <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
-          [(ngModel)]="selectedKind">
-          <mat-radio-button class="example-radio-button" *ngFor="let times of serviceKind" [value]="times.ID"
+          [(ngModel)]="selectedKind" (change)="radioselect($event)">
+          <mat-radio-button class="example-radio-button" *ngFor="let kinds of serviceKind" [value]="kinds.id"
             style="padding-left: 5px;">
-            <h6 style="padding-right: 10px;padding-top:5px;font-size:12px">{{times.title}}</h6>
+            <h6 style="padding-right: 10px;padding-top:5px;font-size:12px">{{kinds.title}}</h6>
           </mat-radio-button>
         </mat-radio-group>
         <mat-form-field class="full-width-input"

@@ -10,7 +10,7 @@ import { GlobalvarService } from 'src/app/globalvar.service';
 import { mergeMapTo, mergeMap } from 'rxjs/operators';
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import { environment } from '../../../environments/environment';
-
+import {WebsocketBuilder,Websocket} from 'websocket-ts';
 
 export interface DialogData {
   mobilenumber: string;
@@ -91,8 +91,10 @@ export class LoginboxComponent implements OnInit {
   }
   ngOnInit() {
     this.getMobile = true;
-    // this.requestPermission();
+    this.requestPermission('2');
     this.listen();
+    // let ws= new WebsocketBuilder('ws://127.0.0.1:8000/ws/chat/sheyda/').build();
+   
   }
   userIsFieldInvalid(field: string) { // {6}
     return (
@@ -136,7 +138,6 @@ export class LoginboxComponent implements OnInit {
         if (res['result'] == 'mobile number not match') {
           this.form.reset();
           this.openSnackBar('شماره تلفن همراه وارد شده در سیستم ثبت نشده است!', '', 'red-snackbar', 5)
-          // this.openSnackBar('it is a test for font-family', '', 'red-snackbar', 5)
           this.signup()
         }
         else {
@@ -198,6 +199,11 @@ export class LoginboxComponent implements OnInit {
                   console.log(res['key'])
                   this.tokencookie.set('T', res['key'])
                   var token = res['key'].toString()
+                  this.api.setlog(token,"login").subscribe(
+                    res=>{
+                      console.log(res)},
+                     err=>{
+                      console.log(err)})
                   this.api.getPersonAuth(token).subscribe(
                     res => {
                       localStorage.setItem('userID', res[0]['person'])
@@ -207,6 +213,7 @@ export class LoginboxComponent implements OnInit {
                         this.router.navigate(['/home/profile/technician'])
                       this.openSnackBar('شما با موفقیت وارد شدید!', '', 'green-snackbar', 4)
                       this.requestPermission(res[0]['person'])
+                      this.listen()
                     },
                     err => {
                       console.log(err)
@@ -236,6 +243,7 @@ export class LoginboxComponent implements OnInit {
           else {
             this.tokencookie.set('T', res['result'])
             var token = res['result']
+            this.api.setlog(token,"login").subscribe(res=>{},err=>{})
             this.api.getPersonAuth(token).subscribe(
               res => {
                 localStorage.setItem('userID', res[0]['person'])
@@ -245,6 +253,7 @@ export class LoginboxComponent implements OnInit {
                   this.router.navigate(['/home/profile/technician'])
                 this.openSnackBar('شما با موفقیت وارد شدید!', '', 'green-snackbar', 4)
                 this.requestPermission(res[0]['person'])
+                this.listen()
               },
               err => {
                 console.log(err)
@@ -310,6 +319,7 @@ export class LoginboxComponent implements OnInit {
             this.router.navigate(['portal'])
             this.openSnackBar('شما با موفقیت وارد شدید!', '', 'green-snackbar', 4)
             this.requestPermission(res[0]['person'])
+            this.listen()
           },
           err => {
             console.log(err)
@@ -330,11 +340,8 @@ export class LoginboxComponent implements OnInit {
       data: { mobilenumber: "12313" },
       disableClose: true
     });
-
     dialogRef1.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-
-
     });
   }
 
@@ -364,9 +371,7 @@ export class LoginboxComponent implements OnInit {
   }
   FCMtoken: any;
   requestPermission(id: string) {
-
     const messaging = getMessaging();
-
     getToken(messaging, { vapidKey: environment.firebaseConfig.vapidKey }).then((currentToken) => {
       if (currentToken) {
         console.log("Hurraaa!!! we got the token.....")

@@ -33,43 +33,31 @@
           </div>
         </div>
       </div>
-      <div class="editpro" style="display: flex;flex-direction: row-reverse;">
-        <div class="pic" style="margin: auto;text-align: center;">
-          <div class="form-group" style="margin:10px;display: flex;flex-direction: column;">
-            <div class="form-group col-12 mb-2" style="direction: rtl;text-align: right;margin: 10px;">
-              <label style="margin: 10px;"> لطفا تصویر پروفایل خود را بارگذاری کنید:</label>
-              <br />
-              <label for="gaurantee-file-upload" class="btn btn-raised btn-primary"
-                style="cursor: pointer;margin-right: 35px;">
-                <i class="fa fa-upload" style="margin-left: 5px;"></i>
-              </label>
-
-              <input id="gaurantee-file-upload" type='file' formControlName="gfile" (change)="onSelectprofile($event)"
-                resize-max-height="300" resize-max-width="250" resize-quality="0.7">
+      <div class="editpro" style="display: flex;flex-direction: row-reverse;justify-content: space-around;">
+        <div class="profilepic">
+          <div class="avatar-upload">
+            <div class="avatar-edit" *ngIf="editName">
+              <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" (change)="onSelectprofile($event)" />
+              <label for="imageUpload"></label>
             </div>
-
-            <div class="progress" *ngIf="progress">
-              <div class="progress-bar" [style.width]="progress + '%'">{{progress}}%</div>
+            <div class="avatar-delete" *ngIf="editName && hasImage">
+              <button></button>
+              <label for="imagedelete" (click)="deletegimg()"></label>
             </div>
-            <div>
-              <div *ngFor="let gurl of gurls"
-                style="margin:20px; text-align: center;border-radius: 10px; background-color: rgb(253, 252, 250);box-shadow: 0px 0px 5px 5px rgb(238, 236, 236); width: 350px;height: 400px; ">
-                <lord-icon src="../../../assets/json/bin.json" trigger="hover" (click)="deletegimg(gurl)"
-                  style="width:40px;height:40px;cursor: pointer;margin-top: 20px;cursor: pointer;">
-                </lord-icon>
-                <br>
-                <img [src]="gurl" height="300" width="300" style="margin:10px;">
+            <div class="avatar-preview">
+
+              <div id="imagePreview" [ngStyle]="{'background-image': 'url(' + profilePic + ')'}"
+                style="background-size: contain;">
+
               </div>
-            </div>
 
+            </div>
           </div>
         </div>
         <div class="pro">
-
           <div class="body">
-            <form class="example-form" [formGroup]="info"
+            <form class="example-form"
               style="float:right;width: 100%; direction: rtl;padding-right: 10px;display:flex ;flex-direction: column;flex-wrap: wrap;">
-
               <mat-form-field class="full-width-input" style="width: 300px;">
                 <input matInput placeholder=" نام " id="firstnameinput" [formControl]="firstname" required
                   style="font-size: 14px;" [disabled]="disabled">
@@ -295,102 +283,98 @@
           را
           می طلبد.</p>
       </div>
-      <div>
-        <div *ngIf="!editName" style="display: flex; flex-direction:column; justify-content: center;    height: 100px;">
-          <button mat-raised-button color="accent" style="margin: 10px;width: 100px;height: 100%;"
-            (click)="editskill()">ویرایش</button>
-        </div>
-        <div *ngIf="editName" style="display: flex; flex-direction:column; justify-content: center;    height: 100px;">
-          <button mat-raised-button color="accent" style="margin: 10px;width: 100px;"
-            (click)="saveskill()">ذخیره</button>
-          <button mat-raised-button color="primary" style="margin: 10px;width: 100px;"
-            (click)="cancelskill()">انصراف</button>
-        </div>
-      </div>
     </div>
-    <div class="selectskill">
-      <ng-select [items]="appliances" bindLabel="title" bindValue="ID" id="appselect"
-        (change)="getAppValues(appselected )" [(ngModel)]="appselected" style="width: 30%;margin: 10px;"
-        placeholder="لوازم خانگی">
-      </ng-select>
-      <ng-select style="direction: rtl;text-align: right;" [items]="brands" bindLabel="job" groupBy="brand"
-        bindValue="id" [multiple]="true" [selectableGroup]="true" [selectableGroupAsModel]="false"
-        [closeOnSelect]="false" [searchFn]="ngSearchFn" [(ngModel)]="brandselected" style="width: 30%;margin: 10px;"
-        placeholder="برند">
-
-        <ng-template ng-label-tmp let-item="item" let-clear="clear">
-          <div class="ng-value-wrapper default">
-            <span class="ng-value-icon left" (click)="clear(item)" *ngIf="item.disabled !== true"
-              style="margin:5px ;">×</span>
-            <span class="ng-value-label"><b>{{item.brand}}</b> {{item.job}}</span>
-          </div>
-        </ng-template>
-
-        <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
-          <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
-            style="display: block;margin-left: 5px;" /> {{item.brand}}
-        </ng-template>
-
-        <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index"
-          style="text-align: right;direction: rtl;display: flex;flex-direction: row;justify-content: end;">
-          <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
-            style="display: block;margin-left: 5px;" /> <b style="text-align: right;">{{item.job}}</b>
-        </ng-template>
-      </ng-select>
-      <button mat-raised-button color="primary" style="margin: 10px;height: 50px;" (click)="addskill()">اضافه کردن
+    <div style="direction: rtl;width: 90%;margin: auto;">
+      <button *ngIf="!skilltableeditable" mat-raised-button color="primary" style="margin: 10px;height: 50px;"
+        (click)="EditSkills()"> ویرایش
       </button>
-    </div>
-    <div class="skills" *ngIf="showskills">
-      <div *ngFor="let skill of skills">
-        <mat-card class="skilldetail">
-          <mat-card-content>
-            <div class="applience" style="display: flex;flex-direction: row;padding:20px ;align-items: center;">
-              <div class="kind">
-                <mat-card class="appliences">
-                  <mat-card-header>
-                    <mat-card-title>{{skill.app}} </mat-card-title>
-                  </mat-card-header>
-                  <mat-card-content>
-                    <img class="applience" mat-card-image [src]="skill.apppic">
-                  </mat-card-content>
-                  <lord-icon src="../../../assets/json/bin.json" trigger="hover" (click)="deletegapp(skill.app)"
-                    style="width:20px;height:20px;cursor: pointer;cursor: pointer;">
-                  </lord-icon>
-                </mat-card>
-              </div>
-              <div class="model" style="padding:20px ;display: flex;
-              flex-direction: column;
-              justify-content: center;">
-                <div *ngFor="let job of skill.kind"
-                  style="display: flex;flex-direction: row; justify-content: space-between;   align-items: center; border-radius: 8px;box-shadow: 0px 0px 5px 5px rgb(242, 242, 242);margin:5px;">
-                  <div class="brand" style="padding: 10px; display: flex;flex-direction: column;align-items: center;">
-                    <div>
-                      <h6>{{job.brand}}</h6>
-                    </div>
-
-                  </div>
-                  <div class="skill"
-                    style="display: flex;flex-direction: column;padding: 10px;align-items: center;border-right:gray solid 1px ;">
-
-                    <div style="margin: 5px;">
-                      <div *ngFor="let kind of job.skill" style="display: flex;
-                      align-items: flex-end;"> {{kind}}
-                        <lord-icon src="../../../assets/json/bin.json" trigger="hover"
-                          (click)="deletegskill(kind,job.brand)"
-                          style="width:20px;height:20px;cursor: pointer;margin-right:20px; cursor: pointer;">
-                        </lord-icon>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </mat-card-content>
-        </mat-card>
+      <div *ngIf="!skilltableeditable" class="showtable">
+        <table mat-table [dataSource]="skillTableDataShow" class="mat-elevation-z8"
+        style="direction: rtl;width: 100%;">
+          <ng-container matColumnDef="appliance">
+            <th mat-header-cell *matHeaderCellDef> نوع دستگاه </th>
+            <td mat-cell *matCellDef="let element" style="margin: 10px;"> {{element.applianceName}} </td>
+          </ng-container>
+          <ng-container matColumnDef="brand">
+            <th mat-header-cell *matHeaderCellDef> برند </th>
+            <td mat-cell *matCellDef="let element"> {{element.brand}} </td>
+          </ng-container>
+          <ng-container matColumnDef="setup">
+            <th mat-header-cell *matHeaderCellDef> نصب </th>
+            <td mat-cell *matCellDef="let element"> <input id="myCheck" type="checkbox" id="rule"
+                [checked]="element.setup" style="direction: rtl;" [disabled]="true"> </td>
+          </ng-container>
+          <ng-container matColumnDef="fix">
+            <th mat-header-cell *matHeaderCellDef> تعمیر </th>
+            <td mat-cell *matCellDef="let element"> <input id="myCheck" type="checkbox" id="rule"
+                [checked]="element.fix" style="direction: rtl;" [disabled]="true"> </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns" style="text-align:right ;"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
       </div>
     </div>
+    <div *ngIf="skilltableeditable" class="skillrow">
+      <div class="selectskill">
+        <ng-select [items]="appliances" bindLabel="title" bindValue="ID" id="appselect"
+          (change)="getAppValues(appselected )" [(ngModel)]="appselected" style="width: 30%;margin: 10px;"
+          placeholder="لوازم خانگی">
+        </ng-select>
+        <ng-select style="direction: rtl;text-align: right;" [items]="brandsname" bindLabel="brand" bindValue="ID"
+          [multiple]="true" [selectableGroupAsModel]="false" [selectableGroup]="true" [closeOnSelect]="false"
+          [searchFn]="ngSearchFn" [(ngModel)]="brandidselected" style="width: 30%;margin: 10px;" placeholder="برند">
+          <ng-template ng-label-tmp let-item="item" let-clear="clear">
+            <div class="ng-value-wrapper default">
+              <span class="ng-value-icon left" (click)="clear(item)" *ngIf="item.disabled !== true"
+                style="margin:5px ;">×</span>
+              <span class="ng-value-label">{{item.brand}}</span>
+            </div>
+          </ng-template>
 
+        </ng-select>
+        <!-- <ng-select style="direction: rtl;text-align: right;" [items]="brands" bindLabel="job" groupBy="brand"
+          bindValue="id" [multiple]="true" [selectableGroup]="true" [selectableGroupAsModel]="false"
+          [closeOnSelect]="false" [searchFn]="ngSearchFn" [(ngModel)]="brandselected" style="width: 30%;margin: 10px;"
+          placeholder="برند">
+
+          <ng-template ng-label-tmp let-item="item" let-clear="clear">
+            <div class="ng-value-wrapper default">
+              <span class="ng-value-icon left" (click)="clear(item)" *ngIf="item.disabled !== true"
+                style="margin:5px ;">×</span>
+              <span class="ng-value-label"><b>{{item.brand}}</b> {{item.job}}</span>
+            </div>
+          </ng-template>
+
+          <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+            <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+              style="display: block;margin-left: 5px;" /> {{item.brand}}
+          </ng-template>
+
+          <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index"
+            style="text-align: right;direction: rtl;display: flex;flex-direction: row;justify-content: end;">
+            <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"
+              style="display: block;margin-left: 5px;" /> <b style="text-align: right;">{{item.job}}</b>
+          </ng-template>
+        </ng-select> -->
+        <button mat-raised-button color="primary" style="margin: 10px;height: 50px;" (click)="AddSkill()">اضافه کردن
+        </button>
+        <button mat-raised-button color="accent" style="margin: 10px;height: 50px;" (click)="SaveSkill()">ذخیره
+        </button>
+        <button mat-raised-button color="danger" style="margin: 10px;height: 50px;" (click)="CancelSkill()">انصراف
+        </button>
+      </div>
+      <!-- <div class="theme" style="float: left;cursor: pointer;margin: 10px;" (click)="ChangeSkillShowMode()">
+
+        <i *ngIf="showskillstable" class="fa fa-th fa-2x" aria-hidden="true"></i>
+        <i *ngIf="showskillscard" class="fa fa-list  fa-2x" aria-hidden="true"></i>
+      </div> -->
+    </div>
+    <div class="skillstable" *ngIf="skilltableeditable">
+      <ng2-smart-table [settings]="skillTableSetting" [source]="skillTablevalue" id="skills-table"
+        style="font-family: 'iransans'" (custom)="SkillAction($event)"></ng2-smart-table>
+    </div>
   </mat-tab>
+
   <mat-tab label="محدوده کاری">
     <div class="headerbox">
       <div class="discription">
@@ -405,20 +389,40 @@
           را
           می طلبد.</p>
       </div>
-      <div>
-        <div *ngIf="!editName" style="display: flex; flex-direction:column; justify-content: center;    height: 100px;">
-          <button mat-raised-button color="accent" style="margin: 10px;width: 100px;height: 100%;"
-            (click)="editskill()">ویرایش</button>
-        </div>
-        <div *ngIf="editName" style="display: flex; flex-direction:column; justify-content: center;    height: 100px;">
-          <button mat-raised-button color="accent" style="margin: 10px;width: 100px;"
-            (click)="saveskill()">ذخیره</button>
-          <button mat-raised-button color="primary" style="margin: 10px;width: 100px;"
-            (click)="cancelskill()">انصراف</button>
-        </div>
+    </div>
+    <div  *ngIf="!districttableeditable" style="direction: rtl;width: 90%;margin: auto;">
+      <button mat-raised-button color="primary" style="margin: 10px;height: 50px;"
+        (click)="EditDistrict()"> ویرایش
+      </button>
+      <div class="showtable">
+        <table mat-table [dataSource]="districtTableDateShow" class="mat-elevation-z8"
+        style="direction: rtl;width: 100%;">
+          <ng-container matColumnDef="pName">
+            <th mat-header-cell *matHeaderCellDef> استان</th>
+            <td mat-cell *matCellDef="let element" style="margin: 10px;"> {{element.pName}} </td>
+          </ng-container>
+          <ng-container matColumnDef="coName">
+            <th mat-header-cell *matHeaderCellDef> شهرستان </th>
+            <td mat-cell *matCellDef="let element"> {{element.coName}} </td>
+          </ng-container>
+          <ng-container matColumnDef="cName">
+            <th mat-header-cell *matHeaderCellDef> شهر </th>
+            <td mat-cell *matCellDef="let element">  {{element.cName}}  </td>
+          </ng-container>
+          <ng-container matColumnDef="rName">
+            <th mat-header-cell *matHeaderCellDef> منطقه </th>
+            <td mat-cell *matCellDef="let element">  {{element.rName}} </td>
+          </ng-container>
+          <ng-container matColumnDef="nName">
+            <th mat-header-cell *matHeaderCellDef> محله </th>
+            <td mat-cell *matCellDef="let element"> {{element.nName}}  </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayeddistrictColumns" style="text-align:right ;"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayeddistrictColumns;"></tr>
+        </table>
       </div>
     </div>
-    <div style="display: flex; flex-direction: row;flex-wrap: wrap;">
+    <div *ngIf="districttableeditable" style="display: flex; flex-direction: row;flex-wrap: wrap;">
       <mat-form-field style="direction: rtl;text-align:right; margin: 10px;">
         <mat-label>استان </mat-label>
         <mat-select (selectionChange)="selectprovince($event)" [(value)]="selectedProvince">
@@ -437,20 +441,28 @@
           <mat-option *ngFor="let c of city;let i2=index" value="{{c.id}}">{{c.cityName}}</mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field class="full-width-input" style="width: 300px;">
+      <mat-form-field style="direction: rtl;text-align:right; margin: 10px;">
         <mat-label>منطقه </mat-label>
         <mat-select (selectionChange)="selectregion($event)" [(value)]="selectedRegion">
           <mat-option *ngFor="let r of region;let i3=index" value="{{r.id}}">{{r.regionName}}</mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field class="full-width-input" style="width: 300px;">
+      <mat-form-field style="direction: rtl;text-align:right; margin: 10px;">
         <mat-label>محله </mat-label>
         <mat-select (selectionChange)="selectneighbour($event)" [(value)]="selectedNeighbour">
           <mat-option *ngFor="let n of neighbourhood;let i4=index" value="{{n.id}}">{{n.neighbourhoodName}}</mat-option>
         </mat-select>
       </mat-form-field>
-      <button mat-raised-button color="primary" style="margin: 10px;height: 50px;" (click)="adddomaintion()">اضافه کردن
+      <button mat-raised-button color="primary" style="margin: 10px;height: 50px;" (click)="AddDistrict()">اضافه کردن
       </button>
+      <button mat-raised-button color="accent" style="margin: 10px;height: 50px;" (click)="SaveDistrict()">ذخیره
+      </button>
+      <button mat-raised-button color="dangger" style="margin: 10px;height: 50px;" (click)="CancelDistrict()">انصراف
+      </button>
+    </div>
+    <div class="districtstable" *ngIf="districttableeditable">
+      <ng2-smart-table [settings]="destrictTableSetting" [source]="districtTablevalue" id="destrict-table"
+        style="font-family: 'iransans'" (custom)="DistrictAction($event)"></ng2-smart-table>
     </div>
     <!-- <div id="container" style="min-width: 300px; min-height:200px;background-color: rgb(253, 253, 253);">
       <mgl-map [zoom]="[15]" [center]="center" [centerWithPanTo]="true" [interactive]="interact" [apiKey]="apiKey">
@@ -468,11 +480,49 @@
       </mgl-map>
 
     </div> -->
-    <div class="addressmap" style="margin:20px ;display: flex;flex-direction: row;justify-content: center;">
+    <!-- <div class="addressmap" style="margin:20px ;display: flex;flex-direction: row;justify-content: center;">
       <app-map [enable]="mapEnable" [lat]="maplat" [long]="maplong" width="500px" height="300px" [geometry]="geometry1"></app-map>
+    </div> -->
+  </mat-tab>
+
+  <mat-tab label="علاقه مندی ها">
+    <div class="headerbox">
+      <div class="discription">
+        <h2>توضیحات</h2>
+        <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
+          است،
+          چاپگرها و متون بلکه
+          روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با
+          هدف
+          بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و
+          متخصصان
+          را
+          می طلبد.</p>
+      </div>
+      <div>
+        <div *ngIf="!editInterest"
+          style="display: flex; flex-direction:column; justify-content: center;    height: 100px;">
+          <button mat-raised-button color="accent" style="margin: 10px;width: 100px;height: 100%;"
+            (click)="EditInterest()">ویرایش</button>
+        </div>
+        <div *ngIf="editInterest"
+          style="display: flex; flex-direction:column; justify-content: center;    height: 100px;">
+          <button mat-raised-button color="accent" style="margin: 10px;width: 100px;"
+            (click)="SaveInterest()">ذخیره</button>
+          <button mat-raised-button color="primary" style="margin: 10px;width: 100px;"
+            (click)="CancelInterest()">انصراف</button>
+        </div>
+      </div>
+    </div>
+    <div class="table">
+      <form [formGroup]="interstsForm">
+        <!-- <mat-form-field class="example-full-width" appearance="fill"
+          style="width:90%;text-align:right;"> -->
+        <textarea placeholder=" علاقه مندی ها " formControlName="interests" rows="10"
+          style="font-size:12px ;    width: 100%;"></textarea>
+        <!-- </mat-form-field> -->
+      </form>
     </div>
   </mat-tab>
-  <mat-tab label="علاقه مندی ها">
 
-  </mat-tab>
 </mat-tab-group>

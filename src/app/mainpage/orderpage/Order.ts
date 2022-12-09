@@ -39,6 +39,7 @@ export class Models{
     model: string;
     description: string;
     modelProblems:LocalDataSource;
+    modelChecklist:LocalDataSource;
 }
 export class Brands{
     ID:number;
@@ -46,6 +47,7 @@ export class Brands{
     brandpic: string;
     description: string;
     brandProblems:LocalDataSource;
+    brandChecklist:LocalDataSource;
     models:Models[]
 }
 export class Applience{
@@ -54,6 +56,7 @@ export class Applience{
     pic: string;
     description: string;
     appProblems:LocalDataSource;
+    appChecklist:LocalDataSource;
     brands:Brands[]
 }
 export class TimeRange{

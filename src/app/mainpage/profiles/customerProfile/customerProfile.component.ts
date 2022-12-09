@@ -15,6 +15,8 @@ import { control } from 'leaflet';
 import { Router } from '@angular/router';
 import { DialogData } from '../../orderpage/orderpage.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { environment } from 'src/environments/environment';
+import * as moment from 'jalali-moment';
 
 @Component({
   selector: 'app-customerProfile',
@@ -29,6 +31,9 @@ export class CustomerProfileComponent implements OnInit {
 
   @ViewChild("p", { static: false }) popover1: NgbPopover;
   @Input() showBanner: boolean;
+  profilePic: any;
+  private picurl = environment.PIC_URL;
+  private baseurl = environment.API_URL;
   constructor(
     private router: Router,
     private globalVar: GlobalvarService,
@@ -97,7 +102,7 @@ export class CustomerProfileComponent implements OnInit {
 
   userid: any;
   name: any;
-
+  hasImage: boolean = false;
   ngOnInit() {
     if (!this.showBanner)
       this.showbanner = false;
@@ -112,6 +117,15 @@ export class CustomerProfileComponent implements OnInit {
         this.mobiles = this.curentCustomer.mobile;
         this.tels = this.curentCustomer.phones;
         this.address = this.curentCustomer.address;
+        this.profilePic=this.picurl+this.curentCustomer.picture;
+        console.log(this.profilePic)
+        this.address = this.curentCustomer.address;
+        var bd = this.curentCustomer.birthDate;
+        if (bd != null) {
+          this.birthdate = moment(bd).locale('fa').format('YYYY/M/D');
+        }
+       
+        this.curentCustomer.birthDate = this.birthdate;
         for (let i = 0; i < this.address.length; i++) {
           var addtext = ""
           if (this.address[i].province.provinceName != "")
@@ -252,6 +266,19 @@ export class CustomerProfileComponent implements OnInit {
   savemobile() {
     this.editMobile = false;
     this.mobiledisabled = true;
+    var token = this.tokencookie.get('T')
+    var mobiles: string[] = []
+    for (let i = 0; i < this.mobiles.length; i++) {
+      mobiles.push(this.mobiles[i].mobileNumber)
+    }
+    this.api.saveusersmobile(token, this.userid, mobiles).subscribe(
+      res => {
+        console.log(res)
+      },
+      err => {
+        console.log(err)
+      }
+    )
   }
   cancelmobile() {
     this.editMobile = false;
@@ -264,6 +291,19 @@ export class CustomerProfileComponent implements OnInit {
   savetel() {
     this.editTel = false;
     this.teldisabled = true;
+    var token = this.tokencookie.get('T')
+    var telephones: string[] = []
+    for (let i = 0; i < this.tels.length; i++) {
+      telephones.push(this.tels[i].phoneNumber)
+    }
+    this.api.saveuserstel(token, this.userid, telephones).subscribe(
+      res => {
+        console.log(res)
+      },
+      err => {
+        console.log(err)
+      }
+    )
   }
   canceltel() {
     this.editTel = false;
@@ -343,7 +383,7 @@ export class CustomerProfileComponent implements OnInit {
   createaddress() {
     this.shownewaddress = true;
   }
-
+  defultpic = '../../../../assets/images/techProfile.png'
   createadd(event: any) {
     if (event.kind == 'save') {
       var token = this.tokencookie.get('T');
@@ -408,26 +448,26 @@ export class CustomerProfileComponent implements OnInit {
   progress: number;
   gurls: any = [];
   gimage: File[] = [];
-  deletegimg(url: any) {
-    if (url != null) {
-      const index: number = this.gurls.indexOf(url);
-      if (index !== -1) {
-        this.gurls.splice(index, 1);
-       
-      }
-    }
+  profilePicFile: File;
+  deletegimg() {
+    this.profilePic = this.defultpic;
+    this.hasImage = false;
   }
   onSelectprofile(event: any) {
+    console.log(event)
     if (event.target.files && event.target.files[0]) {
       var filesAmount = event.target.files.length;
       for (let i = 0; i < filesAmount; i++) {
         var reader = new FileReader();
         this.gimage[i] = event.target.files[i]
+        this.profilePicFile = event.target.files[i]
         reader.onload = (event: any) => {
-          this.gurls.push(event.target.result);
+          this.gurls.push(event.target.result)
+          this.profilePic = event.target.result;
         }
         reader.readAsDataURL(event.target.files[i]);
       }
+      this.hasImage = true;
     }
   }
   canceladdress() {
@@ -452,7 +492,32 @@ export class CustomerProfileComponent implements OnInit {
     this.firstname.disable();
     this.lastname.disable();
     this.nationalid.disable();
-    // this.router.navigate(['home/profile/technician']);
+    var token = this.tokencookie.get('T')
+    this.api.editprofile(token, this.userid, this.firstname.value!, this.lastname.value!, this.nationalid.value!, this.birthdate).subscribe(
+      res => {
+        console.log(res)
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", "Token " + token);
+        var formdata = new FormData();
+        formdata.append("id", this.userid);
+        formdata.append("profilePic", this.profilePicFile, this.profilePicFile.name);
+
+        var requestOptions = {
+          method: 'POST',
+          headers: myHeaders,
+          body: formdata,
+        };
+        fetch(this.baseurl + "/personal/technicianuploadpic/", requestOptions)
+          .then(response => response.text())
+          .then(result => console.log(result))
+          .catch(error => console.log('error', error));
+
+      },
+      err => {
+        console.log(err)
+      }
+    )
+   
   }
   lastn: string = "fdsd";
   cancelname() {

@@ -27,6 +27,7 @@ export class StafforderComponent implements OnInit {
   customerTable: any;
   orderstablevalue: LocalDataSource;
   ordersTable: any;
+ 
   showorder: boolean = false;
   showCustomerDetail: boolean = false;
   showOrderDetail: boolean = false;
@@ -35,8 +36,10 @@ export class StafforderComponent implements OnInit {
   customerFamily = "";
   ngOnInit() {
     this.customerdetailfromstaff = false;
+
     this.customerTable = {
       editable: false,
+
       pager: {
         display: true,
         perPage: 50
@@ -115,7 +118,7 @@ export class StafforderComponent implements OnInit {
 
     }
     this.showorder = false;
-    this.FillTable();
+     this.FillTable();
   }
   applience: Applience[] = []
   FillTable() {

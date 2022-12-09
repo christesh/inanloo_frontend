@@ -88,6 +88,7 @@ export class CustomerProfile {
     lastName: string;
     nationalId: string;
     birthDate: string;
+    picture:string;
     mobile: Mobile[];
     phones: Telephone[];
     address: Address[];
@@ -101,8 +102,10 @@ export class ThechnicianProfile{
     nationalId: string;
     birthDate: string;
     mobile: Mobile[];
+    picture:string;
     phones: Telephone[];
     address: Address[];
+    technicianFavourite:string;
     technicianCategory:number;
     technicianBrands:[];
     technicianRate:number;
