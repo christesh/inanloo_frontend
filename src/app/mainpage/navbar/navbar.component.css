@@ -1,4 +1,4 @@
-@media (max-width: 600px) {
+@media (max-width: 740px) {
     #desktop {
         display: none;
     }
@@ -8,7 +8,7 @@
     }
 }
 
-@media (min-width: 600px) {
+@media (min-width: 740px) {
     #desktop {
         display: block;
     }
@@ -69,10 +69,23 @@ lord-icon {
 .dropdown:hover .dropbtn {
     background-color: #3e8e41;
 }
-
+.navbar-expand-md {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    padding-top: 0px;
+}
 .navbar-barnd {
     color: rgb(204, 14, 103);
     font-size: 36px;
     font-weight: 600;
     font-family: iransans;
+}
+.container-fluid{
+    background-color: white !important;
+}
+::ng-deep .tooltip-css{
+    font-size: 12px !important;
+    font-family: iransans !important;
+    background-color: rgb(110, 108, 162) !important;
+    
 }

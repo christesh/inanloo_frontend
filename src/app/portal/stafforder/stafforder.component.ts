@@ -177,7 +177,7 @@ export class StafforderComponent implements OnInit {
   TableAction(event: any) {
     switch (event.action) {
       case "makeorder":
-        localStorage.setItem('userID', event.data.id);
+        localStorage.setItem('personID', event.data.id);
         this.customerName = event.data.f_name;
         this.customerFamily = event.data.l_name;
         var token = this.tokencookies.get('T');
@@ -218,7 +218,7 @@ export class StafforderComponent implements OnInit {
         break;
       case "viewrecord":
 
-        localStorage.setItem('userID', event.data.id);
+        localStorage.setItem('personID', event.data.id);
         this.customerName = event.data.f_name;
         this.customerFamily = event.data.l_name;
         this.showCustomerDetail = true;

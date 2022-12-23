@@ -43,6 +43,7 @@ mat-card {
 
 #bg1 {
     background-image: url('../../assets/img/login-bg/loginpagebg.jpg');
+    background-color: #00026dc5 !important;
     direction: rtl;
     height: 100%;
     background-size: contain;
@@ -53,7 +54,7 @@ mat-card {
 body { 
     /* height: 650px; */
     background: url('../../assets/img/login-bg/loginpagebg1.jpg') no-repeat center center fixed; 
-    background-color: #00026dc5;
+    background-color: #00026dc5 !important;
     background-blend-mode: multiply;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -79,6 +80,7 @@ body {
     height: 100%;
     width: 100%;
     background: url('../../assets/img/login-bg/loginpagebg1.jpg')no-repeat center center fixed;
+    background-color: #00026dc5 !important;
     -webkit-background-size: cover;
     -o-background-size: cover;
     -moz-background-size: cover;

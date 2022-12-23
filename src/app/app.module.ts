@@ -25,26 +25,30 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { CookieService } from 'ngx-cookie-service';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
-
-
 import { environment } from '../environments/environment';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
-
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 import { initializeApp } from "firebase/app";
+import { PushnotificationComponent } from './pushnotification/pushnotification.component';
+import { BottomSheetOverviewExampleSheet } from './login/loginbox/loginbox.component';
+import { ChatComponent } from './Chat/Chat.component';
+
 initializeApp(environment.firebaseConfig);
 
 @NgModule({
-  declarations: [
+  declarations: [	
     AppComponent,
     LoginComponent,
     LoginboxComponent,
     SignUPDialog,
-    ForgetPassDialog
-
-  ],
+    ForgetPassDialog,
+    PushnotificationComponent,
+    BottomSheetOverviewExampleSheet,
+    ChatComponent
+   ],
   imports: [
-   
- 
+
+    NgbModule,
     NgxMaskModule.forRoot(),
     NgxMatSelectSearchModule,
     FlexLayoutModule,
@@ -68,7 +72,7 @@ initializeApp(environment.firebaseConfig);
     Ng2SmartTableModule,
   ],
 
-  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy},ApiServicesService,CookieService,
+  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }, ApiServicesService, CookieService,
   ],
   bootstrap: [AppComponent],
 

@@ -6,11 +6,11 @@ import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CookieService } from 'ngx-cookie-service';
 import { GlobalvarService } from 'src/app/globalvar.service';
-
+import { MatBottomSheet, MatBottomSheetConfig, MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 import { mergeMapTo, mergeMap } from 'rxjs/operators';
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import { environment } from '../../../environments/environment';
-import {WebsocketBuilder,Websocket} from 'websocket-ts';
+import { WebsocketBuilder, Websocket } from 'websocket-ts';
 
 export interface DialogData {
   mobilenumber: string;
@@ -19,6 +19,60 @@ export enum ToggleEnum {
   Option1,
   Option2,
   Option3
+}
+@Component({
+  selector: 'bottom-sheet-overview-example-sheet',
+  templateUrl: 'pushnotif.html',
+  styleUrls: ['./loginbox.component.css'],
+})
+export class BottomSheetOverviewExampleSheet {
+  constructor(private _bottomSheetRef: MatBottomSheetRef<BottomSheetOverviewExampleSheet>,
+    @Inject(MAT_BOTTOM_SHEET_DATA) public data: any) { }
+  order: boolean = false;
+  message: boolean = false;
+  call: boolean = false;
+  sender:any;
+  caller:any;
+  accept(): void {
+    this._bottomSheetRef.dismiss();
+  }
+  ngOnInit() {
+    // alert(this.data.notification.body)
+    if (this.data.notification.body == 'order') {
+      this.order = true
+      this.playAudioOrder()
+    }
+    if (this.data.notification.body == 'Message') {
+      this.message = true
+      this.sender=JSON.parse(this.data.data.sender)
+      this.playAudioMessage()
+    }
+    if (this.data.notification.body == 'Call') {
+      this.call = true
+      this.caller=JSON.parse(this.data.data.caller)
+      console.log(this.caller)
+      this.playAudioCall()
+    }
+    
+  }
+  playAudioOrder() {
+    let audio = new Audio();
+    audio.src = "../../../assets/audio/alert (12).mp3";
+    audio.load();
+    audio.play();
+  }
+  playAudioMessage() {
+    let audio = new Audio();
+    audio.src = "../../../assets/audio/alert (8).mp3";
+    audio.load();
+    audio.play();
+  }
+  playAudioCall() {
+    let audio = new Audio();
+    audio.src = "../../../assets/audio/alert (4).mp3";
+    audio.load();
+    audio.play();
+  }
 }
 
 @Component({
@@ -66,7 +120,7 @@ export class LoginboxComponent implements OnInit {
     public signupdialog: MatDialog,
     public tokencookie: CookieService,
     public forgetpassdialog: MatDialog,
-
+    private _bottomSheet: MatBottomSheet
   ) {
     this.otpForm = this.toFormGroup(this.formInput);
   }
@@ -91,10 +145,10 @@ export class LoginboxComponent implements OnInit {
   }
   ngOnInit() {
     this.getMobile = true;
-    this.requestPermission('2');
+    // this.requestPermission('2');
     this.listen();
     // let ws= new WebsocketBuilder('ws://127.0.0.1:8000/ws/chat/sheyda/').build();
-   
+
   }
   userIsFieldInvalid(field: string) { // {6}
     return (
@@ -199,20 +253,38 @@ export class LoginboxComponent implements OnInit {
                   console.log(res['key'])
                   this.tokencookie.set('T', res['key'])
                   var token = res['key'].toString()
-                  this.api.setlog(token,"login").subscribe(
-                    res=>{
-                      console.log(res)},
-                     err=>{
-                      console.log(err)})
+                  this.api.setlog(token, "login").subscribe(
+                    res => {
+                      console.log(res)
+                    },
+                    err => {
+                      console.log(err)
+                    })
+                    this.api.setactiveuser(token).subscribe(
+                      res => {
+                        console.log(res)
+                      },
+                      err=>{
+                        console.log(err)
+                      }
+                    )
                   this.api.getPersonAuth(token).subscribe(
                     res => {
-                      localStorage.setItem('userID', res[0]['person'])
-                      if (res[0]['category__name'] == 'مشتری')
+                      localStorage.setItem('personID', res[0]['person'])
+                      localStorage.setItem('userID', res[0]['user'])
+                      localStorage.setItem('staffID', res[0]['person'])
+                      localStorage.setItem('userCat', res[0]['category__name'])
+                      if (res[0]['category__name'] == 'مشتری') {
                         this.router.navigate(['/home/order'])
-                      if (res[0]['category__name'] == 'تکنسین' && res[0]['fillProfile'] == false)
+                      }
+                      if (res[0]['category__name'] == 'تکنسین' && res[0]['fillProfile'] == false) {
                         this.router.navigate(['/home/profile/technician'])
+                      }
+                      else {
+                        this.router.navigate(['/home/home'])
+                      }
                       this.openSnackBar('شما با موفقیت وارد شدید!', '', 'green-snackbar', 4)
-                      this.requestPermission(res[0]['person'])
+                      this.requestPermission(res[0]['user'])
                       this.listen()
                     },
                     err => {
@@ -243,16 +315,30 @@ export class LoginboxComponent implements OnInit {
           else {
             this.tokencookie.set('T', res['result'])
             var token = res['result']
-            this.api.setlog(token,"login").subscribe(res=>{},err=>{})
+            this.api.setlog(token, "login").subscribe(res => { }, err => { })
             this.api.getPersonAuth(token).subscribe(
               res => {
-                localStorage.setItem('userID', res[0]['person'])
+                localStorage.setItem('personID', res[0]['person'])
+                localStorage.setItem('userID', res[0]['user'])
+                localStorage.setItem('staffID', res[0]['person'])
+                localStorage.setItem('userCat', res[0]['category__name'])
                 if (res[0]['category__name'] == 'مشتری')
-                  this.router.navigate(['/home/order'])
+                  this.router.navigate(['/home/home'])
                 if (res[0]['category__name'] == 'تکنسین' && res[0]['fillProfile'] == false)
                   this.router.navigate(['/home/profile/technician'])
+                else {
+                  this.router.navigate(['/home/home'])
+                }
+                this.api.setactiveuser(token).subscribe(
+                  res => {
+                    console.log(res)
+                  },
+                  err=>{
+                    console.log(err)
+                  }
+                )
                 this.openSnackBar('شما با موفقیت وارد شدید!', '', 'green-snackbar', 4)
-                this.requestPermission(res[0]['person'])
+                this.requestPermission(res[0]['user'])
                 this.listen()
               },
               err => {
@@ -304,8 +390,10 @@ export class LoginboxComponent implements OnInit {
     this.getMobile = false;
     this.getOtp = false;
     this.loginByUserName = true;
+
   }
   usersignin() {
+
     //check username and password exist in db
     var user = this.userForm.controls.username.value;
     var pass = this.userForm.controls.password.value;
@@ -316,9 +404,18 @@ export class LoginboxComponent implements OnInit {
         this.api.getPersonAuth(token).subscribe(
           res => {
             localStorage.setItem('staffID', res[0]['person'])
-            this.router.navigate(['portal'])
+            localStorage.setItem('userID', res[0]['user'])
+            this.router.navigate(['portal/dashboard'])
             this.openSnackBar('شما با موفقیت وارد شدید!', '', 'green-snackbar', 4)
-            this.requestPermission(res[0]['person'])
+            this.api.setactiveuser(token).subscribe(
+              res => {
+                console.log(res)
+              },
+              err=>{
+                console.log(err)
+              }
+            )
+            this.requestPermission(res[0]['user'])
             this.listen()
           },
           err => {
@@ -403,7 +500,11 @@ export class LoginboxComponent implements OnInit {
     onMessage(messaging, (payload) => {
       console.log('Message received. ', payload);
       this.message = payload;
-      this.openSnackBar(this.message.notification.title, '', 'red-snackbar', 5)
+      const config: MatBottomSheetConfig = {
+        data: this.message
+      };
+      this._bottomSheet.open(BottomSheetOverviewExampleSheet, config);
+
     });
   }
   //   // console.log(navigator.serviceWorker.getRegistrations)
@@ -460,10 +561,12 @@ export class SignUPDialog implements OnInit {
     console.log(this.data)
     this.form = this.fb.group({
       nationalid: [''],    // {5}
-      mobilenumber: [this.data.mobilenumber, Validators.required],
+      mobilenumber: ['', Validators.required],
       name: ['', Validators.required],
       family: ['', Validators.required]
     });
+    this.form.controls['mobilenumber'].patchValue(this.data.mobilenumber)
+    this.form.controls['mobilenumber'].markAsDirty();
     this.api.GetPersonCategories().subscribe(
       (res) => {
         console.log(res)

@@ -4,6 +4,8 @@ import { trigger, transition, style, animate, state } from '@angular/animations'
 import { NONE_TYPE } from '@angular/compiler';
 import { ApiServicesService } from '../api-services.service';
 import { CookieService } from 'ngx-cookie-service';
+import { FormBuilder } from '@angular/forms';
+import { FlexAlignStyleBuilder } from '@angular/flex-layout';
 @Component({
   selector: 'app-portal',
   templateUrl: './portal.component.html',
@@ -27,7 +29,8 @@ export class PortalComponent implements OnInit {
   constructor(
     private tokencookie: CookieService,
     private router: Router,
-    private api: ApiServicesService
+    private api: ApiServicesService,
+    private _formBuilder: FormBuilder
   ) {
     this.menu = [
       { name: "داشبورد", submenu: [] },
@@ -37,7 +40,7 @@ export class PortalComponent implements OnInit {
     ]
   }
   userpic: string;
-  user:string;
+  user: string;
   isShowing: boolean;
   userid: any;
   ngOnInit() {
@@ -45,18 +48,19 @@ export class PortalComponent implements OnInit {
     this.api.getPersonDetails(token).subscribe(
       res => {
         console.log(res)
-        this.userpic=res[0]['picture']
-        this.user=res[0]['firstName']+" "+res[0]['lastName']
-        this.router.navigate(['/portal/dashboard']);
-     },
+        this.userpic = res[0]['picture']
+        this.user = res[0]['firstName'] + " " + res[0]['lastName']
+
+      },
       err => {
         console.log(err)
-        
+
       })
 
   }
   ngAfterViewInit() {
     this.isShowing = true;
+    // this.router.navigate(['/portal/dashboard']);
   }
   closeside() {
     this.isShowing = false;
@@ -83,25 +87,36 @@ export class PortalComponent implements OnInit {
       }
     )
   }
-  sidenavwidth: number=250;
-  mainmargin: string="260px";
-  showtoolbaruser:boolean=false;
+  sidenavwidth: number = 250;
+  mainmargin: string = "260px";
+  showtoolbaruser: boolean = false;
+  checked: boolean = true;
   changeState(): void {
 
-    // (this.state == "closed") ? this.state = "open" : this.state = "closed";
     if (this.state == "closed") {
+      this.checked = false;
       this.state = "open";
       this.sidenavwidth = 250;
       this.mainmargin = "260px";
-      this.showtoolbaruser=false;
+      this.showtoolbaruser = false;
+     
     }
     else {
+      this.checked = true;
       this.state = "closed";
       this.sidenavwidth = 0;
       this.mainmargin = "10px";
-      this.showtoolbaruser=true;
+      this.showtoolbaruser = true;
+      
     }
   }
-
+  changeState1() {
+    if (this.checked) {
+      this.checked = false
+    }
+    else {
+      this.checked = true
+    }
+  }
 
 }

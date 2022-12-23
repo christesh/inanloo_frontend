@@ -30,12 +30,14 @@ import { MainpageModule } from '../mainpage/mainpage.module';
 import { SignUPCustomerDialog } from './stafforder/stafforder.component';
 import { CreateChecklistDialog } from './appliencemanagement/appliencemanagement.component';
 
-
+import { NbThemeModule,NbChatModule } from '@nebular/theme';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 
 import { TicketingComponent } from './ticketing/ticketing.component';
+import { ChatComponent } from '../Chat/Chat.component';
 
 const appRoutes: Routes = [
+  { path: '', component: DashboardComponent },
   { path: 'dashboard', component: DashboardComponent },
   {
     path: 'users',
@@ -58,8 +60,8 @@ const appRoutes: Routes = [
     component: StafforderComponent,
   },
   {
-    path: 'chatbox',
-    component: TicketingComponent
+    path: 'chat',
+    component: ChatComponent
   }
 ];
 @NgModule({
@@ -68,7 +70,8 @@ const appRoutes: Routes = [
     SidenavComponent,
   ],
   imports: [
-   
+    NbChatModule,
+    NbThemeModule.forRoot(),
     MainpageModule,
     NgChartsModule,
     NgSelectModule,
@@ -81,6 +84,7 @@ const appRoutes: Routes = [
     PerfectScrollbarModule
   ],
   declarations: [
+    TicketingComponent,
     CreateChecklistDialog,
     SignUPCustomerDialog,
     StafforderComponent,

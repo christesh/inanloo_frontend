@@ -115,7 +115,7 @@
         </form>
       </div>
     </div>
-    <div class="selectmodels" *ngIf="hasguarantee">
+    <div class="selectmodelsg" *ngIf="hasguarantee">
       <mat-divider></mat-divider>
       <div class="discription">
         <h2>توضیحات</h2>
@@ -125,6 +125,47 @@
           بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان
           را
           می طلبد.</p>
+      </div>
+
+      <div class="guaranteeDate">
+        <div class="body">
+          <div style="float:right;direction: rtl;width: 100%;">
+            <div class="servicedate">
+              <mat-form-field #psd="ngbPopover" class="full-width-input" (click)="showdatepickergsdate(psd)"
+                placement="bottom" [ngbPopover]="popTemplate" [autoClose]="false " triggers="manual">
+                <span> <i class="fa fa-calendar fa-2x" aria-hidden="true"
+                    style="float: left;color: blue; cursor: pointer;"></i></span>
+                <input matInput autocomplete="off" placeholder=" تاریخ شروع گارانتی" type="text" value="{{fromdate}}"
+                  style="width: 150px;font-size: 14px;margin-top:10px;" />
+              </mat-form-field>
+            </div>
+            <ng-template #popTemplate>
+              <ng-persian-datepicker [uiTheme]="customTheme" triggers="outsideClick"
+                (dateOnSelect)="changedateto($event)">
+                <input type="text" [formControl]="dateValue1" />
+              </ng-persian-datepicker>
+            </ng-template>
+          </div>
+        </div>
+        <div class="body">
+          <div style="float:right;direction: rtl;width: 100%;">
+            <div class="servicedate">
+              <mat-form-field #ped="ngbPopover" class="full-width-input" (click)="showdatepickergedate(ped)"
+                placement="bottom" [ngbPopover]="popTemplate1" [autoClose]="false " triggers="manual">
+                <span> <i class="fa fa-calendar fa-2x" aria-hidden="true"
+                    style="float: left;color: blue; cursor: pointer;"></i></span>
+                <input matInput autocomplete="off" placeholder=" تاریخ اتمام گارانتی " type="text" value="{{todate}}"
+                  style="width: 150px;font-size: 14px;margin-top:10px;" />
+              </mat-form-field>
+            </div>
+            <ng-template #popTemplate1>
+              <ng-persian-datepicker [uiTheme]="customTheme" triggers="outsideClick"
+                (dateOnSelect)="changedatefrom($event)">
+                <input type="text" [formControl]="dateValue1" />
+              </ng-persian-datepicker>
+            </ng-template>
+          </div>
+        </div>
       </div>
       <form [formGroup]="firstFormGroup">
         <div class="guaramtee" style="display: flex;flex-direction: row;justify-content: space-around;">
@@ -202,7 +243,7 @@
   <mat-step [stepControl]="secondFormGroup" label="انتخاب مشکل" [errorMessage]="secondFormGroupError"
     [hasError]="secondsteperror" [completed]="secondcomplete">
     <div class="discription">
-      <h2>توضیحات</h2>
+      <h2>انتخاب خدمات مور نیاز</h2>
       <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
         چاپگرها و متون بلکه
         روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
@@ -211,10 +252,10 @@
         می طلبد.</p>
     </div>
     <div class="step2content">
+
       <div class="costaccounting">
         <h4>تخمیتن هزینه:</h4>
         <hr>
-
         <table mat-table #MatTable [dataSource]="selectedsubtasks" style="width: 100%;">
           <!-- Item Column -->
           <ng-container matColumnDef="name">
@@ -247,29 +288,59 @@
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
           <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
         </table>
-
       </div>
-      <div class="problems" style="width:40% ;">
 
+      <div class="problems" style="width:40% ;">
         <span class="example-list-section">
-          <ul>
-            <li *ngFor="let subtask of subtasks;let i=index">
-              <mat-checkbox [(ngModel)]="subtask.checked" color="warn" (ngModelChange)="problemSelect(subtask.title)">
-                {{subtask.title}}
-              </mat-checkbox>
-            </li>
-          </ul>
+
+          <cdk-accordion class="example-accordion"
+            style=" border: 1px rgb(206, 205, 205) solid;border-radius: 4px;overflow: auto;height: 300px;">
+            <cdk-accordion-item *ngFor="let pk of problemskind; let i=index" #accordionItem="cdkAccordionItem"
+              class="example-accordion-item" role="button" tabindex="0" [attr.id]="'accordion-header-' + i"
+              [attr.aria-expanded]="accordionItem.expanded" [attr.aria-controls]="'accordion-body-' + i">
+
+              <div class="example-accordion-item-header" (click)="accordionItem.toggle()">
+                <strong> {{pk.title}}</strong>
+                <span *ngIf="accordionItem.expanded" class="example-accordion-item-description">
+                  <i class="fa fa-minus" aria-hidden="true"></i>
+                </span>
+                <span *ngIf="!accordionItem.expanded" class="example-accordion-item-description">
+                  <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                </span>
+              </div>
+              <div class="example-accordion-item-body" role="region"
+                [style.display]="accordionItem.expanded ? '' : 'none'" [attr.id]="'accordion-body-' + i"
+                [attr.aria-labelledby]="'accordion-header-' + i">
+                <div class="searchbox">
+                  <input type="text" class="form-control" style="width: 100%;" placeholder="جستجو"
+                    value="{{problemsearchvalue}}" (keyup)="ProblemSearchChange($event)">
+                </div>
+                <ul>
+                  <li *ngFor="let subtask of pk.problem;let i=index">
+                    <mat-checkbox [(ngModel)]="subtask.checked" color="warn"
+                      (ngModelChange)="problemSelect(subtask.title,subtask.ID,pk.ID)">
+                      {{subtask.title}}
+                    </mat-checkbox>
+                  </li>
+                </ul>
+                <form [formGroup]="secondFormGroup" *ngIf="showcomment">
+                  <mat-form-field class="example-full-width" appearance="fill"
+                    style="width:80%;text-align:right;margin-right:45px;margin-top:-15px;">
+                    <mat-label>لطفا نیاز و یا مشکل خود را شرح دهید:</mat-label>
+                    <textarea matInput formControlName="secondCtrl" placeholder="توضیحات"></textarea>
+                  </mat-form-field>
+                </form>
+              </div>
+            </cdk-accordion-item>
+          </cdk-accordion>
         </span>
-        <form [formGroup]="secondFormGroup" *ngIf="showcomment">
-          <mat-form-field class="example-full-width" appearance="fill"
-            style="width:100%;text-align:right;margin-right:45px;margin-top:-15px;">
-            <mat-label>لطفا مشکل را شرح دهید:</mat-label>
-            <textarea matInput formControlName="secondCtrl" placeholder="توضیحات"></textarea>
-          </mat-form-field>
-        </form>
+
+
       </div>
     </div>
+    <br>
     <mat-divider></mat-divider>
+
     <div class="row">
       <div class="form-group col-12 mb-2">
         <div class="form-group col-12 mb-2" style="direction: rtl;text-align: right;margin: 10px;">
@@ -306,8 +377,8 @@
     </div>
   </mat-step>
 
-  <mat-step  label="انتخاب آدرس و زمان" [errorMessage]="thirdFormGroupError"
-    [hasError]="thirdsteperror" [completed]="thirdcomplete">
+  <mat-step label="انتخاب آدرس و زمان" [errorMessage]="thirdFormGroupError" [hasError]="thirdsteperror"
+    [completed]="thirdcomplete">
     <div class="discription">
       <h2>توضیحات</h2>
       <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
@@ -323,7 +394,7 @@
     <div class="steper3content">
       <div class="servicedate">
         <mat-card class="calender" (click)="showdatepicker()" placement="start" [ngbPopover]="popTemplate"
-          [autoClose]="'inside'">
+          [autoClose]="false">
           <mat-card-header class="calenderheader">
             <mat-card-title class="calendertitle">
               <h3 class="month">{{calmonth}}</h3>
@@ -375,7 +446,8 @@
       <div class="addresscontent" style="margin:20px">
         <mat-card style="width: 100%;min-height:200px ;" *ngFor="let address of addresses;let iadd= index">
           <mat-card-content style="display: flex;flex-direction: row;justify-content: space-around;">
-            <mat-checkbox  type="checkbox" style="width:20px ;margin: 10px;"  [(ngModel)]="address.isMainAddress" (change)="seletAddress(address)"></mat-checkbox>
+            <mat-checkbox type="checkbox" style="width:20px ;margin: 10px;" [(ngModel)]="address.isMainAddress"
+              (change)="seletAddress(address)"></mat-checkbox>
             <div class="addresstext" style="margin: 10px;display: flex;flex-direction: column-reverse;
         align-content: space-around;
         justify-content: center;">
@@ -400,8 +472,8 @@
     </div>
 
     <div style="direction: ltr;">
-      <button mat-raised-button color="accent" matStepperNext style="margin-right:10px ;"
-        (click)="thirdstepnext()">مرحله بعد</button>
+      <button mat-raised-button color="accent" style="margin-right:10px ;" (click)="thirdstepnext()"
+        matStepperNext>مرحله بعد</button>
       <button mat-raised-button color="primary" matStepperPrevious>مرحله قبل</button>
     </div>
 
@@ -423,38 +495,39 @@
     <div class="orderdetail">
       <div class="content" style="border: gray dotted 1px; margin:10px; padding:10px; width: 100%;">
         <div class="applience" style="display: flex;flex-direction: row;padding:20px ;">
-          <div class="kind">
-            <mat-card class="appliences">
-              <mat-card-header>
-                <mat-card-title>{{summery.appcat}} </mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                <img class="applience" mat-card-image [src]="summery.appcatpic">
-              </mat-card-content>
-            </mat-card>
+          <div class="appliancepic">
+            <div class="apppic">
+              <img [src]="summery.appcatpic" alt="" class="apppic">
+            </div>
+            <div class="brandpic">
+              <img [src]="summery.brandpic" alt="" class="brandpic">
+            </div>
           </div>
-          <div class="model" style="padding:20px ;display: flex;
-          flex-direction: column;
-          justify-content: center;border-left:rgb(189, 188, 188) solid 1px;">
-            <h5>برند: {{summery.brand}}</h5>
-            <br>
-            <h6 *ngIf="summery.model!==''">مدل:{{summery.model}} </h6>
-            <br>
-            <h6 *ngIf="summery.serial!==''">شماره سریال:{{summery.serial}} </h6>
-          </div>
-          <div class="datetime" style="padding:20px ;display: flex;
-          flex-direction: column;
-          justify-content: center;">
-            <h5>تاریخ حضور متخصص: {{summery.orderDate}}  </h5>
-            <br>
+          <div class="datetime" style="padding:20px ;display: flex;flex-direction: column;justify-content: center;">
+            <h5>{{summery.appcat}} {{summery.brand}}</h5>
+            <h5 *ngIf="summery.model!==''">مدل دستگاه: {{summery.model}}</h5>
+            <h6>تاریخ حضور متخصص: {{summery.orderDate}} </h6>
             <h6>بازه زمانی: {{summery.ordeTime}}</h6>
+          </div>
+          <div *ngIf="summery.hasG" class="garantee" style="float: left;">
+            <div class="g"
+              style="padding: 1px;text-align: center;background-color: rgb(21, 114, 21);color: white; border-radius: 50px;">
+              <h5 style="margin:10px">متقاضی استفاده از خدمات گارانتی هستید</h5>
+            </div>
+            <h6>تاریخ شروع گارانتی{{summery.GstartDate}} </h6>
+            <h6>تاریخ اتمام گارانتی: {{summery.GendDate}} </h6>
           </div>
         </div>
         <mat-divider></mat-divider>
-        <div style="padding: 20px;">
-          <h5>آدرس:</h5>
-
-          <h6>{{summery.orderAdd}}</h6>
+        <div style="padding: 20px;display: flex;flex-direction: row;flex-wrap: wrap;justify-content: space-between;">
+          <div>
+            <h5>آدرس:</h5>
+            <h6>{{summery.orderAdd}}</h6>
+          </div>
+          <div *ngIf="showsummery" class="addressmap" style="margin: 10px;width: 300px;height:200px">
+            <app-map [enable]="false" [lat]="summery.maplat" [long]="summery.maplong" width="300px" height="200px">
+            </app-map>
+          </div>
         </div>
         <mat-divider></mat-divider>
         <div class="problem" style="padding:20px ;">
@@ -497,19 +570,19 @@
 
           </div>
         </div>
-
         <mat-divider></mat-divider>
-        <div class="rules" style="display:flex;
-        flex-direction:row-reverse;padding:20px ;direction:rtl ;justify-content: right;">
-          <label for="rule" style="margin: 20px;">با <a herf="">قوانین و مقرارت </a> سایت موافقم.</label>
-          <input type="checkbox" id="rule" style="direction: rtl;">
+        <div class="rules"
+          style="display:flex;flex-direction:row-reverse;padding:20px ;direction:rtl ;justify-content: right;">
+          <mat-checkbox [(ngModel)]="ruleChecked" color="warn">
+                      با <a herf="">قوانین و مقرارت </a> سایت موافقم.
+          </mat-checkbox>
         </div>
       </div>
 
     </div>
 
     <div style="direction: ltr;">
-      <button mat-raised-button color="accent" matStepperNext style="margin-right:10px ;" (click)="registerOrder()">ثبت
+      <button mat-raised-button color="accent" matStepperNext style="margin-right:10px ;" (click)="registerOrder()" [disabled]="!ruleChecked">ثبت
         سفارش</button>
       <button mat-raised-button color="primary" matStepperPrevious>مرحله قبل</button>
     </div>

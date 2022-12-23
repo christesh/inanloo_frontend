@@ -167,3 +167,40 @@ mat-button-toggle:focus{
     background-repeat: no-repeat;
     height: 100px;
 }
+
+::ng-deep .mat-bottom-sheet-container {
+    min-width: 379px  !important;
+    max-height: 700px !important;
+    /* max-width: calc(100vw - 256px) !important; */
+    position: absolute !important;
+    left: 30px !important;
+    bottom: 0px !important;
+    background-color: #acabe8;
+    border-radius: 8px 8px 0px 0px;
+}
+.sender{
+    display: flex;
+    flex-direction: row;
+    /* justify-items: center; */
+    justify-content: flex-start;
+}
+.message{
+    margin-top: 10px;
+    margin-right: 10px;
+    padding: 10px;
+    min-height: 150px;
+    background-color: rgb(180, 236, 180);
+    border-radius: 12px;
+    width: 100%;
+}
+.call{
+    margin-top: 10px;
+    
+    padding: 10px;
+    /* min-height: 100px; */
+    background-color: rgb(180, 236, 180);
+    border-radius: 12px;
+    /* display: flex;
+    align-items: center; */
+    width: 100%;
+}

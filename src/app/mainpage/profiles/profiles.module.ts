@@ -23,12 +23,15 @@ const appRoutes1: Routes = [
 ],
   imports: [
     // FormsModule,
+  
     ReactiveFormsModule,
     CommonModule,
     MaterialExampleModule,
     // ProfilesRoutingModule,
-    RouterModule.forChild(appRoutes1)
-  ],
+    RouterModule.forChild(appRoutes1),
+  
+    
+    ],
   
   providers: [
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'fill'}}

@@ -1,4 +1,33 @@
 <div style="direction: rtl;">
+  <!-- <div class="falloworder">
+    <mat-card >
+      <mat-card-content>
+        <div class="col-md-3 section1">
+          <div [ngClass]="order.statusCssClass">
+            <h5 style="margin:auto">{{order.status}}</h5>
+          </div>
+          <div class="registerDate">
+            <h6>تاریخ ثبت سفارش: {{order.regdate}}</h6>
+          </div>
+        </div>
+        <div class="col-md-6 section2">
+          <div class="ordertitle">
+            <h5 class="headerText">{{order.app}} {{order.brand}} {{order.model}}</h5>
+          </div>
+          <div class="date">
+            <h5 class="dateText">تاریخ: {{order.date}}</h5>
+            <h5 class="timerangeText">بازه زمانی: {{order.timeRange}}</h5>
+          </div>
+          <div class="address">
+            <h6 class="addressText">آدرس: {{order.address}}</h6>
+          </div>
+          <div class="problems">
+            <a class="detaillink">جزئیات بیشتر</a>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div> -->
   <div class="main header" style="direction: rtl;">
     <div class="banner" *ngIf="showbanner">
     </div>
@@ -26,7 +55,7 @@
       </div>
     </div>
   </div>
-  <div class="editpro" style="display: flex;flex-direction: row-reverse;justify-content: space-around;">
+  <div class="editpro" style="display: flex;flex-direction: row-reverse;justify-content: space-around;flex-wrap: wrap;">
     <div class="profilepic">
       <div class="avatar-upload">
         <div class="avatar-edit" *ngIf="editName">
@@ -52,20 +81,19 @@
         <form class="example-form"
           style="float:right;width: 100%; direction: rtl;padding-right: 10px;display:flex ;flex-direction: column;flex-wrap: wrap;">
 
-          <mat-form-field class="full-width-input" style="width: 300px;">
+          <mat-form-field class="full-width-input">
             <input matInput placeholder=" نام " id="firstnameinput" [formControl]="firstname" required
               style="font-size: 14px;" [disabled]="disabled">
-
           </mat-form-field>
-          <mat-form-field class="full-width-input" style="width: 300px;" triggers="manual">
+
+          <mat-form-field class="full-width-input" triggers="manual">
             <input matInput placeholder=" نام خانوادگی" type="text" [formControl]="lastname" required
               [disabled]="disabled" style="font-size: 14px;">
-
           </mat-form-field>
-          <mat-form-field class="full-width-input" style="width: 300px;">
+
+          <mat-form-field class="full-width-input">
             <input matInput placeholder="کد ملی" maxlength="10" [formControl]="nationalid" [disabled]="disabled"
               style="font-size: 14px;">
-
           </mat-form-field>
         </form>
       </div>
@@ -73,9 +101,8 @@
       <div class="body">
         <div style="float:right;direction: rtl;width: 100%;">
           <div class="servicedate">
-            <mat-form-field #p="ngbPopover" class="full-width-input" style="width: 300px;" (click)="showdatepicker(p)"
-              placement="start" [ngbPopover]="popTemplate" [autoClose]="false " triggers="manual"
-              [disabled]="isDisabled(p)">
+            <mat-form-field #p="ngbPopover" class="full-width-input" (click)="showdatepicker(p)" placement="start"
+              [ngbPopover]="popTemplate" [autoClose]="false " triggers="manual" [disabled]="isDisabled(p)">
               <span> <i class="fa fa-calendar fa-2x" aria-hidden="true"
                   style="float: left;color: blue; cursor: pointer;"
                   [ngStyle]="{'color':disabled? 'gray':'blue','cursor':disabled? 'not-allowed':'pointer'}"></i></span>
@@ -131,7 +158,7 @@
     </div>
     <br>
     <div style="float:right;direction: rtl;" *ngIf="!mobiledisabled">
-      <mat-form-field class="full-width-input" style="width: 300px;">
+      <mat-form-field class="full-width-input">
         <span> <i class="fa fa-plus-square-o fa-2x" aria-hidden="true" style="float: left; cursor: pointer;"
             [ngStyle]="{'color': mobilenumberisvalid ? 'rgb(37, 155, 27)': 'grey', 'cursor': mobilenumberisvalid ? 'pointer': 'not-allowed'}"
             (click)="addmobile()"></i></span>
@@ -181,7 +208,7 @@
     </div>
     <br>
     <div style="float:right;direction: rtl;" *ngIf="!teldisabled">
-      <mat-form-field class="full-width-input" style="width: 300px;">
+      <mat-form-field class="full-width-input">
         <span> <i class="fa fa-plus-square-o fa-2x" aria-hidden="true" style="float: left; cursor: pointer;"
             [ngStyle]="{'color': telnumberisvalid ? 'rgb(37, 155, 27)': 'grey', 'cursor': telnumberisvalid ? 'pointer': 'not-allowed'}"
             (click)="addtel()"></i></span>
@@ -214,7 +241,7 @@
     </div>
     <div class="addresscontent" style="margin:20px;direction: rtl;width: 100%;">
       <mat-card style="width: 100%;min-height:200px ;" *ngFor="let address of addresses;let i= index">
-        <mat-card-content style="display: flex;flex-direction: row;justify-content: space-around;align-items: center;">
+        <mat-card-content style="display: flex;flex-direction: row;justify-content: space-around;align-items: center;flex-wrap: wrap;">
           <mat-checkbox type="checkbox" style="width:20px ;margin: 10px;" [(ngModel)]="address.isMainAddress"
             (change)="seletAddress(address)"></mat-checkbox>
           <div class="addresstext" style="margin: 10px;display: flex;flex-direction: column-reverse;

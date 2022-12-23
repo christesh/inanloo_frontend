@@ -1,178 +1,375 @@
-<p>
-  home works!
-</p>
-<section id="desktop">
+<div class="customer" *ngIf="customer">
   <div class="container-fluid" style="direction: rtl;font-family: iransans;">
-      <!-- <div class="row header">
-          <div class="col-sm-12" style="margin: auto;">
-              <a style="cursor: pointer;color: rgb(192, 177, 192);font-size:
-                10px;"> لطفا پروتکل های بهداشتی ما را در
-                  رابطه با بیماری COVID-19 ملاحظه
-                  بفرمائید.
-              </a>
-          </div>
-      </div>
-      <app-navbar></app-navbar> -->
-      <div class="row">
-          <div class="col-sm-12 mainbanner">
+    <div class="row">
+      <div class="col-sm-12 mainbanner">
+        <ngb-carousel [showNavigationArrows]="false" 
+        [showNavigationIndicators]="true"
+        [interval]="interval"
+        [keyboard]="true"
+        [pauseOnHover]="true"
+        [wrap]="false"
+       >
+          <ng-template ngbSlide>
+            <div class="picsum-img-wrapper">
               <div class="row" style="height: 100%;">
-                  <div class="col-sm-6" style="margin:auto;text-align:
+                <div class="col-sm-6" style="margin:auto;text-align:
                     center;">
-                      <h6 id="login" style="font-size: 20px; color: rgb(255,
+                  <h6 id="login" style="font-size: 20px; color: rgb(255,
                         255, 255);"><strong>
-                              اطمینان خاطر را برای شما به ارمغان می&zwnj;آوریم.</strong></h6>
-                      <br>
-                      <h6 id="login" style="color: rgb(255, 255, 255);font-size: 16px;"><strong>
-                              خدمات پس از فروش و گارانتی کلیه لوازم خانگی </strong></h6>
-                      <br>
-                      <h2 id="login" style="color: rgb(255, 255, 255);font-size: 18px;"><strong>
-                              در هر زمان و هر مکان</strong></h2>
-                      <br>
-                      <br>
-                      <button style="background:red;color: white;border: red solid 2px; border-radius: 18px;font-size: 14px;padding:
-                        10px 50px 10px 50px;">
-                          سفارش خودت رو ثبت کن!</button>
-                  </div>
-                  <div class="col-sm-6">
+                      اطمینان خاطر را برای شما به ارمغان می&zwnj;آوریم.</strong></h6>
+                  <br>
+                  <h6 id="login" style="color: rgb(255, 255, 255);font-size: 16px;"><strong>
+                      خدمات پس از فروش و گارانتی کلیه لوازم خانگی </strong></h6>
+                  <br>
+                  <h2 id="login" style="color: rgb(255, 255, 255);font-size: 18px;"><strong>
+                      در هر زمان و هر مکان</strong></h2>
+                  <br>
+                  <br>
+                  <button style="background:red;color: white;border: red solid 2px; border-radius: 18px;font-size: 14px;padding:
+                        10px 50px 10px 50px;" (click)="order()">
+                    سفارش خودت رو ثبت کن!</button>
+                </div>
+                <div class="col-sm-6">
 
-                  </div>
+                </div>
               </div>
+            </div>
+          </ng-template>
+          <ng-template ngbSlide>
+            <div class="picsum-img-wrapper">
+              <div class="row" style="height: 100%;">
+                <div class="col-sm-6" style="margin:auto;text-align:
+                    center;">
+                  <h6 id="login" style="font-size: 20px; color: rgb(255,
+                        255, 255);"><strong>
+                      اطمینان خاطر را برای شما به ارمغان می&zwnj;آوریم.</strong></h6>
+                  <br>
+                  <h6 id="login" style="color: rgb(255, 255, 255);font-size: 16px;"><strong>
+                      خدمات پس از فروش و گارانتی کلیه لوازم خانگی </strong></h6>
+                  <br>
+                  <h2 id="login" style="color: rgb(255, 255, 255);font-size: 18px;"><strong>
+                      در هر زمان و هر مکان</strong></h2>
+                  <br>
+                  <br>
+                  <button style="background:rgb(29, 216, 12);color: white;border: rgb(66, 190, 29) solid 2px; border-radius: 18px;font-size: 14px;padding:
+                        10px 50px 10px 50px;" (click)="order()">
+                    سفارش خودت رو ثبت کن!</button>
+                </div>
+                <div class="col-sm-6">
+
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </ngb-carousel>
+        <!-- <div class="row" style="height: 100%;">
+          <div class="col-sm-6" style="margin:auto;text-align:
+                    center;">
+            <h6 id="login" style="font-size: 20px; color: rgb(255,
+                        255, 255);"><strong>
+                اطمینان خاطر را برای شما به ارمغان می&zwnj;آوریم.</strong></h6>
+            <br>
+            <h6 id="login" style="color: rgb(255, 255, 255);font-size: 16px;"><strong>
+                خدمات پس از فروش و گارانتی کلیه لوازم خانگی </strong></h6>
+            <br>
+            <h2 id="login" style="color: rgb(255, 255, 255);font-size: 18px;"><strong>
+                در هر زمان و هر مکان</strong></h2>
+            <br>
+            <br>
+            <button style="background:red;color: white;border: red solid 2px; border-radius: 18px;font-size: 14px;padding:
+                        10px 50px 10px 50px;" (click)="order()">
+              سفارش خودت رو ثبت کن!</button>
           </div>
+          <div class="col-sm-6">
+
+          </div>
+        </div> -->
       </div>
 
+    </div>
 
-      <div class="row" style="height: 80px;margin: auto;direction: rtl;width:
+    <div class="row Slogan" style="height: 80px;margin: auto;direction: rtl;width:
         100%;">
-          <div class="col-sm-12" style="margin: auto;text-align: center;">
-              <h6 id="login" style="font-family: iransans; font-size: 18px;
+      <div class="col-sm-12" style="margin: auto;text-align: center;">
+        <h6 id="login" style="font-family: iransans; font-size: 18px;
                 color: rgb(81, 6, 83);"><strong>
-                      خدمات پس از فروش را با حرفه&zwnj;ای ترین ها تجربه
-                      کنید.</strong></h6>
-          </div>
+            خدمات پس از فروش را با حرفه&zwnj;ای ترین ها تجربه
+            کنید.</strong></h6>
       </div>
+    </div>
 
-      <div class="row" style="margin: auto;text-align: center;font-family:
+    <div class="row ourServices" style="margin: auto;text-align: center;font-family:
         iransans;direction: rtl;width: 100%;">
-          <div class="col-sm-2"></div>
-          <div class="col-sm-8">
-              <div class="row">
-                  <div class="col-sm-4" style="text-align: center;padding:20px
+      <div class="col-sm-2"></div>
+      <div class="col-sm-8">
+        <div class="row">
+          <div class="col-sm-4" style="text-align: center;padding:20px
                     20px auto 20px ;">
-                      <img src="../../assets/images/20943863.jpg" style="width: 90%;height: 200px;">
-                      <br>
-                      <h6><strong>خدمات مورد نیاز خود را در هر زمان از شبانه
-                              روز رزور کنید.</strong></h6>
-                      <h6 style="font-size:12px">
-                          <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
-                              است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط
-                              فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد،
-                              کتابهای زیادی در شصت و سه درصد گذشته حال و آینده</p>
-                      </h6>
-                  </div>
-                  <div class="col-sm-4" style="text-align: center;padding:20px
-                    20px auto 20px ;">
-                      <img src="../../assets/images/25327.jpg" style="width: 90%;height: 200px;">
-                      <br>
-                      <h6><strong>دیگر نگران ضمانت صحت خدمات ارائه شده نباشید.</strong></h6>
-                      <h6 style="font-size:12px">
-                          <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
-                              است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط
-                              فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد،
-                              کتابهای زیادی در شصت و سه درصد گذشته حال و آینده</p>
-                      </h6>
-                  </div>
-                  <div class="col-sm-4" style="text-align: center;padding:20px
-                    20px auto 20px ;">
-                      <img src="../../assets/images/20945783.jpg" style="width: 90%;height: 200px;">
-                      <br>
-                      <h6><strong> سرویس خود را به متخصصین حرفه ای بسپارید
-                          </strong></h6>
-
-                      <h6 style="font-size:12px">
-                          <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
-                              است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط
-                              فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد،
-                              کتابهای زیادی در شصت و سه درصد گذشته حال و آینده</p>
-                      </h6>
-                  </div>
-              </div>
+            <img src="../../assets/images/20943863.jpg" style="width: 90%;height: 200px;">
+            <br>
+            <h6><strong>خدمات مورد نیاز خود را در هر زمان از شبانه
+                روز رزور کنید.</strong></h6>
+            <h6 style="font-size:12px">
+              <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
+                است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط
+                فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد،
+                کتابهای زیادی در شصت و سه درصد گذشته حال و آینده</p>
+            </h6>
           </div>
-          <div class="col-sm-2"></div>
-      </div>
+          <div class="col-sm-4" style="text-align: center;padding:20px
+                    20px auto 20px ;">
+            <img src="../../assets/images/25327.jpg" style="width: 90%;height: 200px;">
+            <br>
+            <h6><strong>دیگر نگران ضمانت صحت خدمات ارائه شده نباشید.</strong></h6>
+            <h6 style="font-size:12px">
+              <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
+                است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط
+                فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد،
+                کتابهای زیادی در شصت و سه درصد گذشته حال و آینده</p>
+            </h6>
+          </div>
+          <div class="col-sm-4" style="text-align: center;padding:20px
+                    20px auto 20px ;">
+            <img src="../../assets/images/20945783.jpg" style="width: 90%;height: 200px;">
+            <br>
+            <h6><strong> سرویس خود را به متخصصین حرفه ای بسپارید
+              </strong></h6>
 
-      <br>
-      <br>
-      <div class="row" style="background-color: rgb(255, 235, 247);">
-          <div class="col-sm-8" style="margin: auto;text-align: center;">
-              <div style="text-align: right; float: right;padding:30px ;
+            <h6 style="font-size:12px">
+              <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
+                است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط
+                فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد،
+                کتابهای زیادی در شصت و سه درصد گذشته حال و آینده</p>
+            </h6>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-2"></div>
+    </div>
+
+    <br>
+    <br>
+    <div class="row ourPoints" style="background-color: rgb(255, 235, 247);">
+      <div class="col-sm-8" style="margin: auto;text-align: center;">
+        <div style="text-align: right; float: right;padding:30px ;
                 font-family: iransans;">
-                  <h4><strong>پروتکل های بهداشتی COVID-19</strong></h4>
-                  <h6>
-                      <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
-                          است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط
-                          فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد،
-                          کتابهای زیادی در شصت و سه درصد گذشته حال و آینده</p>
-                  </h6>
-              </div>
-          </div>
-
-          <div class="col-sm-4" style="margin: auto;height:100%;text-align:
+          <h4><strong>پروتکل های بهداشتی COVID-19</strong></h4>
+          <h6>
+            <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
+              است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط
+              فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد،
+              کتابهای زیادی در شصت و سه درصد گذشته حال و آینده</p>
+          </h6>
+        </div>
+      </div>
+      <div class="col-sm-4" style="margin: auto;height:100%;text-align:
             center;padding: 20px;">
-              <img style="height:200px;margin: auto;" src="../../assets/images/1212.png">
-          </div>
+        <img style="height:200px;margin: auto;" src="../../assets/images/1212.png">
       </div>
-      <br>
-      <br>
-      <div class="row">
-          <div class="col-sm-12" style="margin: auto;text-align: center;">
-              <h1 style="font-family: iransans;color: rgb(81, 6, 83);"><strong>تازه&zwnj;های
-                      زیبایی</strong></h1>
-          </div>
+    </div>
+    <br>
+    <br>
+    <div class="row news">
+      <div class="col-sm-12" style="margin: auto;text-align: center;">
+        <h1 style="font-family: iransans;color: rgb(81, 6, 83);"><strong>تازه&zwnj;ها
+          </strong></h1>
       </div>
-      <br>
-      <div class="row" style="margin: auto;text-align: center;font-family:
+    </div>
+    <br>
+    <div class="row news" style="margin: auto;text-align: center;font-family:
         iransans;direction: rtl;width: 100%;">
-          <div class="col-sm-2"></div>
-          <div class="col-sm-8">
-              <div class="row">
-                  <div class="col-sm-4" style="text-align: center;margin:
+      <div class="col-sm-2"></div>
+      <div class="col-sm-8">
+        <div class="row">
+          <div class="col-sm-4" style="text-align: center;margin:
                     auto;">
-                      <img src="../../assets/img/news2.jpg" style="height:
+            <img src="../../assets/img/news2.jpg" style="height:
                         90%;width: 90%;">
-                      <br>
-                      <br>
-                      <h6><strong>جدیدترین متدهای آرایش</strong></h6>
-                  </div>
-                  <div class="col-sm-4" style="text-align: center;margin:
-                    auto;">
-                      <img src="../../assets/img/news1.jpg" style="height:
-                        90%;width: 90%;">
-                      <br>
-                      <br>
-                      <h6><strong>آخرین مقالات در رابطه محافظت پوست</strong></h6>
-                  </div>
-                  <div class="col-sm-4" style="text-align: center;margin:
-                    auto;">
-                      <img src="../../assets/img/news3.jpg" style="height:
-                        90%;width: 90%;">
-                      <br>
-                      <br>
-                      <h6><strong> با لوازم آرایش تاریخ مصرف گذشته خود چه
-                              کنیم؟</strong></h6>
-                  </div>
-              </div>
+            <br>
+            <br>
+            <h6><strong>چگونه عمر دستگاه خود را بالا ببریم؟</strong></h6>
           </div>
-          <div class="col-sm-2"></div>
+          <div class="col-sm-4" style="text-align: center;margin:
+                    auto;">
+            <img src="../../assets/img/news1.jpg" style="height:
+                        90%;width: 90%;">
+            <br>
+            <br>
+            <h6><strong> !هر آنچه در رابطه با گارنتی باید بدانید</strong></h6>
+          </div>
+          <div class="col-sm-4" style="text-align: center;margin:
+                    auto;">
+            <img src="../../assets/img/news3.jpg" style="height:
+                        90%;width: 90%;">
+            <br>
+            <br>
+            <h6><strong> با دستگاه دست دوم خود
+                کنیم؟</strong></h6>
+          </div>
+        </div>
       </div>
-      <br>
-      <br>
+      <div class="col-sm-2"></div>
+    </div>
+    <br>
+    <br>
   </div>
   <app-footer></app-footer>
-</section>
+</div>
+<div class="technician" *ngIf="!customer">
+  <div class="container-fluid" style="direction: rtl;font-family: iransans;">
+    <div class="row">
+      <div class="col-sm-12 mainbanner">
+        <div class="row" style="height: 100%;">
+          <div class="col-sm-6" style="margin:auto;text-align:
+                    center;">
+            <h6 id="login" style="font-size: 20px; color: rgb(255,
+                        255, 255);"><strong>
+                اطمینان خاطر را برای شما به ارمغان می&zwnj;آوریم.</strong></h6>
+            <br>
+            <h6 id="login" style="color: rgb(255, 255, 255);font-size: 16px;"><strong>
+                خدمات پس از فروش و گارانتی کلیه لوازم خانگی </strong></h6>
+            <br>
+            <h2 id="login" style="color: rgb(255, 255, 255);font-size: 18px;"><strong>
+                در هر زمان و هر مکان</strong></h2>
+            <br>
+            <br>
+            <button style="background:red;color: white;border: red solid 2px; border-radius: 18px;font-size: 14px;padding:
+                        10px 50px 10px 50px;" (click)="order()">
+              سفارش خودت رو ثبت کن!</button>
+          </div>
+          <div class="col-sm-6">
 
-<!-- <section id="mobile" style="position: relative;">
+          </div>
+        </div>
+      </div>
+    </div>
 
+    <div class="row" style="height: 80px;margin: auto;direction: rtl;width:
+        100%;">
+      <div class="col-sm-12" style="margin: auto;text-align: center;">
+        <h6 id="login" style="font-family: iransans; font-size: 18px;
+                color: rgb(81, 6, 83);"><strong>
+            خدمات پس از فروش را با حرفه&zwnj;ای ترین ها تجربه
+            کنید.</strong></h6>
+      </div>
+    </div>
 
+    <div class="row" style="margin: auto;text-align: center;font-family:
+        iransans;direction: rtl;width: 100%;">
+      <div class="col-sm-2"></div>
+      <div class="col-sm-8">
+        <div class="row">
+          <div class="col-sm-4" style="text-align: center;padding:20px
+                    20px auto 20px ;">
+            <img src="../../assets/images/20943863.jpg" style="width: 90%;height: 200px;">
+            <br>
+            <h6><strong>خدمات مورد نیاز خود را در هر زمان از شبانه
+                روز رزور کنید.</strong></h6>
+            <h6 style="font-size:12px">
+              <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
+                است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط
+                فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد،
+                کتابهای زیادی در شصت و سه درصد گذشته حال و آینده</p>
+            </h6>
+          </div>
+          <div class="col-sm-4" style="text-align: center;padding:20px
+                    20px auto 20px ;">
+            <img src="../../assets/images/25327.jpg" style="width: 90%;height: 200px;">
+            <br>
+            <h6><strong>دیگر نگران ضمانت صحت خدمات ارائه شده نباشید.</strong></h6>
+            <h6 style="font-size:12px">
+              <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
+                است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط
+                فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد،
+                کتابهای زیادی در شصت و سه درصد گذشته حال و آینده</p>
+            </h6>
+          </div>
+          <div class="col-sm-4" style="text-align: center;padding:20px
+                    20px auto 20px ;">
+            <img src="../../assets/images/20945783.jpg" style="width: 90%;height: 200px;">
+            <br>
+            <h6><strong> سرویس خود را به متخصصین حرفه ای بسپارید
+              </strong></h6>
 
-</section> -->
+            <h6 style="font-size:12px">
+              <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
+                است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط
+                فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد،
+                کتابهای زیادی در شصت و سه درصد گذشته حال و آینده</p>
+            </h6>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-2"></div>
+    </div>
 
+    <br>
+    <br>
+    <div class="row" style="background-color: rgb(255, 235, 247);">
+      <div class="col-sm-8" style="margin: auto;text-align: center;">
+        <div style="text-align: right; float: right;padding:30px ;
+                font-family: iransans;">
+          <h4><strong>پروتکل های بهداشتی COVID-19</strong></h4>
+          <h6>
+            <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
+              است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط
+              فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد،
+              کتابهای زیادی در شصت و سه درصد گذشته حال و آینده</p>
+          </h6>
+        </div>
+      </div>
+
+      <div class="col-sm-4" style="margin: auto;height:100%;text-align:
+            center;padding: 20px;">
+        <img style="height:200px;margin: auto;" src="../../assets/images/1212.png">
+      </div>
+    </div>
+    <br>
+    <br>
+    <div class="row">
+      <div class="col-sm-12" style="margin: auto;text-align: center;">
+        <h1 style="font-family: iransans;color: rgb(81, 6, 83);"><strong>تازه&zwnj;ها
+          </strong></h1>
+      </div>
+    </div>
+    <br>
+    <div class="row" style="margin: auto;text-align: center;font-family:
+        iransans;direction: rtl;width: 100%;">
+      <div class="col-sm-2"></div>
+      <div class="col-sm-8">
+        <div class="row">
+          <div class="col-sm-4" style="text-align: center;margin:
+                    auto;">
+            <img src="../../assets/img/news2.jpg" style="height:
+                        90%;width: 90%;">
+            <br>
+            <br>
+            <h6><strong>چگونه عمر دستگاه خود را بالا ببریم؟</strong></h6>
+          </div>
+          <div class="col-sm-4" style="text-align: center;margin:
+                    auto;">
+            <img src="../../assets/img/news1.jpg" style="height:
+                        90%;width: 90%;">
+            <br>
+            <br>
+            <h6><strong> !هر آنچه در رابطه با گارنتی باید بدانید</strong></h6>
+          </div>
+          <div class="col-sm-4" style="text-align: center;margin:
+                    auto;">
+            <img src="../../assets/img/news3.jpg" style="height:
+                        90%;width: 90%;">
+            <br>
+            <br>
+            <h6><strong> با دستگاه دست دوم خود
+                کنیم؟</strong></h6>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-2"></div>
+    </div>
+    <br>
+    <br>
+  </div>
+
+  <app-footer></app-footer>
+</div>

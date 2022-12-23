@@ -185,8 +185,10 @@ export class TechnicianProfileComponent {
   public input: string = '<input type="checkbox"></input>';
   displayedColumns: string[];
   displayeddistrictColumns: string[];
+  profilefill: boolean = false;
+  skillfill: boolean = false;
+  districtfill: boolean = false;
   ngOnInit() {
-
     this.profilePic = this.defultpic;
     if (this.cardMode) {
       this.showskillscard = true;
@@ -200,7 +202,7 @@ export class TechnicianProfileComponent {
       this.showbanner = false;
     this.name = new FormControl('');
     var token = this.tokencookie.get('T')
-    this.userid = localStorage.getItem('userID');
+    this.userid = localStorage.getItem('personID');
     this.skillTableSetting = {
       editable: true,
       pager: {
@@ -340,7 +342,6 @@ export class TechnicianProfileComponent {
       res => {
         this.curentTechnician = res[0]
         console.log(this.curentTechnician)
-
         this.interstsForm.controls['interests'].disable()
         this.mobiles = this.curentTechnician.mobile;
         this.tels = this.curentTechnician.phones;
@@ -351,7 +352,6 @@ export class TechnicianProfileComponent {
         if (bd != null) {
           this.birthdate = moment(bd).locale('fa').format('YYYY/M/D');
         }
-
         this.curentTechnician.birthDate = this.birthdate;
         for (let i = 0; i < this.address.length; i++) {
           var addtext = ""
@@ -407,11 +407,17 @@ export class TechnicianProfileComponent {
         this.nationalid.patchValue(this.curentTechnician.nationalId);
         this.nationalid.markAsDirty();
 
+        if (this.mobiles.length != 0 && this.addresses.length != 0 && this.tels.length != 0)
+          this.profilefill = true;
+        else
+          this.profilefill = false;
 
         this.disabled = true;
         this.api.gettechnicianskills(token, this.userid).subscribe(
           res => {
             console.log(res)
+            if (res.length != 0)
+              this.skillfill = true;
             for (let i = 0; i < res.length; i++) {
               var fix = "";
               if (res[i].fix)
@@ -437,6 +443,8 @@ export class TechnicianProfileComponent {
         this.api.gettechniciandistricts(token, this.userid).subscribe(
           res => {
             console.log(res)
+            if (res.length != 0)
+              this.districtfill = true;
             for (let i = 0; i < res.length; i++) {
               this.districtTableDate.push({
                 districtid: res[i].id,
@@ -546,14 +554,11 @@ export class TechnicianProfileComponent {
   selectedtime: string = "";
   selectedDate: string;
   mapenable: boolean = false;
-
   editMobile: boolean = false;
   mobiledisabled: boolean = true;
   editTel: boolean = false;
   teldisabled: boolean = true;
-
   datepickeropen: boolean = false;
-
   showdatepicker(pp: any) {
     if (!this.disabled && !this.datepickeropen) {
       pp.open();
@@ -569,6 +574,7 @@ export class TechnicianProfileComponent {
     this.editMobile = true;
     this.mobiledisabled = false;
   }
+
   savemobile() {
     this.editMobile = false;
     this.mobiledisabled = true;
@@ -579,6 +585,22 @@ export class TechnicianProfileComponent {
     }
     this.api.saveusersmobile(token, this.userid, mobiles).subscribe(
       res => {
+        if (this.mobiles.length != 0 && this.addresses.length != 0 && this.tels.length != 0)
+          this.profilefill = true;
+        else
+          this.profilefill = false;
+        if (this.profilefill && this.skillfill && this.districtfill) {
+          this.api.setfillprofileture(token, this.userid).subscribe(
+            res => { console.log(res) }
+            , err => { console.log(err) }
+          )
+        }
+        else {
+          this.api.setfillprofilefalse(token, this.userid).subscribe(
+            res => { console.log(res) }
+            , err => { console.log(err) }
+          )
+        }
         console.log(res)
       },
       err => {
@@ -604,6 +626,22 @@ export class TechnicianProfileComponent {
     }
     this.api.saveuserstel(token, this.userid, telephones).subscribe(
       res => {
+        if (this.mobiles.length != 0 && this.addresses.length != 0 && this.tels.length != 0)
+          this.profilefill = true;
+        else
+          this.profilefill = false;
+        if (this.profilefill && this.skillfill && this.districtfill) {
+          this.api.setfillprofileture(token, this.userid).subscribe(
+            res => { console.log(res) }
+            , err => { console.log(err) }
+          )
+        }
+        else {
+          this.api.setfillprofilefalse(token, this.userid).subscribe(
+            res => { console.log(res) }
+            , err => { console.log(err) }
+          )
+        }
         console.log(res)
       },
       err => {
@@ -690,7 +728,9 @@ export class TechnicianProfileComponent {
   createadd(event: any) {
     if (event.kind == 'save') {
       var token = this.tokencookie.get('T');
-      var userId = localStorage.getItem('userID')
+      var userId = localStorage.getItem('personID')
+
+
       this.api.gettechniciansdetails(token, userId!).subscribe(
         res => {
           this.addresses = []
@@ -735,6 +775,22 @@ export class TechnicianProfileComponent {
               addtext += ", طبقه: " + this.address[i].addressFloor;
 
             this.addresses.push({ id: this.address[i].id, text: addtext, maplat: Number(this.address[i].addressLat), maplong: Number(this.address[i].addressLong), isMainAddress: Boolean(this.address[i].isMain) })
+            if (this.mobiles.length != 0 && this.addresses.length != 0 && this.tels.length != 0)
+              this.profilefill = true;
+            else
+              this.profilefill = false;
+            if (this.profilefill && this.skillfill && this.districtfill) {
+              this.api.setfillprofileture(token, this.userid).subscribe(
+                res => { console.log(res) }
+                , err => { console.log(err) }
+              )
+            }
+            else {
+              this.api.setfillprofilefalse(token, this.userid).subscribe(
+                res => { console.log(res) }
+                , err => { console.log(err) }
+              )
+            }
           }
         },
         err => {
@@ -834,7 +890,7 @@ export class TechnicianProfileComponent {
       substreet: this.address[index].addressSubStreet,
       lane: this.address[index].addressLane,
       building: this.address[index].addressBuilding,
-      خیر: this.address[index].addressNo,
+      no: this.address[index].addressNo,
       unit: this.address[index].addressUnit,
       floor: this.address[index].addressFloor,
       provincename: this.address[index].province.provinceName,
@@ -859,7 +915,7 @@ export class TechnicianProfileComponent {
     dialogRef.afterClosed().subscribe(result => {
       if (result.btn == "save" || result.btn == "edit" || result.btn == "delete") {
         var token = this.tokencookie.get('T');
-        var userId = localStorage.getItem('userID')
+        var userId = localStorage.getItem('personID')
         this.api.gettechniciansdetails(token, userId!).subscribe(
           res => {
             this.addresses = []
@@ -1130,6 +1186,22 @@ export class TechnicianProfileComponent {
     }
     this.api.createtechnicianskills(token, this.userid, skills).subscribe(
       res => {
+        if (this.skillTableData.length != 0)
+          this.skillfill = true
+        else
+          this.skillfill = false
+        if (this.profilefill && this.skillfill && this.districtfill) {
+          this.api.setfillprofileture(token, this.userid).subscribe(
+            res => { console.log(res) }
+            , err => { console.log(err) }
+          )
+        }
+        else {
+          this.api.setfillprofilefalse(token, this.userid).subscribe(
+            res => { console.log(res) }
+            , err => { console.log(err) }
+          )
+        }
         console.log(res)
         Swal.fire({
           title: 'بروزرسانی تخصص',
@@ -1273,6 +1345,22 @@ export class TechnicianProfileComponent {
     }
     this.api.createtechniciandistricts(token, this.userid, disticts).subscribe(
       res => {
+        if (this.districtTableDate.length != 0)
+          this.districtfill = true
+        else
+          this.districtfill = false
+        if (this.profilefill && this.skillfill && this.districtfill) {
+          this.api.setfillprofileture(token, this.userid).subscribe(
+            res => { console.log(res) }
+            , err => { console.log(err) }
+          )
+        }
+        else {
+          this.api.setfillprofilefalse(token, this.userid).subscribe(
+            res => { console.log(res) }
+            , err => { console.log(err) }
+          )
+        }
         console.log(res)
         Swal.fire({
           title: 'بروزرسانی محدوده کاری',

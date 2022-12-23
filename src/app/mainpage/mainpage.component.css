@@ -33,19 +33,26 @@
     background-blend-mode: multiply;
     /* background-image: url('../../assets/img/login-bg/loginpagebg.jpg'); */
     direction: rtl;
-   
-
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 .mainbody{
+    /* margin-top:60px; */
     background-color: rgb(253, 249, 249);
 }
 .main-content {
     margin: 20px 10px;
+    margin-top: 120px;
     border-radius: 10px;
     box-shadow: 0px 0px 10px 5px rgb(175, 175, 175);
     padding: 10px;
     background-color: white;
   }
+.container-fluid{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: white;
+  
+}

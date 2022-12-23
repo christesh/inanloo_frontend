@@ -688,7 +688,7 @@ export class ApiServicesService {
     })
   }
   createorder(token: string, order: any): Observable<any> {
-    const body = { order: order };
+    const body = { order: order};
     return this.http.post(this.baseurl + '/order/createorder/', body, {
       headers: new HttpHeaders({
         'Authorization': 'Token  ' + token,
@@ -864,6 +864,146 @@ export class ApiServicesService {
   edittechnicianstatus(token: string, uid: string, status: string): Observable<any> {
     const body = { uid: uid, status: status };
     return this.http.post(this.baseurl + '/personal/edittechnicianstatus/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  setfillprofileture(token: string, uid: string): Observable<any> {
+    const body = { uid: uid, };
+    return this.http.post(this.baseurl + '/personal/setfillprofileture/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  setfillprofilefalse(token: string, uid: string): Observable<any> {
+    const body = { uid: uid, };
+    return this.http.post(this.baseurl + '/personal/setfillprofilefalse/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  getalluserorders(token: string, userID: string): Observable<any> {
+    const body = { userID: userID, };
+    return this.http.post(this.baseurl + '/order/getalluserorders/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  getallorders(token: string): Observable<any> {
+    return this.http.get(this.baseurl + '/order/getallorders/',  {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  getuserstatusorders(token: string, userID: string, status:string): Observable<any> {
+    const body = { userID: userID,status:status };
+    return this.http.post(this.baseurl + '/order/getuserstatusorders/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  getalltechorders(token: string, techID: string): Observable<any> {
+    const body = { techID: techID, };
+    return this.http.post(this.baseurl + '/order/getalltechorders/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  gettechstatusorders(token: string, techID: string,status:string): Observable<any> {
+    const body = { techID: techID,status:status };
+    return this.http.post(this.baseurl + '/order/gettechstatusorders/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  getuserchatstatus(token: string, uid: any): Observable<any> {
+    const body = { uid: uid };
+    return this.http.post(this.baseurl + '/support/getuserchatstatus/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  connectedusers(token: string): Observable<any> {
+  
+    return this.http.get(this.baseurl + '/support/connectedusers/', {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  sendmessages(token: string, receiverid:string,messageText:string): Observable<any> {
+    const body = { receiverid:receiverid,messageText:messageText };
+    return this.http.post(this.baseurl + '/support/sendmessages/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  getusermessages(token: string, rid:string): Observable<any> {
+    const body = { rid:rid };
+    return this.http.post(this.baseurl + '/support/getusermessages/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  setactiveuser(token: string): Observable<any> {
+    return this.http.get(this.baseurl + '/support/setactiveuser/', {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  setdeactiveuser(token: string): Observable<any> {
+    return this.http.get(this.baseurl + '/support/setdeactiveuser/', {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  getdatetimenow(token: string): Observable<any> {
+    return this.http.get(this.baseurl + '/support/getdatetimenow/', {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  sendmessagenotification(token: string,senderID:string,reciverID:string,message:string): Observable<any> {
+    const body = { senderID:senderID,reciverID:reciverID,message:message };
+    return this.http.post(this.baseurl + '/order/sendmessagenotification/',body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  getorder(token: string, orderID: string): Observable<any> {
+    const body = { orderID: orderID, };
+    return this.http.post(this.baseurl + '/order/getorder/', body, {
       headers: new HttpHeaders({
         'Authorization': 'Token  ' + token,
         'Content-Type': 'application/json',

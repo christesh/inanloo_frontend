@@ -25,9 +25,9 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { stringToKeyValue } from '@angular/flex-layout/extended/style/style-transforms';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ThemeService } from 'ng2-charts';
-
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { Ng2ImgMaxService } from 'ng2-img-max';
 import { HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
@@ -73,11 +73,12 @@ export interface DialogData {
 export class OrderpageComponent {
   @Output() newOrderEvent = new EventEmitter<Order>();
   @Input() showBanner: boolean;
-  // baseurl=environment.API_URL;
+  baseurl = environment.API_URL;
   // baseurl = "http://localhost:8000";
-  baseurl = "http://api-is.mersa-group.ir";
-  imgurl="http://mersa-group.ir";
+  // baseurl = "http://api-is.mersa-group.ir";
+  imgurl = "http://mersa-group.ir/media/";
   // timenow:{hour: number, minute: number}={hour: 12, minute: 12};
+  ruleChecked:boolean= false;
   showbanner: boolean = true;
   mapEnable: boolean = false;
   maplat: number = 51.367918;
@@ -94,6 +95,7 @@ export class OrderpageComponent {
     selectedBackground: '#4cb53f',
     selectedText: '#FFFFFF',
   };
+  problemskind: { ID: string, title: string, problem: Problem[] }[] = []
   calmonth: string = "";
   calday: string = "";
   showdatep: boolean = false;
@@ -104,6 +106,7 @@ export class OrderpageComponent {
   @ViewChild("MatTable", { static: false }) table: MatTable<any>;
   days: { day: string, date: string, time: string }[] = [];
   subtasks: Problem[] = [];
+  allsubtasks: Problem[] = [];
   selectedsubtasks2: Problem[] = [];
   selectedsubtasks: Problem[] = [];
   private scrollHelper: ScrollHelper = new ScrollHelper();
@@ -147,6 +150,8 @@ export class OrderpageComponent {
     Invpic: string,
     ordeTime: string,
     orderAdd: string,
+    maplat: number,
+    maplong: number,
     problimpics: string[],
   } = {
       appcat: "",
@@ -163,8 +168,11 @@ export class OrderpageComponent {
       Invpic: "",
       ordeTime: "",
       orderAdd: "",
+      maplat: 0,
+      maplong: 0,
       problimpics: [],
     }
+  showsummery: boolean = false;
   searchvalue: string = "";
   secondFormGroupError: string = "";
   secondFormGroup = this._formBuilder.group({
@@ -173,7 +181,6 @@ export class OrderpageComponent {
   thirdFormGroupError: string = "";
   thirdFormGroup = this._formBuilder.group({
     thirdCtrl: ['', Validators.required],
-
   });
   // devicesreial: string="";
   // selectedmodel:string="";
@@ -182,12 +189,13 @@ export class OrderpageComponent {
     fourthCtrl: ['', Validators.required],
     radioCtrl: ['', Validators.required],
   });
-
+  problemsearchvalue: any;
   hasmodel: boolean = false;
   stepperOrientation: Observable<StepperOrientation>;
   applience: Applience[] = []
   userid: any;
   constructor(
+    private router: Router,
     private http: HttpClient,
     private ng2ImgMax: Ng2ImgMaxService,
     private globalVar: GlobalvarService,
@@ -207,16 +215,62 @@ export class OrderpageComponent {
   }
   order: any;
   public picurl: string = "";
+  guaranteeDateForm = new FormGroup({
+    startdate: new FormControl('',Validators.required),
+    enddate: new FormControl('',Validators.required)
+  })
+  fromdate: string;
+  todate: string;
+  dateValue1 = new FormControl();
   firstFormGroup = new FormGroup({
     selectedmodel: new FormControl(''),
     modelserial: new FormControl(''),
     gfile: new FormControl(''),
     ifile: new FormControl(''),
   });
+  @ViewChild("psd", { static: false }) popover1: NgbPopover;
+  @ViewChild("ped", { static: false }) popover2: NgbPopover;
+  datepickeropen: boolean = false;
+  showdatepickergsdate(pp: any) {
+    if (!this.datepickeropen) {
+      pp.open();
+      this.datepickeropen = true;
+    }
+    else {
+      pp.close();
+      this.datepickeropen = false;
+    }
+  }
+  showdatepickergedate(pp: any) {
+    if (!this.datepickeropen) {
+      pp.open();
+      this.datepickeropen = true;
+    }
+    else {
+      pp.close();
+      this.datepickeropen = false;
+    }
+  }
+  showpopovergd: boolean = false;
+  changedateto(event: any) {
+    this.fromdate = event['shamsi'];
+    this.showpopovergd = true;
+    this.popover1.close();
+    this.datepickeropen = false;
+  }
+  changedatefrom(event: any) {
+    this.todate = event['shamsi'];
+    this.showpopovergd = true;
+    this.popover2.close();
+    this.datepickeropen = false;
+  }
   ngOnInit() {
-    this.userid = localStorage.getItem('userID');
+    this.userid = localStorage.getItem('personID');
+    // this.problemskind.push({ID:"1",title:"نصب"})
+    // this.problemskind.push({ID:"2",title:"تعمیر"})
+    // this.problemskind.push({ID:"3",title:"بازدید دوره‌ای"})
     if (!this.showBanner)
-      this.showbanner = false; 
+      this.showbanner = false;
     this.order = new Order();
     this.order.orderConfirm = false;
     this.firstFormGroup.controls.modelserial.setValue("");
@@ -230,11 +284,10 @@ export class OrderpageComponent {
       res => {
         this.applience = res
         console.log(this.applience)
-        for(let i=0;i<this.applience.length;i++){
-          this.applience[i].pic=this.imgurl+this.applience[i].pic;
-          for(let j=0;j<this.applience[i].brands.length;j++)
-          {
-            this.applience[i].brands[j].brandpic=this.imgurl+this.applience[i].brands[j].brandpic;
+        for (let i = 0; i < this.applience.length; i++) {
+          this.applience[i].pic = this.imgurl + this.applience[i].pic;
+          for (let j = 0; j < this.applience[i].brands.length; j++) {
+            this.applience[i].brands[j].brandpic = this.imgurl + this.applience[i].brands[j].brandpic;
           }
         }
       },
@@ -242,7 +295,7 @@ export class OrderpageComponent {
         console.log(err)
       }
     )
-    var userId = localStorage.getItem('userID')
+    var userId = localStorage.getItem('personID')
     this.api.getCustomersDetails(token, userId!).subscribe(
       res => {
         console.log(res)
@@ -360,6 +413,7 @@ export class OrderpageComponent {
     this.hasmodel = true;
     this.brandID = this.brands!.find(item => item.brand == i)!.ID
     this.summery.brand = this.brands!.find(item => item.brand == i)!.brand
+    this.summery.brandpic = this.brands!.find(item => item.brand == i)!.brandpic
     this.models = this.brands?.find(item => item.brand == i)?.models
 
   }
@@ -371,29 +425,32 @@ export class OrderpageComponent {
   serialchange(event: any) {
     // this.modelserial = event.target.value
   }
-  problemSelect(name: string) {
-    let ch = this.subtasks.find(item => item.title == name)?.checked
+  problemSelect(name: string, sid: any, pid: any) {
+
+    var pki = this.problemskind.findIndex(item => item.ID == pid)
+    var si = this.problemskind[pki].problem.findIndex(item => item.ID == sid)
+    let ch = this.problemskind[pki].problem[si].checked
+
     if (ch == true) {
       if (name == "سایر") {
         this.showcomment = true;
       }
-      var ss = this.subtasks.find(item => item.title == name)
-      this.selectedsubtasks.push(ss!)
-      if (this.isNumber(ss?.highprice!)) {
-        this.totlahighprice += Number(ss?.highprice!);
-        this.totlalowprice += Number(ss?.lowprice!);
+      console.log(this.subtasks[sid].type)
+      this.selectedsubtasks.push(this.subtasks[sid])
+      if (this.isNumber(this.subtasks[sid].highprice!)) {
+        this.totlahighprice += Number(this.subtasks[sid].highprice!);
+        this.totlalowprice += Number(this.subtasks[sid].lowprice!);
       }
     }
     else {
       if (name == "سایر") {
         this.showcomment = false;
       }
-      var ss = this.selectedsubtasks.find(item => item.title == name)
-      var indx = this.selectedsubtasks.indexOf(ss!)
+      var indx = this.selectedsubtasks.indexOf(this.subtasks[sid])
       this.selectedsubtasks.splice(indx, 1)
-      if (this.isNumber(ss?.highprice!)) {
-        this.totlahighprice -= Number(ss?.highprice!);
-        this.totlalowprice -= Number(ss?.lowprice!);
+      if (this.isNumber(this.subtasks[sid].highprice!)) {
+        this.totlahighprice -= Number(this.subtasks[sid].highprice!);
+        this.totlalowprice -= Number(this.subtasks[sid].lowprice!);
       }
     }
     if (this.selectedsubtasks.length != 0) {
@@ -434,47 +491,52 @@ export class OrderpageComponent {
       if (this.firstFormGroup.controls.ifile.value == '') {
         this.openSnackBar(' بارگذاری تصویر فاکتور خرید الزامیست!', '', 'red-snackbar', 5)
       }
+ 
     }
     var token = this.tokencookie.get('T')
     var app = "";
     var brand = "";
     var model = "";
     var modelobj: any;
-    this.order.customerID = Number(localStorage.getItem('userID'))
+    this.order.customerID = Number(localStorage.getItem('personID'))
     this.order.registerID = Number(localStorage.getItem('staffID'))
     if (this.applienceID != null) {
       this.order.applienceID = this.applienceID!;
-
       app = this.applienceID!.toString();
     }
     if (this.brandID != null) {
       this.order.brandID = this.brandID!;
       brand = this.brandID!.toString();
     }
-    if (this.firstFormGroup.value.selectedmodel != null) {
+    if (this.firstFormGroup.controls.selectedmodel.value != null) {
       var mid = this.firstFormGroup.controls.selectedmodel.value;
       this.order.modelID = mid
       this.summery.model = this.models?.find(item => item.ID.toString() == mid!)?.model
+      if (this.summery.model == undefined)
+        this.summery.model = ""
+
       modelobj = this.firstFormGroup.controls.selectedmodel.value;
       model = modelobj.ID;
     }
     else {
-      this.order.modelID = -1;
+      this.order.modelID = null;
     }
+    this.modelserial=this.firstFormGroup.controls.modelserial.value!;
     this.subtasks = []
-    this.order.deviceSerial = this.modelserial;
+    this.allsubtasks = []
+    this.order.modelSerial = this.modelserial;
     this.summery.serial = this.modelserial;
     this.order.hasGuarantee = this.hasguarantee!;
     this.summery.hasG = this.hasguarantee!;
     if (this.hasguarantee) {
       this.order.guaranteePic = this.gimage[0];
       this.order.invoicePic = this.iimage[0];
-      this.order.guaranteeStartDate = "";
-      this.order.guaranteeEndDate = "";
+      this.order.guaranteeStartDate=this.fromdate;
+      this.order.guaranteeEndDate=this.todate;
       this.summery.Gpic = this.gurls[0];
       this.summery.Invpic = this.iurls[0];
-      this.summery.GstartDate = "";
-      this.summery.GendDate = "";
+      this.summery.GstartDate = this.fromdate;
+      this.summery.GendDate = this.todate;
     }
     else {
       this.order.guaranteePic = [];
@@ -489,11 +551,23 @@ export class OrderpageComponent {
     }
     this.api.getProblems(token, app, brand, model).subscribe(
       res => {
+        console.log(res)
         for (let i = 0; i < res.length; i++) {
-          this.subtasks.push({ ID: i, kind: res[i]['problemKind'], title: res[i]['problemTitle'], description: res[i]['problemDescription'], checked: false, lowprice: res[i]['lowPrice'], highprice: res[i]['highPrice'] })
+          console.log(res[i]['pkind'])
+          var pkindex = this.problemskind.findIndex(item => item.title == res[i]['problemKind__title'])
+          this.subtasks.push({ ID: i, pID: res[i]['id'], kind: res[i]['problemKind_id'], title: res[i]['problemTitle'], description: res[i]['problemDescription'], checked: false, lowprice: res[i]['lowPrice'], highprice: res[i]['highPrice'], type: res[i]['pkind'] })
+          if (pkindex != -1) {
+            this.problemskind[pkindex].problem.push(this.subtasks[this.subtasks.length - 1])
+          }
+          if (pkindex == -1) {
+            var p = { ID: i, pID: res[i]['id'], kind: res[i]['problemKind_id'], title: res[i]['problemTitle'], description: res[i]['problemDescription'], checked: false, lowprice: res[i]['lowPrice'], highprice: res[i]['highPrice'], type: res[i]['pkind'] }
+            this.problemskind.push({ ID: this.problemskind.length.toString(), title: res[i]['problemKind__title'], problem: [p] })
+          }
+
         }
-        this.subtasks.push({ ID: res.length, kind: 'other', title: 'سایر', checked: false, description: '', lowprice: 'نامشخص', highprice: 'نامشخص' });
-        console.log(this.subtasks)
+        this.subtasks.push({ ID: res.length, pID: -1, kind: 'other', title: 'سایر', checked: false, description: '', lowprice: 'نامشخص', highprice: 'نامشخص', type: 'نامشخص' });
+        // console.log(this.subtasks)
+        this.allsubtasks = this.subtasks
       }
       ,
       err => {
@@ -518,6 +592,7 @@ export class OrderpageComponent {
   }
   thirdstepnext() {
     console.log(this.selectedtime)
+    this.showsummery = true;
     var timerangeid = this.selectedtime;
     if (this.selectedtime == "") {
       this.thirdsteperror = true
@@ -536,11 +611,16 @@ export class OrderpageComponent {
     this.order.orderDate = this.selectedDate
     this.summery.orderDate = this.selectedDate
     this.order.timeRange = Number(timerangeid!);
-    this.summery.ordeTime = timerangeid!;
+    var tr = this.timerange.find(item => item.ID == Number(timerangeid!))?.title
+    if (tr != undefined)
+      this.summery.ordeTime = tr
     for (let i = 0; i < this.addresses.length; i++) {
       if (this.addresses[i].isMainAddress) {
         this.order.orderAddressID = this.addresses[i].id;
         this.summery.orderAdd = this.addresses[i].text;
+
+        this.summery.maplat = this.addresses[i].maplat;
+        this.summery.maplong = this.addresses[i].maplong;
         break;
       }
     }
@@ -679,9 +759,13 @@ export class OrderpageComponent {
     this.newOrderEvent.emit(this.order);
     var token = this.tokencookie.get('T');
     this.order.orderConfirm = true;
+    console.log(this.order)
     this.api.createorder(token, this.order).subscribe(
       res => {
+
         console.log(res)
+        var orderids = res['result'].split(":", 2)
+        var orderid = orderids[1]
         const swalWithBootstrapButtons = Swal.mixin({
           customClass: {
 
@@ -692,7 +776,7 @@ export class OrderpageComponent {
           buttonsStyling: false
         })
         if (this.hasguarantee) {
-          this.api.createcustomerappliance(token, this.order.customerID, this.order.modelID, this.order.serial).subscribe(
+          this.api.createcustomerappliance(token, this.order.customerID, this.order.modelID, this.order.modelSerial).subscribe(
             res => {
               console.log(res)
               ////فاکتور خرید///
@@ -744,9 +828,11 @@ export class OrderpageComponent {
                 myHeaders.append("Authorization", "Token " + token);
                 this.progress = 1;
                 var formdata1 = new FormData();
+                var sdate=moment.from(this.order.guaranteeStartDate, 'fa', 'YYYY/MM/DD').format('YYYY/MM/DD');
+                var edate=moment.from(this.order.guaranteeEndDate, 'fa', 'YYYY/MM/DD').format('YYYY/MM/DD');
                 formdata1.append("customerAppliance", res);
-                formdata1.append("guaranteeStartDate", "2022/04/04");
-                formdata1.append("guaranteeEndDate", "2023/04/04");
+                formdata1.append("guaranteeStartDate",sdate );
+                formdata1.append("guaranteeEndDate",edate);
                 formdata1.append("guaranteePic", compimg, this.gimage[i].name);
                 console.log("parameter to send image:" + formdata1)
                 this.http.post(this.baseurl + "/order/uploadguaranteepic/", formdata1, {
@@ -784,19 +870,22 @@ export class OrderpageComponent {
             },
             err => {
               console.log(err)
-             }
+            }
           )
         }
         ////مشکلات////
+        console.log(this.selectedsubtasks2)
         for (let i = 0; i < this.image.length; i++) {
           var compimg = this.image[i]
           var myHeaders = new Headers();
           myHeaders.append("Authorization", "Token " + token);
           this.progress = 1;
+          
           var formdata1 = new FormData();
-          formdata1.append("order", res);
+
+          formdata1.append("order", orderid);
           formdata1.append("problemImage", compimg, this.image[i].name);
-          console.log("parameter to send image:" + formdata1)
+         
           this.http.post(this.baseurl + "/order/uploadcustomersproblemspic/", formdata1, {
             headers: new HttpHeaders({
               'Authorization': 'Token  ' + token
@@ -836,6 +925,7 @@ export class OrderpageComponent {
           confirmButtonText: '!متوجه شدم',
           reverseButtons: true
         })
+        this.router.navigate(['home/orderslist']);
       },
       err => {
         console.log(err)
@@ -878,7 +968,7 @@ export class OrderpageComponent {
       if (result.btn == "save" || result.btn == "edit") {
 
         var token = this.tokencookie.get('T');
-        var userId = localStorage.getItem('userID')
+        var userId = localStorage.getItem('personID')
         this.api.getCustomersDetails(token, userId!).subscribe(
           res => {
             this.addresses = []
@@ -971,8 +1061,26 @@ export class OrderpageComponent {
       }
     }
   }
+  ProblemSearchChange(event: any) {
+    var s = [];
+    if (event.target.value != "") {
+      for (let i = 0; i < this.allsubtasks.length!; i++) {
+        var protitle = this.allsubtasks![i].title.toLowerCase()
+        var searchv = event.target.value.toLowerCase()
+        if (protitle.includes(searchv)) {
+          s.push(this.allsubtasks![i])
+        }
+      }
+      this.subtasks = s;
+    }
+    else {
+      this.subtasks = this.allsubtasks
+    }
 
+  }
 }
+
+
 @Component({
   selector: 'edit-adddress-Dialog',
   templateUrl: 'editadd.html',

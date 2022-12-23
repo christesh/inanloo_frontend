@@ -17,7 +17,7 @@ export class ProfilesComponent implements OnInit {
     var token=this.tokencookie.get('T');
     this.api.getPersonAuth(token).subscribe(
       res => {
-        localStorage.setItem('userID', res[0]['person'])
+        localStorage.setItem('personID', res[0]['person'])
         if(res[0]['category__name']=='مشتری')
             this.router.navigate(['home/profile/customer'])
         if(res[0]['category__name']=='تکنسین' && res[0]['fillProfile']==false)

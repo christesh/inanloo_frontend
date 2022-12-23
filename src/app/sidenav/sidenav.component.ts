@@ -23,8 +23,6 @@ export class SidenavComponent {
     { name: "سفارشات", submenu: [{ sub: "ثبت سفارش" }, { sub: "گزارش" }] },
     { name: "تالار گفتگو", submenu: [] },
     ]
-
-
   }
   menuclick(itemname: string) {
     switch (itemname) {
@@ -32,7 +30,7 @@ export class SidenavComponent {
         this.router.navigate(['/portal/dashboard']);
         break;
       case "تالار گفتگو":
-        this.router.navigate(['/portal/chatbox']);
+        this.router.navigate(['/portal/chat']);
         break;
       case "کاربران ستاد":
         this.router.navigate(['/portal/users']);

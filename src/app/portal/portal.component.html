@@ -49,6 +49,7 @@
     <div class="col-md-12" style="cursor: pointer;padding:20px;margin:auto;text-align:center;">
       <img class="avatar " [src]="userpic" onerror="this.src='../../assets/images/profile.png'" />
       <h4 class="name" style="margin-top:5px;cursor: pointer;">{{user}}  </h4>
+      <!-- <mat-slide-toggle color="primary"  [checked]="checked" (click)="changeState1()"></mat-slide-toggle> -->
       <i class="fa fa-angle-double-right " aria-hidden="true" (click)="changeState()"></i>
     </div>
   </mat-toolbar>
@@ -57,6 +58,7 @@
   </div>
 </div>
 
-<div id="main" class="main-content" [ngStyle]="{'margin-right':mainmargin}">
+<div id="main" class="main-content" [ngStyle]="{'margin-right':mainmargin}" style="height: 100%;">
   <router-outlet></router-outlet>
 </div>
+

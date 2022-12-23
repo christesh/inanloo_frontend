@@ -17,6 +17,7 @@ import { DialogData } from '../../orderpage/orderpage.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { environment } from 'src/environments/environment';
 import * as moment from 'jalali-moment';
+import { Problem } from '../../orderpage/Order';
 
 @Component({
   selector: 'app-customerProfile',
@@ -66,6 +67,25 @@ export class CustomerProfileComponent implements OnInit {
   city: Cities[] = []
   region: Regions[] = [];
   neighbourhood: Nighbourhoods[] = []
+order:{
+  id: string,
+    status: string,
+    app: string,
+    brand: string,
+    model: string,
+    apppic: string,
+    brandpic: string,
+    regdate: string,
+    date: string,
+    timeRange: string,
+    address: string,
+    problems: Problem[],
+    cost: string,
+    techpic: string,
+    techfullname: string,
+    techrate: string
+    statusCssClass: string,
+  }
 
 
   disabled: boolean = true;
@@ -109,7 +129,7 @@ export class CustomerProfileComponent implements OnInit {
     this.name = new FormControl('');
     var token = this.tokencookie.get('T')
 
-    this.userid = localStorage.getItem('userID');
+    this.userid = localStorage.getItem('personID');
     this.api.getCustomersDetails(token, this.userid!).subscribe(
       res => {
         this.curentCustomer = res[0]
@@ -387,7 +407,7 @@ export class CustomerProfileComponent implements OnInit {
   createadd(event: any) {
     if (event.kind == 'save') {
       var token = this.tokencookie.get('T');
-      var userId = localStorage.getItem('userID')
+      var userId = localStorage.getItem('personID')
       this.api.getCustomersDetails(token, userId!).subscribe(
         res => {
           this.addresses = []
@@ -569,7 +589,7 @@ export class CustomerProfileComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result.btn == "save" || result.btn == "edit" || result.btn == "delete") {
         var token = this.tokencookie.get('T');
-        var userId = localStorage.getItem('userID')
+        var userId = localStorage.getItem('personID')
         this.api.getCustomersDetails(token, userId!).subscribe(
           res => {
             this.addresses = []

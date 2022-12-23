@@ -2,12 +2,14 @@ import { LocalDataSource } from "ng2-smart-table";
 
 export class Problem{
     ID:number;
+    pID:number;
     kind:string;
     title:string;
     checked:boolean;
     description:string;
     lowprice:string;
     highprice:string;
+    type:string;
 }
 export class Order {
     customerID:number;

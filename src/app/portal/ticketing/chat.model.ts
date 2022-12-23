@@ -1,18 +1,14 @@
-export class Chat {
-    public avatar: string;
-    public chatClass: string;
-    public imagePath: string;
-    public time: string;
-    public messages: string[];
-    public messageType: string;
-  
-    constructor(avatar: string, chatClass:string, imagePath: string, time: string, messages: string[], messageType: string) {
-      this.avatar = avatar;
-      this.chatClass = chatClass;
-      this.imagePath = imagePath;
-      this.time = time;
-      this.messages = messages;
-      this.messageType = messageType;
-    }
-  }
-  
+import { NbChatMessageFile } from "@nebular/theme";
+
+export class Message {
+    public type: string;
+    public text: string;
+    public reply: string;
+    public user:{name:string,avatar:string};
+    public date: Date;
+    public quote:string;
+    public files: NbChatMessageFile[];
+    public latitude: number;
+    public longitude: number;
+
+}

@@ -23,25 +23,30 @@
 }
 
 #desktop {
-    .editsingleaddress{
+    .editsingleaddress {
         color: #484aff;
         cursor: pointer;
     }
-    .editsingleaddress:hover{
+
+    .editsingleaddress:hover {
         color: #cc2b91;
         cursor: pointer;
     }
-    ::ng-deep .holder-logo{
+
+    ::ng-deep .holder-logo {
         display: none;
     }
+
     input[type=checkbox] {
         transform: scale(1.5);
     }
+
     .map-wrapper {
         height: 100%;
         position: relative;
         width: 100%;
     }
+
     ::ng-deep .popover {
         --bs-popover-zindex: 1070;
         --bs-popover-max-width: 400px !important;
@@ -63,9 +68,11 @@
         --bs-popover-arrow-width: 1rem;
         --bs-popover-arrow-height: 0.5rem;
     }
-    ::ng-deep .datepicker-outer-container{
+
+    ::ng-deep .datepicker-outer-container {
         min-width: 300px;
     }
+
     .map-wrapper .mapboxgl-map {
         height: 100%;
         left: 0;
@@ -451,6 +458,124 @@
 
         border-radius: 30px;
 
+    }
+
+    .example-accordion {
+        display: block;
+        max-width: 500px;
+    }
+
+    .example-accordion-item {
+        display: block;
+        border: solid 1px #ccc;
+    }
+
+    .example-accordion-item+.example-accordion-item {
+        border-top: none;
+    }
+
+    .example-accordion-item-header {
+        display: flex;
+        align-content: center;
+        justify-content: space-between;
+    }
+
+    .example-accordion-item-description {
+        font-size: 0.85em;
+        color: #999;
+    }
+
+    .example-accordion-item-header,
+    .example-accordion-item-body {
+        padding: 16px;
+    }
+
+    .example-accordion-item-header:hover {
+        cursor: pointer;
+        background-color: #eee;
+    }
+
+    .example-accordion-item:first-child {
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+    }
+
+    .example-accordion-item:last-child {
+        border-bottom-left-radius: 4px;
+        border-bottom-right-radius: 4px;
+    }
+    .appliancepic {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
+    
+    .apppic img {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .brandpic img {
+        width: 100px;
+        height: 30px;
+    }
+    .selectmodelsg{
+        display: flex;
+        flex-direction: column;
+       
+    }
+    .guaranteeDate{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+    .servicedate {
+        display: flex;
+        flex-direction: row;
+        padding: 10px;
+    }
+    .full-width-input {
+        padding: 10px;
+        text-align: right;
+       
+        direction: rtl;
+    }
+    ::ng-deep .popover {
+        --bs-popover-zindex: 1070;
+        --bs-popover-max-width: 400px !important;
+        --bs-popover-font-size: 0.875rem;
+        --bs-popover-bg: #fff;
+        --bs-popover-border-width: 1px;
+        --bs-popover-border-color: var(--bs-border-color-translucent);
+        --bs-popover-border-radius: 0.5rem;
+        --bs-popover-inner-border-radius: calc(0.5rem - 1px);
+        --bs-popover-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        --bs-popover-header-padding-x: 1rem;
+        --bs-popover-header-padding-y: 0.5rem;
+        --bs-popover-header-font-size: 1rem;
+        --bs-popover-header-color: var(--bs-heading-color);
+        --bs-popover-header-bg: #f0f0f0;
+        --bs-popover-body-padding-x: 1rem;
+        --bs-popover-body-padding-y: 1rem;
+        --bs-popover-body-color: #212529;
+        --bs-popover-arrow-width: 1rem;
+        --bs-popover-arrow-height: 0.5rem;
+    }
+    
+    ::ng-deep .datepicker-outer-container {
+        min-width: 300px;
+    }
+    
+    ::ng-deep .datepicker-outer-container {
+        display: block !important;
+    }
+    
+    ::ng-deep input.ng-pristine.ng-valid {
+        color: #7a7bad !important;
+        text-align: center;
+        display: none;
+    
     }
 }
 

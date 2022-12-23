@@ -27,15 +27,28 @@ import { TechnicianProfileComponent } from './profiles/technicianProfile/technic
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { EditaddressComponent } from './editaddress/editaddress.component';
-import {EditAddressDialog} from  './orderpage/orderpage.component';
-import { EditAddressDialogProfile} from './profiles/customerProfile/customerProfile.component';
-import { TechEditAddressDialogProfile} from './profiles/technicianProfile/technicianProfile.component';
+import { EditAddressDialog } from './orderpage/orderpage.component';
+import { EditAddressDialogProfile } from './profiles/customerProfile/customerProfile.component';
+import { TechEditAddressDialogProfile } from './profiles/technicianProfile/technicianProfile.component';
+import { OrdersComponent } from './orders/orders.component';
+import { SurveyComponent } from './survey/survey.component';
+import { TicketingComponent } from '../portal/ticketing/ticketing.component';
 import { Ng2ImgMaxModule } from 'ng2-img-max';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
+import { ChatComponent } from '../Chat/Chat.component';
+import { WalletComponent } from './wallet/wallet.component';
+import { OrderdetailsComponent } from './orderdetails/orderdetails.component';
+
+// import { NgxChatUiModule } from '@ngx-chat-ui/libs/ngx-chat-ui';
 const appRoutes: Routes = [
-  // { path:'',component:HomeComponent },
+  { path:'home',component:HomeComponent },
   { path: 'order', component: OrderpageComponent },
+  { path: 'orderslist', component: OrdersComponent },
+  { path: 'support', component: TicketingComponent },
+  { path: 'chat', component: ChatComponent },
+  { path: 'wallet', component: WalletComponent },
+  { path: 'orderDetails', component: OrderdetailsComponent },
   {
     path: 'profile', component: ProfilesComponent, children: [
       {
@@ -50,8 +63,9 @@ const appRoutes: Routes = [
 
 ];
 @NgModule({
-  
+
   imports: [
+    // NgxChatUiModule,
     Ng2SmartTableModule,
     NgSelectModule,
     Ng2ImgMaxModule,
@@ -70,6 +84,10 @@ const appRoutes: Routes = [
     RouterModule.forChild(appRoutes)
   ],
   declarations: [
+    OrderdetailsComponent,
+    WalletComponent,
+    OrdersComponent,
+    SurveyComponent,
     TechEditAddressDialogProfile,
     EditAddressDialogProfile,
     EditAddressDialog,

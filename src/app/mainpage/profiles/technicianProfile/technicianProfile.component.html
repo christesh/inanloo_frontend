@@ -33,7 +33,7 @@
           </div>
         </div>
       </div>
-      <div class="editpro" style="display: flex;flex-direction: row-reverse;justify-content: space-around;">
+      <div class="editpro" style="display: flex;flex-direction: row-reverse;justify-content: space-around;flex-wrap: wrap;">
         <div class="profilepic">
           <div class="avatar-upload">
             <div class="avatar-edit" *ngIf="editName">
@@ -58,17 +58,17 @@
           <div class="body">
             <form class="example-form"
               style="float:right;width: 100%; direction: rtl;padding-right: 10px;display:flex ;flex-direction: column;flex-wrap: wrap;">
-              <mat-form-field class="full-width-input" style="width: 300px;">
+              <mat-form-field class="full-width-input" >
                 <input matInput placeholder=" نام " id="firstnameinput" [formControl]="firstname" required
                   style="font-size: 14px;" [disabled]="disabled">
               </mat-form-field>
 
-              <mat-form-field class="full-width-input" style="width: 300px;" triggers="manual">
+              <mat-form-field class="full-width-input"  >
                 <input matInput placeholder=" نام خانوادگی" type="text" [formControl]="lastname" required
                   [disabled]="disabled" style="font-size: 14px;">
               </mat-form-field>
 
-              <mat-form-field class="full-width-input" style="width: 300px;">
+              <mat-form-field class="full-width-input" >
                 <input matInput placeholder="کد ملی" maxlength="10" [formControl]="nationalid" [disabled]="disabled"
                   style="font-size: 14px;">
               </mat-form-field>
@@ -82,7 +82,7 @@
 
               <div class="datepicker">
 
-                <mat-form-field #p="ngbPopover" class="full-width-input" style="width: 300px;"
+                <mat-form-field #p="ngbPopover" class="full-width-input" 
                   (click)="showdatepicker(p)" placement="start" [ngbPopover]="popTemplate" [autoClose]="false "
                   triggers="manual" [disabled]="isDisabled(p)">
                   <span> <i class="fa fa-calendar fa-2x" aria-hidden="true"
@@ -243,7 +243,7 @@
         <div class="addresscontent" style="margin:20px;direction: rtl;width: 100%;">
           <mat-card style="width: 100%;min-height:200px ;" *ngFor="let address of addresses;let i= index">
             <mat-card-content
-              style="display: flex;flex-direction: row;justify-content: space-around;align-items: center;">
+              style="display: flex;flex-direction: row;justify-content: space-around;align-items: center;flex-wrap: wrap;">
               <mat-checkbox type="checkbox" style="width:20px ;margin: 10px;" [(ngModel)]="address.isMainAddress"
                 (change)="seletAddress(address)"></mat-checkbox>
               <div class="addresstext" style="margin: 10px;display: flex;flex-direction: column-reverse;

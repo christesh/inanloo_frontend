@@ -32,7 +32,10 @@
               "node_modules/font-awesome/css/font-awesome.css",
               "./node_modules/mapbox-gl/dist/mapbox-gl.css",
               "./node_modules/@mapbox/mapbox-gl-geocoder/lib/mapbox-gl-geocoder.css",
-              "node_modules/sweetalert2/src/sweetalert2.scss"
+              "node_modules/sweetalert2/src/sweetalert2.scss",
+              "node_modules/@nebular/theme/styles/prebuilt/default.css"
+             
+              
             ],
             "scripts": [
               "src/assets/mapir/js/jquery-3.2.1.min.js",
@@ -113,8 +116,8 @@
               "node_modules/font-awesome/css/font-awesome.css",
               "./node_modules/mapbox-gl/dist/mapbox-gl.css",
               "./node_modules/@mapbox/mapbox-gl-geocoder/lib/mapbox-gl-geocoder.css",
-              "node_modules/sweetalert2/src/sweetalert2.scss"
-              
+              "node_modules/sweetalert2/src/sweetalert2.scss",
+              "node_modules/@nebular/theme/styles/prebuilt/default.css"              
             ],
             "scripts": [
               "src/assets/mapir/js/jquery-3.2.1.min.js",
