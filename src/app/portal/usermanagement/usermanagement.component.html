@@ -1,0 +1,31 @@
+<div class="main header" style="direction: rtl;">
+  <div class="banner">
+  </div>
+  <div class="headerbox">
+    <div class="discription">
+      <h2>کاربران سیستم</h2>
+      <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
+        چاپگرها و متون بلکه
+        روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
+        بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان
+        را
+        می طلبد.</p>
+    </div>
+  </div>
+  <div>
+    <button mat-raised-button color="primary" style="margin: 10px;width: 150px;" (click)="createuser()">ایجاد
+      کاربر جدید</button>
+  </div>
+</div>
+<div class="table">
+  <div class="container"
+    style=" border-radius: 8px;box-shadow: rgb(102, 102, 102) 5px;border: gray solid 1px;background-color: white;">
+    <div class="row">
+      <div class="col-sm-12" style="direction: rtl;text-align: right;">
+        <ng2-smart-table [settings]="companyMembersTable" [source]="companyMembertablevalue" id="excel-table"
+          style="font-family: 'iransans'" style="font-family: 'iransans'" (custom)="regclaim($event)"></ng2-smart-table>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,15 @@
+body {
+    display: flex;
+    flex-direction: column;
+    direction: rtl;
+}
+
+.search-input {
+    direction: rtl;
+    text-align: right;
+}
+
+::ng-deep td.ng2-smart-actions.ng-star-inserted {
+    width: 100px !important;
+    ;
+}

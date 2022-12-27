@@ -1,0 +1,54 @@
+<div class="main header" style="direction: rtl;">
+  <div class="banner" *ngIf="showbanner">
+  </div>
+  <div class="headerbox">
+    <div class="discription">
+      <h2>توضیحات</h2>
+      <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
+        چاپگرها و متون بلکه
+        روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
+        بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان
+        را
+        می طلبد.</p>
+    </div>
+  </div>
+</div>
+<mat-tab-group>
+
+  <mat-tab label="افزایش اعتبار" class="addbalance">
+    <div class="bankbalance" [ngClass]="balancestatus">
+      <h6>موجودی فعلی: {{bankBalance | number}}</h6>
+    </div>
+    <div class="main">
+      <div class="header">
+        <h6>افزایش موجودی کیف پول</h6>
+      </div>
+      <div class="content">
+        <p style="font-size: 12px;">
+          مبلغ موردنظر برای افزایش موجودی کیف پول خود را وارد کنید.
+        </p>
+        <form [formGroup]="wallet">
+          <div>
+            <mat-form-field class="full-width-input"
+              style="margin:auto;text-align:right; direction:rtl;font-family:iransans ;width: 30%;">
+              <input matInput placeholder="مبلغ به ریال" formControlName="price" style="font-size: 12px;" required>
+              <mat-error *ngIf="isFieldInvalid('price') ">
+                لطفا مبلغ مورد نظر را وارد نمائید.
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </form>
+        <button mat-raised-button color="accent" style="margin-top:10px ;" (click)="payment()">پرداخت آنلاین</button>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="لیست تراکنش ها">
+    <div class="bankbalance" [ngClass]="balancestatus">
+      <h6>موجودی فعلی: {{bankBalance | number}}</h6>
+    </div>
+    <div class="transaction">
+      <ng2-smart-table [settings]="transactionTableSetting" [source]="transactionTablevalue" id="skills-table"
+        style="font-family: 'iransans'" (custom)="transactionAction($event)"></ng2-smart-table>
+    </div>
+  </mat-tab>
+</mat-tab-group>

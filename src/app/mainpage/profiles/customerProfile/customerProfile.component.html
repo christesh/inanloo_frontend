@@ -1,0 +1,267 @@
+<div style="direction: rtl;">
+  <!-- <div class="falloworder">
+    <mat-card >
+      <mat-card-content>
+        <div class="col-md-3 section1">
+          <div [ngClass]="order.statusCssClass">
+            <h5 style="margin:auto">{{order.status}}</h5>
+          </div>
+          <div class="registerDate">
+            <h6>تاریخ ثبت سفارش: {{order.regdate}}</h6>
+          </div>
+        </div>
+        <div class="col-md-6 section2">
+          <div class="ordertitle">
+            <h5 class="headerText">{{order.app}} {{order.brand}} {{order.model}}</h5>
+          </div>
+          <div class="date">
+            <h5 class="dateText">تاریخ: {{order.date}}</h5>
+            <h5 class="timerangeText">بازه زمانی: {{order.timeRange}}</h5>
+          </div>
+          <div class="address">
+            <h6 class="addressText">آدرس: {{order.address}}</h6>
+          </div>
+          <div class="problems">
+            <a class="detaillink">جزئیات بیشتر</a>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div> -->
+  <div class="main header" style="direction: rtl;">
+    <div class="banner" *ngIf="showbanner">
+    </div>
+    <div class="headerbox">
+      <div class="discription">
+        <h2>توضیحات</h2>
+        <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
+          چاپگرها و متون بلکه
+          روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
+          بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان
+          را
+          می طلبد.</p>
+      </div>
+      <div>
+        <div *ngIf="!editName" style="display: flex; flex-direction:column; justify-content: center;    height: 100px;">
+          <button mat-raised-button color="accent" style="margin: 10px;width: 100px;height: 100%;"
+            (click)="editname()">ویرایش</button>
+        </div>
+        <div *ngIf="editName" style="display: flex; flex-direction:column; justify-content: center;    height: 100px;">
+          <button mat-raised-button color="accent" style="margin: 10px;width: 100px;"
+            (click)="savename()">ذخیره</button>
+          <button mat-raised-button color="primary" style="margin: 10px;width: 100px;"
+            (click)="cancelname()">انصراف</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="editpro" style="display: flex;flex-direction: row-reverse;justify-content: space-around;flex-wrap: wrap;">
+    <div class="profilepic">
+      <div class="avatar-upload">
+        <div class="avatar-edit" *ngIf="editName">
+          <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" (change)="onSelectprofile($event)" />
+          <label for="imageUpload"></label>
+        </div>
+        <div class="avatar-delete" *ngIf="editName && hasImage">
+          <button></button>
+          <label for="imagedelete" (click)="deletegimg()"></label>
+        </div>
+        <div class="avatar-preview">
+
+          <div id="imagePreview" [ngStyle]="{'background-image': 'url(' + profilePic + ')'}"
+            style="background-size: contain;">
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="pro">
+      <div class="body">
+        <form class="example-form"
+          style="float:right;width: 100%; direction: rtl;padding-right: 10px;display:flex ;flex-direction: column;flex-wrap: wrap;">
+
+          <mat-form-field class="full-width-input">
+            <input matInput placeholder=" نام " id="firstnameinput" [formControl]="firstname" required
+              style="font-size: 14px;" [disabled]="disabled">
+          </mat-form-field>
+
+          <mat-form-field class="full-width-input" triggers="manual">
+            <input matInput placeholder=" نام خانوادگی" type="text" [formControl]="lastname" required
+              [disabled]="disabled" style="font-size: 14px;">
+          </mat-form-field>
+
+          <mat-form-field class="full-width-input">
+            <input matInput placeholder="کد ملی" maxlength="10" [formControl]="nationalid" [disabled]="disabled"
+              style="font-size: 14px;">
+          </mat-form-field>
+        </form>
+      </div>
+
+      <div class="body">
+        <div style="float:right;direction: rtl;width: 100%;">
+          <div class="servicedate">
+            <mat-form-field #p="ngbPopover" class="full-width-input" (click)="showdatepicker(p)" placement="start"
+              [ngbPopover]="popTemplate" [autoClose]="false " triggers="manual" [disabled]="isDisabled(p)">
+              <span> <i class="fa fa-calendar fa-2x" aria-hidden="true"
+                  style="float: left;color: blue; cursor: pointer;"
+                  [ngStyle]="{'color':disabled? 'gray':'blue','cursor':disabled? 'not-allowed':'pointer'}"></i></span>
+              <input matInput placeholder="تاریخ تولد" type="text" value="{{birthdate}}"
+                style="width: 100px;font-size: 14px;margin-top:10px;" [disabled]="disabled" />
+            </mat-form-field>
+          </div>
+          <ng-template #popTemplate>
+            <ng-persian-datepicker [uiTheme]="customTheme" triggers="outsideClick" (dateOnSelect)="changedate($event)">
+              <input type="text" [formControl]="dateValue1" />
+            </ng-persian-datepicker>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <mat-divider></mat-divider>
+  <div class="headerbox">
+    <div class="discription">
+      <h2>توضیحات</h2>
+      <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
+        چاپگرها و متون بلکه
+        روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
+        بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان
+        را
+        می طلبد.</p>
+    </div>
+    <div>
+      <div *ngIf="!editMobile" style="display: flex; flex-direction:column; justify-content: center;    height: 100px;">
+        <button mat-raised-button color="accent" style="margin: 10px;width: 100px;height: 100%;"
+          (click)="editmobile()">ویرایش</button>
+      </div>
+      <div *ngIf="editMobile" style="display: flex; flex-direction:column; justify-content: center;    height: 100px;">
+        <button mat-raised-button color="accent" style="margin: 10px;width: 100px;"
+          (click)="savemobile()">ذخیره</button>
+        <button mat-raised-button color="primary" style="margin: 10px;width: 100px;"
+          (click)="cancelmobile()">انصراف</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="body" style="display: flex;flex-direction: column;">
+    <div class="mobiles" style="display: flex;flex-direction: column;direction: rtl;">
+      <div class="mobilebox" *ngFor="let mob of mobiles; let i=index">
+        <p style="margin: 10px;
+              font-size: 14px;
+        font-weight: 800;" [ngStyle]="{'justify-self': mobiledisabled? 'right':'left'}"> {{mob.mobileNumber}}</p>
+        <lord-icon *ngIf="!mob.isMain && !mobiledisabled" src="../../../../assets/json/bin.json" trigger="hover"
+          (click)="deletemobile(i)" style="width:25px;height:25px;cursor: pointer;"></lord-icon>
+        <p *ngIf="mob.isMain" style="margin: 10px;font-size: 12px;font-weight: 900;color: red;">اصلی</p>
+      </div>
+    </div>
+    <br>
+    <div style="float:right;direction: rtl;" *ngIf="!mobiledisabled">
+      <mat-form-field class="full-width-input">
+        <span> <i class="fa fa-plus-square-o fa-2x" aria-hidden="true" style="float: left; cursor: pointer;"
+            [ngStyle]="{'color': mobilenumberisvalid ? 'rgb(37, 155, 27)': 'grey', 'cursor': mobilenumberisvalid ? 'pointer': 'not-allowed'}"
+            (click)="addmobile()"></i></span>
+        <input matInput maxlength="11" placeholder="شماره موبایل" value="{{mobilenumber}}"
+          (keyup)="checkmobilevalidation($event)" style="width: 100px;font-size: 14px;margin-top:10px;">
+      </mat-form-field>
+      <p class="msgerror" *ngIf="!mobilenumberisvalid && typevalue">
+        لطفا شماره تلفن همراه را به صورت صحیح وارد کنید!
+      </p>
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+  <div class="discription" style="direction: rtl;">
+    <div class="headerbox">
+      <div class="discription">
+        <h2>توضیحات</h2>
+        <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
+          چاپگرها و متون بلکه
+          روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
+          بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان
+          را
+          می طلبد.</p>
+      </div>
+      <div>
+        <div *ngIf="!editTel" style="display: flex; flex-direction:column; justify-content: center;    height: 100px;">
+          <button mat-raised-button color="accent" style="margin: 10px;width: 100px;height: 100%;"
+            (click)="edittel()">ویرایش</button>
+        </div>
+        <div *ngIf="editTel" style="display: flex; flex-direction:column; justify-content: center;    height: 100px;">
+          <button mat-raised-button color="accent" style="margin: 10px;width: 100px;" (click)="savetel()">ذخیره</button>
+          <button mat-raised-button color="primary" style="margin: 10px;width: 100px;"
+            (click)="canceltel()">انصراف</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="body" style="display: flex;flex-direction: column;">
+    <div class="telephone" style="display: flex;flex-direction: column;direction: rtl;">
+      <div class="mobilebox" *ngFor="let tel of tels; let i=index">
+
+        <p style="margin: 10px;
+              font-size: 14px;
+        font-weight: 800;"> {{tel.phoneNumber}}</p>
+        <lord-icon *ngIf="!teldisabled" src="https://cdn.lordicon.com/gsqxdxog.json" trigger="hover"
+          (click)="deletetel(i)" style="width:25px;height:25px;cursor: pointer;"></lord-icon>
+      </div>
+    </div>
+    <br>
+    <div style="float:right;direction: rtl;" *ngIf="!teldisabled">
+      <mat-form-field class="full-width-input">
+        <span> <i class="fa fa-plus-square-o fa-2x" aria-hidden="true" style="float: left; cursor: pointer;"
+            [ngStyle]="{'color': telnumberisvalid ? 'rgb(37, 155, 27)': 'grey', 'cursor': telnumberisvalid ? 'pointer': 'not-allowed'}"
+            (click)="addtel()"></i></span>
+        <input matInput placeholder="شماره تلفن" value="{{telnumber}}" (keyup)="checktelvalidation($event)"
+          style="width: 100px;font-size: 14px;margin-top:10px;">
+      </mat-form-field>
+      <p class="msgerror" *ngIf="!telnumberisvalid && teltypevalue">
+        لطفا شماره تلفن را به صورت صحیح وارد کنید!
+      </p>
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+  <div class="body">
+    <div class="discription" style="direction: rtl;">
+      <h2>توضیحات</h2>
+      <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
+        چاپگرها و متون بلکه
+        روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
+        بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان
+        را
+        می طلبد.</p>
+      <button id="createaddress" mat-raised-button color="primary" (click)="createaddress()">ایجاد آدرس جدید</button>
+    </div>
+    <div *ngIf="shownewaddress" class="addresscontent" style="margin:20px">
+      <mat-card style="width: 100%;min-height:200px ;">
+        <mat-card-content style="display: flex;flex-direction: row;justify-content: space-around;">
+          <app-editaddress [userId]="userid" (editAddressEvent)="createadd($event)"></app-editaddress>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="addresscontent" style="margin:20px;direction: rtl;width: 100%;">
+      <mat-card style="width: 100%;min-height:200px ;" *ngFor="let address of addresses;let i= index">
+        <mat-card-content style="display: flex;flex-direction: row;justify-content: space-around;align-items: center;flex-wrap: wrap;">
+          <mat-checkbox type="checkbox" style="width:20px ;margin: 10px;" [(ngModel)]="address.isMainAddress"
+            (change)="seletAddress(address)"></mat-checkbox>
+          <div class="addresstext" style="margin: 10px;display: flex;flex-direction: column-reverse;
+        align-content: space-around;
+        justify-content: center;">
+            <div>
+              <h3>آدرس:</h3>
+              <br>
+              <h6>{{address.text}}</h6>
+              <label class="editsingleaddress" (click)="EditAddress(address.id)">ویرایش</label>
+            </div>
+          </div>
+          <div class="addressmap" style="margin: 10px;width: 300px;height:200px">
+            <app-map [enable]="mapEnable" [lat]="address.maplat" [long]="address.maplong" width="300px" height="200px">
+            </app-map>
+            <div id="container">
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

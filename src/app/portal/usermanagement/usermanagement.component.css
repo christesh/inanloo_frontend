@@ -1,0 +1,28 @@
+.discription>p {
+
+    font-size: 12px;
+    color: black;
+}
+
+.discription>h2 {
+    font-size: 16px;
+    color: rgb(64, 22, 119);
+}
+
+.banner {
+    width: 100%;
+    flex: 50%;
+    border-radius: 10px;
+    background-image: url('../../../assets/images/4565.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-bottom: 10px;
+}
+
+
+
+::ng-deep td.ng2-smart-actions.ng-star-inserted {
+    width: 100px !important;
+    ;
+}

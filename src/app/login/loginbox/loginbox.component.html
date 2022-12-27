@@ -1,0 +1,162 @@
+<!-- <div class="signin-content"> -->
+
+<mat-card style="background-color: #ffffff;">
+    <mat-card-title>
+        <h6 style="font-family:iransans;font-weight: 400; color: #00016d;text-align: center;">
+            سامانه خدمات پس از فروش لوازم خانگی
+        </h6>
+        <h4 style="font-family:iransans;font-weight: 600;color: #00016d;text-align: center;">
+            «اینانلو سرویس»
+        </h4>
+        <hr>
+    </mat-card-title>
+    <mat-card-content>
+
+        <div *ngIf="getMobile" class="container-fluid" style="direction: ltr;">
+            <form [formGroup]="form">
+                <h5 style="font-family:iransans ;margin: auto;font-size: 14px;font-weight: 500;">
+                    ورود با شماره موبایل و رمز یکبار مصرف
+                </h5>
+                <br>
+                <mat-form-field class="full-width-input"
+                    style="text-align:center; direction:rtl;font-family:iransans ;">
+                    <input #mobileinput matInput placeholder=" شماره تلفن همراه" formControlName="mobilenumber" required
+                        style="font-size: 18px;">
+                    <mat-error *ngIf="isFieldInvalid('mobilenumber')">
+                        لطفا شماره تلفن همراه را وارد کنید!
+                    </mat-error>
+                </mat-form-field>
+                <br>
+                <div class="row">
+                    <div class="col-md-12" style="margin:auto;text-align: center;font-family:iransans;">
+                        <button id="butt" mat-raised-button color="accent"
+                            style="font-size: 12px;font-family:iransans;margin:10px ; width: 70px;"
+                            (click)="signin()">ورود</button>
+                    </div>
+                </div>
+
+                <a style="font-family:iransans ;font-size: 10px; font-weight: 500;margin: auto;color: #00016d;cursor: pointer;"
+                    (click)="EnterByUserName()">ورود
+                    با
+                    نام کاربری و
+                    گذرواژه</a>
+            </form>
+        </div>
+        <div *ngIf="getOtp" class="container-fluid" style="direction: ltr;">
+            <form (ngSubmit)="OtpCheck()" [formGroup]="otpForm">
+                <p style="direction: rtl;font-family:iransans ;font-size: 12px;font-weight: 500;">لطفا کد ارسال
+                    شده
+                    را وارد نمائید.
+                </p>
+
+                <div class="flex-container">
+                    <div class="form-group" *ngFor="let input of formInput;  index as i" style="text-align: center;">
+                        <input #formRow type="text" formControlName="{{input}}" class="OtpInput" maxlength="1"
+                            (keyup)="keyUpEvent($event, i)">
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="!otpReSend">
+                    <div class="col-md-12">
+                        <div style="background-color: whitesmoke; margin: auto;text-align: center;">
+                            <p style="direction: rtl;font-family:iransans ;font-size: 10px;font-weight: 500;color:gray">
+                                برای ارسال مجدد کد، لطفا {{otpWait}} ثانیه صبر کنید.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" *ngIf="otpReSend" style="margin-top: -10px;margin-bottom:10px;margin-left: -10px; ">
+                    <div class="col-md-6">
+                        <div style=" margin: margin;text-align: center;">
+                            <button mat-button color="basic"
+                                style="font-size: 10px;font-family:iransans;margin-left: -15px;  color:blue;"
+                                (click)="OtpReSend()">ارسال
+
+                                مجدد کد</button>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div style=" margin: auto;text-align: center;">
+                            <button mat-button color="basic"
+                                style="font-size: 10px;font-family:iransans;  color:rgb(55, 179, 96);"
+                                (click)="EditMobileNumber()">ویرایش
+                                موبایل</button>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" mat-raised-button color="primary"
+                    style="font-size: 12px;font-family:iransans;margin:10px ; width: 150px;">تائید</button>
+                <button mat-raised-button color="basic" (click)="EditMobileNumber()"
+                    style="font-size: 12px;font-family:iransans;margin:10px ; width: 150px;">انصراف</button>
+            </form>
+
+        </div>
+        <div *ngIf="loginByUserName" class="container-fluid" style="direction: ltr;">
+            <form [formGroup]="userForm">
+                <!-- <div id="logo"></div> -->
+                <h5 style="font-family:iransans ;margin: auto;font-size: 14px;font-weight: 500;">
+                    ورود با نام کاربری و گذرواژه
+                </h5>
+                <br>
+                <mat-form-field class="full-width-input" style="text-align:right; direction:rtl;font-family:iransans ;">
+                    <input matInput placeholder=" نام کاربری" formControlName="username" required
+                        style="font-size: 12px;">
+                    <mat-error *ngIf="userIsFieldInvalid('username')">
+                        لطفا نام کاربری خور را وارد کنید!
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field class="full-width-input" style="text-align:right; direction:rtl;font-family:iransans ;">
+                    <input matInput type="password" placeholder=" گذرواژه" formControlName="password" required style="font-size: 12px;">
+                    <mat-error *ngIf="userIsFieldInvalid('password')">
+                        لطفا گذرواژه خور را وارد کنید!
+                    </mat-error>
+                </mat-form-field>
+                <br>
+                <a style="cursor: pointer; font-family:iransans ; font-size: 10px; font-weight: 500; margin: auto;color: #1577a5;"
+                    (click)="forgetpass()">
+                    !رمز عبور خود را فراموش کرده ام</a>
+                <div class="row">
+                    <div class="col-md-12" style="margin:auto;text-align: center;font-family:iransans;direction: rtl;">
+                        <button id="butt" mat-raised-button color="primary"
+                            style="font-size: 12px;font-family:iransans;margin:10px ; width: 70px;"
+                            (click)="usersignin()">ورود</button>
+                    </div>
+                </div>
+
+
+                <a style="cursor: pointer; font-family:iransans ; font-size: 10px; font-weight: 500; margin: auto;color: #00016d;"
+                    (click)="EnterByOtp()">ورود با
+                    تلفن همراه و
+                    رمز یکبار مصرف</a>
+            </form>
+
+        </div>
+    </mat-card-content>
+</mat-card>
+
+<mat-card class="footer">
+    <mat-card-content>
+        <div class="row">
+            <div class="col-md-3" style="margin: auto;text-align: center;">
+                <p style="margin: auto; font-size:12px; color: white;font-family:iransans">
+                    <strong>پشتیبانی مستقیم:</strong>
+                </p>
+            </div>
+            <div class="col-md-6" id="supporttel" >
+                <p style=" margin: auto; font-size:16px;font-weight: 600; color: rgb(51, 51, 51);font-family:iransans">
+                    <strong>۰۲۶-۳۶۱۹۱&nbsp;&nbsp;&nbsp;۰۲۶-۹۱۳۰۰۲۰۰</strong>
+                </p>
+            </div>
+            <div class="col-md-3">
+                <a class="social" href="https://www.facebook.com/profile.php?id=100077749031018" target="_blank"><i
+                        aria-hidden="true" class="fa fa-facebook-square fa-2x" data-toggle="tooltip"
+                        title="Facebook"></i></a>
+                &nbsp;
+                <a class="social" href="https://www.instagram.com/aghayekardan/" target="_blank"><i aria-hidden="true"
+                        class="fa fa-instagram fa-2x" data-toggle="tooltip" title="instagram"></i></a>
+                &nbsp;
+                <a class="social" href="https://twitter.com/aghayekardan" target="_blank"><i aria-hidden="true"
+                        class="fa fa-twitter-square fa-2x" data-toggle="tooltip" title="twitter"></i></a>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

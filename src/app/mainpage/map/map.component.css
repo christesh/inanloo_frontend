@@ -1,0 +1,24 @@
+.map-wrapper {
+    height: 100%;
+    position: relative;
+    width: 100%;
+  }
+  
+  .map-wrapper .mapboxgl-map {
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
+  
+  #container, .mapir-wrapper {
+    height: 100%;
+    width: 100%;
+  }
+  
+  ::ng-deep .holder-logo ::ng-deep .map-logo{
+
+    opacity: 0 !important;
+    
+}

@@ -1,0 +1,12 @@
+<mat-card style="background-color: #ffffff;font-family: iransans;direction: rtl;height: 100%;">
+  <mat-card-title>
+    <h4 style="font-family:iransans;font-weight: 600;color: #00016d;text-align: center;">
+      ویرایش آدرس
+    </h4>
+    <hr>
+
+  </mat-card-title>
+  <mat-card-content style="max-height: 500px;overflow-y: auto;">
+    <app-editaddress [addressInfo]="addressforedit" (editAddressEvent)="editadd($event)"></app-editaddress>
+  </mat-card-content>
+</mat-card>

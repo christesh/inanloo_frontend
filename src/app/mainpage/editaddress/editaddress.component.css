@@ -1,0 +1,19 @@
+.full-width-input{
+    padding:10px;
+    text-align:right;
+    width: 30%;
+    direction:rtl;
+}
+#showmap{
+    float: left;
+    color: #313394;
+    cursor: pointer;
+    padding:10px ;
+   
+}
+#showmap:hover{
+    color: #00016d;
+    cursor: pointer;
+    border-radius: 8px;
+    box-shadow: 0px 0px 5px 5px rgb(133, 156, 185);
+}

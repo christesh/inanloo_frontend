@@ -1,0 +1,84 @@
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import "~@ng-select/ng-select/themes/material.theme.css";
+
+
+
+
+
+@font-face {
+    font-family: myFirstFont0;
+    src: url('../src/assets/fonts/BNaznnBd.ttf');
+}
+
+@font-face {
+    font-family: myFirstFont1;
+    src: url('../src/assets/fonts/BRoyaBd.ttf');
+}
+
+@font-face {
+    font-family: myFirstFont2;
+    src: url('../src/assets/fonts/BYekan.ttf');
+}
+
+@font-face {
+    font-family: iransans;
+    src: url('../src/assets/fonts/iransans/IRANSansWebFaNum-Medium.ttf');
+}
+
+*{
+    font-family: iransans ;
+}
+
+
+.green-snackbar {
+    font-family: iransans;
+    direction: rtl;
+    background: green;
+    color: white;
+}
+
+.green-snackbar button {
+    background-color: rgb(19, 102, 49);
+    color: white;
+    border: none;
+}
+
+.red-snackbar {
+    font-family: 'iransans' ;
+    font-size: larger;
+    direction: rtl;
+    background: #fa2418;
+    color: white;
+}
+
+.red-snackbar button {
+    background-color: #83251e;
+    color: white !important;
+    border: none;
+}
+
+.yellow-snackbar {
+    font-family: iransans;
+    direction: rtl;
+    background: yellow;
+    color: black;
+}
+
+.yellow-snackbar button {
+    background-color: #faea10;
+    color: black !important;
+    border: none;
+}
+
+.blue-snackbar {
+    font-family: iransans;
+    direction: rtl;
+    background: #2555d8;
+    color: white;
+}
+
+.blue-snackbar button {
+    background-color: #2d1e83;
+    color: white !important;
+    border: none;
+}

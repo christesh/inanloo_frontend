@@ -1,0 +1,230 @@
+<body style="direction: rtl;">
+  <div class="banner">
+  </div>
+  <div class="headerbox">
+    <div class="discription">
+      <h2>توضیحات</h2>
+      <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
+        چاپگرها و متون بلکه
+        روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
+        بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان
+        را
+        می طلبد.</p>
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+  <div class="main" style="display:flex ;flex-direction: row;margin-top: 10px;">
+    <div class="title" style="margin:5px;width:80px">
+      <h6>استان
+        <i class="fa fa-plus-square" style="color:green ;margin-right:5px ;cursor: pointer;"
+          (click)="createProvince()"></i>
+      </h6>
+    </div>
+    <div class="content" style="margin:5px;width: 100%;">
+      <div class="create" *ngIf="createProvinceshow" style="display: flex;flex-direction: row;">
+        <form [formGroup]="provinceForm">
+          <mat-form-field class="full-width-input"
+            style="margin:auto;text-align:right;width: 100%; direction:rtl;font-family:iransans ;">
+            <input matInput placeholder="نام استان" formControlName="provinceName" required style="font-size: 12px;">
+            <mat-error *ngIf="isFieldInvalid('provinceName')">
+              لطفا نام کاربر را وارد کنید!
+            </mat-error>
+          </mat-form-field>
+        </form>
+        <button mat-raised-button color="accent" style="margin-right: 20px; width: 80px;height: 40px;"
+          (click)="saveProvince()">ذخیره</button>
+        <button mat-raised-button color="primary" style="margin-right: 10px;width: 80px;height: 40px;"
+          (click)="cancelProvince()">انصراف</button>
+      </div>
+      <mat-accordion class="example-headers-align" multi style="z-index: 100;">
+        <mat-expansion-panel *ngFor="let p of province; let i=index">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div class="title">
+                {{p.provinceName}}
+              </div>
+              <div class="actions" style="margin-right: 20px;">
+                <i class="fa fa-edit" style="color:blue ;margin:10px ;cursor: pointer;" (click)="editProvince(p)"></i>
+                <i class="fa fa-minus-square" style="color:red ;margin:10px ;cursor: pointer;"
+                  (click)="deleteProvince(p)"></i>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="main" style="display:flex ;flex-direction: row;">
+            <div class="title" style="margin:5px;width:100px">
+              <h6>شهرستان
+                <i class="fa fa-plus-square" style="color:green ;margin-right:5px ;cursor: pointer;"
+                  (click)="createCounty()"></i>
+              </h6>
+            </div>
+            <div class="content" style="margin:5px;width: 100%;">
+              <div class="create" *ngIf="createCountyshow" style="display: flex;flex-direction: row;">
+                <form [formGroup]="provinceForm">
+                  <mat-form-field class="full-width-input"
+                    style="margin:auto;text-align:right;width: 100%;  direction:rtl;font-family:iransans ;">
+                    <input matInput placeholder="نام شهرستان" formControlName="countyName" required
+                      style="font-size: 12px;">
+                    <mat-error *ngIf="isFieldInvalid('countyName')">
+                      لطفا نام شهرستان را وارد کنید!
+                    </mat-error>
+                  </mat-form-field>
+                </form>
+                <button mat-raised-button color="accent"
+                  style="margin-right: 20px; width: 80px;height: 40px;"
+                  (click)="saveCounty(p)">ذخیره</button>
+                <button mat-raised-button color="primary"
+                  style="margin-right: 10px;width: 80px;height: 40px;"
+                  (click)="cancelCounty()">انصراف</button>
+              </div>
+              <mat-expansion-panel *ngFor="let county of p.counties; let i=index">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <div class="title">
+                      {{county.countyName}}
+                    </div>
+                    <div class="actions" style="margin-right: 20px;">
+                      <i class="fa fa-edit" style="color:blue ;margin:10px ;cursor: pointer;"
+                        (click)="editCounty(county)"></i>
+                      <i class="fa fa-minus-square" style="color:red ;margin:10px ;cursor: pointer;"
+                        (click)="deleteCounty(county)"></i>
+                    </div>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="main" style="display:flex ;flex-direction: row;">
+                  <div class="title" style="margin:5px;width:80px">
+                    <h6>شهر
+                      <i class="fa fa-plus-square" style="color:green ;margin-right:5px ;cursor: pointer;"
+                        (click)="createCity()"></i>
+                    </h6>
+                  </div>
+                  <div class="content" style="margin:5px;width: 100%;">
+                    <div class="create" *ngIf="createCityshow" style="display: flex;flex-direction: row;">
+                      <form [formGroup]="provinceForm">
+                        <mat-form-field class="full-width-input"
+                          style="margin:auto;text-align:right;width: 100%; direction:rtl;font-family:iransans ;">
+                          <input matInput placeholder="نام شهر" formControlName="cityName" required
+                            style="font-size: 12px;">
+                          <mat-error *ngIf="isFieldInvalid('cityName')">
+                            لطفا نام شهر را وارد کنید!
+                          </mat-error>
+                        </mat-form-field>
+                      </form>
+                      <button mat-raised-button color="accent"
+                        style="margin-right: 20px; width: 80px;height: 40px;"
+                        (click)="saveCity(county)">ذخیره</button>
+                      <button mat-raised-button color="primary"
+                        style="margin-top: o20px;margin-right: 10px;width: 80px;height: 40px;"
+                        (click)="cancelCity()">انصراف</button>
+                    </div>
+                    <mat-expansion-panel *ngFor="let city of county.cities; let i=index">
+                      <mat-expansion-panel-header>
+                        <mat-panel-title>
+                          <div class="title">
+                            {{city.cityName}}
+                          </div>
+                          <div class="actions" style="margin-right: 20px;">
+                            <i class="fa fa-edit" style="color:blue ;margin:10px ;cursor: pointer;"
+                              (click)="editCity(city)"></i>
+                            <i class="fa fa-minus-square" style="color:red ;margin:10px ;cursor: pointer;"
+                              (click)="deleteCity(city)"></i>
+                          </div>
+                        </mat-panel-title>
+                      </mat-expansion-panel-header>
+                      <div class="main" style="display:flex ;flex-direction: row;">
+                        <div class="title" style="margin:5px;width:80px">
+                          <h6>منطقه
+                            <i class="fa fa-plus-square" style="color:green ;margin-right:5px ;cursor: pointer;"
+                              (click)="createRegion()"></i>
+                          </h6>
+                        </div>
+                        <div class="content" style="margin:5px;width: 100%;">
+                          <div class="create" *ngIf="createRegionshow" style="display: flex;flex-direction: row;">
+                            <form [formGroup]="provinceForm">
+                              <mat-form-field class="full-width-input"
+                                style="margin:auto;text-align:right;width: 100%; direction:rtl;font-family:iransans ;">
+                                <input matInput placeholder="نام منطقه" formControlName="regionName" required
+                                  style="font-size: 12px;">
+                                <mat-error *ngIf="isFieldInvalid('regionName')">
+                                  لطفا نام منطقه را وارد کنید!
+                                </mat-error>
+                              </mat-form-field>
+                            </form>
+                            <button mat-raised-button color="accent"
+                              style="margin-right: 20px; width: 80px;height: 40px;"
+                              (click)="saveRegion(city)">ذخیره</button>
+                            <button mat-raised-button color="primary"
+                              style="margin-top: o20px;margin-right: 10px;width: 80px;height: 40px;"
+                              (click)="cancelRegion()">انصراف</button>
+                          </div>
+                          <mat-expansion-panel *ngFor="let region of city.regions; let i=index">
+                            <mat-expansion-panel-header>
+                              <mat-panel-title>
+                                <div class="title">
+                                  {{region.regionName}}
+                                </div>
+                                <div class="actions" style="margin-right: 20px;">
+                                  <i class="fa fa-edit" style="color:blue ;margin:10px ;cursor: pointer;"
+                                    (click)="editRegion(region)"></i>
+                                  <i class="fa fa-minus-square" style="color:red ;margin:10px ;cursor: pointer;"
+                                    (click)="deleteRegion(region)"></i>
+                                </div>
+                              </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div class="main" style="display:flex ;flex-direction: row;">
+                              <div class="title" style="margin:5px;width:80px">
+                                <h6>محله
+                                  <i class="fa fa-plus-square" style="color:green ;margin-right:5px ;cursor: pointer;"
+                                    (click)="createNeighbourhood()"></i>
+                                </h6>
+                              </div>
+                              <div class="content" style="margin:5px;">
+                                <div class="create" *ngIf="createNeighbourhoodshow" style="display: flex;flex-direction: row;">
+                                  <form [formGroup]="provinceForm">
+                                    <mat-form-field class="full-width-input"
+                                      style="margin:auto;text-align:right;width: 100%;direction:rtl;font-family:iransans ;">
+                                      <input matInput placeholder="نام محله" formControlName="neighbourhoodName" required
+                                        style="font-size: 12px;">
+                                      <mat-error *ngIf="isFieldInvalid('neighbourhoodName')">
+                                        لطفا نام محله را وارد کنید!
+                                      </mat-error>
+                                    </mat-form-field>
+                                  </form>
+                                  <button mat-raised-button color="accent"
+                                    style="margin-right: 20px; width: 80px;height: 40px;"
+                                    (click)="saveNeighbourhood(region)">ذخیره</button>
+                                  <button mat-raised-button color="primary"
+                                    style="margin-top: o20px;margin-right: 10px;width: 80px;height: 40px;"
+                                    (click)="cancelNeighbourhood()">انصراف</button>
+                                </div>
+                                <div class="neighbearhood" *ngFor="let neighbour of region.neighbourhoods;let i=index">
+                                  <mat-panel-title>
+                                    <div class="title">
+                                      {{neighbour.neighbourhoodName}}
+                                    </div>
+                                    <div class="actions" style="margin-right: 20px;">
+                                      <i class="fa fa-edit" style="color:blue ;margin:10px ;cursor: pointer;"
+                                        (click)="editNeighbourhood(neighbour)"></i>
+                                      <i class="fa fa-minus-square" style="color:red ;margin:10px ;cursor: pointer;"
+                                        (click)="deleteNeighbourhood(neighbour)"></i>
+                                    </div>
+                                  </mat-panel-title>
+                                </div>
+                              </div>
+                            </div>
+
+                          </mat-expansion-panel>
+                        </div>
+                      </div>
+
+                    </mat-expansion-panel>
+                  </div>
+                </div>
+
+              </mat-expansion-panel>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </div>
+</body>

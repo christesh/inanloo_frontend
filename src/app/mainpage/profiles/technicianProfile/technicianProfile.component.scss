@@ -1,0 +1,370 @@
+.main.header {
+
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    direction: rtl;
+}
+
+.headerbox {
+    display: flex;
+    flex-direction: row;
+
+}
+
+.editsingleaddress {
+    color: #484aff;
+    cursor: pointer;
+}
+
+.editsingleaddress:hover {
+    color: #cc2b91;
+    cursor: pointer;
+}
+
+.banner {
+    width: 100%;
+    flex: 50%;
+    min-height: 300px;
+    border-radius: 10px;
+    background-image: url('../../../../assets/images/4565.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-bottom: 10px;
+}
+
+.discription {
+    padding: 10px;
+    width: 100%;
+}
+
+.discription>p {
+
+    font-size: 12px;
+    color: black;
+}
+
+.discription>h2 {
+    font-size: 16px;
+    color: rgb(64, 22, 119);
+}
+
+.body {
+    width: 100%;
+    display: flex;
+    flex-direction: row-reverse;
+    flex-wrap: wrap;
+
+    font-size: 12px;
+    margin-top: 10px;
+
+
+}
+
+.servicedate {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+}
+
+::ng-deep .popover {
+    --bs-popover-zindex: 1070;
+    --bs-popover-max-width: 400px !important;
+    --bs-popover-font-size: 0.875rem;
+    --bs-popover-bg: #fff;
+    --bs-popover-border-width: 1px;
+    --bs-popover-border-color: var(--bs-border-color-translucent);
+    --bs-popover-border-radius: 0.5rem;
+    --bs-popover-inner-border-radius: calc(0.5rem - 1px);
+    --bs-popover-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    --bs-popover-header-padding-x: 1rem;
+    --bs-popover-header-padding-y: 0.5rem;
+    --bs-popover-header-font-size: 1rem;
+    --bs-popover-header-color: var(--bs-heading-color);
+    --bs-popover-header-bg: #f0f0f0;
+    --bs-popover-body-padding-x: 1rem;
+    --bs-popover-body-padding-y: 1rem;
+    --bs-popover-body-color: #212529;
+    --bs-popover-arrow-width: 1rem;
+    --bs-popover-arrow-height: 0.5rem;
+}
+
+::ng-deep .datepicker-outer-container {
+    min-width: 300px;
+}
+
+::ng-deep .datepicker-outer-container {
+    display: block !important;
+}
+
+::ng-deep input.ng-pristine.ng-valid {
+    color: #7a7bad !important;
+    text-align: center;
+    display: none;
+
+}
+
+#showmap {
+    float: left;
+    color: #313394;
+    cursor: pointer;
+    padding: 10px;
+
+}
+
+#showmap:hover {
+    color: #00016d;
+    cursor: pointer;
+    border-radius: 8px;
+    box-shadow: 0px 0px 5px 5px rgb(133, 156, 185);
+}
+
+#maincheckbox {
+    transform: scale(2.5);
+}
+
+.msgerror {
+    color: red;
+    font-size: 9px;
+    margin-top: -21px;
+    margin-right: 10px;
+}
+
+.mobilebox {
+    width: 300px;
+    height: 40px;
+    background-color: #fcfcf9;
+    color: #212529;
+    border-radius: 35px;
+    box-shadow: 0px 0px 5px 5px #f6f6f6;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 23px;
+    justify-content: space-between;
+    align-content: center;
+    margin: 10px;
+    align-items: center;
+}
+
+.calender {
+    padding: 0px;
+    border-radius: 8px;
+    width: 150px;
+    cursor: pointer;
+    height: 160px;
+}
+
+.calenderheader {
+    background-color: #ff484a;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    margin: auto;
+    padding: 10px 10px 1px 10px;
+
+}
+
+.calendercontent {
+    background-color: #ffffff;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    margin: auto;
+    padding: 10px 10px 1px 10px;
+}
+
+.full-width-input {
+    padding: 10px;
+    text-align: right;
+   
+    direction: rtl;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+::ng-deep .mat-tab-body.mat-tab-body-active {
+    position: relative;
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+    z-index: 1;
+    flex-grow: 1;
+    min-height: 400px !important;
+}
+
+::ng-deep .ng-optgroup {
+    display: flex !important;
+    font-weight: 700 !important;
+}
+
+::ng-deep .ng-option {
+    display: flex !important;
+    font-weight: 400 !important;
+    font-size: 12px;
+    margin-right: 20px !important;
+}
+
+.selectskill {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    // width: 70%;
+}
+
+.skillrow {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.skillscard {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.skilldetail {
+    margin: 10px;
+
+
+}
+
+div .detail {
+    display: flex;
+}
+
+img.applience {
+    margin: auto;
+    width: 80px;
+    height: 80px;
+}
+
+.appliences {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.avatar-upload {
+    position: relative;
+    max-width: 205px;
+    margin: 50px auto;
+}
+
+.avatar-upload .avatar-edit {
+    position: absolute;
+    right: 12px;
+    z-index: 1;
+    top: 10px;
+}
+
+.avatar-upload .avatar-edit input {
+    display: none;
+}
+
+.avatar-upload .avatar-edit input+label {
+    display: inline-block;
+    width: 44px;
+    height: 44px;
+    margin-bottom: 0;
+    border-radius: 100%;
+    background: #FFFFFF;
+    border: 1px solid transparent;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+    cursor: pointer;
+    font-weight: normal;
+    transition: all 0.2s ease-in-out;
+}
+
+.avatar-upload .avatar-edit input+label:hover {
+    background: #f1f1f1;
+    border-color: #d6d6d6;
+}
+
+.avatar-upload .avatar-edit input+label:after {
+    content: "\f030";
+    font-family: 'FontAwesome';
+    color: #757575;
+    position: absolute;
+    top: 10px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    margin: auto;
+}
+
+.avatar-upload .avatar-preview {
+    width: 200px;
+    height: 200px;
+    position: relative;
+    border-radius: 100%;
+    border: 6px solid #F8F8F8;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+}
+
+.avatar-upload .avatar-preview>div {
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.avatar-upload .avatar-delete {
+    position: absolute;
+    left: 12px;
+    z-index: 1;
+    top: 10px;
+}
+
+.avatar-upload .avatar-delete button {
+    display: none;
+}
+
+.avatar-upload .avatar-delete button+label {
+    display: inline-block;
+    width: 44px;
+    height: 44px;
+    margin-bottom: 0;
+    border-radius: 100%;
+    background: #FFFFFF;
+    border: 1px solid transparent;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+    cursor: pointer;
+    font-weight: normal;
+    transition: all 0.2s ease-in-out;
+}
+
+.avatar-upload .avatar-delete button+label:hover {
+    background: #f1f1f1;
+    border-color: #d6d6d6;
+}
+
+.avatar-upload .avatar-delete button+label:after {
+    content: "\f1f8";
+    font-family: 'FontAwesome';
+    color: #757575;
+    position: absolute;
+    top: 10px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    margin: auto;
+}
+.profilepic {
+    border: gray 1px solid;
+    border-radius: 8px;
+    background-color: whitesmoke;
+    width: 300px;
+    height: 300px;
+}
+th.mat-header-cell , td.mat-cell{
+    text-align: right;
+    padding-right: 20px;
+}

@@ -1,0 +1,39 @@
+<mat-card style="background-color: #ffffff;font-family: iransans;direction: rtl;height: 100%;">
+  <mat-card-title>
+    <h4 style="font-family:iransans;font-weight: 600;color: #00016d;text-align: center;">
+    {{titr}}
+    </h4>
+    <hr>
+
+  </mat-card-title>
+  <mat-card-content>
+    <div class="container-fluid" style="margin: auto;text-align: center;">
+      <form [formGroup]="form">
+        <h5 style="font-family:iransans ;margin: auto;font-size: 14px;font-weight: 500;">
+          لطفا اطلاعات جدید را وارد نمائید
+        </h5>
+        <div class="content">
+          <mat-form-field class="full-width-input"
+            style="margin:auto;text-align:right;width: 100%;margin: 10px;  direction:rtl;font-family:iransans ;">
+            <input matInput placeholder="{{title}}" formControlName="itemTitle" required style="font-size: 14px;">
+            <mat-error *ngIf="isFieldInvalid('itemTitle')">
+              لطفا{{title}} را وارد کنید!
+            </mat-error>
+          </mat-form-field>
+        </div>
+          <div class="row">
+            <div class="col-md-12" style="margin:auto;text-align: center;font-family:iransans;direction: rtl;">
+
+              <button id="butt1" mat-raised-button color="accent"
+                style="font-size: 12px;font-family:iransans;margin:10px ;width: 70px;" (click)="create()">ایجاد
+              </button>
+              <button id="butt1" mat-raised-button color="primery"
+                style="font-size: 12px;font-family:iransans;margin:10px ;width: 70px;" (click)="close()">انصراف</button>
+            </div>
+          </div>
+       
+      </form>
+
+    </div>
+  </mat-card-content>
+</mat-card>

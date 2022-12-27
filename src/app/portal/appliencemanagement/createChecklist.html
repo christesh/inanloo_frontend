@@ -1,0 +1,45 @@
+<mat-card style="background-color: #ffffff;font-family: iransans;direction: rtl;overflow-y: auto;">
+  <mat-card-title>
+    <h4 style="font-family:iransans;font-weight: 600;color: #00016d;text-align: center;">{{titleOfDialog}} </h4>
+    <hr>
+
+  </mat-card-title>
+  <mat-card-content>
+    <div class="container-fluid" style="margin: auto;text-align: center;">
+      <form [formGroup]="form">
+        <h5 style="font-family:iransans ;margin: auto;font-size: 14px;font-weight: 500;">
+          لطفا اطلاعات زیر را تکمیل نمائید
+        </h5>
+    
+        <mat-form-field class="full-width-input"
+          style="margin:auto;text-align:right;width: 100%; margin: 10px; direction:rtl;font-family:iransans ;">
+          <input matInput placeholder="عنوان مشکل" formControlName="checklistTitle" required style="font-size: 12px;">
+          <mat-error *ngIf="isFieldInvalid('checklistTitle')">
+            لطفا عنوان را وارد کنید!
+          </mat-error>
+        </mat-form-field>
+       
+        <mat-form-field class="full-width-input"
+          style="margin:auto;text-align:right;width: 100%;margin: 10px; direction:rtl;font-family:iransans ;">
+          <textarea matInput placeholder="توضیحات" formControlName="description" rows="5"
+            style="font-size: 12px;"></textarea>
+          <mat-error *ngIf="isFieldInvalid('description')">
+            لطفا توضیحات را وارد کنید!
+          </mat-error>
+        </mat-form-field>
+
+
+        <div class="row">
+          <div class="col-md-12" style="margin:auto;text-align: center;font-family:iransans;direction: rtl;">
+
+            <button id="butt1" mat-raised-button color="accent"
+              style="font-size: 12px;font-family:iransans;margin:10px ;width: 70px;" (click)="create()">{{buttonTitle}}
+            </button>
+            <button id="butt1" mat-raised-button color="primery"
+              style="font-size: 12px;font-family:iransans;margin:10px ;width: 70px;" (click)="close()">انصراف</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </mat-card-content>
+</mat-card>

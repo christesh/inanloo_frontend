@@ -1,0 +1,215 @@
+@media (max-width: 700px) {
+  .desktop {
+    display: none;
+  }
+
+  .mobile {
+    display: block;
+  }
+}
+
+@media (min-width: 700px) {
+  .desktop {
+    display: block;
+  }
+
+  .mobile {
+    display: none;
+  }
+}
+
+@font-face {
+  font-family: iransans;
+  src: url('../../assets/fonts/iransans/IRANSansWebFaNum-Medium.ttf');
+}
+
+
+
+/*toolbar css*/
+.toolbar {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.toolbardiv {
+  flex: 50%;
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+}
+
+.toolbardiv.right {
+  align-items: center;
+  justify-items: center;
+  direction: rtl;
+
+}
+
+.toolbardiv.left {
+  align-items: center;
+  justify-items: center;
+  direction: ltr;
+
+}
+.toobaritems{
+  margin: 5px;
+}
+h4 {
+  font-family: iransans;
+  font-size: 0.75em;
+}
+
+h6 {
+  font-family: iransans;
+  font-size: 0.25em;
+}
+
+i.fa {
+  cursor: pointer;
+}
+
+.avatar {
+  margin-top: 16px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: #e6e3e3 solid 5px;
+}
+
+.avatarnav {
+  margin-top: 16px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: #e6e3e3 solid 2px;
+}
+
+.name {
+  margin-top: 8px;
+  font-weight: normal;
+}
+
+
+.example-container {
+  position: absolute;
+  top: 40px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  background-color: #e6e3e3;
+}
+
+.header {
+  padding: auto;
+  height: 210px;
+}
+
+.main.header {
+  z-index: 1;
+  position:fixed;
+  top:0;
+  direction: rtl;
+  height: 40px;
+}
+
+mat-toolbar {
+  background: #004a9f;
+  color: white;
+}
+
+
+
+.main-content {
+  margin-top: 48px;
+  margin-left: 10px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px 5px rgb(175, 175, 175);
+  padding: 10px;
+  background-color: rgb(253, 249, 249);
+  
+  transition: margin-right .5s;
+ 
+}
+
+/* .sidenav{
+  border: #004a9f solid 1px;
+  top:98px;
+  margin-right:0px;
+  margin-bottom:0px ;
+  display: flex;
+  flex-direction: column;
+  transition: width 1s;
+} */
+.sidebar {
+  height: 95%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 40px;
+  right: 0;
+  background-color: rgb(204, 201, 201);
+  overflow-x: hidden;
+  transition: 0.5s;
+}
+
+.sidebar a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.5s;
+}
+
+.sidebar a:hover {
+  color: #f1f1f1;
+}
+
+.sidebar .closebtn {
+  position: absolute;
+  top: 0;
+  z-index: 2;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+.openbtn {
+  font-size: 20px;
+  cursor: pointer;
+  background-color: #111;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+}
+
+.openbtn:hover {
+  background-color: #444;
+}
+
+#main {
+  
+}
+
+
+.content {
+  height: calc(100vh - 47px);
+  /* border-radius: 10px; */
+  /* margin-top: 16px; */
+  /* margin-left: 32px; */
+  margin-bottom: 0px;
+  /* height: 1000px; */
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: stretch;
+  font-size: 2rem;
+  color: lightgray;
+  align-content: flex-start;
+  flex-wrap: nowrap;
+}
+
+mat-sidenav-container {
+  height: calc(100vh - 65px);
+}

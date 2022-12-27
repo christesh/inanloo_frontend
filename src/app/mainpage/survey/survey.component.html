@@ -1,0 +1,57 @@
+<div class="main header" style="direction: rtl;">
+
+  <div class="headerbox">
+    <div class="discription">
+      <h4>سفارشات</h4>
+      <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
+        چاپگرها و متون بلکه
+        روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
+        بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان
+        را
+        می طلبد.</p>
+    </div>
+
+  </div>
+</div>
+<div class="body" style="direction: rtl;">
+  <div class="question" *ngFor="let quest of questions;let i= index">
+    <h5>{{i+1}}- {{quest.qTitle}}</h5>
+
+    <div class="options" *ngIf="quest.optionKind==='0'" style="margin-right: 20px;">
+
+      <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group" [(ngModel)]="answer[i]">
+        <mat-radio-button class="example-radio-button" *ngFor="let option of quest.options" [value]="option.id"
+          style="padding-left: 5px;"  [disabled]="readonly">
+          <h6 style="padding-right: 10px;padding-top:5px;font-size:14px">{{option.optionTitle}}</h6>
+        </mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <div class="options" *ngIf="quest.optionKind==='1'">
+      <ul>
+        <li *ngFor="let option of quest.options;let j=index">
+          <mat-checkbox [(ngModel)]="select[i][j]" color="warn" (ngModelChange)="optionselect(option)">
+            {{option.optionTitle}}
+          </mat-checkbox>
+        </li>
+      </ul>
+    </div>
+    <div class="options" *ngIf="quest.optionKind==='2'">
+      <form [formGroup]="surveyform" style="margin-left:20px">
+        <mat-form-field class="full-width-input"
+          style="margin:auto;text-align:right; direction:rtl;font-family:iransans ;width: 30%;" >
+          <input matInput placeholder="مبلغ به ریال" formControlName="cost" style="font-size: 12px;" required [disabled]="readonly">
+          <mat-error *ngIf="isFieldInvalid('cost') ">
+          لطفا مبلغ پرداختی را وارد نمائید  
+          </mat-error>
+        </mat-form-field>
+      </form>
+    </div>
+
+    <hr>
+
+  </div>
+  <div style="direction: ltr;">
+    <button mat-raised-button color="accent" style="margin-right:10px ;" *ngIf="!readonly" (click)="save()">ثبت</button>
+    <button mat-raised-button color="primary" (click)="cancel()">بازگشت </button>
+  </div>
+</div>

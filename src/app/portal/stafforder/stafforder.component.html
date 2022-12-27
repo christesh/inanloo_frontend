@@ -1,0 +1,75 @@
+<body>
+  <div class="searchCustomer">
+    <div class="main header" style="direction: rtl;">
+      <div class="banner">
+      </div>
+      <div class="headerbox">
+        <div class="discription">
+          <h2>مشتریان</h2>
+          <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
+            است،
+            چاپگرها و متون بلکه
+            روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با
+            هدف
+            بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و
+            متخصصان
+            را
+            می طلبد.</p>
+        </div>
+      </div>
+      <div>
+        <button mat-raised-button color="primary" style="margin: 10px;width: 150px;" (click)="CreateCustomer()">ایجاد
+          مشتری جدید</button>
+      </div>
+    </div>
+    <div class="table">
+      <div class="container"
+        style=" border-radius: 8px;box-shadow: rgb(102, 102, 102) 5px;border: gray solid 1px;background-color: white;">
+        <div class="row">
+          <div class="col-sm-12" style="direction: rtl;text-align: right;">
+            <ng2-smart-table [settings]="customerTable" [source]="customertablevalue" id="excel-table"
+              style="font-family: 'iransans'" style="font-family: 'iransans'" (custom)="TableAction($event)">
+            </ng2-smart-table>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  <div class="customerdetails">
+    <div *ngIf="showCustomerDetail" class="details">
+      <button mat-raised-button color="primary" style="margin: 10px;width: 150px;height: 50px;"
+        (click)="CancelProfile()">
+        <i class="fa fa-plus-square" style="color: white;margin-left: 10px;"></i>انصراف </button>
+      
+          <app-customerProfile [showBanner]="customerdetailfromstaff"></app-customerProfile>
+      
+    </div>
+    <div *ngIf="showOrderDetail" class="orders">
+      <mat-accordion class="example-headers-align" *ngIf="showOrders" multi style="z-index: 100;">
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div class="title">
+                <h6>لیست سفارشات</h6>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="col-sm-12" style="direction: rtl;text-align: right;">
+            <ng2-smart-table [settings]="ordersTable" [source]="orderstablevalue" id="excel-table"
+              style="font-family: 'iransans'" style="font-family: 'iransans'" (custom)="OrderTableAction($event)">
+            </ng2-smart-table>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+      <button mat-raised-button color="accent" style="margin: 10px;width: 150px;height: 50px;" (click)="CreateOrder()">
+        <i class="fa fa-plus-square" style="color: white;margin-left: 10px;"></i>ثبت سفارش</button>
+      <button mat-raised-button color="primary" style="margin: 10px;width: 150px;height: 50px;" (click)="CancelOrder()">
+        <i class="fa fa-plus-square" style="color: white;margin-left: 10px;"></i>انصراف </button>
+    </div>
+  </div>
+  <div *ngIf="showorder" class="createOrder">
+    <mat-divider></mat-divider>
+    <app-orderpage (newOrderEvent)="addOrder($event)" [showBanner]="customerdetailfromstaff"></app-orderpage>
+  </div>
+</body>

@@ -1,0 +1,258 @@
+<div id="desktop" class="container-fluid" style="direction: rtl;font-family:
+    iransans; background-color: white;">
+    <div style="height: 50px;align-content: center;padding-top: -10px;">
+
+        <nav class="navbar navbar-expand-md" style="width: 100%;">
+            <a class="navbar-brand" [routerLink]="['/home/home']">
+                <strong style="color: red;"> اینانلو سرویس</strong>
+            </a>
+            <button class="navbar-toggler" type="button" (click)="toggleNavbar()" style="float:right;">
+                <i class="fa fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" [ngClass]="{ 'show':
+                    navbarOpen }">
+                <ul class="navbar-nav" style="display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    width: 100%;
+                    align-items: center;">
+                    <div style="display: flex;flex-direction: row;justify-content: start;">
+                        <li class="nav-item" *ngIf="customer">
+                            <a class="nav-link" [routerLink]="['/home/order',{userId:userId}]" style="float:
+                                right;font-family: iransans;color: rgb(173,
+                                146, 173);font-size:12px;">ثبت سفارش</a>
+                        </li>
+                        <li class="nav-item" *ngIf="!customer">
+                            <a class="nav-link"  style="float:
+                                right;font-family: iransans;color: rgb(173,
+                                146, 173);font-size:12px;"> سفارش قطعه</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" (click)="support()" style="float:
+                                right;font-family: iransans;color: rgb(173,
+                                146, 173);font-size:12px; cursor: pointer;"> پشتیبانی </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" (click)="support()" style="float:
+                                right;font-family: iransans;color: rgb(173,
+                                146, 173);font-size:12px;  cursor: pointer;">قوانین و مقررات </a>
+                        </li>
+                    </div>
+                    <li>
+                        <div style="display: flex;flex-direction: row;height: 100%;">
+                            <div class="book" *ngIf="!customer" matTooltip="انبار شخصی" matTooltipClass="tooltip-css">
+
+                                <div class="col-sm-12" style="margin:auto;">
+                                    <lord-icon src="../../../assets/json/warehouse1.json" trigger="hover"
+                                        colors="primary:#121331,secondary:#c71f16" stroke="80"
+                                        style="width:40px;height:40px " (click)="wallet()">
+                                    </lord-icon>
+                                </div>
+
+                            </div>
+                            <div class="book" matTooltip="کیف پول" matTooltipClass="tooltip-css">
+
+                                <div class="col-sm-12" style="margin:auto;">
+                                    <lord-icon src="../../../assets/json/wallet1.json" trigger="hover"
+                                        colors="primary:#121331,secondary:#c71f16" stroke="80"
+                                        style="width:40px;height:40px " (click)="wallet()">
+                                    </lord-icon>
+                                </div>
+
+                            </div>
+                            <div class="book" *ngIf="customer" matTooltip="سفارشات" matTooltipClass="tooltip-css">
+
+                                <div class="col-sm-12" style="margin:auto;">
+                                    <lord-icon src="../../../assets/json/shop.json" trigger="hover"
+                                        colors="primary:#121331,secondary:#c71f16" stroke="80"
+                                        style="width:40px;height:40px " (click)="orderlists()">
+                                    </lord-icon>
+                                </div>
+
+                            </div>
+                            <div class="book" *ngIf="!customer" matTooltip="سفارشات" matTooltipClass="tooltip-css">
+
+                                <div class="col-sm-12" style="margin:auto;">
+                                    <lord-icon src="../../../assets/json/wrench.json" trigger="hover"
+                                        colors="primary:#121331,secondary:#c71f16" stroke="80"
+                                        style="width:40px;height:40px " (click)="orderlists()">
+                                    </lord-icon>
+                                </div>
+
+                            </div>
+
+                            <div class="book" matTooltip="پروفایل" matTooltipClass="tooltip-css">
+
+                                <lord-icon *ngIf="female" src="../../../assets/json/female.json" trigger="hover"
+                                    colors="primary:#121331,secondary:#c71f16" stroke="70"
+                                    style="width:40px;height:40px;cursor: pointer;" (click)="profile()">
+
+                                </lord-icon>
+
+                                <lord-icon *ngIf="male" src="../../../assets/json/male.json" trigger="hover"
+                                    colors="primary:#121331,secondary:#c71f16" stroke="70"
+                                    style="width:40px;height:40px;cursor: pointer;" (click)="profile()">
+                                </lord-icon>
+                            </div>
+                            <div class="book" matTooltip="خروج" matTooltipClass="tooltip-css">
+                                <lord-icon src="../../../assets/json/exit.json"
+                                    colors="primary:#121331,secondary:#c71f16" trigger="loop-on-hover"
+                                    style="width:40px;height:40px;cursor: pointer;margin-right: 10px;"
+                                    (click)="signout()">
+                                </lord-icon>
+
+
+                            </div>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+
+        <!-- <div>
+            <div style="display: flex;flex-direction: row;height: 100%;">
+                <div class="book" matTooltip="انبار شخصی" matTooltipClass="tooltip-css">
+
+                    <div class="col-sm-12" style="margin:auto;">
+                        <lord-icon src="../../../assets/json/warehouse1.json" trigger="hover"
+                            colors="primary:#121331,secondary:#c71f16" stroke="80" style="width:40px;height:40px " (click)="wallet()">
+                        </lord-icon>
+                    </div>
+
+                </div>
+                <div class="book" matTooltip="کیف پول" matTooltipClass="tooltip-css">
+
+                    <div class="col-sm-12" style="margin:auto;">
+                        <lord-icon src="../../../assets/json/wallet1.json" trigger="hover"
+                            colors="primary:#121331,secondary:#c71f16" stroke="80" style="width:40px;height:40px " (click)="wallet()">
+                        </lord-icon>
+                    </div>
+
+                </div>
+                <div class="book" matTooltip="سفارشات" matTooltipClass="tooltip-css">
+
+                    <div class="col-sm-12" style="margin:auto;">
+                        <lord-icon src="../../../assets/json/shop.json" trigger="hover"
+                            colors="primary:#121331,secondary:#c71f16" stroke="80" style="width:40px;height:40px " (click)="orderlists()">
+                        </lord-icon>
+                    </div>
+
+                </div>
+
+                <div class="book" matTooltip="پروفایل" matTooltipClass="tooltip-css">
+
+                    <lord-icon *ngIf="female" src="../../../assets/json/female.json" trigger="hover"
+                        colors="primary:#121331,secondary:#c71f16" stroke="70"
+                        style="width:40px;height:40px;cursor: pointer;" (click)="profile()">
+
+                    </lord-icon>
+
+                    <lord-icon *ngIf="male" src="../../../assets/json/male.json" trigger="hover"
+                        colors="primary:#121331,secondary:#c71f16" stroke="70"
+                        style="width:40px;height:40px;cursor: pointer;" (click)="profile()">
+                    </lord-icon>
+                </div>
+                <div class="book" matTooltip="خروج" matTooltipClass="tooltip-css">
+                    <lord-icon src="../../../assets/json/exit.json" colors="primary:#121331,secondary:#c71f16"
+                        trigger="loop-on-hover" style="width:40px;height:40px;cursor: pointer;margin-right: 10px;"
+                        (click)="signout()">
+                    </lord-icon>
+
+                   
+                </div>
+            </div>
+        </div> -->
+    </div>
+</div>
+
+<div id="mobile" class="container-fluid" style="direction: rtl;font-family:
+    iransans;background-color:#fff">
+    <nav class="navbar navbar-expand-md" style="direction: ltr;background-color:
+    #fff">
+        <div class="navbar-brand" style="margin: auto;text-align: center;">
+            <a tyle="color: red;">
+                اینانلو سرویس
+            </a>
+            <br>
+
+        </div>
+        <button class="navbar-toggler" type="button" (click)="toggleNavbar()" style="float:right;">
+            <i class="fa fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" [ngClass]="{ 'show':
+            navbarOpen }">
+            <ul class="navbar-nav" style="display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    width: 100%;
+                    align-items: center;">
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/home/order',{userId:userId}]" style="float:
+                                right;font-family: iransans;color: rgb(173,
+                                146, 173);font-size:12px;">ثبت سفارش</a>
+                </li>
+                <li>
+                    <div style="display: flex;flex-direction: column;height: 100%;justify-content: end;">
+                        <div class="book">
+
+                            <lord-icon *ngIf="female" src="../../../assets/json/female.json" trigger="hover"
+                                colors="primary:#121331,secondary:#c71f16" stroke="70"
+                                style="width:40px;height:40px;cursor: pointer;" (click)="profile()">
+
+                            </lord-icon>
+
+                            <lord-icon *ngIf="male" src="../../../assets/json/male.json" trigger="hover"
+                                colors="primary:#121331,secondary:#c71f16" stroke="70"
+                                style="width:40px;height:40px;cursor: pointer;" (click)="profile()">
+                            </lord-icon>
+                            پروفایل
+                        </div>
+                        <div class="book">
+
+                            <div class="col-sm-12" style="margin:auto;">
+                                <lord-icon src="../../../assets/json/shop.json" trigger="hover"
+                                    colors="primary:#121331,secondary:#c71f16" stroke="80"
+                                    style="width:40px;height:40px " (click)="orderlists()">
+                                </lord-icon>
+                            </div>
+                            سفارشات
+                        </div>
+                        <div class="book">
+
+                            <div class="col-sm-12" style="margin:auto;">
+                                <lord-icon src="../../../assets/json/wallet1.json" trigger="hover"
+                                    colors="primary:#121331,secondary:#c71f16" stroke="80"
+                                    style="width:40px;height:40px " (click)="wallet()">
+                                </lord-icon>
+                            </div>
+                            کیف پول
+                        </div>
+                        <div class="book">
+
+                            <div class="col-sm-12" style="margin:auto;">
+                                <lord-icon src="../../../assets/json/warehouse1.json" trigger="hover"
+                                    colors="primary:#121331,secondary:#c71f16" stroke="80"
+                                    style="width:40px;height:40px " (click)="wallet()">
+                                </lord-icon>
+                            </div>
+                            انبار شخصی
+                        </div>
+
+
+
+                        <div class="book">
+                            <lord-icon src="../../../assets/json/exit.json" colors="primary:#121331,secondary:#c71f16"
+                                trigger="loop-on-hover"
+                                style="width:40px;height:40px;cursor: pointer;margin-right: 10px;" (click)="signout()">
+                            </lord-icon>
+                            خروج
+
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+    </nav>
+</div>

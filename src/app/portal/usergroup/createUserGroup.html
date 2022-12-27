@@ -1,0 +1,50 @@
+<mat-card style="background-color: #ffffff;font-family: iransans;direction: rtl;height: 100%;">
+  <mat-card-title>
+    <h4 style="font-family:iransans;font-weight: 600;color: #00016d;text-align: center;">
+      ایجاد گروه کاربری جدید
+    </h4>
+    <hr>
+
+  </mat-card-title>
+  <mat-card-content>
+    <div class="container-fluid" style="margin: auto;text-align: center;">
+      <form [formGroup]="form">
+        <h5 style="font-family:iransans ;margin: auto;font-size: 14px;font-weight: 500;">
+          لطفا اطلاعات گروه کاربری را وارد نمائید
+        </h5>
+        <div class="content">
+          <mat-form-field class="full-width-input"
+            style="margin:auto;text-align:right;width: 100%;margin: 10px;  direction:rtl;font-family:iransans ;">
+            <input matInput placeholder="نام گروه" formControlName="groupName" required style="font-size: 14px;">
+            <mat-error *ngIf="isFieldInvalid('groupName')">
+              لطفا نام کاربر را وارد کنید!
+            </mat-error>
+          </mat-form-field>
+
+          <ng-select [items]="permissions" [multiple]="true" bindLabel="title" [selectableGroupAsModel]="false"
+            [closeOnSelect]="false" bindValue="id" (change)="getValues(selectedGroup )" placeholder="سطوح دسترسی"
+            [(ngModel)]="selectedGroup" [ngModelOptions]="{standalone: true}"
+            style="direction: rtl;text-align: right; width:100%;margin: 10px;  ">
+            <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+              <div style="float: right;">
+                {{item.title }}
+              </div>
+            </ng-template>
+          </ng-select>
+        </div>
+          <div class="row">
+            <div class="col-md-12" style="margin:auto;text-align: center;font-family:iransans;direction: rtl;">
+
+              <button id="butt1" mat-raised-button color="accent"
+                style="font-size: 12px;font-family:iransans;margin:10px ;width: 70px;" (click)="create()">ایجاد
+              </button>
+              <button id="butt1" mat-raised-button color="primery"
+                style="font-size: 12px;font-family:iransans;margin:10px ;width: 70px;" (click)="close()">انصراف</button>
+            </div>
+          </div>
+       
+      </form>
+
+    </div>
+  </mat-card-content>
+</mat-card>

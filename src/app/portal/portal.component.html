@@ -1,0 +1,64 @@
+<mat-toolbar class="main header">
+  <div class="toolbar">
+    <div class="toolbardiv right" *ngIf="showtoolbaruser">
+      <div class="toolbaritems ">
+        <i class="fa fa-bars" aria-hidden="true" (click)="changeState()">
+          <img
+            style="cursor: pointer;width:30px;height: 30px;margin: 5px 10px 5px 5px ;justify-items: center;"
+            class="avatarnav " [src]="userpic" onerror="this.src='../../assets/images/profile.png'"/>
+        </i>
+      </div>
+      <div class="toolbaritems ">
+        <h4 class="name" style="margin-top:5px;cursor: pointer;">{{user}}  </h4>
+      </div>
+    </div>
+    <div class="toolbardiv left">
+      <div class="toolbaritems">
+        <i class="fa fa-sign-out" aria-hidden="true" style="margin:15px;" (click)="signout()"></i>
+      </div>
+      <div class="toolbaritems">
+        <i class="fa fa-bell-o" aria-hidden="true" matBadge="8" matBadgePosition="after" matBadgeColor="accent"
+          matBadgeSize="small" style="margin:15px;"></i>
+      </div>
+      <div class="toolbaritems">
+        <i class="fa fa-envelope-o" aria-hidden="true" style="margin:15px;"></i>
+      </div>
+      
+    </div>
+  </div>
+</mat-toolbar>
+<!-- <div class="content">
+  <div class="sidenav" [@widthGrow]="state"> -->
+<!-- <mat-toolbar class="header">
+      <div class="col-md-12" style="cursor: pointer;padding:20px;margin:auto;text-align:center;">
+        <img class="avatar " src="../../assets/images/1.jpeg" />
+        <h4 class="name" style="margin-top:5px;cursor: pointer;">مسیح ابراهیم نژاد</h4>
+        <i class="fa fa-angle-double-right " aria-hidden="true" (click)="changeState()"></i>
+      </div>
+    </mat-toolbar> -->
+<!-- <div class="menu" style="overflow-y: auto;">
+      <app-sidenav></app-sidenav>
+    </div>
+  </div>
+  <div class="main-content" style="margin: 10px;">
+    <router-outlet></router-outlet>
+  </div>
+</div> -->
+<div id="mySidebar" class="sidebar" [style.width.px]="sidenavwidth">
+  <mat-toolbar class="header">
+    <div class="col-md-12" style="cursor: pointer;padding:20px;margin:auto;text-align:center;">
+      <img class="avatar " [src]="userpic" onerror="this.src='../../assets/images/profile.png'" />
+      <h4 class="name" style="margin-top:5px;cursor: pointer;">{{user}}  </h4>
+      <!-- <mat-slide-toggle color="primary"  [checked]="checked" (click)="changeState1()"></mat-slide-toggle> -->
+      <i class="fa fa-angle-double-right " aria-hidden="true" (click)="changeState()"></i>
+    </div>
+  </mat-toolbar>
+  <div class="menu" style="overflow-y: auto;">
+    <app-sidenav></app-sidenav>
+  </div>
+</div>
+
+<div id="main" class="main-content" [ngStyle]="{'margin-right':mainmargin}" style="height: 100%;">
+  <router-outlet></router-outlet>
+</div>
+

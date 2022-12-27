@@ -1,0 +1,88 @@
+#myBtn {
+    font-family: myFirstFont2;
+    font-size: 14px;
+    float: left;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+mat-card {
+    max-width: 250px;
+    /* background-color: rgb(240, 240, 240); */
+    /* border-width:1px; */
+    border-radius: 8px;
+    box-shadow: 20px 20px 20px 10px #8888;
+    margin: 3em auto;
+    text-align: center;
+    font-family: myFirstFont2;
+    font-size: larger;
+    opacity: 1;
+}
+
+.signin-content {
+    padding: 60px 1rem;
+}
+
+.full-width-input {
+    width: 100%;
+}
+
+.full-width-input {
+    font-family: myFirstFont1;
+}
+
+#butt {
+    font-family: myFirstFont2;
+}
+
+#loginbox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#bg1 {
+    background-image: url('../../assets/img/login-bg/loginpagebg.jpg');
+    background-color: #00026dc5 !important;
+    direction: rtl;
+    height: 100%;
+    background-size: contain;
+    background-color: white;
+    background-position: bottom left;
+    background-repeat: no-repeat;
+}
+body { 
+    /* height: 650px; */
+    background: url('../../assets/img/login-bg/loginpagebg1.jpg') no-repeat center center fixed; 
+    background-color: #00026dc5 !important;
+    background-blend-mode: multiply;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
+#bg2 {
+    background: url('../../assets/img/login-bg/loginpagebg1.jpg') no-repeat top center;
+    overflow: hidden;
+    background-color: #00026dc5;
+    background-blend-mode: multiply;
+    /* background-image: url('../../assets/img/login-bg/loginpagebg.jpg'); */
+    direction: rtl;
+    position: absolute;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#bg3 {
+    margin: 0px;
+    height: 100%;
+    width: 100%;
+    background: url('../../assets/img/login-bg/loginpagebg1.jpg')no-repeat center center fixed;
+    background-color: #00026dc5 !important;
+    -webkit-background-size: cover;
+    -o-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+}

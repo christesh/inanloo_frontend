@@ -1,0 +1,79 @@
+/* @media (max-width: 200px) {
+    #desktop {
+        display: none;
+    }
+
+    #mobile {
+        display: block;
+    }
+} */
+
+/* @media (min-width: 10px) {
+    #desktop {
+        display: block;
+    }
+
+    #mobile {
+        display: none;
+    }
+} */
+
+.header {
+    height: 50px;
+    text-align: center;
+    background-color: #00016d;
+
+}
+
+.mainbanner {
+    height: 420px;
+    background: url('../../../assets/img/login-bg/loginpagebg.jpg') no-repeat top center;
+    overflow: hidden;
+    background-color: #00026dc5;
+    background-blend-mode: multiply;
+    border-radius: 8px 8px 0px 0px;
+     /* background-image: url('../../../assets/img/login-bg/loginpagebg1.jpg');*/
+    direction: rtl;
+   
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat; 
+}
+
+ngb-carousel {
+    display: flex !important;
+    align-items: center !important;
+    height:100%;
+}
+ngb-carousel img {
+    width: 100%;
+    outline: none;
+}
+
+.carousel-inner {
+    overflow: visible;
+}
+.carousel-item {
+    display: flex !important;
+    align-items: center !important;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1.2s ease-in-out, visibility 1.2s;
+    z-index: -1;
+}
+.carousel-item.active{
+    opacity: 1;
+    visibility: visible;
+    z-index: 10;
+}
+.carousel-control-prev {
+     z-index: 20;
+}
+
+.carousel-control-next {
+     z-index: 20;
+}
+.carousel-indicators{
+    z-index: 20;
+}

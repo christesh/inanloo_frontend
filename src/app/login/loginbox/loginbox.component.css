@@ -1,0 +1,206 @@
+@font-face {
+    font-family: myFirstFont0;
+    src: url('../../../assets/fonts/BNazanin.ttf');
+}
+
+@font-face {
+    font-family: myFirstFont1;
+    src: url('../../../assets/fonts/BRoyaBd.ttf');
+}
+
+@font-face {
+    font-family: myFirstFont2;
+    src: url('../../../assets/fonts/BYekan.ttf');
+}
+
+@import '~@angular/material/theming';
+input::placeholder {
+    font: 12px/3 iransans;
+}
+
+.OtpInput {
+    width: 40px;
+    text-align: center;
+    font-size: 24px;
+    border-radius: 8px;
+    border: 1px solid gray;
+}
+
+.signin-content {
+    display: block;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    padding-top: 100px;
+    /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+}
+
+.flex-container {
+    display: flex;
+    justify-content: center;
+  }
+  
+.flex-container > div {
+    margin: 10px;
+    text-align: center;
+  }
+mat-card {
+    max-width: 500px;
+    border-radius: 8px;
+    margin: auto;
+    text-align: center;
+    font-family: myFirstFont2;
+    font-size: larger;
+    opacity: 1;
+}
+
+.footer {
+    max-width: 500px;
+    height: 60px;
+    background-color: rgb(167, 167, 167);
+    border-radius: 8px; 
+    margin-top: 5px;
+    text-align: center;
+    font-family: myFirstFont2;
+    font-size: larger;
+    opacity: 1;
+}
+.fa:hover{
+    color:#ffffff;
+}
+.fa{
+    color:#666666;
+}
+
+/* .signin-content {
+      padding: 60px 1rem;
+    } */
+
+.full-width-input {
+    width: 60%;
+}
+
+.full-width-input {
+    font-family: iransans;
+    font-size: 12px;
+}
+
+#butt {
+    font-family: myFirstFont2;
+}
+@media (min-width: 800px) {
+    #supporttel {
+        border-left: #ffffff 2px solid;
+        margin: auto;
+        text-align: center;
+    }
+    .footer {
+        max-width: 500px;
+        height: 60px;
+        background-color: rgb(167, 167, 167);
+        border-radius: 8px; 
+        margin-top: 5px;
+        text-align: center;
+        font-family: myFirstFont2;
+        font-size: larger;
+        opacity: 1;
+    }
+}
+@media (max-width: 800px) {
+    #supporttel {
+        margin: auto;
+        text-align: center;
+    }
+    .footer {
+        max-width: 500px;
+        height: 90px;
+        background-color: rgb(167, 167, 167);
+        border-radius: 8px; 
+        margin-top: 5px;
+        text-align: center;
+        font-family: myFirstFont2;
+        font-size: larger;
+        opacity: 1;
+    }
+}
+
+mat-button-toggle{
+    width:80px ;
+    font-size: 14px;
+    font-weight: 600;
+    color: #00016d;
+}
+
+mat-button-toggle:focus{
+    border: #ffffff 2px solid;
+}
+
+#bg {
+    /* // background-image: url('../../../assets/bg1.jpg'); */
+    direction: rtl;
+    height: 650px;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#logo {
+    /* // background-image: url('../../../assets/logo.png'); */
+    margin: auto;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 100px;
+}
+
+::ng-deep .mat-bottom-sheet-container {
+    min-width: 379px  !important;
+    max-height: 700px !important;
+    /* max-width: calc(100vw - 256px) !important; */
+    position: absolute !important;
+    left: 30px !important;
+    bottom: 0px !important;
+    background-color: #acabe8;
+    border-radius: 8px 8px 0px 0px;
+}
+.sender{
+    display: flex;
+    flex-direction: row;
+    /* justify-items: center; */
+    justify-content: flex-start;
+}
+.message{
+    margin-top: 10px;
+    margin-right: 10px;
+    padding: 10px;
+    min-height: 150px;
+    background-color: rgb(180, 236, 180);
+    border-radius: 12px;
+    width: 100%;
+}
+.call{
+    margin-top: 10px;
+    
+    padding: 10px;
+    /* min-height: 100px; */
+    background-color: rgb(180, 236, 180);
+    border-radius: 12px;
+    /* display: flex;
+    align-items: center; */
+    width: 100%;
+}
