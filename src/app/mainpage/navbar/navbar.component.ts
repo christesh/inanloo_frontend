@@ -70,7 +70,7 @@ export class NavbarComponent implements OnInit {
     var token = this.tokencoockie.get('T')
     this.api.setdeactiveuser(token).subscribe(
       res => {
-       console.log(res)
+       // console.log(res)
         this.api.logout().subscribe(
           res => {
             this.router.navigate(['']);

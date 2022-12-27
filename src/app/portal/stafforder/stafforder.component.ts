@@ -126,14 +126,14 @@ export class StafforderComponent implements OnInit {
     this.api.getAllApplience(token).subscribe(
       res => {
         this.applience = res
-       console.log(this.applience)
+       // console.log(this.applience)
       }, err => {
        console.log(err)
       }
     )
     this.api.getallcustomersdetails(token).subscribe(
       res => {
-       console.log(res)
+       // console.log(res)
         var ct: {
           id: string,
           mobile: string,
@@ -184,7 +184,7 @@ export class StafforderComponent implements OnInit {
         var ot: { id: string, status: string, statusID: string, appliance: string, applianceID: string, date: string, technician: string, technicianID: string, payment: string }[] = [];
         this.api.getcustomerorders(token, event.data.id).subscribe(
           res => {
-           console.log(res)
+           // console.log(res)
 
             ot = [];
             for (let i = 0; i < res.length; i++) {
@@ -227,7 +227,7 @@ export class StafforderComponent implements OnInit {
   }
   addOrder(event: any) {
     this.showorder = false;
-   console.log(event);
+   // console.log(event);
   }
   CreateOrder() {
     this.showorder = true;
@@ -251,10 +251,10 @@ export class StafforderComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result.btn == "ok") {
         this.signupData = result;
-       console.log(this.signupData)
+       // console.log(this.signupData)
         this.api.register(this.signupData.mn, this.signupData.name, this.signupData.family, this.signupData.nationalid, 1).subscribe(
           res => {
-           console.log(res)
+           // console.log(res)
             this.FillTable();
           },
           err => {
@@ -302,13 +302,13 @@ export class SignUPCustomerDialog implements OnInit {
   public uc = 0;
   radioModel: any;
   ngOnInit() {
-   console.log(this.data)
+   // console.log(this.data)
 
     this.api.GetPersonCategories().subscribe(
       (res: { id: string; name: string; }[]) => {
         this.usercategory.push(res[0]);
         this.usercategory.push(res[1]);
-       console.log(this.usercategory);
+       // console.log(this.usercategory);
       },
       (err: any) => {
        console.log(err)

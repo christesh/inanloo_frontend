@@ -78,7 +78,7 @@ export class ApiServicesService {
   }
   register(mob: string, fname: string, lname: string, nationalid: string, usercategory: number): Observable<any> {
     const body = { username: mob, fname: fname, lname: lname, nationalid: nationalid, usercategory: usercategory.toString() };
-   console.log(body)
+   // console.log(body)
     return this.http.post(this.baseurl + '/personal/register/', body, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
@@ -194,7 +194,7 @@ export class ApiServicesService {
   }
   editCompanyMember(token: string, user: string, fname: string, lname: string, nationalid: string, group: string, mobile: string): Observable<any> {
     const body = { userid: user, fname: fname, lname: lname, nationalid: nationalid, group: group, mobile: mobile };
-   console.log(body)
+   // console.log(body)
     return this.http.post(this.baseurl + '/personal/editcompanymembers/', body, {
       headers: new HttpHeaders({
         'Authorization': 'Token  ' + token,
@@ -205,7 +205,7 @@ export class ApiServicesService {
   }
   registerCompanyMember(token: string, user: string, pass: string, fname: string, lname: string, nationalid: string, group: string, usercategory: number, mobile: string): Observable<any> {
     const body = { username: user, password: pass, fname: fname, lname: lname, nationalid: nationalid, group: group, usercategory: usercategory.toString(), mobile: mobile };
-   console.log(body)
+   // console.log(body)
     return this.http.post(this.baseurl + '/personal/registercompanymembers/', body, {
       headers: new HttpHeaders({
         'Authorization': 'Token  ' + token,

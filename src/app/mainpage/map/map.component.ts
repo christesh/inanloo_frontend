@@ -79,7 +79,7 @@ export class MapComponent {
     this.newMapEvent.emit(mapGeo);
     // this.api.getMapAddress(this.apiKey, e.lngLat.lat, e.lngLat.lng).subscribe(
     //   res => {
-    //    console.log(res)
+    //    // console.log(res)
     //     this.address=res['address']
     //   },
     //   err => {
@@ -89,7 +89,7 @@ export class MapComponent {
   }
 
   dragged(e: any) {
-   console.log(e._lngLat);
+   // console.log(e._lngLat);
   }
 
 }

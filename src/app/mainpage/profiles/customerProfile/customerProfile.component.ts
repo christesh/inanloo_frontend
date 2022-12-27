@@ -133,7 +133,7 @@ order:{
     this.api.getCustomersDetails(token, this.userid!).subscribe(
       res => {
         this.curentCustomer = res[0]
-       console.log(this.curentCustomer)
+       // console.log(this.curentCustomer)
         this.mobiles = this.curentCustomer.mobile;
         this.tels = this.curentCustomer.phones;
         this.address = this.curentCustomer.address;
@@ -142,7 +142,7 @@ order:{
         else
           this.profilePic='http://is.mersa-group.ir/assets/images/profile.png'
         
-       console.log(this.profilePic)
+       // console.log(this.profilePic)
         this.address = this.curentCustomer.address;
         var bd = this.curentCustomer.birthDate;
         if (bd != null) {
@@ -216,32 +216,32 @@ order:{
     this.firstname.disable();
   }
   provincechange(event: any) {
-   console.log(event)
+   // console.log(event)
   }
   selectprovince(event: any) {
-   console.log(event)
+   // console.log(event)
     this.shahrestan = event.value.counties;
     this.city = []
     this.region = []
     this.neighbourhood = []
   }
   selectshahrestan(event: any) {
-   console.log(event)
+   // console.log(event)
     this.city = event.value.cities;
     this.region = []
     this.neighbourhood = []
   }
   selectcity(event: any) {
-   console.log(event)
+   // console.log(event)
     this.region = event.value.regions;
     this.neighbourhood = []
   }
   selectregion(event: any) {
-   console.log(event)
+   // console.log(event)
     this.neighbourhood = event.value.neighbourhoods;
   }
   selectneighbour(event: any) {
-   console.log(event)
+   // console.log(event)
   }
   showmap() {
     this.showMap = true;
@@ -253,8 +253,8 @@ order:{
     );
   }
   onDateChange(event: any) {
-   console.log(event);
-   console.log(this.dateValue1.value)
+   // console.log(event);
+   // console.log(this.dateValue1.value)
     this.birthdate = event['shamsi']
   }
 
@@ -297,7 +297,7 @@ order:{
     }
     this.api.saveusersmobile(token, this.userid, mobiles).subscribe(
       res => {
-       console.log(res)
+       // console.log(res)
       },
       err => {
        console.log(err)
@@ -322,7 +322,7 @@ order:{
     }
     this.api.saveuserstel(token, this.userid, telephones).subscribe(
       res => {
-       console.log(res)
+       // console.log(res)
       },
       err => {
        console.log(err)
@@ -478,7 +478,7 @@ order:{
     this.hasImage = false;
   }
   onSelectprofile(event: any) {
-   console.log(event)
+   // console.log(event)
     if (event.target.files && event.target.files[0]) {
       var filesAmount = event.target.files.length;
       for (let i = 0; i < filesAmount; i++) {
@@ -519,7 +519,7 @@ order:{
     var token = this.tokencookie.get('T')
     this.api.editprofile(token, this.userid, this.firstname.value!, this.lastname.value!, this.nationalid.value!, this.birthdate).subscribe(
       res => {
-       console.log(res)
+       // console.log(res)
         var myHeaders = new Headers();
         myHeaders.append("Authorization", "Token " + token);
         var formdata = new FormData();
@@ -534,7 +534,7 @@ order:{
         fetch(this.baseurl + "/personal/technicianuploadpic/", requestOptions)
           .then(response => response.text())
           .then(result =>  console.log(result))
-          .catch(error =>  console.log('error', error));
+          .catch(error =>   console.log('error', error));
 
       },
       err => {
@@ -560,7 +560,7 @@ order:{
 
   }
   EditAddress(id: any) {
-   console.log(id)
+   // console.log(id)
     var index = this.address.findIndex(item => item.id == id)
     var data = {
       id: this.address[index].id,
@@ -648,7 +648,7 @@ order:{
   }
   seletAddress(add: any) {
     if (add.isMainAddress) {
-     console.log(add)
+     // console.log(add)
       for (let i = 0; i < this.addresses.length; i++) {
         add.isMainAddress = true;
         if (this.addresses[i].id !== add.id)
@@ -684,11 +684,11 @@ export class EditAddressDialogProfile implements OnInit {
   }
   ngOnInit() {
 
-   console.log(this.data.addressdata)
+   // console.log(this.data.addressdata)
     this.addressforedit = this.data.addressdata
   }
   getValues(sg: any) {
-   console.log(sg)
+   // console.log(sg)
   }
   editadd(event: any) {
     var data: { btn: string, addid: number } = { btn: event.kind, addid: event.addid }

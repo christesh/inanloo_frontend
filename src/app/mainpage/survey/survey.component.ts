@@ -42,7 +42,7 @@ export class SurveyComponent implements OnInit {
       this.readonly = true;
       this.api.getordersurvey(token, this.orderID).subscribe(
         res => {
-         console.log(res)
+         // console.log(res)
           this.answer = []
           for (let i = 0; i < res.length; i++) {
             this.questions.push(res[i].question)
@@ -62,7 +62,7 @@ export class SurveyComponent implements OnInit {
         })
     }
     else {
-     console.log(this.sKind)
+     // console.log(this.sKind)
       this.readonly = false;
       var idx = -1;
       idx = this.sKind.findIndex((item: any) => item == '2')
@@ -78,7 +78,7 @@ export class SurveyComponent implements OnInit {
       }
       this.api.getsurveyquestions(token, skind).subscribe(
         res => {
-         console.log(res)
+         // console.log(res)
           this.questions = res
         },
         err => {
@@ -98,7 +98,7 @@ export class SurveyComponent implements OnInit {
   }
   save() {
     var qa: { orderID: string, questionID: string, answerID: string, answerText: string }[] = []
-   console.log(this.answer)
+   // console.log(this.answer)
     for (let i = 0; i < this.questions.length; i++) {
       var ans = ""
       if (this.questions[i].optionKind == "2") {
@@ -108,10 +108,10 @@ export class SurveyComponent implements OnInit {
       qa.push({ orderID: this.orderID, questionID: this.questions[i].id, answerID: this.answer[i], answerText: ans })
     }
     var token = this.tokencookie.get('T')
-   console.log(qa)
+   // console.log(qa)
     this.api.savesurvey(token, qa).subscribe(
       res => {
-       console.log(res)
+       // console.log(res)
         this.router.navigate(['/home/orderDetails', { orderID: this.orderID }]);
       },
       err => {

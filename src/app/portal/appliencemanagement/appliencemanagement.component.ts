@@ -140,7 +140,7 @@ export class AppliencemanagementComponent implements OnInit {
   FillTable() {
     var token = this.tokencookies.get('T')
     let dateTime = new Date()
-   console.log(dateTime)
+   // console.log(dateTime)
     this.api.getproblemkind(token).subscribe(
       reskind => {
         this.serviceKind = reskind
@@ -148,8 +148,8 @@ export class AppliencemanagementComponent implements OnInit {
           res => {
             this.applience = res;
             let dateTime = new Date()
-           console.log(dateTime)
-           console.log(res)
+           // console.log(dateTime)
+           // console.log(res)
             for (let i = 0; i < res.length; i++) {
               if (this.applience[i].pic != '')
                 this.applience[i].pic = this.picbaseurl + this.applience[i].pic
@@ -221,8 +221,8 @@ export class AppliencemanagementComponent implements OnInit {
                 }
               }
               let dateTime = new Date()
-             console.log(dateTime)
-             console.log(res)
+             // console.log(dateTime)
+             // console.log(res)
             }
           },
 
@@ -254,7 +254,7 @@ export class AppliencemanagementComponent implements OnInit {
     var aname = this.applianceForm.controls.appllianceName.value
     this.api.createAppliance(token, aname!).subscribe(
       res => {
-       console.log(res)
+       // console.log(res)
         this.createAppliancehow = false;
         this.FillTable()
       },
@@ -282,7 +282,7 @@ export class AppliencemanagementComponent implements OnInit {
         var token = this.tokencookies.get('T')
         this.api.editAppliance(token, Appliancenewname, a.ID).subscribe(
           res => {
-           console.log(res)
+           // console.log(res)
             this.FillTable();
           },
           err => {
@@ -315,7 +315,7 @@ export class AppliencemanagementComponent implements OnInit {
         var token = this.tokencookies.get('T')
         this.api.deleteAppliance(token, a.ID).subscribe(
           res => {
-           console.log(res)
+           // console.log(res)
             Swal.fire({
               title: name,
               text: '!با موفقیت حذف شد',
@@ -362,7 +362,7 @@ export class AppliencemanagementComponent implements OnInit {
         var token = this.tokencookies.get('T')
         this.api.createappliancecategoryproblem(token, appid!, ptitle!, pdes!, pkind, lp!, hp!).subscribe(
           res => {
-           console.log(res)
+           // console.log(res)
             Swal.fire({
               title: 'ایجاد مشکل جدید',
               text: '!با موفقیت انجام شد',
@@ -399,7 +399,7 @@ export class AppliencemanagementComponent implements OnInit {
         var token = this.tokencookies.get('T')
         this.api.createappliancecategorychecklist(token, appid!, chtitle!, chdes!).subscribe(
           res => {
-           console.log(res)
+           // console.log(res)
             Swal.fire({
               title: 'ایجاد چک لیست جدید',
               text: '!با موفقیت انجام شد',
@@ -420,7 +420,7 @@ export class AppliencemanagementComponent implements OnInit {
     });
   }
   appedit(event: any, tableIndex: any) {
-   console.log(event.data)
+   // console.log(event.data)
     switch (event.action) {
       case 'editrecord':
         var data = { appid: tableIndex, problemId: event.data.ID, problemTitle: event.data.title, lowPrice: event.data.lowprice, highPrice: event.data.highprice, description: event.data.description, titleOfDialog: "ویرایش مشکل", buttonTitle: "ذخیره" }
@@ -495,7 +495,7 @@ export class AppliencemanagementComponent implements OnInit {
             var token = this.tokencookies.get('T')
             this.api.deleteappliancecategoryproblem(token, event.data.ID).subscribe(
               res => {
-               console.log(res)
+               // console.log(res)
                 this.applience[tableIndex].appProblems.remove(event.data)
                 Swal.fire({
                   title: name,
@@ -515,7 +515,7 @@ export class AppliencemanagementComponent implements OnInit {
     }
   }
   appchecklistedit(event: any, tableIndex: any) {
-   console.log(event.data)
+   // console.log(event.data)
     switch (event.action) {
       case 'editrecord':
         var data = { appid: tableIndex, problemId: event.data.ID, problemTitle: event.data.title, lowPrice: event.data.lowprice, highPrice: event.data.highprice, description: event.data.description, titleOfDialog: "ویرایش", buttonTitle: "ذخیره" }
@@ -581,7 +581,7 @@ export class AppliencemanagementComponent implements OnInit {
             var token = this.tokencookies.get('T')
             this.api.deleteappliancecategorycheckliast(token, event.data.ID).subscribe(
               res => {
-               console.log(res)
+               // console.log(res)
                 this.applience[tableIndex].appChecklist.remove(event.data)
                 Swal.fire({
                   title: name,
@@ -601,7 +601,7 @@ export class AppliencemanagementComponent implements OnInit {
     }
   }
   onSelectFile(event: any, appindex: any) {
-   console.log(appindex);
+   // console.log(appindex);
 
     if (event.target.files && event.target.files[0]) {
       var filesAmount = event.target.files.length;
@@ -684,12 +684,12 @@ export class AppliencemanagementComponent implements OnInit {
   }
 
   saveBrand(brand: any) {
-   console.log(brand)
+   // console.log(brand)
     var token = this.tokencookies.get('T');
     var bname = this.applianceForm.controls.brandName.value
     this.api.createBrand(token, bname!, brand.ID).subscribe(
       res => {
-       console.log(res)
+       // console.log(res)
         this.createBrandshow = false;
         this.FillTable()
       },
@@ -717,7 +717,7 @@ export class AppliencemanagementComponent implements OnInit {
         var token = this.tokencookies.get('T')
         this.api.editBrand(token, brandnewname, brand.ID).subscribe(
           res => {
-           console.log(res)
+           // console.log(res)
             this.FillTable();
           },
           err => {
@@ -750,7 +750,7 @@ export class AppliencemanagementComponent implements OnInit {
         var token = this.tokencookies.get('T')
         this.api.deleteBrand(token, brand.ID).subscribe(
           res => {
-           console.log(res)
+           // console.log(res)
             Swal.fire({
               title: name,
               text: '!با موفقیت حذف شد',
@@ -797,7 +797,7 @@ export class AppliencemanagementComponent implements OnInit {
         var token = this.tokencookies.get('T')
         this.api.createbrandproblem(token, appid!, ptitle!, pdes!, pkind, lp!, hp!).subscribe(
           res => {
-           console.log(res)
+           // console.log(res)
             Swal.fire({
               title: 'ایجاد مشکل جدید',
               text: '!با موفقیت انجام شد',
@@ -826,7 +826,7 @@ export class AppliencemanagementComponent implements OnInit {
 
   }
   brandedit(event: any, tableIndex: any, brandindex: any) {
-   console.log(event.data)
+   // console.log(event.data)
     switch (event.action) {
       case 'editrecord':
         var data = { appid: tableIndex, problemId: event.data.ID, problemTitle: event.data.title, lowPrice: event.data.lowprice, highPrice: event.data.highprice, description: event.data.description, titleOfDialog: "ویرایش مشکل", buttonTitle: "ذخیره" }
@@ -899,7 +899,7 @@ export class AppliencemanagementComponent implements OnInit {
             var token = this.tokencookies.get('T')
             this.api.deletebrandproblem(token, event.data.ID).subscribe(
               res => {
-               console.log(res)
+               // console.log(res)
                 this.applience[tableIndex].brands[brandindex].brandProblems.remove(event.data)
                 Swal.fire({
                   title: name,
@@ -923,8 +923,8 @@ export class AppliencemanagementComponent implements OnInit {
   }
 
   brandonSelectFile(event: any, appindex: any, brandindex: any) {
-   console.log(event)
-   console.log(brandindex)
+   // console.log(event)
+   // console.log(brandindex)
     var ax = this.applience.findIndex(item => item.ID == appindex.ID)
     if (event.target.files && event.target.files[0]) {
       var filesAmount = event.target.files.length;
@@ -934,7 +934,7 @@ export class AppliencemanagementComponent implements OnInit {
         reader.onload = (event: any) => {
           var bx = this.applience[ax].brands.findIndex(item => item.ID == brandindex.ID)
           this.applience[ax].brands[bx].brandpic = event.target.result;
-         console.log(this.applience[ax].brands)
+         // console.log(this.applience[ax].brands)
         }
         reader.readAsDataURL(event.target.files[i]);
       }
@@ -1007,12 +1007,12 @@ export class AppliencemanagementComponent implements OnInit {
   }
 
   saveModel(model: any) {
-   console.log(model)
+   // console.log(model)
     var token = this.tokencookies.get('T');
     var mname = this.applianceForm.controls.modelName.value
     this.api.createModel(token, mname!, model.ID).subscribe(
       res => {
-       console.log(res)
+       // console.log(res)
         this.createModelshow = false;
         this.FillTable()
       },
@@ -1055,7 +1055,7 @@ export class AppliencemanagementComponent implements OnInit {
         var token = this.tokencookies.get('T')
         this.api.createmodelproblem(token, appid!, ptitle!, pdes!, pkind, lp!, hp!).subscribe(
           res => {
-           console.log(res)
+           // console.log(res)
             Swal.fire({
               title: 'ایجاد مشکل جدید',
               text: '!با موفقیت انجام شد',
@@ -1079,7 +1079,7 @@ export class AppliencemanagementComponent implements OnInit {
   }
   createModelChecklist(model: any, tableIndex: any, brandindex: any, modelindex: any) { }
   modeledit(event: any, tableIndex: any, brandindex: any, modelindex: any) {
-   console.log(event.data)
+   // console.log(event.data)
     switch (event.action) {
       case 'editrecord':
         var data = { appid: tableIndex, problemId: event.data.ID, problemTitle: event.data.title, lowPrice: event.data.lowprice, highPrice: event.data.highprice, description: event.data.description, titleOfDialog: "ویرایش مشکل", buttonTitle: "ذخیره" }
@@ -1152,7 +1152,7 @@ export class AppliencemanagementComponent implements OnInit {
             var token = this.tokencookies.get('T')
             this.api.deletemodelproblem(token, event.data.ID).subscribe(
               res => {
-               console.log(res)
+               // console.log(res)
                 this.applience[tableIndex].brands[brandindex].brandProblems.remove(event.data)
                 Swal.fire({
                   title: name,
@@ -1189,7 +1189,7 @@ export class AppliencemanagementComponent implements OnInit {
         var token = this.tokencookies.get('T')
         this.api.editModel(token, modelnewname, model.ID).subscribe(
           res => {
-           console.log(res)
+           // console.log(res)
             this.FillTable();
           },
           err => {
@@ -1222,7 +1222,7 @@ export class AppliencemanagementComponent implements OnInit {
         var token = this.tokencookies.get('T')
         this.api.deleteModel(token, model.ID).subscribe(
           res => {
-           console.log(res)
+           // console.log(res)
             Swal.fire({
               title: name,
               text: '!با موفقیت حذف شد',
@@ -1289,7 +1289,7 @@ export class EditApplianceItemDialog implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ) { }
   ngOnInit(): void {
-   console.log(this.data.userdata)
+   // console.log(this.data.userdata)
     this.form.controls.itemTitle.patchValue(this.data.userdata.titleName);
     this.form.controls.itemTitle.markAsDirty();
     this.title = this.data.userdata.itemName;
@@ -1367,7 +1367,7 @@ export class CreateProblemDialog implements OnInit {
     );
   }
   radioselect(event: any) {
-   console.log(event)
+   // console.log(event)
     this.selectedKind = event.value
   }
   create() {
@@ -1435,7 +1435,7 @@ export class CreateChecklistDialog implements OnInit {
     );
   }
   radioselect(event: any) {
-   console.log(event)
+   // console.log(event)
     this.selectedKind = event.value
   }
   create() {

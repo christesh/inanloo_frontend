@@ -54,11 +54,11 @@ export class OrderdetailsComponent implements OnInit {
     this.modalImg = document.getElementById("img01");
     this.captionText = document.getElementById("caption");
     this.orderID = this._Activatedroute.snapshot.paramMap.get("orderID")!
-   console.log(this.orderID)
+   // console.log(this.orderID)
     var token = this.tokencookie.get('T')
     this.api.getordersurvey(token, this.orderID).subscribe(
       res => {
-       console.log(res)
+       // console.log(res)
         if (res.length == 0) {
           this.surveyTitle = "نظرسنجی"
         }
@@ -74,7 +74,7 @@ export class OrderdetailsComponent implements OnInit {
     )
     this.api.getorder(token, this.orderID).subscribe(
       res => {
-        console.log(res)
+        // console.log(res)
         this.order = res[0]
 
         if (this.order.Gaccept == null) {
@@ -196,7 +196,7 @@ export class OrderdetailsComponent implements OnInit {
     var token = this.tokencookie.get('T')
     this.api.setguaranteeaccept(token, this.orderID, this.acceptG).subscribe(
       res => {
-       console.log(res)
+       // console.log(res)
         this.gchange = false;
       },
       err => {

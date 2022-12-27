@@ -78,6 +78,7 @@ export class OrderpageComponent {
   // baseurl = "http://api-is.mersa-group.ir";
   imgurl = "http://mersa-group.ir";
   // timenow:{hour: number, minute: number}={hour: 12, minute: 12};
+  wait:boolean=true;
   ruleChecked:boolean= false;
   showbanner: boolean = true;
   mapEnable: boolean = false;
@@ -207,6 +208,7 @@ export class OrderpageComponent {
     public editAdd: MatDialog,
     private _snackBar: MatSnackBar,
   ) {
+    
     this.stepperOrientation = breakpointObserver
       .observe('(min-width: 800px)')
       .pipe(map(({ matches }) => (matches ? 'horizontal' : 'vertical')));
@@ -265,6 +267,7 @@ export class OrderpageComponent {
     this.datepickeropen = false;
   }
   ngOnInit() {
+    this.wait=true;
     this.userid = localStorage.getItem('personID');
     // this.problemskind.push({ID:"1",title:"نصب"})
     // this.problemskind.push({ID:"2",title:"تعمیر"})
@@ -283,13 +286,15 @@ export class OrderpageComponent {
     this.api.getAllApplience(token).subscribe(
       res => {
         this.applience = res
-       console.log(this.applience)
+        this.wait=false;
+       // console.log(this.applience)
         for (let i = 0; i < this.applience.length; i++) {
           this.applience[i].pic = this.imgurl + this.applience[i].pic;
           for (let j = 0; j < this.applience[i].brands.length; j++) {
             this.applience[i].brands[j].brandpic = this.imgurl + this.applience[i].brands[j].brandpic;
           }
         }
+        
       },
       err => {
        console.log(err)
@@ -298,7 +303,7 @@ export class OrderpageComponent {
     var userId = localStorage.getItem('personID')
     this.api.getCustomersDetails(token, userId!).subscribe(
       res => {
-       console.log(res)
+       // console.log(res)
         this.curentCustomer = res[0];
         this.address = this.curentCustomer.address;
         for (let i = 0; i < this.address.length; i++) {
@@ -337,19 +342,20 @@ export class OrderpageComponent {
             addtext += ", طبقه: " + this.address[i].addressFloor;
           this.addresses.push({ id: this.address[i].id, text: addtext, maplat: Number(this.address[i].addressLat), maplong: Number(this.address[i].addressLong), isMainAddress: Boolean(this.address[i].isMain) })
         }
+        
       },
       err => {
        console.log(err)
       }
     )
-
+    
     this.yesterday = Jalali.parse(Jalali.now().add(-1, 'day').toString()).valueOf()
     this.initdateforcal(Jalali.now().toString().substring(0, 10))
     this.hasguarantee = false;
     // this.center.lng = 51.367918;
     // this.center.lat = 35.712706;  
     this.dateValue = new FormControl(new Date().valueOf());
-   console.log(this.dateValue.value)
+   // console.log(this.dateValue.value)
     this.timerange = [{ ID: 1, title: "بین 9 تا 12" }, { ID: 2, title: "بین 12 تا 15" }, { ID: 3, title: "بین 15 تا 18" }, { ID: 3, title: "بین 18 تا 21" }];
   }
   shownewaddress: boolean = false;
@@ -420,8 +426,8 @@ export class OrderpageComponent {
   }
 
   selectmodel(model:any) {
-    //console.log(this.firstFormGroup.controls.selectedmodel.value)
-   console.log(model)
+    //// console.log(this.firstFormGroup.controls.selectedmodel.value)
+   // console.log(model)
   }
   modelserial: string = "";
   serialchange(event: any) {
@@ -437,7 +443,7 @@ export class OrderpageComponent {
       if (name == "سایر") {
         this.showcomment = true;
       }
-     console.log(this.subtasks[sid].type)
+     // console.log(this.subtasks[sid].type)
       this.selectedsubtasks.push(this.subtasks[sid])
       if (this.isNumber(this.subtasks[sid].highprice!)) {
         this.totlahighprice += Number(this.subtasks[sid].highprice!);
@@ -553,9 +559,9 @@ export class OrderpageComponent {
     }
     this.api.getProblems(token, app, brand, model).subscribe(
       res => {
-       console.log(res)
+       // console.log(res)
         for (let i = 0; i < res.length; i++) {
-         console.log(res[i]['pkind'])
+         // console.log(res[i]['pkind'])
           var pkindex = this.problemskind.findIndex(item => item.title == res[i]['problemKind__title'])
           this.subtasks.push({ ID: i, pID: res[i]['id'], kind: res[i]['problemKind_id'], title: res[i]['problemTitle'], description: res[i]['problemDescription'], checked: false, lowprice: res[i]['lowPrice'], highprice: res[i]['highPrice'], type: res[i]['pkind'] })
           if (pkindex != -1) {
@@ -569,7 +575,7 @@ export class OrderpageComponent {
         }
         
         this.subtasks.push({ ID: res.length, pID: -1, kind: 'other', title: 'سایر', checked: false, description: '', lowprice: 'نامشخص', highprice: 'نامشخص', type: 'نامشخص' });
-        //console.log(this.subtasks)
+        //// console.log(this.subtasks)
         this.allsubtasks = this.subtasks
       }
       ,
@@ -582,10 +588,11 @@ export class OrderpageComponent {
     this.problem();
     this.order.problem = this.selectedsubtasks
     this.order.problemPics = this.image;
+    this.thirdcomplete=true;
   }
   seletAddress(add: any) {
     if (add.isMainAddress) {
-     console.log(add)
+     // console.log(add)
       for (let i = 0; i < this.addresses.length; i++) {
         add.isMainAddress = true;
         if (this.addresses[i].id !== add.id)
@@ -594,23 +601,18 @@ export class OrderpageComponent {
     }
   }
   thirdstepnext() {
-   console.log(this.selectedtime)
+   // console.log(this.selectedtime)
     this.showsummery = true;
+    this.thirdcomplete = true;
+    this.thirdsteperror = false;
     var timerangeid = this.selectedtime;
     if (this.selectedtime == "") {
       this.thirdsteperror = true
+      this.thirdcomplete = false;
+      
     }
-    else {
-      this.thirdsteperror = false
-      this.thirdcomplete = true;
-    }
-    if (this.selectedDate == "") {
-      this.thirdsteperror = true
-    }
-    else {
-      this.thirdsteperror = false
-      this.thirdcomplete = true;
-    }
+    
+   
     this.order.orderDate = this.selectedDate
     this.summery.orderDate = this.selectedDate
     this.order.timeRange = Number(timerangeid!);
@@ -627,7 +629,9 @@ export class OrderpageComponent {
         break;
       }
     }
-   console.log(this.order)
+    
+
+   // console.log(this.order)
   }
   onSelectFile(event: any) {
     if (event.target.files && event.target.files[0]) {
@@ -712,7 +716,7 @@ export class OrderpageComponent {
       this.secondsteperror = false;
     }
     this.selectedsubtasks2 = this.selectedsubtasks
-   console.log(this.selectedsubtasks2)
+   // console.log(this.selectedsubtasks2)
   }
   initdateforcal(date: string) {
     this.selectedDate = date;
@@ -762,7 +766,7 @@ export class OrderpageComponent {
     this.newOrderEvent.emit(this.order);
     var token = this.tokencookie.get('T');
     this.order.orderConfirm = true;
-   console.log(this.order)
+   // console.log(this.order)
     this.api.createorder(token, this.order).subscribe(
       res => {
 
@@ -781,7 +785,7 @@ export class OrderpageComponent {
         if (this.hasguarantee) {
           this.api.createcustomerappliance(token, this.order.customerID, this.order.modelID, this.order.modelSerial).subscribe(
             res => {
-             console.log(res)
+             // console.log(res)
               ////فاکتور خرید///
               for (let i = 0; i < this.iimage.length; i++) {
                 var compimg = this.iimage[i]
@@ -791,7 +795,7 @@ export class OrderpageComponent {
                 var formdata1 = new FormData();
                 formdata1.append("customerAppliance", res);
                 formdata1.append("invoicePic", compimg, this.iimage[i].name);
-               console.log("parameter to send image:" + formdata1)
+               // console.log("parameter to send image:" + formdata1)
                 this.http.post(this.baseurl + "/order/uploaduaranteeinvoicepic/", formdata1, {
                   headers: new HttpHeaders({
                     'Authorization': 'Token  ' + token
@@ -805,21 +809,21 @@ export class OrderpageComponent {
                       if (event.type == HttpEventType.UploadProgress) {
                         this.progress = Math.round((100 / event.total) * event.loaded);
                       } else if (event.type == HttpEventType.Response) {
-                       console.log("images is uploaded:" + event.body)
+                       // console.log("images is uploaded:" + event.body)
                         var res = event.body;
                       }
                     }),
                     catchError((err: any) => {
-                     console.log(err.message);
+                     // console.log(err.message);
                       return throwError("error1 to upload img:" + err.message);
                     })
                   )
                   .subscribe(
                     response => {
-                     console.log(response)
+                     // console.log(response)
                     },
                     err => {
-                     console.log("error2 to upload img:" + err)
+                     // console.log("error2 to upload img:" + err)
                     }
                   )
 
@@ -837,7 +841,7 @@ export class OrderpageComponent {
                 formdata1.append("guaranteeStartDate",sdate );
                 formdata1.append("guaranteeEndDate",edate);
                 formdata1.append("guaranteePic", compimg, this.gimage[i].name);
-               console.log("parameter to send image:" + formdata1)
+               // console.log("parameter to send image:" + formdata1)
                 this.http.post(this.baseurl + "/order/uploadguaranteepic/", formdata1, {
                   headers: new HttpHeaders({
                     'Authorization': 'Token  ' + token
@@ -851,21 +855,21 @@ export class OrderpageComponent {
                       if (event.type == HttpEventType.UploadProgress) {
                         this.progress = Math.round((100 / event.total) * event.loaded);
                       } else if (event.type == HttpEventType.Response) {
-                       console.log("images is uploaded:" + event.body)
+                       // console.log("images is uploaded:" + event.body)
                         var res = event.body;
                       }
                     }),
                     catchError((err: any) => {
-                     console.log(err.message);
+                     // console.log(err.message);
                       return throwError("error1 to upload img:" + err.message);
                     })
                   )
                   .subscribe(
                     response => {
-                     console.log(response)
+                     // console.log(response)
                     },
                     err => {
-                     console.log("error2 to upload img:" + err)
+                     // console.log("error2 to upload img:" + err)
                     }
                   )
 
@@ -877,7 +881,7 @@ export class OrderpageComponent {
           )
         }
         ////مشکلات////
-       console.log(this.selectedsubtasks2)
+       // console.log(this.selectedsubtasks2)
         for (let i = 0; i < this.image.length; i++) {
           var compimg = this.image[i]
           var myHeaders = new Headers();
@@ -902,21 +906,21 @@ export class OrderpageComponent {
                 if (event.type == HttpEventType.UploadProgress) {
                   this.progress = Math.round((100 / event.total) * event.loaded);
                 } else if (event.type == HttpEventType.Response) {
-                 console.log("images is uploaded:" + event.body)
+                 // console.log("images is uploaded:" + event.body)
                   var res = event.body;
                 }
               }),
               catchError((err: any) => {
-               console.log(err.message);
+               // console.log(err.message);
                 return throwError("error1 to upload img:" + err.message);
               })
             )
             .subscribe(
               response => {
-               console.log(response)
+               // console.log(response)
               },
               err => {
-               console.log("error2 to upload img:" + err)
+               // console.log("error2 to upload img:" + err)
               }
             )
 
@@ -936,7 +940,7 @@ export class OrderpageComponent {
     )
   }
   EditAddress(id: any) {
-   console.log(id)
+   // console.log(id)
     var index = this.address.findIndex(item => item.id == id)
     var data = {
       id: this.address[index].id,
@@ -1064,20 +1068,25 @@ export class OrderpageComponent {
       }
     }
   }
-  ProblemSearchChange(event: any) {
+  openProblem(pk:any)
+  {
+    this.subtasks=pk.problem
+  }
+  ProblemSearchChange(event: any,pk:any) {
     var s = [];
     if (event.target.value != "") {
-      for (let i = 0; i < this.allsubtasks.length!; i++) {
-        var protitle = this.allsubtasks![i].title.toLowerCase()
+      for (let i = 0; i < pk.problem.length!; i++) {
+        var protitle =  pk.problem![i].title.toLowerCase()
         var searchv = event.target.value.toLowerCase()
         if (protitle.includes(searchv)) {
-          s.push(this.allsubtasks![i])
+          s.push( pk.problem![i])
         }
       }
+      this.subtasks=[]
       this.subtasks = s;
     }
     else {
-      this.subtasks = this.allsubtasks
+      this.subtasks = pk.problem
     }
 
   }
@@ -1111,14 +1120,14 @@ export class EditAddressDialog implements OnInit {
   }
   ngOnInit() {
 
-   console.log(this.data.addressdata)
+   // console.log(this.data.addressdata)
     this.addressforedit = this.data.addressdata
   }
   getValues(sg: any) {
-   console.log(sg)
+   // console.log(sg)
   }
   editadd(event: any) {
-   console.log(event);
+   // console.log(event);
     if (event.kind == "edit") {
       var data: { btn: string, addid: number } = { btn: "edit", addid: event.addid }
       this.dialogRef.close(data);

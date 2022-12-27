@@ -73,20 +73,20 @@ export class UsermanagementComponent implements OnInit {
   }
   FillTable() {
     this.token = this.tokencookie.get('T');
-   console.log(this.token)
+   // console.log(this.token)
     this.api.getAllCompanyMembers(this.token).subscribe(
       res => {
         // this.allCompanymembers = res;
-       console.log(res)
+       // console.log(res)
         var t: { id: string, national_id: string, f_name: string, l_name: string, mobile: string, group: string, group_id: number }[] = []
-       console.log(res[0]['mobile'][0]['mobileNumber']);
+       // console.log(res[0]['mobile'][0]['mobileNumber']);
         for (let i = 0; i < res.length; i++) {
           try {
             t.push({ id: res[i]['id'], f_name: res[i]['firstName'], l_name: res[i]['lastName'], national_id: res[i]['nationalId'], mobile: res[i]['mobile'][0]['mobileNumber'], group: res[i]['membersGroup']['group'], group_id: res[i]['membersGroup']['id'] });
           } catch { }
         }
         this.companyMembertablevalue = new LocalDataSource(t);
-       console.log(this.companyMembertablevalue)
+       // console.log(this.companyMembertablevalue)
       },
       err => {
        console.log(err)
@@ -100,7 +100,7 @@ export class UsermanagementComponent implements OnInit {
 
         break;
       case 'editrecord':
-       console.log(event)
+       // console.log(event)
         var data = { id: event.data.id, firstname: event.data.f_name, lastname: event.data.l_name, nationaid: event.data.national_id, mobile: event.data.mobile, kind: 'edit' };
         const dialogRef = this.createUser.open(CreateUserDialog, {
           width: '700px',
@@ -136,7 +136,7 @@ export class UsermanagementComponent implements OnInit {
           if (result.isConfirmed) {
             this.api.deleteCompanyMember(this.token, event.data.id).subscribe(
               res => {
-               console.log(res)
+               // console.log(res)
                 Swal.fire({
                   title: name,
                   text: '!با موفقیت حذف شد',
@@ -199,7 +199,7 @@ export class CreateUserDialog implements OnInit {
   ) { }
   memberGroup: { id: string, group: string,description:string ,permissions:{id:number,title:string,active:string,description:string} }[] = []
   ngOnInit(): void {
-   console.log(this.data);
+   // console.log(this.data);
     var token = this.tokencookie.get('T')
     if (this.data.userdata.kind == "edit") {
       this.form.controls.firstname.patchValue(this.data.userdata.firstname);
@@ -213,7 +213,7 @@ export class CreateUserDialog implements OnInit {
     }
     this.api.getAllMemberGroup(token).subscribe(
       res => {
-       console.log(res)
+       // console.log(res)
         this.memberGroup = res;
       },
       err => {
@@ -240,7 +240,7 @@ export class CreateUserDialog implements OnInit {
       var usercategory = 3;
       this.api.registerCompanyMember(token, nationalid!, pass!, fname!, lname!, nationalid!, group!, usercategory, mobile!).subscribe(
         res => {
-         console.log(res)
+         // console.log(res)
           var data: { btn: string } = { btn: "save" }
           Swal.fire({
             title: 'ایجاد کاربر جدید',
@@ -269,7 +269,7 @@ export class CreateUserDialog implements OnInit {
 
         this.api.editCompanyMember(token, userid!, fname!, lname!, nationalid!, group!, mobile!).subscribe(
           res => {
-           console.log(res)
+           // console.log(res)
             var data: { btn: string } = { btn: "save" }
             this.dialogRef.close(data);
           },
@@ -285,6 +285,6 @@ export class CreateUserDialog implements OnInit {
     this.dialogRef.close(data);
   }
   groupselect() {
-   console.log(this.form.controls.selectedgroup.value)
+   // console.log(this.form.controls.selectedgroup.value)
   }
 }

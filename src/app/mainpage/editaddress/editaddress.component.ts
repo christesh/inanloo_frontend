@@ -60,7 +60,7 @@ export class EditaddressComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-   console.log(this.addressInfo)
+   // console.log(this.addressInfo)
     this.form.controls.mainstreet.patchValue('');
     this.form.controls.mainstreet.markAsDirty();
     this.form.controls.substreet.patchValue('');
@@ -78,7 +78,7 @@ export class EditaddressComponent implements OnInit {
     var token = this.tokencookies.get('T')
     this.api.getRegins(token).subscribe(
       res => {
-       console.log(res)
+       // console.log(res)
         this.province = res
         if (this.addressInfo != null) {
           this.form.controls.mainstreet.patchValue(this.addressInfo.mainstreet);
@@ -128,7 +128,7 @@ export class EditaddressComponent implements OnInit {
     )
   }
   selectprovince(event: any) {
-   console.log(event)
+   // console.log(event)
     this.shahrestan = this.province.find(item => item.id == Number(event.value))!.counties;
     this.pid = event.value
     this.city = []
@@ -136,33 +136,33 @@ export class EditaddressComponent implements OnInit {
     this.neighbourhood = []
   }
   selectshahrestan(event: any) {
-   console.log(event)
+   // console.log(event)
     this.coid = event.value
     this.city = this.shahrestan.find(item => item.id == Number(event.value))!.cities;
     this.region = []
     this.neighbourhood = []
   }
   selectcity(event: any) {
-   console.log(event)
+   // console.log(event)
     this.cid = event.value
     this.region = this.city.find(item => item.id == Number(event.value))!.regions;
     this.neighbourhood = []
   }
   selectregion(event: any) {
     this.rid = event.value
-   console.log(event)
+   // console.log(event)
 
     this.neighbourhood = this.region.find(item => item.id == Number(event.value))!.neighbourhoods;
   }
   selectneighbour(event: any) {
     this.nid = event.value
-   console.log(event)
+   // console.log(event)
   }
   showmap() {
     this.showMap = true;
   }
   saveaddress() {
-   console.log(this.userId);
+   // console.log(this.userId);
     var addid = "";
     if (this.addressInfo != null)
       addid = this.addressInfo.id;
@@ -186,13 +186,13 @@ export class EditaddressComponent implements OnInit {
       isMain: this.isMain
     }
 
-   console.log(newAddress)
+   // console.log(newAddress)
     var token = this.tokencookies.get('T')
     if (this.addressInfo != null) {
       this.api.EditCustomerAddress(token, newAddress).subscribe(
         res => {
           this.editAddressEvent.emit({ kind: "edit", addid: res['Address ID'] })
-         console.log(res)
+         // console.log(res)
         },
         err => {
          console.log(err)
@@ -203,7 +203,7 @@ export class EditaddressComponent implements OnInit {
       this.api.CreateCustomerAddress(token, newAddress).subscribe(
         res => {
           this.editAddressEvent.emit({ kind: "save", addid: res['Address ID'] })
-         console.log(res)
+         // console.log(res)
         },
         err => {
          console.log(err)
@@ -212,7 +212,7 @@ export class EditaddressComponent implements OnInit {
     }
   }
   getmapgeo(event: any) {
-   console.log(event);
+   // console.log(event);
     this.maplat = event.lat;
     this.maplong = event.long;
   }
@@ -227,7 +227,7 @@ export class EditaddressComponent implements OnInit {
     );
   }
   ismainSelect(im: boolean) {
-   console.log(im)
+   // console.log(im)
   }
   deleteaddress() {
     const swalWithBootstrapButtons = Swal.mixin({

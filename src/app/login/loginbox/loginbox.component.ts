@@ -42,7 +42,7 @@ export class BottomSheetOverviewExampleSheet {
     var orderid=this.data.data.orderID
     this.api.acceptorder(token,orderid).subscribe(
       res=>{
-       console.log(res)
+       // console.log(res)
         this._bottomSheetRef.dismiss();
       },
       err=>{
@@ -55,7 +55,7 @@ export class BottomSheetOverviewExampleSheet {
     var orderid=this.data.data.orderID
     this.api.rejectorder(token,orderid).subscribe(
       res=>{
-       console.log(res)
+       // console.log(res)
         this._bottomSheetRef.dismiss();
       },
       err=>{
@@ -66,7 +66,7 @@ export class BottomSheetOverviewExampleSheet {
   imgurl=environment.PIC_URL+"/media/"
   ngOnInit() {
 
-   console.log(this.data.notification.body)
+   // console.log(this.data.notification.body)
     if (this.data.notification.body == 'orderaccept') {
       
       this.orderaccept = true
@@ -84,7 +84,7 @@ export class BottomSheetOverviewExampleSheet {
     if (this.data.notification.body == 'Call') {
       this.call = true
       this.caller=JSON.parse(this.data.data.caller)
-     console.log(this.caller)
+     // console.log(this.caller)
       this.playAudioCall()
     }
     
@@ -222,7 +222,7 @@ export class LoginboxComponent implements OnInit {
     this.login = true;
     this.api.sendsms(this.mobileforregister).subscribe(
       res => {
-       console.log(res)
+       // console.log(res)
         if (res['result'] == 'mobile number not match') {
           this.form.reset();
           this.openSnackBar('شماره تلفن همراه وارد شده در سیستم ثبت نشده است!', '', 'red-snackbar', 5)
@@ -245,7 +245,7 @@ export class LoginboxComponent implements OnInit {
     )
   }
   signup(): void {
-   console.log(this.mobileforregister)
+   // console.log(this.mobileforregister)
     const dialogRef = this.signupdialog.open(SignUPDialog, {
       width: '400px',
       data: { mobilenumber: this.mobileforregister },
@@ -255,7 +255,7 @@ export class LoginboxComponent implements OnInit {
       if (result.btn == "ok") {
         this.login = false;
         this.signupData = result;
-       console.log('The dialog was closed');
+       // console.log('The dialog was closed');
         this.api.justsms(result.mn).subscribe(
           res => {
             this.getMobile = false;
@@ -279,24 +279,24 @@ export class LoginboxComponent implements OnInit {
     this.api.checksms(otp, this.mobileforregister).subscribe(
       res => {
         if (res['result'] == 'success') {
-         console.log(this.signupData)
+         // console.log(this.signupData)
           this.api.register(this.signupData.mn, this.signupData.name, this.signupData.family, this.signupData.nationalid, this.signupData.userKind).subscribe(
             res => {
               this.api.login(this.mobileforregister!).subscribe(
                 res => {
-                 console.log(res['key'])
+                 // console.log(res['key'])
                   this.tokencookie.set('T', res['key'])
                   var token = res['key'].toString()
                   this.api.setlog(token, "login").subscribe(
                     res => {
-                     console.log(res)
+                     // console.log(res)
                     },
                     err => {
                      console.log(err)
                     })
                     this.api.setactiveuser(token).subscribe(
                       res => {
-                       console.log(res)
+                       // console.log(res)
                       },
                       err=>{
                        console.log(err)
@@ -365,7 +365,7 @@ export class LoginboxComponent implements OnInit {
                 }
                 this.api.setactiveuser(token).subscribe(
                   res => {
-                   console.log(res)
+                   // console.log(res)
                   },
                   err=>{
                    console.log(err)
@@ -395,7 +395,7 @@ export class LoginboxComponent implements OnInit {
     this.openSnackBar('پیامک مجددا ارسال شد!', '', 'green-snackbar', 4)
     this.api.sendsms(this.form.controls.mobilenumber.value).subscribe(
       res => {
-       console.log(res)
+       // console.log(res)
         if (res['result'] == 'mobile number not match') {
           this.form.reset();
           this.openSnackBar('شماره تلفن همراه وارد شده در سیستم ثبت نشده است!', '', 'red-snackbar', 5)
@@ -445,7 +445,7 @@ export class LoginboxComponent implements OnInit {
             this.openSnackBar('شما با موفقیت وارد شدید!', '', 'green-snackbar', 4)
             this.api.setactiveuser(token).subscribe(
               res => {
-               console.log(res)
+               // console.log(res)
               },
               err=>{
                console.log(err)
@@ -474,7 +474,7 @@ export class LoginboxComponent implements OnInit {
       disableClose: true
     });
     dialogRef1.afterClosed().subscribe(result => {
-     console.log('The dialog was closed');
+     // console.log('The dialog was closed');
     });
   }
 
@@ -508,12 +508,12 @@ export class LoginboxComponent implements OnInit {
     getToken(messaging, { vapidKey: environment.firebaseConfig.vapidKey }).then((currentToken) => {
       if (currentToken) {
        console.log("Hurraaa!!! we got the token.....")
-       console.log(currentToken);
+       console.log(environment.firebaseConfig.messagingSenderId);
         var token = this.tokencookie.get('T');
-       console.log(token);
+       // console.log(token);
         this.api.createFCMdevice(token, currentToken, id).subscribe(
           res => {
-           console.log(res)
+           // console.log(res)
           },
           err => {
             this.openSnackBar(err, '', 'red-snackbar', 5)
@@ -521,11 +521,11 @@ export class LoginboxComponent implements OnInit {
         )
       } else {
         // Show permission request UI
-       console.log('No registration token available. Request permission to generate one.');
+       // console.log('No registration token available. Request permission to generate one.');
         // ...
       }
     }).catch((err) => {
-     console.log('An error occurred while retrieving token. ', err);
+     // console.log('An error occurred while retrieving token. ', err);
       // ...
     });
 
@@ -534,7 +534,7 @@ export class LoginboxComponent implements OnInit {
   listen() {
     const messaging = getMessaging();
     onMessage(messaging, (payload) => {
-      console.log('Message received. ', payload);
+      // console.log('Message received. ', payload);
       this.message = payload;
       const config: MatBottomSheetConfig = {
         data: this.message
@@ -543,15 +543,15 @@ export class LoginboxComponent implements OnInit {
 
     });
   }
-  //   //console.log(navigator.serviceWorker.getRegistrations)
+  //   //// console.log(navigator.serviceWorker.getRegistrations)
   //   // navigator.serviceWorker.register("firebase-messaging-sw.js")
-  //   //console.log(navigator.serviceWorker.getRegistrations)
+  //   //// console.log(navigator.serviceWorker.getRegistrations)
   //   this.afMessaging.requestPermission
   //     .pipe(
   //       mergeMapTo(this.afMessaging.tokenChanges)
   //       )
   //     .subscribe(
-  //       (token) => {console.log('Permission granted! Save to the server!', token); this.FCMtoken = token },
+  //       (token) => {// console.log('Permission granted! Save to the server!', token); this.FCMtoken = token },
   //       (error) => { console.error(error); },
   //     );
   // }
@@ -559,12 +559,12 @@ export class LoginboxComponent implements OnInit {
   //   this.afMessaging.getToken
   //     .pipe(mergeMap(token => this.afMessaging.deleteToken(this.token)))
   //     .subscribe(
-  //       (token) => {console.log('Token deleted!'); },
+  //       (token) => {// console.log('Token deleted!'); },
   //     );
   // }
   // listen() {
   //   this.afMessaging.messages
-  //     .subscribe((message) => {console.log(message); });
+  //     .subscribe((message) => {// console.log(message); });
   // }
 }
 
@@ -594,7 +594,7 @@ export class SignUPDialog implements OnInit {
   public uc = 0;
   radioModel: any;
   ngOnInit() {
-   console.log(this.data)
+   // console.log(this.data)
     this.form = this.fb.group({
       nationalid: [''],    // {5}
       mobilenumber: ['', Validators.required],
@@ -605,13 +605,13 @@ export class SignUPDialog implements OnInit {
     this.form.controls['mobilenumber'].markAsDirty();
     this.api.GetPersonCategories().subscribe(
       (res) => {
-       console.log(res)
+       // console.log(res)
         for (let i = 0; i < res.length; i++) {
           if (res[i]['name'] == 'مشتری' || res[i]['name'] == 'تکنسین')
             this.usercategory.push(res[i]);
         }
 
-       console.log(this.usercategory);
+       // console.log(this.usercategory);
       },
       (err: any) => {
        console.log(err)
@@ -725,7 +725,7 @@ export class ForgetPassDialog implements OnInit {
     this.user = this.form.controls.username.value!
     this.api.ForgetSendSms(this.mobile, this.user).subscribe(
       res => {
-       console.log(res)
+       // console.log(res)
         if (res['result'] == 'mobile number not match') {
           this.form.reset();
           this.openSnackBar('شماره تلفن همراه وارد شده در سیستم ثبت نشده است!', '', 'red-snackbar', 5)
@@ -755,10 +755,10 @@ export class ForgetPassDialog implements OnInit {
     });
   }
   checksms() {
-   console.log(this.user, this.mobile, this.smscode)
+   // console.log(this.user, this.mobile, this.smscode)
     this.api.checksms(this.smscode, this.mobile).subscribe(
       res => {
-       console.log(res)
+       // console.log(res)
         if (res['result'] != 'success') {
           this.errmsg = res['result']
           this.errbox = true
@@ -782,7 +782,7 @@ export class ForgetPassDialog implements OnInit {
     if (this.pass1 == this.pass2) {
       this.api.changepass(this.user, this.pass1).subscribe(
         res => {
-         console.log(res['result'])
+         // console.log(res['result'])
           this.passok = true;
           this.errbox = false
           this.getsms = false

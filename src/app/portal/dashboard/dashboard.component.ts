@@ -129,11 +129,11 @@ export class DashboardComponent implements OnInit {
   };
   // events
   public chartClicked({ event, active }: { event?: ChartEvent, active?: {}[] }): void {
-   console.log(event, active);
+   // console.log(event, active);
   }
 
   public chartHovered({ event, active }: { event?: ChartEvent, active?: {}[] }): void {
-   console.log(event, active);
+   // console.log(event, active);
   }
 
   public randomize(): void {
@@ -155,9 +155,9 @@ export class DashboardComponent implements OnInit {
       56,
       Math.round(Math.random() * 100),
       40];
-   console.log(this.charts)
+   // console.log(this.charts)
     this.charts?.forEach((child) => {
-     console.log(child);
+     // console.log(child);
       child.chart?.update()
     });
   }

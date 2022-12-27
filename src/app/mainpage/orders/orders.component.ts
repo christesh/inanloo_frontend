@@ -102,7 +102,7 @@ export class OrdersComponent implements OnInit {
                 var lowp = 0;
                 var highp = 0
                 for (let j = 0; j < cp.length; j++) {
-                 console.log(cp[j])
+                 // console.log(cp[j])
                   var pk = cp[j]['problemKind_id']
                   var kind = problemKind.find(item => item.id == pk).title
                   var keys = Object.keys(cp[j])
@@ -149,7 +149,7 @@ export class OrdersComponent implements OnInit {
                 date = date.replace(re, "/")
                 date = moment(date).locale('fa').format('YYYY/M/D');
                 regdate = moment(regdate).locale('fa').format('YYYY/M/D');
-                //console.log(regdate)
+                //// console.log(regdate)
                 if (res[i]['technician'] != null) {
                   techpic =this.imgurl+ res[i]['technician']['picture']
                   techfullname = res[i]['technician']['firstName'] + " " + res[i]['technician']['lastName']
@@ -158,7 +158,7 @@ export class OrdersComponent implements OnInit {
                   else
                     techrate = ""
                 }
-               console.log(res[i])
+               // console.log(res[i])
                 var modelname = ""
                 if (res[i]['applianceModel'] != null)
                   modelname = res[i]['applianceModel']['model']
@@ -189,7 +189,7 @@ export class OrdersComponent implements OnInit {
                     statusCssClass: 'status1',
                     minaddress:minadd
                   })
-               console.log(this.offers)
+               // console.log(this.offers)
               }
             },
             err => {
@@ -206,7 +206,7 @@ export class OrdersComponent implements OnInit {
                 var lowp = 0;
                 var highp = 0
                 for (let j = 0; j < cp.length; j++) {
-                 console.log(cp[j])
+                 // console.log(cp[j])
                   var pk = cp[j]['problemKind_id']
                   var kind = problemKind.find(item => item.id == pk).title
                   var keys = Object.keys(cp[j])
@@ -253,7 +253,7 @@ export class OrdersComponent implements OnInit {
                 date = date.replace(re, "/")
                 date = moment(date).locale('fa').format('YYYY/M/D');
                 regdate = moment(regdate).locale('fa').format('YYYY/M/D');
-                //console.log(regdate)
+                //// console.log(regdate)
                 if (res[i]['technician'] != null) {
                   techpic =this.imgurl+res[i]['technician']['picture']
                   techfullname = res[i]['technician']['firstName'] + " " + res[i]['technician']['lastName']
@@ -262,7 +262,7 @@ export class OrdersComponent implements OnInit {
                   else
                     techrate = ""
                 }
-               console.log(res[i])
+               // console.log(res[i])
                 var modelname = ""
                 if (res[i]['applianceModel'] != null)
                   modelname = res[i]['applianceModel']['model']
@@ -294,9 +294,9 @@ export class OrdersComponent implements OnInit {
                     statusCssClass: 'status1',
                     minaddress:minadd
                   })
-               console.log(this.orders)
+               // console.log(this.orders)
               }
-             console.log(this.orders)
+             // console.log(this.orders)
             },
             err => {
              console.log(err)
@@ -314,7 +314,7 @@ export class OrdersComponent implements OnInit {
                 var lowp = 0;
                 var highp = 0
                 for (let j = 0; j < cp.length; j++) {
-                 console.log(cp[j])
+                 // console.log(cp[j])
                   var pk = cp[j]['problemKind_id']
                   var kind = problemKind.find(item => item.id == pk).title
                   var keys = Object.keys(cp[j])
@@ -361,7 +361,7 @@ export class OrdersComponent implements OnInit {
                 date = date.replace(re, "/")
                 date = moment(date).locale('fa').format('YYYY/M/D');
                 regdate = moment(regdate).locale('fa').format('YYYY/M/D');
-                //console.log(regdate)
+                //// console.log(regdate)
                 if (res[i]['technician'] != null) {
                   techpic =this.imgurl+ res[i]['technician']['picture']
                   techfullname = res[i]['technician']['firstName'] + " " + res[i]['technician']['lastName']
@@ -370,7 +370,7 @@ export class OrdersComponent implements OnInit {
                   else
                     techrate = ""
                 }
-               console.log(apppic)
+               // console.log(apppic)
                 var ccsstatus = ""
                 switch (res[i]['orderStatus']['status'].trim()) {
                   case "جدید":
@@ -418,7 +418,7 @@ export class OrdersComponent implements OnInit {
                   })
 
               }
-             console.log(this.orders)
+             // console.log(this.orders)
             },
             err => {
              console.log(err)
@@ -475,7 +475,7 @@ export class OrdersComponent implements OnInit {
     var minadd=""
     this.api.acceptorder(token,orderid).subscribe(
       res=>{
-       console.log(res)
+       // console.log(res)
         var index=this.offers.findIndex(item=>item.id==orderid)      
         this.offers.splice(index,1)
         var token = this.tokencookie.get('T')
@@ -500,7 +500,7 @@ export class OrdersComponent implements OnInit {
                     var lowp = 0;
                     var highp = 0
                     for (let j = 0; j < cp.length; j++) {
-                     console.log(cp[j])
+                     // console.log(cp[j])
                       var pk = cp[j]['problemKind_id']
                       var kind = problemKind.find(item => item.id == pk).title
                       var keys = Object.keys(cp[j])
@@ -547,7 +547,7 @@ export class OrdersComponent implements OnInit {
                     date = date.replace(re, "/")
                     date = moment(date).locale('fa').format('YYYY/M/D');
                     regdate = moment(regdate).locale('fa').format('YYYY/M/D');
-                    //console.log(regdate)
+                    //// console.log(regdate)
                     if (res[i]['technician'] != null) {
                       techpic =this.imgurl+ res[i]['technician']['picture']
                       techfullname = res[i]['technician']['firstName'] + " " + res[i]['technician']['lastName']
@@ -556,7 +556,7 @@ export class OrdersComponent implements OnInit {
                       else
                         techrate = ""
                     }
-                   console.log(res[i])
+                   // console.log(res[i])
                     var modelname = ""
                     if (res[i]['applianceModel'] != null)
                       modelname = res[i]['applianceModel']['model']
@@ -588,9 +588,9 @@ export class OrdersComponent implements OnInit {
                         statusCssClass: 'status1',
                         minaddress:minadd
                       })
-                   console.log(this.orders)
+                   // console.log(this.orders)
                   }
-                 console.log(this.orders)
+                 // console.log(this.orders)
                 },
                 err => {
                  console.log(err)

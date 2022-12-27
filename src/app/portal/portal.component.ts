@@ -47,7 +47,7 @@ export class PortalComponent implements OnInit {
     var token = this.tokencookie.get('T')
     this.api.getPersonDetails(token).subscribe(
       res => {
-       console.log(res)
+       // console.log(res)
         this.userpic = res[0]['picture']
         this.user = res[0]['firstName'] + " " + res[0]['lastName']
 

@@ -42,7 +42,7 @@ export class BaseinfoComponent implements OnInit {
     var token = this.tokencookies.get('T')
     this.api.getRegins(token).subscribe(
       res => {
-       console.log(res)
+       // console.log(res)
         this.province = res;
       },
       err => {
@@ -65,7 +65,7 @@ export class BaseinfoComponent implements OnInit {
     var pname = this.provinceForm.controls.provinceName.value
     this.api.createprovince(token, pname!).subscribe(
       res => {
-       console.log(res)
+       // console.log(res)
         this.createProvinceshow = false;
         this.FillTable()
       },
@@ -92,7 +92,7 @@ export class BaseinfoComponent implements OnInit {
         this.api.editprovince(token,provincenewname,p.id).subscribe(
           res=>
           {
-           console.log(res)
+           // console.log(res)
             this.FillTable();
           },
           err=>
@@ -125,7 +125,7 @@ export class BaseinfoComponent implements OnInit {
         var token = this.tokencookies.get('T')
         this.api.deleteprovince(token, p.id).subscribe(
           res => {
-           console.log(res)
+           // console.log(res)
             Swal.fire({
               title: name,
               text: '!با موفقیت حذف شد',
@@ -148,12 +148,12 @@ export class BaseinfoComponent implements OnInit {
     this.createCountyshow = true;
   }
   saveCounty(p: any) {
-   console.log(p)
+   // console.log(p)
     var token = this.tokencookies.get('T');
     var coname = this.provinceForm.controls.countyName.value
     this.api.createcounty(token, coname!,p.id).subscribe(
       res => {
-       console.log(res)
+       // console.log(res)
         this.createCountyshow = false;
         this.FillTable()
       },
@@ -180,7 +180,7 @@ export class BaseinfoComponent implements OnInit {
         this.api.editcounty(token,countynewname,county.id).subscribe(
           res=>
           {
-           console.log(res)
+           // console.log(res)
             this.FillTable();
           },
           err=>
@@ -213,7 +213,7 @@ export class BaseinfoComponent implements OnInit {
         var token = this.tokencookies.get('T')
         this.api.deletecounty(token, p.id).subscribe(
           res => {
-           console.log(res)
+           // console.log(res)
             Swal.fire({
               title: name,
               text: '!با موفقیت حذف شد',
@@ -237,12 +237,12 @@ export class BaseinfoComponent implements OnInit {
     this.createCityshow = true;
   }
   saveCity(county: any) {
-   console.log(county)
+   // console.log(county)
     var token = this.tokencookies.get('T');
     var cname = this.provinceForm.controls.cityName.value
     this.api.createcity(token, cname!,county.id).subscribe(
       res => {
-       console.log(res)
+       // console.log(res)
         this.createCityshow = false;
         this.FillTable()
       },
@@ -270,7 +270,7 @@ export class BaseinfoComponent implements OnInit {
         this.api.editcity(token,citynewname,city.id).subscribe(
           res=>
           {
-           console.log(res)
+           // console.log(res)
             this.FillTable();
           },
           err=>
@@ -303,7 +303,7 @@ export class BaseinfoComponent implements OnInit {
         var token = this.tokencookies.get('T')
         this.api.deletecity(token, p.id).subscribe(
           res => {
-           console.log(res)
+           // console.log(res)
             Swal.fire({
               title: name,
               text: '!با موفقیت حذف شد',
@@ -327,12 +327,12 @@ export class BaseinfoComponent implements OnInit {
     this.createRegionshow = true;
   }
   saveRegion(city: any) {
-   console.log(city)
+   // console.log(city)
     var token = this.tokencookies.get('T');
     var rname = this.provinceForm.controls.regionName.value
     this.api.createregion(token, rname!,city.id).subscribe(
       res => {
-       console.log(res)
+       // console.log(res)
         this.createRegionshow = false;
         this.FillTable()
       },
@@ -359,7 +359,7 @@ export class BaseinfoComponent implements OnInit {
         this.api.editregion(token,regionnewname,region.id).subscribe(
           res=>
           {
-           console.log(res)
+           // console.log(res)
             this.FillTable();
           },
           err=>
@@ -392,7 +392,7 @@ export class BaseinfoComponent implements OnInit {
         var token = this.tokencookies.get('T')
         this.api.deleteregion(token, p.id).subscribe(
           res => {
-           console.log(res)
+           // console.log(res)
             Swal.fire({
               title: name,
               text: '!با موفقیت حذف شد',
@@ -414,12 +414,12 @@ export class BaseinfoComponent implements OnInit {
     this.createNeighbourhoodshow = true;
   }
   saveNeighbourhood(region: any) {
-   console.log(region)
+   // console.log(region)
     var token = this.tokencookies.get('T');
     var nname = this.provinceForm.controls.neighbourhoodName.value
     this.api.createneighbourhood(token, nname!,region.id).subscribe(
       res => {
-       console.log(res)
+       // console.log(res)
         this.createNeighbourhoodshow = false;
         this.FillTable()
       },
@@ -446,7 +446,7 @@ export class BaseinfoComponent implements OnInit {
         this.api.editneighbourhood(token,neighbourhoodnewname,neighbourhood.id).subscribe(
           res=>
           {
-           console.log(res)
+           // console.log(res)
             this.FillTable();
           },
           err=>
@@ -480,7 +480,7 @@ export class BaseinfoComponent implements OnInit {
         var token = this.tokencookies.get('T')
         this.api.deleteneighbourhood(token, p.id).subscribe(
           res => {
-           console.log(res)
+           // console.log(res)
             Swal.fire({
               title: name,
               text: '!با موفقیت حذف شد',
@@ -523,7 +523,7 @@ export class EditItemDialog implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ) { }
   ngOnInit(): void {
-   console.log(this.data.userdata)
+   // console.log(this.data.userdata)
     this.form.controls.itemTitle.patchValue(this.data.userdata.titleName);
     this.form.controls.itemTitle.markAsDirty();
     this.title = this.data.userdata.itemName;

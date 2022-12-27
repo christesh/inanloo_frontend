@@ -26,6 +26,9 @@
         را
         می طلبد.</p>
     </div>
+    <div class="wait" *ngIf="wait"  style="display: flex;justify-content: center;">
+      <mat-spinner color="accent"></mat-spinner>
+    </div>
     <div class="stepercontent">
       <mat-card class="appliences" *ngFor="let app of applience;let i=index" [id]="i"
         (click)="selectapplience(app.title)" [ngClass]="{'selectedCSSClass':app.title== title}">
@@ -87,7 +90,7 @@
           <div style="display: flex;flex-direction: row; padding:20px;">
             <mat-form-field style="direction: rtl;text-align:right;width: 30%;">
               <mat-label>مدل دستگاه</mat-label>
-              <mat-select formControlName="selectedmodel"  required="{{hasguarantee}}">
+              <mat-select formControlName="selectedmodel" required="{{hasguarantee}}">
                 <mat-option *ngFor="let m of models;let i=index" [value]="m.ID">{{m.model}}</mat-option>
               </mat-select>
 
@@ -301,7 +304,7 @@
             style=" border: 1px rgb(206, 205, 205) solid;border-radius: 4px;overflow: auto;height: 300px;">
             <cdk-accordion-item *ngFor="let pk of problemskind; let i=index" #accordionItem="cdkAccordionItem"
               class="example-accordion-item" role="button" tabindex="0" [attr.id]="'accordion-header-' + i"
-              [attr.aria-expanded]="accordionItem.expanded" [attr.aria-controls]="'accordion-body-' + i">
+              [attr.aria-expanded]="accordionItem.expanded" [attr.aria-controls]="'accordion-body-' + i"  (click)="openProblem(pk)">
 
               <div class="example-accordion-item-header" (click)="accordionItem.toggle()">
                 <strong> {{pk.title}}</strong>
@@ -317,28 +320,28 @@
                 [attr.aria-labelledby]="'accordion-header-' + i">
                 <div class="searchbox">
                   <input type="text" class="form-control" style="width: 100%;" placeholder="جستجو"
-                    value="{{problemsearchvalue}}" (keyup)="ProblemSearchChange($event)">
+                    value="{{problemsearchvalue}}" (keyup)="ProblemSearchChange($event,pk)">
                 </div>
                 <ul>
-                  <li *ngFor="let subtask of pk.problem;let i=index">
+                  <li *ngFor="let subtask of subtasks;let i=index">
                     <mat-checkbox [(ngModel)]="subtask.checked" color="warn"
                       (ngModelChange)="problemSelect(subtask.title,subtask.ID,pk.ID)">
                       {{subtask.title}}
                     </mat-checkbox>
                   </li>
                 </ul>
-                <form [formGroup]="secondFormGroup" *ngIf="showcomment">
-                  <mat-form-field class="example-full-width" appearance="fill"
-                    style="width:80%;text-align:right;margin-right:45px;margin-top:-15px;">
-                    <mat-label>لطفا نیاز و یا مشکل خود را شرح دهید:</mat-label>
-                    <textarea matInput formControlName="secondCtrl" placeholder="توضیحات"></textarea>
-                  </mat-form-field>
-                </form>
+                
               </div>
             </cdk-accordion-item>
           </cdk-accordion>
         </span>
-
+        <form [formGroup]="secondFormGroup" *ngIf="showcomment">
+          <mat-form-field class="example-full-width" appearance="fill"
+            style="width:80%;text-align:right;margin-right:45px;margin-top:-15px;">
+            <mat-label>لطفا نیاز و یا مشکل خود را شرح دهید:</mat-label>
+            <textarea matInput formControlName="secondCtrl" placeholder="توضیحات"></textarea>
+          </mat-form-field>
+        </form>
 
       </div>
     </div>

@@ -63,7 +63,7 @@ export class UsergroupComponent implements OnInit {
     var token = this.tokencookie.get('T')
     this.api.getAllMemberGroup(token).subscribe(
       res => {
-       console.log(res)
+       // console.log(res)
         this.memberGroup = res;
         var tv = []
         for (let i = 0; i < res.length; i++) {
@@ -101,7 +101,7 @@ export class UsergroupComponent implements OnInit {
   }
 
   regclaim(event: any) {
-   console.log(event)
+   // console.log(event)
     switch (event.action) {
       case 'deleterecord':
         var name = event.data.title
@@ -126,7 +126,7 @@ export class UsergroupComponent implements OnInit {
             var token=this.tokencookie.get('T')
             this.api.deleteMembersGroup(token, event.data.id).subscribe(
               res => {
-               console.log(res)
+               // console.log(res)
                 Swal.fire({
                   title: name,
                   text: '!با موفقیت حذف شد',
@@ -190,7 +190,7 @@ export class CreateUserGroupDialog implements OnInit {
     );
   }
   ngOnInit() {
-  console.log(this.data.userdata)
+  // console.log(this.data.userdata)
     if (this.data.userdata.kind == "edit") {
       this.form.controls.groupName.patchValue(this.data.userdata.group);
       this.form.controls.groupName.markAsDirty();
@@ -208,17 +208,17 @@ export class CreateUserGroupDialog implements OnInit {
 
   }
   getValues(sg: any) {
-   console.log(sg)
+   // console.log(sg)
   }
   create() {
     if (this.data.userdata.kind == "create") {
       var token = this.tokencookie.get('T')
       var groupName = this.form.controls.groupName.value?.toString();
       var permissions = this.selectedGroup
-     console.log(permissions)
+     // console.log(permissions)
       this.api.createMemberGroup(token, groupName!, permissions).subscribe(
         res => {
-         console.log(res)
+         // console.log(res)
           var data: { btn: string } = { btn: "save" }
           Swal.fire({
             title: 'ایجاد گروه کاربری جدید',
@@ -242,7 +242,7 @@ export class CreateUserGroupDialog implements OnInit {
         var permissions = this.selectedGroup
         this.api.editMemberGroup(token, groupid, groupName!, permissions).subscribe(
           res => {
-           console.log(res)
+           // console.log(res)
             var data: { btn: string } = { btn: "save" }
             this.dialogRef.close(data);
           },

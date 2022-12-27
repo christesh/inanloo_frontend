@@ -28,7 +28,7 @@ export class ChatComponent implements OnInit {
     var token = this.tokencookies.get('T')
     this.api.connectedusers(token).subscribe(
       res => {
-       console.log(res)
+       // console.log(res)
         var uid: any[] = []
         var unread: { uid: string, count: string }[] = []
         this.curentuid = localStorage.getItem('userID')!
@@ -49,7 +49,7 @@ export class ChatComponent implements OnInit {
               uid.push(Number(res[i]['receiver']))
             }
         }
-       console.log(uid)
+       // console.log(uid)
         this.api.getuserorderstech(token).subscribe(
           res => {
             for (let i = 0; i < res.length; i++) {
@@ -57,7 +57,7 @@ export class ChatComponent implements OnInit {
             }
             this.api.getuserchatstatus(token, uid).subscribe(
               res => {
-               console.log(res)
+               // console.log(res)
                 this.users.push(
                   {
                     uid: '0',
@@ -74,8 +74,8 @@ export class ChatComponent implements OnInit {
                 for (let i = 0; i < res.length; i++) {
                   var idx = -1
                   var unreadc = "0"
-                 console.log(unread)
-                 console.log(res[i]['user_id'])
+                 // console.log(unread)
+                 // console.log(res[i]['user_id'])
                   if (unread.length != 0)
                     idx = unread.findIndex(item => item.uid == res[i]['user_id'])
                   if (idx != -1)
@@ -132,10 +132,10 @@ export class ChatComponent implements OnInit {
   getUserMessage(rid: any) {
     this.messages = []
     var token = this.tokencookies.get('T')
-   console.log(rid)
+   // console.log(rid)
     this.api.getusermessages(token, rid).subscribe(
       res => {
-       console.log(res)
+       // console.log(res)
         for (let i = 0; i < res.length; i++) {
           var sender = ""
           var re = /-/gi;
@@ -192,10 +192,10 @@ export class ChatComponent implements OnInit {
         var token = this.tokencookies.get('T')
         this.api.sendmessages(token, this.selected.uid, this.sendmessage).subscribe(
           res => {
-           console.log(res)
+           // console.log(res)
             this.api.sendmessagenotification(token, this.curentuid, this.selected.uid, this.sendmessage).subscribe(
               res => {
-               console.log(res)
+               // console.log(res)
               },
               err => {
                 console.log(err)
@@ -230,7 +230,7 @@ export class ChatComponent implements OnInit {
         var uid = [sender]
         this.api.getuserchatstatus(token, uid).subscribe(
           res => {
-           console.log(res)
+           // console.log(res)
             for (let i = 0; i < res.length; i++) {
               var idx = -1
 

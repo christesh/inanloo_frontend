@@ -19,7 +19,8 @@ firebase.initializeApp({
   storageBucket: "technician-project-268a2.appspot.com",
   messagingSenderId: "22457249457",
   appId: "1:22457249457:web:f16dcc4e7b3b08d8fa7c90",
-  measurementId: "G-PMLDWY0P8G"
+  measurementId: "G-PMLDWY0P8G",
+  vapidKey: "BITQjfSWfQdTSZcca8qIVDM4bykAv16KgNChKlV-DO4GpowGOse3HagirYQGvK_SYcy5BEdob91CwOmdQ1kCa7Q"
 });
 const messaging = firebase.messaging();
 
