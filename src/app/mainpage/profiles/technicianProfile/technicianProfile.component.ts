@@ -83,6 +83,7 @@ export class TechnicianProfileComponent {
 
   @ViewChild("p", { static: false }) popover1: NgbPopover;
   @Input() showBanner: boolean;
+  @Input() userID: string = "";
   profilePic: any;
   private picurl = environment.PIC_URL;
   private baseurl = environment.API_URL;
@@ -99,6 +100,7 @@ export class TechnicianProfileComponent {
   ) {
 
   }
+
   defultpic = '../../../../assets/images/techProfile.png'
   newSkillID = 0;
   newDstrictID = 0;
@@ -202,7 +204,10 @@ export class TechnicianProfileComponent {
       this.showbanner = false;
     this.name = new FormControl('');
     var token = this.tokencookie.get('T')
-    this.userid = localStorage.getItem('personID');
+    if (this.userID == "")
+      this.userid = localStorage.getItem('personID');
+    else
+      this.userid = this.userID;
     this.skillTableSetting = {
       editable: true,
       pager: {
@@ -341,7 +346,7 @@ export class TechnicianProfileComponent {
     this.api.gettechniciansdetails(token, this.userid!).subscribe(
       res => {
         this.curentTechnician = res[0]
-       // console.log(this.curentTechnician)
+        // console.log(this.curentTechnician)
         this.interstsForm.controls['interests'].disable()
         this.mobiles = this.curentTechnician.mobile;
         this.tels = this.curentTechnician.phones;
@@ -350,7 +355,7 @@ export class TechnicianProfileComponent {
           this.profilePic = this.picurl + this.curentTechnician.picture;
         else
           this.profilePic = 'http://is.mersa-group.ir/assets/images/profile.png'
-       // console.log(this.profilePic)
+        // console.log(this.profilePic)
         this.address = this.curentTechnician.address;
         var bd = this.curentTechnician.birthDate;
         if (bd != null) {
@@ -419,7 +424,7 @@ export class TechnicianProfileComponent {
         this.disabled = true;
         this.api.gettechnicianskills(token, this.userid).subscribe(
           res => {
-           // console.log(res)
+            // console.log(res)
             if (res.length != 0)
               this.skillfill = true;
             for (let i = 0; i < res.length; i++) {
@@ -441,12 +446,12 @@ export class TechnicianProfileComponent {
 
           },
           err => {
-           console.log(err)
+            console.log(err)
           }
         )
         this.api.gettechniciandistricts(token, this.userid).subscribe(
           res => {
-           // console.log(res)
+            // console.log(res)
             if (res.length != 0)
               this.districtfill = true;
             for (let i = 0; i < res.length; i++) {
@@ -466,30 +471,30 @@ export class TechnicianProfileComponent {
               , 'rName', 'nName']
           },
           err => {
-           console.log(err)
+            console.log(err)
           }
         )
         this.api.getRegins(token).subscribe(
           res => {
-           // console.log(res)
+            // console.log(res)
             this.province = res
           }
           , err => {
-           console.log(err);
+            console.log(err);
           })
         this.api.getAllApplience(token).subscribe(
           res => {
-           // console.log(res);
+            // console.log(res);
             this.appliances = res;
 
           },
           err => {
-           console.log(err);
+            console.log(err);
           }
         )
       },
       err => {
-       console.log(err)
+        console.log(err)
       }
     )
   }
@@ -537,7 +542,7 @@ export class TechnicianProfileComponent {
     this.firstname.disable();
   }
   provincechange(event: any) {
-   // console.log(event)
+    // console.log(event)
   }
   showmap() {
     this.showMap = true;
@@ -549,8 +554,8 @@ export class TechnicianProfileComponent {
     );
   }
   onDateChange(event: any) {
-   // console.log(event);
-   // console.log(this.dateValue1.value)
+    // console.log(event);
+    // console.log(this.dateValue1.value)
     this.birthdate = event['shamsi']
   }
   calmonth: string = "";
@@ -595,20 +600,20 @@ export class TechnicianProfileComponent {
           this.profilefill = false;
         if (this.profilefill && this.skillfill && this.districtfill) {
           this.api.setfillprofileture(token, this.userid).subscribe(
-            res => {   console.log(res) }
+            res => { console.log(res) }
             , err => { console.log(err) }
           )
         }
         else {
           this.api.setfillprofilefalse(token, this.userid).subscribe(
-            res => {   console.log(res) }
+            res => { console.log(res) }
             , err => { console.log(err) }
           )
         }
-       // console.log(res)
+        // console.log(res)
       },
       err => {
-       console.log(err)
+        console.log(err)
       }
     )
   }
@@ -636,20 +641,20 @@ export class TechnicianProfileComponent {
           this.profilefill = false;
         if (this.profilefill && this.skillfill && this.districtfill) {
           this.api.setfillprofileture(token, this.userid).subscribe(
-            res => {   console.log(res) }
-            , err => {  console.log(err) }
+            res => { console.log(res) }
+            , err => { console.log(err) }
           )
         }
         else {
           this.api.setfillprofilefalse(token, this.userid).subscribe(
-            res => {   console.log(res) }
-            , err => {  console.log(err) }
+            res => { console.log(res) }
+            , err => { console.log(err) }
           )
         }
-       // console.log(res)
+        // console.log(res)
       },
       err => {
-       console.log(err)
+        console.log(err)
       }
     )
   }
@@ -785,20 +790,20 @@ export class TechnicianProfileComponent {
               this.profilefill = false;
             if (this.profilefill && this.skillfill && this.districtfill) {
               this.api.setfillprofileture(token, this.userid).subscribe(
-                res => {   console.log(res) }
-                , err => {  console.log(err) }
+                res => { console.log(res) }
+                , err => { console.log(err) }
               )
             }
             else {
               this.api.setfillprofilefalse(token, this.userid).subscribe(
-                res => {   console.log(res) }
-                , err => {  console.log(err) }
+                res => { console.log(res) }
+                , err => { console.log(err) }
               )
             }
           }
         },
         err => {
-         console.log(err)
+          console.log(err)
         }
       )
     }
@@ -833,7 +838,7 @@ export class TechnicianProfileComponent {
     var token = this.tokencookie.get('T')
     this.api.editprofile(token, this.userid, this.firstname.value!, this.lastname.value!, this.nationalid.value!, this.birthdate).subscribe(
       res => {
-       // console.log(res)
+        // console.log(res)
         var myHeaders = new Headers();
         myHeaders.append("Authorization", "Token " + token);
         var formdata = new FormData();
@@ -847,12 +852,12 @@ export class TechnicianProfileComponent {
         };
         fetch(this.baseurl + "/personal/technicianuploadpic/", requestOptions)
           .then(response => response.text())
-          .then(result =>   console.log(result))
+          .then(result => console.log(result))
           .catch(error => console.log('error', error));
 
       },
       err => {
-       console.log(err)
+        console.log(err)
       }
     )
 
@@ -874,7 +879,7 @@ export class TechnicianProfileComponent {
 
   }
   EditAddress(id: any) {
-   // console.log(id)
+    // console.log(id)
     var index = this.address.findIndex(item => item.id == id)
     var regname = "";
     var regid = -1;
@@ -966,7 +971,7 @@ export class TechnicianProfileComponent {
             }
           },
           err => {
-           console.log(err)
+            console.log(err)
           }
         )
       }
@@ -974,7 +979,7 @@ export class TechnicianProfileComponent {
   }
   seletAddress(add: any) {
     if (add.isMainAddress) {
-     // console.log(add)
+      // console.log(add)
       for (let i = 0; i < this.addresses.length; i++) {
         add.isMainAddress = true;
         if (this.addresses[i].id !== add.id)
@@ -1149,7 +1154,7 @@ export class TechnicianProfileComponent {
       if (this.skillTableData[i].fix == 'خیر')
         f = false
       if (!s && !f) {
-       // console.log(s + "   ///  " + f)
+        // console.log(s + "   ///  " + f)
 
         Swal.fire({
           title: 'هشدار',
@@ -1165,7 +1170,7 @@ export class TechnicianProfileComponent {
             var token = this.tokencookie.get('T')
             this.api.deletetechnicianskill(token, this.skillTableData[i].skillid).subscribe(
               res => {
-               // console.log(res)
+                // console.log(res)
                 var idx = this.skillTableData.findIndex(item => item.skillid == this.skillTableData[i].skillid)
                 this.skillTableData.splice(idx, 1)
                 this.skillTableDataShow.splice(idx, 1)
@@ -1173,7 +1178,7 @@ export class TechnicianProfileComponent {
                 this.skillTablevalue = new LocalDataSource(this.skillTableData)
               },
               err => {
-               console.log(err)
+                console.log(err)
               }
             )
           }
@@ -1196,17 +1201,17 @@ export class TechnicianProfileComponent {
           this.skillfill = false
         if (this.profilefill && this.skillfill && this.districtfill) {
           this.api.setfillprofileture(token, this.userid).subscribe(
-            res => {   console.log(res) }
-            , err => {  console.log(err) }
+            res => { console.log(res) }
+            , err => { console.log(err) }
           )
         }
         else {
           this.api.setfillprofilefalse(token, this.userid).subscribe(
-            res => {  console.log(res) }
-            , err => {  console.log(err) }
+            res => { console.log(res) }
+            , err => { console.log(err) }
           )
         }
-       // console.log(res)
+        // console.log(res)
         Swal.fire({
           title: 'بروزرسانی تخصص',
           text: 'تعداد' + res.result.create + 'وسیله به تخصص اضافه شد و ' + res.result.update + ' وسیله بروزرسانی شد',
@@ -1217,7 +1222,7 @@ export class TechnicianProfileComponent {
         this.skilltableeditable = false;
       },
       err => {
-       console.log(err)
+        console.log(err)
       }
     )
 
@@ -1248,7 +1253,7 @@ export class TechnicianProfileComponent {
             var token = this.tokencookie.get('T')
             this.api.deletetechnicianskill(token, event.data.skillid).subscribe(
               res => {
-               // console.log(res)
+                // console.log(res)
                 var idx = this.skillTableData.findIndex(item => item.skillid == event.data.skillid)
                 this.skillTableData.splice(idx, 1)
                 this.skillTableDataShow.splice(idx, 1)
@@ -1263,7 +1268,7 @@ export class TechnicianProfileComponent {
                 )
               },
               err => {
-               console.log(err)
+                console.log(err)
               }
             )
           }
@@ -1355,17 +1360,17 @@ export class TechnicianProfileComponent {
           this.districtfill = false
         if (this.profilefill && this.skillfill && this.districtfill) {
           this.api.setfillprofileture(token, this.userid).subscribe(
-            res => {   console.log(res) }
-            , err => {  console.log(err) }
+            res => { console.log(res) }
+            , err => { console.log(err) }
           )
         }
         else {
           this.api.setfillprofilefalse(token, this.userid).subscribe(
-            res => {   console.log(res) }
-            , err => {  console.log(err) }
+            res => { console.log(res) }
+            , err => { console.log(err) }
           )
         }
-       // console.log(res)
+        // console.log(res)
         Swal.fire({
           title: 'بروزرسانی محدوده کاری',
           text: 'تعداد' + res.result.create + 'محدوده کاری به تکنسین اضافه شد ',
@@ -1376,7 +1381,7 @@ export class TechnicianProfileComponent {
         this.districttableeditable = false;
       },
       err => {
-       console.log(err)
+        console.log(err)
       }
     )
 
@@ -1406,7 +1411,7 @@ export class TechnicianProfileComponent {
             var token = this.tokencookie.get('T')
             this.api.deletetechniciandistrict(token, event.data.ID).subscribe(
               res => {
-               // console.log(res)
+                // console.log(res)
                 var idx = this.districtTableDate.findIndex(item => item.districtid == event.data.districtid)
                 this.districtTableDate.splice(idx, 1)
                 this.districtTableDateShow.splice(idx, 1)
@@ -1421,7 +1426,7 @@ export class TechnicianProfileComponent {
                 )
               },
               err => {
-               console.log(err)
+                console.log(err)
               }
             )
           }
@@ -1525,10 +1530,10 @@ export class TechnicianProfileComponent {
     var token = this.tokencookie.get('T')
     this.api.edittechnicianfav(token, this.userid, this.interstsForm.controls['interests'].value!).subscribe(
       res => {
-       // console.log(res)
+        // console.log(res)
       },
       err => {
-       console.log(err)
+        console.log(err)
       }
     )
 
@@ -1569,11 +1574,11 @@ export class TechEditAddressDialogProfile implements OnInit {
   }
   ngOnInit() {
 
-   // console.log(this.data.addressdata)
+    // console.log(this.data.addressdata)
     this.addressforedit = this.data.addressdata
   }
   getValues(sg: any) {
-   // console.log(sg)
+    // console.log(sg)
   }
   editadd(event: any) {
     var data: { btn: string, addid: number } = { btn: event.kind, addid: event.addid }

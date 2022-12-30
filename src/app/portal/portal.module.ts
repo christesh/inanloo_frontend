@@ -29,13 +29,15 @@ import { StafforderComponent } from './stafforder/stafforder.component';
 import { MainpageModule } from '../mainpage/mainpage.module';
 import { SignUPCustomerDialog } from './stafforder/stafforder.component';
 import { CreateChecklistDialog } from './appliencemanagement/appliencemanagement.component';
-
-import { NbThemeModule,NbChatModule } from '@nebular/theme';
+import { UsersComponent } from './users/users.component';
+// import { NbThemeModule, NbChatModule } from '@nebular/theme';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
-
 import { TicketingComponent } from './ticketing/ticketing.component';
 import { ChatComponent } from '../Chat/Chat.component';
-
+import { SignUpUserDialog } from './users/users.component';
+import { TechniciansComponent } from './Technicians/Technicians.component';
+import { SignUpTechDialog } from './Technicians/Technicians.component';
+import { BrandsComponent } from './brands/brands.component';
 const appRoutes: Routes = [
   { path: '', component: DashboardComponent },
   { path: 'dashboard', component: DashboardComponent },
@@ -62,7 +64,20 @@ const appRoutes: Routes = [
   {
     path: 'chat',
     component: ChatComponent
+  },
+  {
+    path: 'Customers',
+    component: UsersComponent
+  },
+  {
+    path: 'Technicians',
+    component: TechniciansComponent
+  },
+  {
+    path: 'Brands',
+    component: BrandsComponent
   }
+
 ];
 @NgModule({
   exports: [
@@ -70,8 +85,6 @@ const appRoutes: Routes = [
     SidenavComponent,
   ],
   imports: [
-    NbChatModule,
-    NbThemeModule.forRoot(),
     MainpageModule,
     NgChartsModule,
     NgSelectModule,
@@ -84,6 +97,11 @@ const appRoutes: Routes = [
     PerfectScrollbarModule
   ],
   declarations: [
+    BrandsComponent,
+    SignUpTechDialog,
+    TechniciansComponent,
+    SignUpUserDialog,
+    UsersComponent,
     TicketingComponent,
     CreateChecklistDialog,
     SignUPCustomerDialog,

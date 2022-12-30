@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatError } from '@angular/material/form-field';
@@ -17,6 +17,7 @@ import { DialogData } from '../usermanagement/usermanagement.component';
 export class StafforderComponent implements OnInit {
   searchText = ""
   customerdetailfromstaff: boolean = false;
+  shoneworder: boolean;
   constructor(
     private api: ApiServicesService,
     private tokencookies: CookieService,
@@ -27,31 +28,39 @@ export class StafforderComponent implements OnInit {
   customerTable: any;
   orderstablevalue: LocalDataSource;
   ordersTable: any;
- 
+
   showorder: boolean = false;
   showCustomerDetail: boolean = false;
   showOrderDetail: boolean = false;
   showOrders: boolean = false;
   customerName = "";
   customerFamily = "";
+  selectedCustomer: string = "";
+  scrolltop: number | null = null;
+  openAccordion: boolean = false;
+  openOrderAccordion: boolean = false;
+  showorderdetail: boolean = false;
+  @ViewChild('content') content: ElementRef;
+  @ViewChild('accordionItem') accordionItem: ElementRef;
   ngOnInit() {
     this.customerdetailfromstaff = false;
-
+    this.openAccordion = true;
+    this.openOrderAccordion = true;
     this.customerTable = {
       editable: false,
 
       pager: {
         display: true,
-        perPage: 50
+        perPage: 5
       },
       actions: {
         columnTitle: "عملیات",
         add: false,
         edit: false,
         delete: false,
-        position: 'left',
+        // position: 'left',
         custom: [
-          { name: 'viewrecord', title: '<i class="fa fa-eye"  ></i>' },
+          // { name: 'viewrecord', title: '&nbsp;&nbsp<i class="fa fa-eye"  ></i>' },
           { name: 'makeorder', title: '&nbsp;&nbsp;<i class="fa fa-plus-square" ></i>' }]
       },
       columns: {
@@ -67,6 +76,9 @@ export class StafforderComponent implements OnInit {
         l_name: {
           title: "نام خانوادگی "
         },
+        orders: {
+          title: "تعداد سفارش"
+        },
         class: {
           title: "کلاس"
         },
@@ -81,14 +93,14 @@ export class StafforderComponent implements OnInit {
       editable: false,
       pager: {
         display: true,
-        perPage: 50
+        perPage: 5
       },
       actions: {
         columnTitle: "عملیات",
         add: false,
         edit: false,
         delete: false,
-        position: 'left',
+        // position: 'left',
         custom: [
           { name: 'viewrecord', title: '<i class="fa fa-eye"  ></i>' },
           { name: 'editrecord', title: '&nbsp;&nbsp;<i class="fa  fa-pencil" style="color:grean" ></i>' },]
@@ -118,7 +130,7 @@ export class StafforderComponent implements OnInit {
 
     }
     this.showorder = false;
-     this.FillTable();
+    this.FillTable();
   }
   applience: Applience[] = []
   FillTable() {
@@ -126,14 +138,14 @@ export class StafforderComponent implements OnInit {
     this.api.getAllApplience(token).subscribe(
       res => {
         this.applience = res
-       // console.log(this.applience)
+        // console.log(this.applience)
       }, err => {
-       console.log(err)
+        console.log(err)
       }
     )
     this.api.getallcustomersdetails(token).subscribe(
       res => {
-       // console.log(res)
+        // console.log(res)
         var ct: {
           id: string,
           mobile: string,
@@ -164,15 +176,37 @@ export class StafforderComponent implements OnInit {
 
       },
       err => {
-       console.log(err)
+        console.log(err)
       }
     )
   }
+  show() {
+    this.showorderdetail = true;
+  }
 
-
-
+  ordershown: string = ""
   OrderTableAction(event: any) {
+    this.showorderdetail = true;
+    switch (event.action) {
+      case "viewrecord":
 
+        this.ordershown = event.data.id
+        break;
+      case "editrecord":
+
+        this.ordershown = event.data.id
+        break;
+    }
+  }
+  accordiontoggle() {
+    if (this.openAccordion) {
+      this.openAccordion = false;
+      this.openOrderAccordion = false;
+    }
+    else {
+      this.openAccordion = true;
+      this.openOrderAccordion = true;
+    }
   }
   TableAction(event: any) {
     switch (event.action) {
@@ -180,15 +214,14 @@ export class StafforderComponent implements OnInit {
         localStorage.setItem('personID', event.data.id);
         this.customerName = event.data.f_name;
         this.customerFamily = event.data.l_name;
+        this.selectedCustomer = this.customerName + " " + this.customerFamily
         var token = this.tokencookies.get('T');
         var ot: { id: string, status: string, statusID: string, appliance: string, applianceID: string, date: string, technician: string, technicianID: string, payment: string }[] = [];
         this.api.getcustomerorders(token, event.data.id).subscribe(
           res => {
-           // console.log(res)
-
             ot = [];
             for (let i = 0; i < res.length; i++) {
-              var appcat = this.applience.find(item => item.ID == res[i]['applianceBrand']['a_barndCategory'])?.title
+              var appcat = res[i]['applianceBrand']['a_barndCategory']['a_categoryName'] + " " + res[i]['applianceBrand']['a_brand']['a_brandName']
               var techfullname = ""
               var techid = ""
               if (res[i]['technician'] != null) {
@@ -199,7 +232,7 @@ export class StafforderComponent implements OnInit {
                 techfullname = ""
                 techid = ""
               }
-              ot.push({ id: res[i]['id'], status: res[i]['orderStatus']['status'], statusID: res[i]['orderStatus']['id'], appliance: res[i]['applianceBrand']['brand'] + " " + appcat, applianceID: res[i]['applianceBrand']['ID'], date: res[i]['orderDate'], technician: techfullname, technicianID: techid, payment: "" });
+              ot.push({ id: res[i]['id'], status: res[i]['orderStatus']['status'], statusID: res[i]['orderStatus']['id'], appliance: appcat, applianceID: res[i]['applianceBrand']['ID'], date: res[i]['orderDate'], technician: techfullname, technicianID: techid, payment: "" });
             }
             this.orderstablevalue = new LocalDataSource(ot);
             if (ot.length != 0)
@@ -207,42 +240,59 @@ export class StafforderComponent implements OnInit {
             else
               this.showOrders = false;
             this.showOrderDetail = true;
+            this.openAccordion = false;
+            this.openOrderAccordion= false;
+            this.showorderdetail = false;
+            setTimeout(() => this.scrolltop = this.content.nativeElement.scrollHeight, 50);
           },
           err => {
-           console.log(err)
+            console.log(err)
           }
 
         )
-
-
         break;
       case "viewrecord":
-
         localStorage.setItem('personID', event.data.id);
         this.customerName = event.data.f_name;
         this.customerFamily = event.data.l_name;
         this.showCustomerDetail = true;
+        setTimeout(() => this.scrolltop = this.content.nativeElement.scrollHeight, 50);
         break;
+
+
     }
   }
   addOrder(event: any) {
     this.showorder = false;
-   // console.log(event);
+    // console.log(event);
   }
   CreateOrder() {
+    this.shoneworder = true;
     this.showorder = true;
-
+    this.openOrderAccordion= true;
+    setTimeout(() => this.scrolltop = this.content.nativeElement.scrollHeight, 0);
   }
   CancelOrder() {
     this.showOrderDetail = false;
     this.showorder = false;
-
+    this.openAccordion = true;
+    this.openOrderAccordion= true;
+    this.showorderdetail = false;
+  }
+  CancelshowOrder() {
+    this.shoneworder = false;
+    this.openOrderAccordion= false;
   }
   CancelProfile() {
     this.showCustomerDetail = false;
   }
+  Cancelshowdetail() {
+    this.showorderdetail = false;
+  }
   public signupData!: { mn: string; nationalid: string; name: string; family: string; btn: string; userKind: number; };
   CreateCustomer() {
+    console.log("jjh")
+
     const dialogRef = this.signupdialog.open(SignUPCustomerDialog, {
       width: '400px',
       data: { mobilenumber: "" },
@@ -251,14 +301,14 @@ export class StafforderComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result.btn == "ok") {
         this.signupData = result;
-       // console.log(this.signupData)
+        // console.log(this.signupData)
         this.api.register(this.signupData.mn, this.signupData.name, this.signupData.family, this.signupData.nationalid, 1).subscribe(
           res => {
-           // console.log(res)
+            // console.log(res)
             this.FillTable();
           },
           err => {
-           console.log(err)
+            console.log(err)
             this.openSnackBar('خطا در ارتباط با سرور', '', 'red-snackbar', 5)
 
           }
@@ -302,16 +352,16 @@ export class SignUPCustomerDialog implements OnInit {
   public uc = 0;
   radioModel: any;
   ngOnInit() {
-   // console.log(this.data)
+    console.log(this.data)
 
     this.api.GetPersonCategories().subscribe(
       (res: { id: string; name: string; }[]) => {
         this.usercategory.push(res[0]);
         this.usercategory.push(res[1]);
-       // console.log(this.usercategory);
+        // console.log(this.usercategory);
       },
       (err: any) => {
-       console.log(err)
+        console.log(err)
       }
     )
     this.form = this.fb.group({
@@ -355,5 +405,6 @@ export class SignUPCustomerDialog implements OnInit {
       verticalPosition: vp = 'bottom',
     });
   }
+
 }
 

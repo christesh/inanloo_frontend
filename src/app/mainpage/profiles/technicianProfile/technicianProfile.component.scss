@@ -99,7 +99,7 @@
     display: block !important;
 }
 
-::ng-deep input.ng-pristine.ng-valid {
+::ng-deep .datepicker-content input.ng-pristine.ng-valid {
     color: #7a7bad !important;
     text-align: center;
     display: none;

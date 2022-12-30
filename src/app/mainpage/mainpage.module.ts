@@ -107,6 +107,8 @@ const appRoutes: Routes = [
   exports: [
     OrderpageComponent,
     CustomerProfileComponent,
+    OrderdetailsComponent,
+    TechnicianProfileComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

@@ -12,6 +12,7 @@ import { faLessThanEqual } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./orderdetails.component.css']
 })
 export class OrderdetailsComponent implements OnInit {
+  @Input() orderId: string = "";
   techChecklist: any[] = [];
   imgurl = environment.PIC_URL;
   orderID: string;
@@ -43,6 +44,7 @@ export class OrderdetailsComponent implements OnInit {
   result: any;
   customer: boolean = false;
   ngOnInit() {
+    // alert(this.orderId)
     var personcCat = localStorage.getItem('userCat')
     if (personcCat == 'مشتری')
       this.customer = true;
@@ -53,12 +55,15 @@ export class OrderdetailsComponent implements OnInit {
     this.img = document.getElementById("myImg");
     this.modalImg = document.getElementById("img01");
     this.captionText = document.getElementById("caption");
-    this.orderID = this._Activatedroute.snapshot.paramMap.get("orderID")!
-   // console.log(this.orderID)
+    if (this.orderId == "")
+      this.orderID = this._Activatedroute.snapshot.paramMap.get("orderID")!
+    else
+      this.orderID = this.orderId
+    // console.log(this.orderID)
     var token = this.tokencookie.get('T')
     this.api.getordersurvey(token, this.orderID).subscribe(
       res => {
-       // console.log(res)
+        // console.log(res)
         if (res.length == 0) {
           this.surveyTitle = "نظرسنجی"
         }
@@ -69,7 +74,7 @@ export class OrderdetailsComponent implements OnInit {
       }
       ,
       err => {
-       console.log(err)
+        console.log(err)
       }
     )
     this.api.getorder(token, this.orderID).subscribe(
@@ -169,7 +174,7 @@ export class OrderdetailsComponent implements OnInit {
         }
       },
       err => {
-       console.log(err)
+        console.log(err)
       }
     )
   }
@@ -196,11 +201,11 @@ export class OrderdetailsComponent implements OnInit {
     var token = this.tokencookie.get('T')
     this.api.setguaranteeaccept(token, this.orderID, this.acceptG).subscribe(
       res => {
-       // console.log(res)
+        // console.log(res)
         this.gchange = false;
       },
       err => {
-       console.log(err)
+        console.log(err)
       }
 
     )

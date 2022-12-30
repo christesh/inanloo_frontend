@@ -661,6 +661,14 @@ export class ApiServicesService {
       })
     })
   }
+  getalltechniciandetails(token: string): Observable<any> {
+    return this.http.get(this.baseurl + '/personal/getalltechniciansdetails/', {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    })
+  }
   CreateCustomerAddress(token: string, body: any): Observable<any> {
     return this.http.post(this.baseurl + '/personal/createcustomeraddress/', body, {
       headers: new HttpHeaders({
@@ -828,6 +836,24 @@ export class ApiServicesService {
   saveuserstel(token: string, uid: string, tels: string[]): Observable<any> {
     const body = { uid: uid, tels: tels };
     return this.http.post(this.baseurl + '/personal/saveuserstel/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  deleteusersmobile(token: string, uid: string, mobile: string): Observable<any> {
+    const body = { uid: uid, mobile: mobile };
+    return this.http.post(this.baseurl + '/personal/deleteusersmobile/', body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  deleteuserstel(token: string, uid: string, tel: string): Observable<any> {
+    const body = { uid: uid, tel: tel};
+    return this.http.post(this.baseurl + '/personal/deleteuserstel/', body, {
       headers: new HttpHeaders({
         'Authorization': 'Token  ' + token,
         'Content-Type': 'application/json',
@@ -1074,8 +1100,50 @@ export class ApiServicesService {
     });
   }
   getuserorderstech(token: string): Observable<any> {
-  
     return this.http.get(this.baseurl + '/order/getuserorderstech/', {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  createBrandStandalone(token:string,brandName:string,brandDescription:string): Observable<any> {
+    const body = { brandName: brandName, brandDescription:brandDescription };
+    return this.http.post(this.baseurl + '/baseinfo/createBrandStandalone/', body,{
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  getallbrands(token: string): Observable<any> {
+    return this.http.get(this.baseurl + '/baseinfo/getallbrands/', {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  getappliancecategory(token: string): Observable<any> {
+    return this.http.get(this.baseurl + '/baseinfo/getallbrands/', {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  getappliancebrand(token:string,appID:string): Observable<any> {
+    const body = { appID: appID  };
+    return this.http.post(this.baseurl + '/baseinfo/getappliancebrand/',body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  getappliancemodel(token:string,brandID:string): Observable<any> {
+    const body = { brandID: brandID,  };
+    return this.http.post(this.baseurl + '/baseinfo/getappliancemodel/',body, {
       headers: new HttpHeaders({
         'Authorization': 'Token  ' + token,
         'Content-Type': 'application/json',

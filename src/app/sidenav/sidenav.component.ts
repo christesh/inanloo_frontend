@@ -17,11 +17,15 @@ export class SidenavComponent {
   constructor(
     private router: Router
   ) {
-    this.menu = [{ name: "داشبورد", submenu: [] },
-    { name: "تنظیمات", submenu: [{ sub: "کاربران ستاد" }, { sub: "گروه های کاربری" }, { sub: "مناطق جغرافیایی" }, { sub: "مدیریت خدمات" }, { sub: "مدیریت لوازم خانگی" }, { sub: "مدیریت پورسانت" }, { sub: "مدیریت اختصاص خدمت" }] },
-    { name: "ثبت نام", submenu: [{ sub: "مشتری" }, { sub: "تکنسین" }] },
-    { name: "سفارشات", submenu: [{ sub: "ثبت سفارش" }, { sub: "گزارش" }] },
-    { name: "تالار گفتگو", submenu: [] },
+    this.menu = [
+      { name: "داشبورد", submenu: [] },
+      { name: "کاربران", submenu: [{ sub: "مشتریان" }, { sub: "تکنسین‌ها" }] },
+      { name: "سفارشات", submenu: [{ sub: "ثبت سفارش" }, { sub: "گزارشات" }] },
+      { name: "مدیریت انبار", submenu: [{ sub: "انبار" }, { sub: "گزارشات" }, { sub: "تنظیمات" }] },
+      { name: "مدیریت مالی", submenu: [{ sub: "مالی" }, { sub: "گزارشات" }, { sub: "تنظیمات" }] },
+      { name: "مدیریت پشتیبانی", submenu: [{ sub: "پشتیبانی" }, { sub: "گزارشات" }, { sub: "تنظیمات" }] },
+      { name: "تنظیمات", submenu: [{ sub: "کاربران ستاد" }, { sub: "گروه های کاربری" }, { sub: "مناطق جغرافیایی" }, { sub: "مدیریت برندها" }, { sub: "مدیریت لوازم خانگی" }, { sub: "مدیریت پورسانت" }, { sub: "مدیریت اختصاص خدمت" }] },
+
     ]
   }
   menuclick(itemname: string) {
@@ -43,6 +47,20 @@ export class SidenavComponent {
         break;
       case "مدیریت لوازم خانگی":
         this.router.navigate(['/portal/appliance']);
+        break;
+      case "مدیریت برندها":
+          this.router.navigate(['/portal/Brands']);
+          break;
+      case "ثبت سفارش":
+        this.router.navigate(['/portal/orderbystaff']);
+        break;
+
+      case "مشتریان":
+        this.router.navigate(['/portal/Customers']);
+        break;
+
+      case  "تکنسین‌ها":
+        this.router.navigate(['/portal/Technicians']);
         break;
 
     }

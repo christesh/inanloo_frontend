@@ -171,34 +171,35 @@
     </div>
   </div>
   <mat-divider></mat-divider>
-  <div class="discription" style="direction: rtl;">
-    <div class="headerbox">
-      <div class="discription">
-        <h2>توضیحات</h2>
-        <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
-          چاپگرها و متون بلکه
-          روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
-          بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان
-          را
-          می طلبد.</p>
+
+
+
+  <div class="headerbox">
+    <div class="discription">
+      <h2>توضیحات</h2>
+      <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
+        چاپگرها و متون بلکه
+        روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
+        بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان
+        را
+        می طلبد.</p>
+    </div>
+    <div>
+      <div *ngIf="!editTel" style="display: flex; flex-direction:column; justify-content: center;    height: 100px;">
+        <button mat-raised-button color="accent" style="margin: 10px;width: 100px;height: 100%;"
+          (click)="edittel()">ویرایش</button>
       </div>
-      <div>
-        <div *ngIf="!editTel" style="display: flex; flex-direction:column; justify-content: center;    height: 100px;">
-          <button mat-raised-button color="accent" style="margin: 10px;width: 100px;height: 100%;"
-            (click)="edittel()">ویرایش</button>
-        </div>
-        <div *ngIf="editTel" style="display: flex; flex-direction:column; justify-content: center;    height: 100px;">
-          <button mat-raised-button color="accent" style="margin: 10px;width: 100px;" (click)="savetel()">ذخیره</button>
-          <button mat-raised-button color="primary" style="margin: 10px;width: 100px;"
-            (click)="canceltel()">انصراف</button>
-        </div>
+      <div *ngIf="editTel" style="display: flex; flex-direction:column; justify-content: center;    height: 100px;">
+        <button mat-raised-button color="accent" style="margin: 10px;width: 100px;" (click)="savetel()">ذخیره</button>
+        <button mat-raised-button color="primary" style="margin: 10px;width: 100px;"
+          (click)="canceltel()">انصراف</button>
       </div>
     </div>
   </div>
+
   <div class="body" style="display: flex;flex-direction: column;">
     <div class="telephone" style="display: flex;flex-direction: column;direction: rtl;">
       <div class="mobilebox" *ngFor="let tel of tels; let i=index">
-
         <p style="margin: 10px;
               font-size: 14px;
         font-weight: 800;"> {{tel.phoneNumber}}</p>
@@ -241,16 +242,17 @@
     </div>
     <div class="addresscontent" style="margin:20px;direction: rtl;width: 100%;">
       <mat-card style="width: 100%;min-height:200px ;" *ngFor="let address of addresses;let i= index">
-        <mat-card-content style="display: flex;flex-direction: row;justify-content: space-around;align-items: center;flex-wrap: wrap;">
+        <mat-card-content
+          style="display: flex;flex-direction: row;justify-content: space-around;align-items: center;flex-wrap: wrap;">
           <mat-checkbox type="checkbox" style="width:20px ;margin: 10px;" [(ngModel)]="address.isMainAddress"
             (change)="seletAddress(address)"></mat-checkbox>
           <div class="addresstext" style="margin: 10px;display: flex;flex-direction: column-reverse;
-        align-content: space-around;
-        justify-content: center;">
+               align-content: space-around; justify-content: center;max-width: 60%;">
             <div>
               <h3>آدرس:</h3>
               <br>
               <h6>{{address.text}}</h6>
+              <br>
               <label class="editsingleaddress" (click)="EditAddress(address.id)">ویرایش</label>
             </div>
           </div>

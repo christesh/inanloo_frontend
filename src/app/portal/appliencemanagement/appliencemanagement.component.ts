@@ -148,8 +148,7 @@ export class AppliencemanagementComponent implements OnInit {
           res => {
             this.applience = res;
             let dateTime = new Date()
-           // console.log(dateTime)
-           // console.log(res)
+          
             for (let i = 0; i < res.length; i++) {
               if (this.applience[i].pic != '')
                 this.applience[i].pic = this.picbaseurl + this.applience[i].pic
@@ -657,7 +656,15 @@ export class AppliencemanagementComponent implements OnInit {
   }
 
   openapp(id: number) {
+    var token=this.tokencookies.get('T')
+    this.api.getappliancebrand(token,id.toString()).subscribe(
+      res=>{
 
+      },
+      err=>{
+
+      }
+    )
   }
   app_c_c_point_editable: boolean = false;
 

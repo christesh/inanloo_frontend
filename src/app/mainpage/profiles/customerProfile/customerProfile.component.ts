@@ -32,6 +32,7 @@ export class CustomerProfileComponent implements OnInit {
 
   @ViewChild("p", { static: false }) popover1: NgbPopover;
   @Input() showBanner: boolean;
+  @Input() userID: string = "";
   profilePic: any;
   private picurl = environment.PIC_URL;
   private baseurl = environment.API_URL;
@@ -67,8 +68,8 @@ export class CustomerProfileComponent implements OnInit {
   city: Cities[] = []
   region: Regions[] = [];
   neighbourhood: Nighbourhoods[] = []
-order:{
-  id: string,
+  order: {
+    id: string,
     status: string,
     app: string,
     brand: string,
@@ -128,27 +129,29 @@ order:{
       this.showbanner = false;
     this.name = new FormControl('');
     var token = this.tokencookie.get('T')
-
-    this.userid = localStorage.getItem('personID');
+    if (this.userID == "")
+      this.userid = localStorage.getItem('personID');
+    else
+      this.userid = this.userID
     this.api.getCustomersDetails(token, this.userid!).subscribe(
       res => {
         this.curentCustomer = res[0]
-       // console.log(this.curentCustomer)
+        // console.log(this.curentCustomer)
         this.mobiles = this.curentCustomer.mobile;
         this.tels = this.curentCustomer.phones;
         this.address = this.curentCustomer.address;
-        if(this.curentCustomer.picture!=null)
-          this.profilePic=this.picurl+this.curentCustomer.picture;
+        if (this.curentCustomer.picture != null)
+          this.profilePic = this.picurl + this.curentCustomer.picture;
         else
-          this.profilePic='http://is.mersa-group.ir/assets/images/profile.png'
-        
-       // console.log(this.profilePic)
+          this.profilePic = 'http://is.mersa-group.ir/assets/images/profile.png'
+
+        // console.log(this.profilePic)
         this.address = this.curentCustomer.address;
         var bd = this.curentCustomer.birthDate;
         if (bd != null) {
           this.birthdate = moment(bd).locale('fa').format('YYYY/M/D');
         }
-       
+
         this.curentCustomer.birthDate = this.birthdate;
         for (let i = 0; i < this.address.length; i++) {
           var addtext = ""
@@ -164,7 +167,7 @@ order:{
           if (this.address[i].region != null)
             addtext += ", " + this.address[i].region.regionName;
 
-          if (this.address[i].neighbourhood!= null)
+          if (this.address[i].neighbourhood != null)
             addtext += ", " + this.address[i].neighbourhood.neighbourhoodName;
 
           if (this.address[i].addressStreet != "")
@@ -205,7 +208,7 @@ order:{
         this.disabled = true;
       },
       err => {
-       console.log(err)
+        console.log(err)
       }
     )
   }
@@ -216,32 +219,32 @@ order:{
     this.firstname.disable();
   }
   provincechange(event: any) {
-   // console.log(event)
+    // console.log(event)
   }
   selectprovince(event: any) {
-   // console.log(event)
+    // console.log(event)
     this.shahrestan = event.value.counties;
     this.city = []
     this.region = []
     this.neighbourhood = []
   }
   selectshahrestan(event: any) {
-   // console.log(event)
+    // console.log(event)
     this.city = event.value.cities;
     this.region = []
     this.neighbourhood = []
   }
   selectcity(event: any) {
-   // console.log(event)
+    // console.log(event)
     this.region = event.value.regions;
     this.neighbourhood = []
   }
   selectregion(event: any) {
-   // console.log(event)
+    // console.log(event)
     this.neighbourhood = event.value.neighbourhoods;
   }
   selectneighbour(event: any) {
-   // console.log(event)
+    // console.log(event)
   }
   showmap() {
     this.showMap = true;
@@ -253,8 +256,8 @@ order:{
     );
   }
   onDateChange(event: any) {
-   // console.log(event);
-   // console.log(this.dateValue1.value)
+    // console.log(event);
+    // console.log(this.dateValue1.value)
     this.birthdate = event['shamsi']
   }
 
@@ -297,10 +300,10 @@ order:{
     }
     this.api.saveusersmobile(token, this.userid, mobiles).subscribe(
       res => {
-       // console.log(res)
+        // console.log(res)
       },
       err => {
-       console.log(err)
+        console.log(err)
       }
     )
   }
@@ -322,10 +325,10 @@ order:{
     }
     this.api.saveuserstel(token, this.userid, telephones).subscribe(
       res => {
-       // console.log(res)
+        // console.log(res)
       },
       err => {
-       console.log(err)
+        console.log(err)
       }
     )
   }
@@ -459,12 +462,11 @@ order:{
           }
         },
         err => {
-         console.log(err)
+          console.log(err)
         }
       )
     }
-    else
-    {
+    else {
       this.shownewaddress = false;
     }
 
@@ -478,7 +480,7 @@ order:{
     this.hasImage = false;
   }
   onSelectprofile(event: any) {
-   // console.log(event)
+    // console.log(event)
     if (event.target.files && event.target.files[0]) {
       var filesAmount = event.target.files.length;
       for (let i = 0; i < filesAmount; i++) {
@@ -519,7 +521,7 @@ order:{
     var token = this.tokencookie.get('T')
     this.api.editprofile(token, this.userid, this.firstname.value!, this.lastname.value!, this.nationalid.value!, this.birthdate).subscribe(
       res => {
-       // console.log(res)
+        // console.log(res)
         var myHeaders = new Headers();
         myHeaders.append("Authorization", "Token " + token);
         var formdata = new FormData();
@@ -533,15 +535,15 @@ order:{
         };
         fetch(this.baseurl + "/personal/technicianuploadpic/", requestOptions)
           .then(response => response.text())
-          .then(result =>  console.log(result))
-          .catch(error =>   console.log('error', error));
+          .then(result => console.log(result))
+          .catch(error => console.log('error', error));
 
       },
       err => {
-       console.log(err)
+        console.log(err)
       }
     )
-   
+
   }
   lastn: string = "fdsd";
   cancelname() {
@@ -560,7 +562,7 @@ order:{
 
   }
   EditAddress(id: any) {
-   // console.log(id)
+    // console.log(id)
     var index = this.address.findIndex(item => item.id == id)
     var data = {
       id: this.address[index].id,
@@ -640,7 +642,7 @@ order:{
             }
           },
           err => {
-           console.log(err)
+            console.log(err)
           }
         )
       }
@@ -648,7 +650,7 @@ order:{
   }
   seletAddress(add: any) {
     if (add.isMainAddress) {
-     // console.log(add)
+      // console.log(add)
       for (let i = 0; i < this.addresses.length; i++) {
         add.isMainAddress = true;
         if (this.addresses[i].id !== add.id)
@@ -684,11 +686,11 @@ export class EditAddressDialogProfile implements OnInit {
   }
   ngOnInit() {
 
-   // console.log(this.data.addressdata)
+    // console.log(this.data.addressdata)
     this.addressforedit = this.data.addressdata
   }
   getValues(sg: any) {
-   // console.log(sg)
+    // console.log(sg)
   }
   editadd(event: any) {
     var data: { btn: string, addid: number } = { btn: event.kind, addid: event.addid }

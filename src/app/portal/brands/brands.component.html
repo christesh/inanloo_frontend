@@ -1,0 +1,129 @@
+<body #content>
+  <div class="brand" style="direction: rtl;">
+    <div class="main header" style="direction: rtl;">
+      <div class="banner">
+      </div>
+      <div class="headerbox">
+        <div class="discription">
+          <h2>مدیریت برندها</h2>
+          <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
+            است،
+            چاپگرها و متون بلکه
+            روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با
+            هدف
+            بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و
+            متخصصان
+            را
+            می طلبد.</p>
+        </div>
+      </div>
+    </div>
+    <div class="title" style="margin:5px;width:100px;">
+      <h6>برند
+        <i class="fa fa-plus-square" style="color:green ;margin-right:5px ;cursor: pointer;"
+          (click)="createBrand()"></i>
+      </h6>
+    </div>
+    <div class="create" *ngIf="createBrandshow">
+      <form [formGroup]="brandform">
+        <mat-form-field class="full-width-input" style="margin:auto;text-align:right;width: 100%; direction:rtl;">
+          <input matInput placeholder=" نام برند" formControlName="brandname" required style="font-size: 12px;">
+          <mat-error *ngIf="isFieldInvalid('brandname')">
+            لطفا نام برند مد نظر خود را وارد کنید!
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="full-width-input" style="margin:auto;text-align:right;width: 100%; direction:rtl;">
+          <textarea matInput rows="10" placeholder="توضیحات" formControlName="beanddescription"
+            style="font-size: 12px;"></textarea>
+        </mat-form-field>
+      </form>
+      <div class="picture" style="width: 50%;font-size: 12px;">
+        <div class="form-group col-12 mb-2" style="direction: rtl;text-align: right;margin: 10px;">
+          <label style="margin: 10px;"> لطفا تصویر مروبط به برند را انتخاب کنید:</label>
+          <label for="brand-file-upload" class="btn btn-raised btn-primary"
+            style="cursor: pointer;margin-right: 35px;font-size: 12px;">
+            <i class="fa fa-upload" style="margin-left: 5px;"></i>انتخاب فایل
+          </label>
+          <input id="brand-file-upload" type='file' (change)="brandonSelectFileNew($event)" resize-max-height="300"
+            resize-max-width="250" resize-quality="0.7">
+        </div>
+      </div>
+      <div class="row" *ngIf="brandpic!==''"
+        style="display: flex;flex-direction: row;flex-wrap: wrap;justify-content: center;">
+        <div
+          style="margin:20px; text-align: center;border-radius: 10px; background-color: rgb(253, 252, 250);box-shadow: 0px 0px 5px 5px rgb(238, 236, 236); width: 350px;height: 300px; ">
+          <lord-icon src="../../../assets/json/bin.json" trigger="hover" (click)="deletebarndimgNew(brandpic)"
+            style="width:40px;height:40px;cursor: pointer;margin-top: 20px;cursor: pointer;">
+          </lord-icon>
+          <br>
+          <img [src]="brandpic" height="200" width="300" style="margin:10px;">
+        </div>
+      </div>
+      <div style="display: flex;flex-direction: row;justify-content: end;padding-left: 20px;">
+      <button mat-raised-button color="accent" style="margin-right: 20px; width: 80px;height: 40px;"
+        (click)="saveNewBrand()">ذخیره</button>
+      <button mat-raised-button color="primary" style="margin-right: 10px;width: 80px;height: 40px;"
+        (click)="cancelNewBrand()">انصراف</button>
+      </div>
+    </div>
+    <div class="brandlists">
+      <mat-expansion-panel *ngFor="let b of brands; let j=index" (opened)="openbarnd(b.ID)">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <div class="title">
+              {{b.a_brandName}}
+            </div>
+            <div class="actions" style="margin-right: 20px;">
+              <!-- <i class="fa fa-edit" style="color:blue ;margin:10px ;cursor: pointer;" (click)="editBrand(b)"></i> -->
+              <i class="fa fa-minus-square" style="color:red ;margin:10px ;cursor: pointer;"
+                (click)="deleteBrand(b)"></i>
+            </div>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="detail" style="display: flex;flex-direction: column;align-items: center;">
+
+          <mat-form-field class="full-width-input" style="margin:auto;text-align:right;width: 100%; direction:rtl;">
+            <textarea matInput rows="5" placeholder="توضیحات" [(ngModel)]="b.a_brandDescription"
+              style="font-size: 12px;"  [disabled]="!editable"></textarea>
+          </mat-form-field>
+
+
+
+          <div class="picture" style="width: 50%;font-size: 12px;">
+            <div class="form-group col-12 mb-2" *ngIf="b.brandpic===''">
+              <div class="form-group col-12 mb-2" style="direction: rtl;text-align: right;margin: 10px;">
+                <label style="margin: 10px;"> لطفا تصویر مروبط به برند را انتخاب کنید:</label>
+
+                <label for="{{'brand-file-upload'+j}}" class="btn btn-raised btn-primary"
+                  style="cursor: pointer;margin-right: 35px;font-size: 12px;">
+                  <i class="fa fa-upload" style="margin-left: 5px;"></i>انتخاب فایل
+                </label>
+                <input id="{{'brand-file-upload'+j}}" type='file' (change)="brandonSelectFile($event , b)"
+                  resize-max-height="300" resize-max-width="250" resize-quality="0.7">
+              </div>
+            </div>
+            <div class="row" *ngIf="b.brandpic!==''"
+              style="display: flex;flex-direction: row;flex-wrap: wrap;justify-content: center;">
+              <div
+                style="margin:20px; text-align: center;border-radius: 10px; background-color: rgb(253, 252, 250);box-shadow: 0px 0px 5px 5px rgb(238, 236, 236); width: 350px;height: 300px; ">
+                <lord-icon *ngIf="editable" src="../../../assets/json/bin.json" trigger="hover" (click)="deletebarndimg(b.brandpic,b)"
+                  style="width:40px;height:40px;cursor: pointer;margin-top: 20px;cursor: pointer;">
+                </lord-icon>
+                <br>
+                <img [src]="b.a_brandImage" height="200" width="300" style="margin:10px;">
+              </div>
+            </div>
+          </div>
+          <div style="display: flex;flex-direction: row;justify-content: end;padding-left: 20px;">
+            <button *ngIf="!editable" mat-raised-button color="accent" style="margin-right: 20px; width: 80px;height: 40px;"
+            (click)="editBrand(b)">ویرایش</button>
+            <button *ngIf="editable" mat-raised-button color="accent" style="margin-right: 20px; width: 80px;height: 40px;"
+              (click)="saveBrand(b)">ذخیره</button>
+            <button *ngIf="editable"  mat-raised-button color="primary" style="margin-right: 10px;width: 80px;height: 40px;"
+              (click)="cancelBrand(b)">انصراف</button>
+            </div>
+        </div>
+      </mat-expansion-panel>
+    </div>
+  </div>
+</body>

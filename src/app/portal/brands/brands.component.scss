@@ -1,0 +1,15 @@
+.create {
+    display: flex;
+    flex-direction: column;
+    justify-content: right;
+    border: 1px solid gainsboro;
+    border-radius: 8px;
+    width: 50%;
+    padding: 10px;
+    margin: auto;
+    text-align: center;
+}
+
+input[type="file"] {
+    display: none;
+}

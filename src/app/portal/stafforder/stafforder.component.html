@@ -1,11 +1,11 @@
-<body>
+<body #content [scrollTop]="scrolltop">
   <div class="searchCustomer">
     <div class="main header" style="direction: rtl;">
       <div class="banner">
       </div>
       <div class="headerbox">
         <div class="discription">
-          <h2>مشتریان</h2>
+          <h2>ثبت سفارش</h2>
           <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
             است،
             چاپگرها و متون بلکه
@@ -17,59 +17,137 @@
             می طلبد.</p>
         </div>
       </div>
-      <div>
+
+
+    </div>
+    <mat-accordion class="example-headers-align" multi style="z-index: 100;">
+      <mat-expansion-panel style="margin: 10px;" [expanded]="openAccordion">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <div class="title">
+              <h6 style="margin: auto;"> انتخاب مشتری </h6>
+            </div>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
         <button mat-raised-button color="primary" style="margin: 10px;width: 150px;" (click)="CreateCustomer()">ایجاد
           مشتری جدید</button>
+        <div class="table">
+          <div class="container" style="background-color: white">
+            <div class="col-sm-12" style="direction: rtl;">
+              <ng2-smart-table [settings]="customerTable" [source]="customertablevalue" id="excel-table"
+                style="font-family: 'iransans'" style="font-family: 'iransans'" (custom)="TableAction($event)">
+              </ng2-smart-table>
+            </div>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <!-- <cdk-accordion class="example-accordion"
+      style=" border: 1px rgb(237, 235, 235) solid;border-radius: 4px;overflow: auto;margin:10px">
+      <cdk-accordion-item #accordionItem="cdkAccordionItem" class="example-accordion-item" role="button" tabindex="0"
+        [expanded]="closeaccordion" [attr.id]="'accordion-header'" [attr.aria-expanded]="accordionItem.expanded"
+        [attr.aria-controls]="'accordion-body'">
+        <div>
+          <div class="example-accordion-item-header" (click)="accordiontoggle()">
+            <strong> انتخاب مشتری</strong>
+            <span *ngIf="accordionItem.expanded" class="example-accordion-item-description">
+              <i class="fa fa-minus" aria-hidden="true"></i>
+            </span>
+            <span *ngIf="!accordionItem.expanded" class="example-accordion-item-description">
+              <i class="fa fa-chevron-down" aria-hidden="true"></i>
+            </span>
+          </div>
+          <div class="example-accordion-item-body" role="customerlist"
+            [style.display]="accordionItem.expanded ? '' : 'none'" [attr.id]="'accordion-body'"
+            [attr.aria-labelledby]="'accordion-header'">
+            <button mat-raised-button color="primary" style="margin: 10px;width: 150px;"
+              (click)="CreateCustomer()">ایجاد
+              مشتری جدید</button>
+
+            <div class="table">
+              <div class="container"
+                style=" border-radius: 8px;box-shadow: rgb(102, 102, 102) 5px;border: gray solid 1px;background-color: white;">
+                <div class="row">
+                  <div class="col-sm-12" style="direction: rtl;text-align: right;">
+                    <ng2-smart-table [settings]="customerTable" [source]="customertablevalue" id="excel-table"
+                      style="font-family: 'iransans'" style="font-family: 'iransans'" (custom)="TableAction($event)">
+                    </ng2-smart-table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </cdk-accordion-item>
+    </cdk-accordion> -->
+
+    <div class="customerdetails">
+      <div *ngIf="showCustomerDetail" style="margin-top: 10px;">
+        <button mat-raised-button color="primary" style="margin: 10px;width: 150px;height: 50px;"
+          (click)="CancelProfile()">
+          <i class="fa-regular fa-xmark" style="color: white;margin-left: 10px;"></i>بستن </button>
+
+        <app-customerProfile [showBanner]="customerdetailfromstaff"></app-customerProfile>
+
       </div>
-    </div>
-    <div class="table">
-      <div class="container"
-        style=" border-radius: 8px;box-shadow: rgb(102, 102, 102) 5px;border: gray solid 1px;background-color: white;">
-        <div class="row">
-          <div class="col-sm-12" style="direction: rtl;text-align: right;">
-            <ng2-smart-table [settings]="customerTable" [source]="customertablevalue" id="excel-table"
-              style="font-family: 'iransans'" style="font-family: 'iransans'" (custom)="TableAction($event)">
-            </ng2-smart-table>
+      <div *ngIf="showOrderDetail" class="orders"
+        style="margin: 10px;border: 1px solid rgb(221, 221, 242);border-radius:8px 8px 0px 0px ;">
+        <div
+          style="width: 100%;background-color:rgb(221, 221, 242);border-radius:8px 8px 0px 0px ;height:50px;display: flex;align-items: center;">
+          <h5 style="margin: auto; text-align: center;">{{selectedCustomer}}</h5>
+          <i class="fa fa-minus" style="color: hsl(0, 0%, 0%);margin-left:20px;float: left;cursor: pointer;"
+            (click)="CancelOrder()"></i>
+        </div>
+        <mat-accordion class="example-headers-align" *ngIf="showOrders" multi style="z-index: 100;">
+          <mat-expansion-panel style="margin: 10px;" [expanded]="!openOrderAccordion">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <div class="title">
+                  <h6 style="margin: auto;">مشاهده لیست سفارشات </h6>
+                </div>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="col-sm-12" style="direction: rtl;text-align: right;">
+              <ng2-smart-table [settings]="ordersTable" [source]="orderstablevalue" id="excel-table"
+                style="font-family: 'iransans'" style="font-family: 'iransans'" (custom)="OrderTableAction($event)">
+              </ng2-smart-table>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+        <button *ngIf="!shoneworder" mat-raised-button color="accent" style="margin: 10px;width: 150px;height: 50px;"
+          (click)="CreateOrder()">
+          <i class="fa fa-plus-square" style="color: white;margin-left: 10px;"></i>ثبت سفارش جدید</button>
+
+        <div *ngIf="shoneworder" class="createOrder" style="margin: 10px;">
+
+          <div style="box-shadow: 0px 0px 5px 5px rgba(128, 128, 128, 0.416);border-radius:8px 8px 0px 0px ;">
+            <div
+              style="width: 100%;background-color:rgba(209, 221, 255, 0.427);border-radius:8px 8px 0px 0px ;height:30px;display: flex;align-items: center;">
+              <h5 style="margin: auto; text-align: center;"></h5>
+              <i class="fa fa-minus" style="color: rgb(0, 0, 0);margin-left:20px;float: left;cursor: pointer;"
+                (click)="CancelshowOrder()"></i>
+            </div>
+            <div style="padding: 15px;">
+              <app-orderpage (newOrderEvent)="addOrder($event)" [showBanner]="customerdetailfromstaff"></app-orderpage>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="showorderdetail" class="createOrder" style="margin: 10px;">
+
+          <div style="box-shadow: 0px 0px 5px 5px rgba(128, 128, 128, 0.416);border-radius:8px 8px 0px 0px ;">
+            <div
+              style="width: 100%;background-color:rgba(209, 221, 255, 0.427);border-radius:8px 8px 0px 0px ; height:30px;display: flex;align-items: center;">
+              <h5 style="margin: auto; text-align: center;"></h5>
+              <i class="fa fa-minus" style="color: rgb(0, 0, 0);margin-left:20px;float: left;cursor: pointer;"
+                (click)="Cancelshowdetail()"></i>
+            </div>
+            <div style="padding: 15px;">
+              <app-orderdetails (newOrderEvent)="addOrder($event)" [showBanner]="customerdetailfromstaff"
+                [orderId]="ordershown"></app-orderdetails>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    
-  </div>
-  <div class="customerdetails">
-    <div *ngIf="showCustomerDetail" class="details">
-      <button mat-raised-button color="primary" style="margin: 10px;width: 150px;height: 50px;"
-        (click)="CancelProfile()">
-        <i class="fa fa-plus-square" style="color: white;margin-left: 10px;"></i>انصراف </button>
-      
-          <app-customerProfile [showBanner]="customerdetailfromstaff"></app-customerProfile>
-      
-    </div>
-    <div *ngIf="showOrderDetail" class="orders">
-      <mat-accordion class="example-headers-align" *ngIf="showOrders" multi style="z-index: 100;">
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              <div class="title">
-                <h6>لیست سفارشات</h6>
-              </div>
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-          <div class="col-sm-12" style="direction: rtl;text-align: right;">
-            <ng2-smart-table [settings]="ordersTable" [source]="orderstablevalue" id="excel-table"
-              style="font-family: 'iransans'" style="font-family: 'iransans'" (custom)="OrderTableAction($event)">
-            </ng2-smart-table>
-          </div>
-        </mat-expansion-panel>
-      </mat-accordion>
-      <button mat-raised-button color="accent" style="margin: 10px;width: 150px;height: 50px;" (click)="CreateOrder()">
-        <i class="fa fa-plus-square" style="color: white;margin-left: 10px;"></i>ثبت سفارش</button>
-      <button mat-raised-button color="primary" style="margin: 10px;width: 150px;height: 50px;" (click)="CancelOrder()">
-        <i class="fa fa-plus-square" style="color: white;margin-left: 10px;"></i>انصراف </button>
-    </div>
-  </div>
-  <div *ngIf="showorder" class="createOrder">
-    <mat-divider></mat-divider>
-    <app-orderpage (newOrderEvent)="addOrder($event)" [showBanner]="customerdetailfromstaff"></app-orderpage>
   </div>
 </body>

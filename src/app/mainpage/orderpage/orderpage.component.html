@@ -3,7 +3,7 @@
   </div>
   <div class="headerbox">
     <div class="discription">
-      <h2>توضیحات</h2>
+      <h5>ثبت سفارش</h5>
       <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
         چاپگرها و متون بلکه
         روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
@@ -305,7 +305,6 @@
             <cdk-accordion-item *ngFor="let pk of problemskind; let i=index" #accordionItem="cdkAccordionItem"
               class="example-accordion-item" role="button" tabindex="0" [attr.id]="'accordion-header-' + i"
               [attr.aria-expanded]="accordionItem.expanded" [attr.aria-controls]="'accordion-body-' + i"  (click)="openProblem(pk)">
-
               <div class="example-accordion-item-header" (click)="accordionItem.toggle()">
                 <strong> {{pk.title}}</strong>
                 <span *ngIf="accordionItem.expanded" class="example-accordion-item-description">
