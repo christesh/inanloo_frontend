@@ -428,8 +428,8 @@ export class ApiServicesService {
       })
     })
   }
-  createBrand(token: string, bname: string, bid: string): Observable<any> {
-    const body = { bname: bname, bid: bid }
+  createBrand(token: string, aid: string, bid: string): Observable<any> {
+    const body = { aid: aid, bid: bid }
     return this.http.post(this.baseurl + '/baseinfo/createbrand/', body, {
       headers: new HttpHeaders({
         'Authorization': 'Token  ' + token,
@@ -1144,6 +1144,24 @@ export class ApiServicesService {
   getappliancemodel(token:string,brandID:string): Observable<any> {
     const body = { brandID: brandID,  };
     return this.http.post(this.baseurl + '/baseinfo/getappliancemodel/',body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  gettechnicianchecklist(token:string,categoryID:any,brandID:any,modelID:any): Observable<any> {
+    const body = {categoryID:categoryID, brandID: brandID,modelID:modelID  };
+    return this.http.post(this.baseurl + '/order/gettechnicianchecklist/',body, {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  createtechnicianproblem(token:string,checklist:any): Observable<any> {
+    const body = {checklist:checklist };
+    return this.http.post(this.baseurl + '/order/createtechnicianproblem/',body, {
       headers: new HttpHeaders({
         'Authorization': 'Token  ' + token,
         'Content-Type': 'application/json',

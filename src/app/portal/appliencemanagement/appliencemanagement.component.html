@@ -162,13 +162,11 @@
             <div class="content" style="margin:5px;width: 100%;">
               <div class="create" *ngIf="createBrandshow" style="display: flex;flex-direction: row;">
                 <form [formGroup]="applianceForm">
-                  <mat-form-field class="full-width-input"
-                    style="margin:auto;text-align:right;width: 100%;  direction:rtl;font-family:iransans ;">
-                    <input matInput placeholder="عنوان برند" formControlName="brandName" required
-                      style="font-size: 12px;">
-                    <mat-error *ngIf="isFieldInvalid('brandName')">
-                      لطفا عنوان برند را وارد کنید!
-                    </mat-error>
+                  <mat-form-field style="direction: rtl;text-align:right; margin: 10px;">
+                    <mat-label>استان </mat-label>
+                    <mat-select (selectionChange)="selectbrands($event)" [(value)]="selectedbrands">
+                      <mat-option *ngFor="let bb of allbrands;let i=index" value="{{bb.id}}">{{bb.a_brandName}}</mat-option>
+                    </mat-select>
                   </mat-form-field>
                 </form>
                 <button mat-raised-button color="accent" style="margin-right: 20px; width: 80px;height: 40px;"

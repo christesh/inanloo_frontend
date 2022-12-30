@@ -49,6 +49,7 @@ export class AppliencemanagementComponent implements OnInit {
     regionName: new FormControl('', Validators.required),
     neighbourhoodName: new FormControl('', Validators.required)
   })
+  allbrands:any;
   constructor(
     private api: ApiServicesService,
     private tokencookies: CookieService,
@@ -133,11 +134,21 @@ export class AppliencemanagementComponent implements OnInit {
       },
       noDataMessage: "هیچ اطلاعاتی یافت نشد"
     };
+    var token = this.tokencookies.get('T')
+    this.api.getallbrands(token).subscribe(
+      res => {
+        // console.log(res)
+        this.allbrands = res
+        this.FillTable()
+        this.appcategoryform.disable()
+        this.brandform.disable()
+        this.modelform.disable()
+      },
+      err => {
+        console.log(err)
+      }
+    )
 
-    this.FillTable()
-    this.appcategoryform.disable()
-    this.brandform.disable()
-    this.modelform.disable()
   }
   FillTable() {
     var token = this.tokencookies.get('T')
@@ -700,11 +711,10 @@ export class AppliencemanagementComponent implements OnInit {
     this.createBrandshow = true;
   }
 
-  saveBrand(brand: any) {
+  saveBrand(a: any) {
     // console.log(brand)
     var token = this.tokencookies.get('T');
-    var bname = this.applianceForm.controls.brandName.value
-    this.api.createBrand(token, bname!, brand.ID).subscribe(
+    this.api.createBrand(token,a.ID, this.selectedbrands).subscribe(
       res => {
         // console.log(res)
         this.createBrandshow = false;
@@ -997,11 +1007,17 @@ export class AppliencemanagementComponent implements OnInit {
       })
     }
   }
+  selectedbrands: string;
+  selectbrands(event: any) {
+
+
+
+  }
   brandProblem: any;
   models: any;
   barndopened: boolean[] = [];
-  showmodels:boolean[]=[];
-  openbarnd(brandid: any, appid: any, appindex: any,brandidx:any) {
+  showmodels: boolean = false;
+  openbarnd(brandid: any, appid: any, appindex: any, brandidx: any) {
     this.barndopened[appindex] = true;
     this.brandProblem = []
     var token = this.tokencookies.get('T')
@@ -1014,17 +1030,18 @@ export class AppliencemanagementComponent implements OnInit {
         }
         this.brandProblem = new LocalDataSource(bp)
         var mod: { id: string, model: string }[] = []
-        var models:Models[]=[];
-        var mp=new LocalDataSource();
-        var mc=new LocalDataSource();
+        var models: Models[] = [];
+        var mp = new LocalDataSource();
+        var mc = new LocalDataSource();
         this.api.getappliancemodel(token, brandid).subscribe(
           res => {
+            this.showmodels = true;
             console.log(res)
             for (let i = 0; i < res.length; i++) {
-              models.push({ ID: res[i]['ID'], model: res[i]['model'] ,description:"",modelProblems:mp,modelChecklist:mc})
+              models.push({ ID: res[i]['ID'], model: res[i]['model'], description: "", modelProblems: mp, modelChecklist: mc })
             }
-            this.applience[appindex].brands[brandidx].models=models
-          
+            this.applience[appindex].brands[brandidx].models = models
+
           },
           err => {
             console.log(err)

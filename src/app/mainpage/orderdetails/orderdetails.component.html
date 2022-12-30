@@ -39,7 +39,8 @@
             <h6> شماره تماس: {{order.customer.mobile[0].mobileNumber}}</h6>
           </div>
           <!-- <a class="detaillink">جزئیات بیشتر</a> -->
-          <a class="detaillink" [routerLink]="['/home/survey',{orderID:order.id, sKind:sKind,appCat:order.applianceBrand.a_barndCategory.id,result:result}]">
+          <a class="detaillink"
+            [routerLink]="['/home/survey',{orderID:order.id, sKind:sKind,appCat:order.applianceBrand.a_barndCategory.id,result:result}]">
             {{surveyTitle}}
           </a>
         </div>
@@ -49,7 +50,7 @@
             {{order.applianceBrand.a_brandName}} </h5>
           <h5 *ngIf="order.applianceModel!==null">مدل دستگاه: {{order.applianceModel.model}}</h5>
           <h5 *ngIf="order.applianceSerial!==null">سریال دستگاه: {{order.applianceSerial}}</h5>
-          
+
         </div>
 
         <div *ngIf="order.hasGuarantee" class="garantee" style="float: left;">
@@ -80,13 +81,11 @@
               گارانتی مورد تایید است.
             </mat-checkbox>
             <div *ngIf="gmsg" style="color:red">لطفا گارانتی را بررسی بفرمائید</div>
-            
+
             <div class="button" *ngIf="gchange">
-              <button mat-raised-button color="accent"  style="margin-right:10px ;"
-                (click)="saveG()" >
+              <button mat-raised-button color="accent" style="margin-right:10px ;" (click)="saveG()">
                 ذخیره</button>
-              <button mat-raised-button color="primary"  style="margin-right:10px ;"
-                (click)="cancelG()" >
+              <button mat-raised-button color="primary" style="margin-right:10px ;" (click)="cancelG()">
                 انصراف</button>
             </div>
           </div>
@@ -103,204 +102,11 @@
           <h5>تکنسین</h5>
         </div>
         <div class="techpic">
-          <img [src]="imgurl + order.technician.picture" alt="" class="techpic"  onerror="this.onerror=null; this.src='http://is.mersa-group.ir/assets/images/profile.png'">
+          <img [src]="imgurl + order.technician.picture" alt="" class="techpic"
+            onerror="this.onerror=null; this.src='http://is.mersa-group.ir/assets/images/profile.png'">
         </div>
         <div class="techinfo">
-          <h5>{{order.technician.firstName}}  {{order.technician.lastName}}</h5>
-          <h5>{{order.technician.mobile[0].mobileNumber}}</h5>
-
-          <div class="techrate" *ngIf="order.technician.technicianRank !==null">
-            <h6>امتیاز {{order.technician.technicianRank}}</h6>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3 technician" *ngIf="order.technician == null">
-        <div class="header">
-          <h5 style="color: red;">هنوز کسی این سفارش را قبول نکرده است</h5>
-        </div>
-      </div>
-    </mat-card-content>
-    <div style="padding: 20px;display: flex;flex-direction: row;flex-wrap: wrap;justify-content: space-between;">
-      <div style="max-width: 60%;">
-        <h4>آدرس:</h4>
-        <h5 >{{order.orderAddress.province.provinceName}}, {{order.orderAddress.county.countyName}},
-          {{order.orderAddress.city.cityName}}, {{order.orderAddress.region.regionName}},
-          {{order.orderAddress.neighbourhood.neighbourhoodName}},
-          خیابان: {{order.orderAddress.addressStreet}}, {{order.orderAddress.addressSubStreet}},
-          کوچه: {{order.orderAddress.addressLane}},ساختمان: {{order.orderAddress.addressBuilding}},
-          پلاک: {{order.orderAddress.addressNo}},واحد: {{order.orderAddress.addressUnit}},طبقه:
-          {{order.orderAddress.addressFloor}}
-        </h5>
-      </div>
-      <div class="addressmap" style="margin: 10px;width: 300px;height:200px">
-        <app-map [enable]="false" [lat]="order.orderAddress.addressLat" [long]="order.orderAddress.addressLong"
-          width="300px" height="200px">
-        </app-map>
-      </div>
-    </div>
-    <hr>
-    <div class="problem" style="padding:20px ;">
-      <div class="costaccounting">
-        <h5>مشکلات و خدمات مورد نیاز :</h5>
-
-        <table mat-table #MatTable [dataSource]="selectedsubtasks" style="width: 100%;">
-          <!-- Item Column -->
-          <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef style="text-align:right;"> خدمت/مشکل </th>
-            <td mat-cell *matCellDef="let selectedsubtasks"> {{selectedsubtasks.title}} </td>
-            <td mat-footer-cell *matFooterCellDef style="color: blue;"><strong>جمع</strong> </td>
-          </ng-container>
-
-          <!-- lowprice Column -->
-          <ng-container matColumnDef="lowprice">
-            <th mat-header-cell *matHeaderCellDef style="text-align:right;"> کمترین هزینه </th>
-            <td mat-cell *matCellDef="let selectedsubtasks">
-              <p *ngIf="isNumber(selectedsubtasks.lowprice)">{{selectedsubtasks.lowprice | number}}</p>
-              <p *ngIf="!isNumber(selectedsubtasks.lowprice)">{{selectedsubtasks.lowprice }}</p>
-            </td>
-            <td mat-footer-cell *matFooterCellDef style="color: blue;"> <strong>{{totlalowprice|number}}</strong>
-            </td>
-          </ng-container>
-          <!-- highprice Column -->
-          <ng-container matColumnDef="highprice">
-            <th mat-header-cell *matHeaderCellDef style="text-align:right;"> کمترین هزینه </th>
-            <td mat-cell *matCellDef="let selectedsubtasks">
-              <p *ngIf="isNumber(selectedsubtasks.highprice)">{{selectedsubtasks.highprice | number}}</p>
-              <p *ngIf="!isNumber(selectedsubtasks.highprice)">{{selectedsubtasks.highprice }}</p>
-            </td>
-            <td mat-footer-cell *matFooterCellDef style="color: blue;"> <strong>{{totlahighprice|number }} </strong>
-            </td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-          <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
-        </table>
-
-      </div>
-      <hr>
-      <div class="customerproblempic" style="padding-top:20px">
-        <h5 *ngIf="custpmerproblempicurls.length !== 0">تصاویر مربوط به مشکلات</h5>
-        <div class="row" style="display: flex;flex-direction: row;flex-wrap: wrap;justify-content: right;">
-          <div *ngFor="let url of custpmerproblempicurls;let i=index;"
-            style="margin:20px; text-align: center;border-radius: 10px; background-color: rgb(253, 252, 250);box-shadow: 0px 0px 5px 5px rgb(238, 236, 236); width: 350px;height: 300px; ">
-            <br>
-            <img [src]="url" height="200" width="300" style="margin:10px;cursor: pointer;" (click)="openpopup(url)">
-          </div>
-        </div>
-      </div>
-    </div>
-    <hr>
-    <div class="checklist">
-      <ul>
-        <li *ngFor="let checklist of techChecklist;let i=index">
-          <mat-checkbox [(ngModel)]="checklist.checked" color="warn"
-            (ngModelChange)="ChecklistSelect(checklist)">
-            {{checklist.title}}
-          </mat-checkbox>
-        </li>
-      </ul>
-    </div>
-    <div class="invoice">
-
-    </div>
-
-
-  </mat-card>
-
-  <mat-card *ngIf="!customer">
-    <mat-card-content>
-      <div class="col-md-3 section1">
-        <div [ngClass]="statusCssClass">
-          <h5 style="margin:auto;min-width: 100px;">{{order.orderStatus.status}}</h5>
-        </div>
-        <div class="registerDate">
-          <h6>تاریخ ثبت سفارش: {{order.registerDateTime}}</h6>
-        </div>
-        <div class="appliancepic">
-          <div class="apppic">
-            <img [src]="order.applianceBrand.a_barndCategory.a_categoryImage" class="apppic">
-          </div>
-          <div class="brandpic">
-            <img [src]="order.applianceBrand.a_brand.a_brandImage" class="brandpic">
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 section2">
-        <div class="customer">
-          <div class="customername">
-            <h5 class="headerText"><strong>مشتری:</strong> {{order.customer.firstName}} {{order.customer.lastName}}</h5>
-            <h6> شماره تماس: {{order.customer.mobile[0].mobileNumber}}</h6>
-          </div>
-          <!-- <a class="detaillink">جزئیات بیشتر</a> -->
-          <!-- <a class="detaillink" [routerLink]="['/home/survey',{orderID:order.id, sKind:sKind,appCat:order.applianceBrand.a_barndCategory.id,result:result}]">
-            {{surveyTitle}}
-          </a> -->
-        </div>
-        <hr>
-        <div class="ordertitle">
-          <h5 class="headerText">{{order.applianceBrand.a_barndCategory.a_categoryName}}
-            {{order.applianceBrand.a_brandName}} </h5>
-          <h5 *ngIf="order.applianceModel!==null">مدل دستگاه: {{order.applianceModel.model}}</h5>
-          <h5 *ngIf="order.applianceSerial!==null">سریال دستگاه: {{order.applianceSerial}}</h5>
-          
-        </div>
-
-        <div *ngIf="order.hasGuarantee" class="garantee" style="float: left;">
-          <div class="g"
-            style="padding: 1px;text-align: center;background-color: rgb(21, 114, 21);color: white; border-radius: 50px;">
-            <h5 style="margin:10px">متقاضی استفاده از خدمات گارانتی </h5>
-          </div>
-          <div class="gdates">
-            <h6>تاریخ شروع گارانتی: {{order.applianceGuarantee[0].guaranteeStartDate}} </h6>
-            <h6>تاریخ اتمام گارانتی: {{order.applianceGuarantee[0].guaranteeEndDate}} </h6>
-          </div>
-          <div class="gdates">
-            <div class="apppic" style="text-align: center;">
-              <h6>فاکتور خرید</h6>
-              <img [src]="order.applianceInvoice[0].invoicePic"
-                (click)="openpopup(order.applianceInvoice[0].invoicePic)">
-
-            </div>
-            <div class="apppic" style="text-align: center;">
-              <h6>برگه گارانتی</h6>
-              <img [src]="order.applianceGuarantee[0].guaranteePic"
-                (click)="openpopup(order.applianceGuarantee[0].guaranteePic)">
-
-            </div>
-          </div>
-          <div class="accept" *ngIf="validstaff" style="margin: auto;text-align: center;padding: 10px;">
-            <mat-checkbox [(ngModel)]="acceptG" color="accent" style="padding-left:10px" (change)="Gchange()">
-              گارانتی مورد تایید است.
-            </mat-checkbox>
-            <div *ngIf="gmsg" style="color:red">لطفا گارانتی را بررسی بفرمائید</div>
-            
-            <div class="button" *ngIf="gchange">
-              <button mat-raised-button color="accent"  style="margin-right:10px ;"
-                (click)="saveG()" >
-                ذخیره</button>
-              <button mat-raised-button color="primary"  style="margin-right:10px ;"
-                (click)="cancelG()" >
-                انصراف</button>
-            </div>
-          </div>
-
-        </div>
-        <hr>
-        <div class="date">
-          <h5>تاریخ حضور متخصص: {{order.orderDate}} </h5>
-          <h5>بازه زمانی: {{order.orderTimeRange.timeRange}}</h5>
-        </div>
-      </div>
-      <div class="col-md-3 technician" *ngIf="order.technician !== null">
-        <div class="header">
-          <h5>تکنسین</h5>
-        </div>
-        <div class="techpic">
-          <img [src]="imgurl + order.technician.picture" alt="" class="techpic"  onerror="this.onerror=null; this.src='http://is.mersa-group.ir/assets/images/profile.png'">
-        </div>
-        <div class="techinfo">
-          <h5>{{order.technician.firstName}}  {{order.technician.lastName}}</h5>
+          <h5>{{order.technician.firstName}} {{order.technician.lastName}}</h5>
           <h5>{{order.technician.mobile[0].mobileNumber}}</h5>
 
           <div class="techrate" *ngIf="order.technician.technicianRank !==null">
@@ -388,12 +194,221 @@
     <div class="checklist">
       <ul>
         <li *ngFor="let checklist of techChecklist;let i=index">
-          <mat-checkbox [(ngModel)]="checklist.checked" color="warn"
-            (ngModelChange)="ChecklistSelect(checklist)">
+          <mat-checkbox [(ngModel)]="checklist.checked" color="warn" (ngModelChange)="ChecklistSelect(checklist)">
             {{checklist.title}}
           </mat-checkbox>
         </li>
       </ul>
+    </div>
+    <div class="invoice">
+
+    </div>
+
+
+  </mat-card>
+
+  <mat-card *ngIf="!customer">
+    <mat-card-content>
+      <div class="col-md-3 section1">
+        <div [ngClass]="statusCssClass">
+          <h5 style="margin:auto;min-width: 100px;">{{order.orderStatus.status}}</h5>
+        </div>
+        <div class="registerDate">
+          <h6>تاریخ ثبت سفارش: {{order.registerDateTime}}</h6>
+        </div>
+        <div class="appliancepic">
+          <div class="apppic">
+            <img [src]="order.applianceBrand.a_barndCategory.a_categoryImage" class="apppic">
+          </div>
+          <div class="brandpic">
+            <img [src]="order.applianceBrand.a_brand.a_brandImage" class="brandpic">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 section2">
+        <div class="customer">
+          <div class="customername">
+            <h5 class="headerText"><strong>مشتری:</strong> {{order.customer.firstName}} {{order.customer.lastName}}</h5>
+            <h6> شماره تماس: {{order.customer.mobile[0].mobileNumber}}</h6>
+          </div>
+          <!-- <a class="detaillink">جزئیات بیشتر</a> -->
+          <!-- <a class="detaillink" [routerLink]="['/home/survey',{orderID:order.id, sKind:sKind,appCat:order.applianceBrand.a_barndCategory.id,result:result}]">
+            {{surveyTitle}}
+          </a> -->
+        </div>
+        <hr>
+        <div class="ordertitle">
+          <h5 class="headerText">{{order.applianceBrand.a_barndCategory.a_categoryName}}
+            {{order.applianceBrand.a_brandName}} </h5>
+          <h5 *ngIf="order.applianceModel!==null">مدل دستگاه: {{order.applianceModel.model}}</h5>
+          <h5 *ngIf="order.applianceSerial!==null">سریال دستگاه: {{order.applianceSerial}}</h5>
+
+        </div>
+
+        <div *ngIf="order.hasGuarantee" class="garantee" style="float: left;">
+          <div class="g"
+            style="padding: 1px;text-align: center;background-color: rgb(21, 114, 21);color: white; border-radius: 50px;">
+            <h5 style="margin:10px">متقاضی استفاده از خدمات گارانتی </h5>
+          </div>
+          <div class="gdates">
+            <h6>تاریخ شروع گارانتی: {{order.applianceGuarantee[0].guaranteeStartDate}} </h6>
+            <h6>تاریخ اتمام گارانتی: {{order.applianceGuarantee[0].guaranteeEndDate}} </h6>
+          </div>
+          <div class="gdates">
+            <div class="apppic" style="text-align: center;">
+              <h6>فاکتور خرید</h6>
+              <img [src]="order.applianceInvoice[0].invoicePic"
+                (click)="openpopup(order.applianceInvoice[0].invoicePic)">
+
+            </div>
+            <div class="apppic" style="text-align: center;">
+              <h6>برگه گارانتی</h6>
+              <img [src]="order.applianceGuarantee[0].guaranteePic"
+                (click)="openpopup(order.applianceGuarantee[0].guaranteePic)">
+
+            </div>
+          </div>
+          <div class="accept" *ngIf="validstaff" style="margin: auto;text-align: center;padding: 10px;">
+            <mat-checkbox [(ngModel)]="acceptG" color="accent" style="padding-left:10px" (change)="Gchange()">
+              گارانتی مورد تایید است.
+            </mat-checkbox>
+            <div *ngIf="gmsg" style="color:red">لطفا گارانتی را بررسی بفرمائید</div>
+
+            <div class="button" *ngIf="gchange">
+              <button mat-raised-button color="accent" style="margin-right:10px ;" (click)="saveG()">
+                ذخیره</button>
+              <button mat-raised-button color="primary" style="margin-right:10px ;" (click)="cancelG()">
+                انصراف</button>
+            </div>
+          </div>
+
+        </div>
+        <hr>
+        <div class="date">
+          <h5>تاریخ حضور متخصص: {{order.orderDate}} </h5>
+          <h5>بازه زمانی: {{order.orderTimeRange.timeRange}}</h5>
+        </div>
+      </div>
+      <div class="col-md-3 technician" *ngIf="order.technician !== null">
+        <div class="header">
+          <h5>تکنسین</h5>
+        </div>
+        <div class="techpic">
+          <img [src]="imgurl + order.technician.picture" alt="" class="techpic"
+            onerror="this.onerror=null; this.src='http://is.mersa-group.ir/assets/images/profile.png'">
+        </div>
+        <div class="techinfo">
+          <h5>{{order.technician.firstName}} {{order.technician.lastName}}</h5>
+          <h5>{{order.technician.mobile[0].mobileNumber}}</h5>
+
+          <div class="techrate" *ngIf="order.technician.technicianRank !==null">
+            <h6>امتیاز {{order.technician.technicianRank}}</h6>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 technician" *ngIf="order.technician == null">
+        <div class="header">
+          <h5 style="color: red;">هنوز کسی این سفارش را قبول نکرده است</h5>
+        </div>
+      </div>
+    </mat-card-content>
+    <div style="padding: 20px;display: flex;flex-direction: row;flex-wrap: wrap;justify-content: space-between;">
+      <div style="max-width: 60%;">
+        <h4>آدرس:</h4>
+        <h5>{{order.orderAddress.province.provinceName}}, {{order.orderAddress.county.countyName}},
+          {{order.orderAddress.city.cityName}}, {{order.orderAddress.region.regionName}},
+          {{order.orderAddress.neighbourhood.neighbourhoodName}},
+          خیابان: {{order.orderAddress.addressStreet}}, {{order.orderAddress.addressSubStreet}},
+          کوچه: {{order.orderAddress.addressLane}},ساختمان: {{order.orderAddress.addressBuilding}},
+          پلاک: {{order.orderAddress.addressNo}},واحد: {{order.orderAddress.addressUnit}},طبقه:
+          {{order.orderAddress.addressFloor}}
+        </h5>
+      </div>
+      <div class="addressmap" style="margin: 10px;width: 300px;height:200px">
+        <app-map [enable]="false" [lat]="order.orderAddress.addressLat" [long]="order.orderAddress.addressLong"
+          width="300px" height="200px">
+        </app-map>
+      </div>
+    </div>
+    <hr>
+    <div class="problem" style="padding:20px ;">
+      <div class="costaccounting">
+        <h5>مشکلات و خدمات مورد نیاز :</h5>
+
+        <table mat-table #MatTable [dataSource]="selectedsubtasks" style="width: 100%;">
+          <!-- Item Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef style="text-align:right;"> خدمت/مشکل </th>
+            <td mat-cell *matCellDef="let selectedsubtasks"> {{selectedsubtasks.title}} </td>
+            <td mat-footer-cell *matFooterCellDef style="color: blue;"><strong>جمع</strong> </td>
+          </ng-container>
+
+          <!-- lowprice Column -->
+          <ng-container matColumnDef="lowprice">
+            <th mat-header-cell *matHeaderCellDef style="text-align:right;"> کمترین هزینه </th>
+            <td mat-cell *matCellDef="let selectedsubtasks">
+              <p *ngIf="isNumber(selectedsubtasks.lowprice)">{{selectedsubtasks.lowprice | number}}</p>
+              <p *ngIf="!isNumber(selectedsubtasks.lowprice)">{{selectedsubtasks.lowprice }}</p>
+            </td>
+            <td mat-footer-cell *matFooterCellDef style="color: blue;"> <strong>{{totlalowprice|number}}</strong>
+            </td>
+          </ng-container>
+          <!-- highprice Column -->
+          <ng-container matColumnDef="highprice">
+            <th mat-header-cell *matHeaderCellDef style="text-align:right;"> کمترین هزینه </th>
+            <td mat-cell *matCellDef="let selectedsubtasks">
+              <p *ngIf="isNumber(selectedsubtasks.highprice)">{{selectedsubtasks.highprice | number}}</p>
+              <p *ngIf="!isNumber(selectedsubtasks.highprice)">{{selectedsubtasks.highprice }}</p>
+            </td>
+            <td mat-footer-cell *matFooterCellDef style="color: blue;"> <strong>{{totlahighprice|number }} </strong>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+        </table>
+
+      </div>
+      <hr>
+      <div class="customerproblempic" style="padding-top:20px">
+        <h5 *ngIf="custpmerproblempicurls.length !== 0">تصاویر مربوط به مشکلات</h5>
+        <div class="row" style="display: flex;flex-direction: row;flex-wrap: wrap;justify-content: right;">
+          <div *ngFor="let url of custpmerproblempicurls;let i=index;"
+            style="margin:20px; text-align: center;border-radius: 10px; background-color: rgb(253, 252, 250);box-shadow: 0px 0px 5px 5px rgb(238, 236, 236); width: 350px;height: 300px; ">
+            <br>
+            <img [src]="url" height="200" width="300" style="margin:10px;cursor: pointer;" (click)="openpopup(url)">
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr>
+
+    <div class="checklist" style="display: flex;flex-direction: column; justify-content: space-between;">
+      <div class="savecheck">
+        <div style="display: flex;flex-direction: row;justify-content: start;padding-right: 10px;padding-bottom:10px ;">
+          <button *ngIf="!editable" mat-raised-button color="accent"
+            style=" width: 80px;height: 40px;" (click)="editchecklist()">ویرایش</button>
+          <button *ngIf="editable" mat-raised-button color="accent"
+            style=" width: 80px;height: 40px;" (click)="savechecklist()">ذخیره</button>
+          <button *ngIf="editable" mat-raised-button color="primary"
+            style="margin-right: 10px;width: 80px;height: 40px;" (click)="cancelchecklist()">انصراف</button>
+        </div>
+      </div>
+      <div style="width:100%;padding:10px">
+        <div class="searchbox">
+          <input type="text" class="form-control" style="width: 100%;" placeholder="جستجو"
+            (keyup)="checklistSearchChange($event)">
+        </div>
+        <div class="list" style="height: 300px;overflow: auto;">
+          <div *ngFor="let checklist of techChecklist;let i=index">
+            <mat-checkbox [(ngModel)]="checklist.checked" color="warn" (ngModelChange)="ChecklistSelect(checklist)">
+              {{checklist.title}}
+            </mat-checkbox>
+          </div>
+        </div>
+      </div>
+     
     </div>
     <div class="invoice">
 

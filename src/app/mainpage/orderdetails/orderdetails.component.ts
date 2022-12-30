@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import * as moment from 'jalali-moment';
 import { Problem } from '../orderpage/Order';
 import { faLessThanEqual } from '@fortawesome/free-solid-svg-icons';
+import { ThisReceiver } from '@angular/compiler';
 @Component({
   selector: 'app-orderdetails',
   templateUrl: './orderdetails.component.html',
@@ -13,7 +14,8 @@ import { faLessThanEqual } from '@fortawesome/free-solid-svg-icons';
 })
 export class OrderdetailsComponent implements OnInit {
   @Input() orderId: string = "";
-  techChecklist: any[] = [];
+  techChecklist: { id: string, title: string, description: string, category: string, checked: boolean }[] = [];
+  alltechChecklist: { id: string, title: string, description: string, category: string, checked: boolean }[] = [];
   imgurl = environment.PIC_URL;
   orderID: string;
   custpmerproblempicurls: string[] = []
@@ -43,6 +45,7 @@ export class OrderdetailsComponent implements OnInit {
   surveyTitle: string = ""
   result: any;
   customer: boolean = false;
+  editable: boolean = false;
   ngOnInit() {
     // alert(this.orderId)
     var personcCat = localStorage.getItem('userCat')
@@ -146,6 +149,7 @@ export class OrderdetailsComponent implements OnInit {
           this.order.applianceInvoice[0].invoicePic = this.imgurl + this.order.applianceInvoice[0].invoicePic
           this.order.applianceGuarantee[0].guaranteePic = this.imgurl + this.order.applianceGuarantee[0].guaranteePic
         }
+
         for (let i = 0; i < this.order.customerProblem.length; i++) {
           var cp = this.order.customerProblem[i]
 
@@ -172,11 +176,80 @@ export class OrderdetailsComponent implements OnInit {
         for (let i = 0; i < this.order.customerProblemPic.length; i++) {
           this.custpmerproblempicurls.push(this.imgurl + this.order.customerProblemPic[i].problemImage)
         }
+
+        this.api.gettechnicianchecklist(token, this.order.applianceBrand.a_barndCategory.id, this.order.applianceBrand.id, null).subscribe(
+          res => {
+            console.log(res)
+            for (let i = 0; i < res.length; i++) {
+              this.techChecklist.push({ id: res[i]['id'], title: res[i]['checklistTitle'], description: res[i]['Description'], category: res[i]['pkind'], checked: false })
+            }
+            this.alltechChecklist = this.techChecklist
+            if (this.order.technicianProblem != null) {
+              this.editable = true;
+              for (let i = 0; i < this.order.technicianProblem.length; i++) {
+                var idx = this.techChecklist.findIndex(item => item.title == this.order.technicianProblem.checklistTitle)
+                this.techChecklist[idx].checked = true;
+              }
+            }
+            else
+              this.editable = false;
+
+          },
+          err => {
+            console.log(err)
+          }
+        )
+
       },
       err => {
         console.log(err)
       }
     )
+  }
+  checklistSearchChange(event: any) {
+    var s = [];
+    if (event.target.value != "") {
+      for (let i = 0; i < this.alltechChecklist.length!; i++) {
+        var checktitle = this.alltechChecklist[i].title.toLowerCase()
+        var searchv = event.target.value.toLowerCase()
+        if (checktitle.includes(searchv)) {
+          s.push(this.alltechChecklist[i])
+        }
+      }
+      this.techChecklist = []
+      this.techChecklist = s;
+    }
+    else {
+      this.techChecklist = this.alltechChecklist
+    }
+  }
+  editchecklist() {
+    this.editable = true;
+  }
+  savechecklist() {
+    this.editable = false;
+    var checklist: { orderid: string, problem: { type: string, chID: string }[] };
+    var problem: { type: string, chID: string }[] = []
+    for (let i = 0; i < this.alltechChecklist.length; i++) {
+      if (this.alltechChecklist[i].checked) {
+        problem.push({ type: this.alltechChecklist[i].category, chID: this.alltechChecklist[i].id })
+      }
+    }
+    checklist = { orderid: this.orderID, problem: problem }
+    var token = this.tokencookie.get('T')
+    this.api.createtechnicianproblem(token, checklist).subscribe(
+      res => {
+        console.log(res)
+      },
+      err => {
+        console.log(err)
+      }
+    )
+
+  }
+  cancelchecklist() {
+    this.editable = false;
+
   }
   isNumber(val: any) {
     return (
@@ -215,7 +288,8 @@ export class OrderdetailsComponent implements OnInit {
     this.gchange = false;
   }
   ChecklistSelect(check: any) {
-
+    var idx = this.alltechChecklist.findIndex(item => item.id == check.id)
+    this.alltechChecklist[idx].checked = true;
   }
   survey() {
 
