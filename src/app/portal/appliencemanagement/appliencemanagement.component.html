@@ -176,43 +176,48 @@
                 <button mat-raised-button color="primary" style="margin-right: 10px;width: 80px;height: 40px;"
                   (click)="cancelBrand()">انصراف</button>
               </div>
-              <mat-expansion-panel *ngFor="let b of a.brands; let j=index" (opened)="openbarnd(b.ID,i,j)">
-                <mat-expansion-panel-header>
-                  <mat-panel-title>
-                    <div class="title">
-                      {{b.brand}}
-                    </div>
-                    <div class="actions" style="margin-right: 20px;">
-                      <i class="fa fa-edit" style="color:blue ;margin:10px ;cursor: pointer;"
-                        (click)="editBrand(b)"></i>
-                      <i class="fa fa-minus-square" style="color:red ;margin:10px ;cursor: pointer;"
-                        (click)="deleteBrand(b)"></i>
-                    </div>
-                  </mat-panel-title>
-                </mat-expansion-panel-header>
-                <div class="detail" style="display: flex;flex-direction: row;justify-content: space-around;">
-                  <div class="problem" style="width: 45%;">
-                    <div class="main header" style="direction: rtl;">
-                      <div>
-                        <button class="btn btn-raised btn-primary" style="margin: 10px;width: 120px;font-size: 12px;"
-                          (click)="createBrandProblem(b,i,j)">ایجاد
-                          مشکل جدید</button>
+              <div *ngIf="showmodels">
+                <mat-expansion-panel *ngFor="let b of a.brands; let j=index" (opened)="openbarnd(b.ID,a.ID,i,j)">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <div class="title">
+                        {{b.brand}}
                       </div>
-                    </div>
-                    <div class="table">
-                      <div class="container" style=" border-radius: 8px;box-shadow: rgb(102, 102, 102) 5px;">
-                        <div class="row">
-                          <div class="col-sm-12" style="direction: rtl;text-align: right;">
-                            <ng2-smart-table [settings]="problemTableSetting" [source]="b.brandProblems"
-                              id="excel-table" style="font-family: 'iransans'"
-                              style="font-family: 'iransans';font-size: 12px;" (custom)="brandedit($event,i,j)">
-                            </ng2-smart-table>
+                      <div class="actions" style="margin-right: 20px;">
+                        <i class="fa fa-edit" style="color:blue ;margin:10px ;cursor: pointer;"
+                          (click)="editBrand(b)"></i>
+                        <i class="fa fa-minus-square" style="color:red ;margin:10px ;cursor: pointer;"
+                          (click)="deleteBrand(b)"></i>
+                      </div>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div class="detail" *ngIf="barndopened[i]"
+                    style="display: flex;flex-direction: row;justify-content: space-around;">
+                    <div class="problem" style="width: 45%;">
+                      <div class="main header" style="direction: rtl;">
+                        <div>
+                          <button class="btn btn-raised btn-primary" style="margin: 10px;width: 120px;font-size: 12px;"
+                            (click)="createBrandProblem(b,i,j)">ایجاد
+                            مشکل جدید</button>
+                        </div>
+                      </div>
+                      <div *ngIf="fetch">
+                        <h6>در حال واکشی اطلاعات ...</h6>
+                      </div>
+                      <div class="table">
+                        <div class="container" style=" border-radius: 8px;box-shadow: rgb(102, 102, 102) 5px;">
+                          <div class="row">
+                            <div class="col-sm-12" style="direction: rtl;text-align: right;">
+                              <ng2-smart-table [settings]="problemTableSetting" [source]="brandProblem" id="excel-table"
+                                style="font-family: 'iransans'" style="font-family: 'iransans';font-size: 12px;"
+                                (custom)="brandedit($event,i,j)">
+                              </ng2-smart-table>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <!-- <div class="checklist" style="width: 45%;">
+                    <!-- <div class="checklist" style="width: 45%;">
                     <div class="main header" style="direction: rtl;">
                       <div>
                         <a>چک لیست کنترلی تکنسین ها </a>
@@ -234,179 +239,183 @@
                       </div>
                     </div>
                   </div> -->
-                </div>
-                <mat-divider></mat-divider>
-                <div class="detail" style="display: flex;flex-direction: row;">
-                  <div class="points" style="width: 50%;font-size: 12px;margin-right: 10px;">
-                    <div class="main header" style="direction: rtl;">
-                      <div>
-                        <a style="font-size:14px ;">نکات قابل توجه مرکز تماس در زمان ثبت سفارش</a>
-                        <button *ngIf="!brand_c_c_point_editable" class="btn btn-raised btn-primary"
-                          style="margin: 10px;font-size: 12px;" (click)="brandeditccpoints()">
-                          ویرایش</button>
-                        <button *ngIf="brand_c_c_point_editable" class="btn btn-raised btn-primary"
-                          style="margin: 10px;font-size: 12px;" (click)="brandcallcenterpoint()">
-                          ذخیره</button>
-                        <button *ngIf="brand_c_c_point_editable" class="btn btn-raised btn-dark"
-                          style="margin: 10px;font-size: 12px;" (click)="brandcallcenterpointcancel()">
-                          انصراف</button>
+                  </div>
+                  <mat-divider></mat-divider>
+                  <div class="detail" style="display: flex;flex-direction: row;">
+                    <div class="points" style="width: 50%;font-size: 12px;margin-right: 10px;">
+                      <div class="main header" style="direction: rtl;">
+                        <div>
+                          <a style="font-size:14px ;">نکات قابل توجه مرکز تماس در زمان ثبت سفارش</a>
+                          <button *ngIf="!brand_c_c_point_editable" class="btn btn-raised btn-primary"
+                            style="margin: 10px;font-size: 12px;" (click)="brandeditccpoints()">
+                            ویرایش</button>
+                          <button *ngIf="brand_c_c_point_editable" class="btn btn-raised btn-primary"
+                            style="margin: 10px;font-size: 12px;" (click)="brandcallcenterpoint()">
+                            ذخیره</button>
+                          <button *ngIf="brand_c_c_point_editable" class="btn btn-raised btn-dark"
+                            style="margin: 10px;font-size: 12px;" (click)="brandcallcenterpointcancel()">
+                            انصراف</button>
+                        </div>
+                      </div>
+                      <div class="table">
+                        <form [formGroup]="brandform">
+                          <mat-form-field class="example-full-width" appearance="fill"
+                            style="width:90%;text-align:right;">
+                            <textarea matInput formControlName="callCernterPoint" rows="10"></textarea>
+                          </mat-form-field>
+                        </form>
                       </div>
                     </div>
-                    <div class="table">
-                      <form [formGroup]="brandform">
-                        <mat-form-field class="example-full-width" appearance="fill"
-                          style="width:90%;text-align:right;">
-                          <textarea matInput formControlName="callCernterPoint" rows="10"></textarea>
-                        </mat-form-field>
-                      </form>
-                    </div>
-                  </div>
-                  <div class="picture" style="width: 50%;font-size: 12px;">
-                    <div class="form-group col-12 mb-2" *ngIf="b.brandpic===''">
-                      <div class="form-group col-12 mb-2" style="direction: rtl;text-align: right;margin: 10px;">
-                        <label style="margin: 10px;"> لطفا تصویر مروبط به برند را انتخاب کنید:</label>
+                    <div class="picture" style="width: 50%;font-size: 12px;">
+                      <div class="form-group col-12 mb-2" *ngIf="b.brandpic===''">
+                        <div class="form-group col-12 mb-2" style="direction: rtl;text-align: right;margin: 10px;">
+                          <label style="margin: 10px;"> لطفا تصویر مروبط به برند را انتخاب کنید:</label>
 
-                        <label for="{{'brand-file-upload'+j}}" class="btn btn-raised btn-primary"
-                          style="cursor: pointer;margin-right: 35px;font-size: 12px;">
-                          <i class="fa fa-upload" style="margin-left: 5px;"></i>انتخاب فایل
-                        </label>
-                        <input id="{{'brand-file-upload'+j}}" type='file' (change)="brandonSelectFile($event ,a , b)"
-                          resize-max-height="300" resize-max-width="250" resize-quality="0.7">
+                          <label for="{{'brand-file-upload'+j}}" class="btn btn-raised btn-primary"
+                            style="cursor: pointer;margin-right: 35px;font-size: 12px;">
+                            <i class="fa fa-upload" style="margin-left: 5px;"></i>انتخاب فایل
+                          </label>
+                          <input id="{{'brand-file-upload'+j}}" type='file' (change)="brandonSelectFile($event ,a , b)"
+                            resize-max-height="300" resize-max-width="250" resize-quality="0.7">
+                        </div>
                       </div>
-                    </div>
-                    <div class="row" *ngIf="b.brandpic!==''"
-                      style="display: flex;flex-direction: row;flex-wrap: wrap;justify-content: center;">
-                      <div
-                        style="margin:20px; text-align: center;border-radius: 10px; background-color: rgb(253, 252, 250);box-shadow: 0px 0px 5px 5px rgb(238, 236, 236); width: 350px;height: 300px; ">
-                        <lord-icon src="../../../assets/json/bin.json" trigger="hover"
-                          (click)="deletebarndimg(b.brandpic,a,b)"
-                          style="width:40px;height:40px;cursor: pointer;margin-top: 20px;cursor: pointer;">
-                        </lord-icon>
-                        <br>
-                        <img [src]="b.brandpic" height="200" width="300" style="margin:10px;">
+                      <div class="row" *ngIf="b.brandpic!==''"
+                        style="display: flex;flex-direction: row;flex-wrap: wrap;justify-content: center;">
+                        <div
+                          style="margin:20px; text-align: center;border-radius: 10px; background-color: rgb(253, 252, 250);box-shadow: 0px 0px 5px 5px rgb(238, 236, 236); width: 350px;height: 300px; ">
+                          <lord-icon src="../../../assets/json/bin.json" trigger="hover"
+                            (click)="deletebarndimg(b.brandpic,a,b)"
+                            style="width:40px;height:40px;cursor: pointer;margin-top: 20px;cursor: pointer;">
+                          </lord-icon>
+                          <br>
+                          <img [src]="b.brandpic" height="200" width="300" style="margin:10px;">
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                <!-- مدل -->
-                <div class="main" style="display:flex ;flex-direction: column;">
-                  <div class="title" style="margin:5px;width:80px">
-                    <h6>مدل
-                      <i class="fa fa-plus-square" style="color:green ;margin-right:5px ;cursor: pointer;"
-                        (click)="createModel()"></i>
-                    </h6>
-                  </div>
-                  <div class="content" style="margin:5px;width: 100%;">
-                    <div class="create" *ngIf="createModelshow" style="display: flex;flex-direction: row;">
-                      <form [formGroup]="applianceForm">
-                        <mat-form-field class="full-width-input"
-                          style="margin:auto;text-align:right;width: 100%; direction:rtl;font-family:iransans ;">
-                          <input matInput placeholder="عنوان مدل" formControlName="modelName" required
-                            style="font-size: 12px;">
-                          <mat-error *ngIf="isFieldInvalid('modelName')">
-                            لطفا عنوان مدل را وارد کنید!
-                          </mat-error>
-                        </mat-form-field>
-                      </form>
-                      <button mat-raised-button color="accent" style="margin-right: 20px; width: 80px;height: 40px;"
-                        (click)="saveModel(b)">ذخیره</button>
-                      <button mat-raised-button color="primary"
-                        style="margin-top: o20px;margin-right: 10px;width: 80px;height: 40px;"
-                        (click)="cancelModel()">انصراف</button>
+                  <!-- مدل -->
+                  <div class="main" style="display:flex ;flex-direction: column;">
+                    <div class="title" style="margin:5px;width:80px">
+                      <h6>مدل
+                        <i class="fa fa-plus-square" style="color:green ;margin-right:5px ;cursor: pointer;"
+                          (click)="createModel()"></i>
+                      </h6>
                     </div>
-                    <mat-expansion-panel *ngFor="let m of b.models; let k=index">
-                      <mat-expansion-panel-header>
-                        <mat-panel-title>
-                          <div class="title">
-                            {{m.model}}
-                          </div>
-                          <div class="actions" style="margin-right: 20px;">
-                            <i class="fa fa-edit" style="color:blue ;margin:10px ;cursor: pointer;"
-                              (click)="editModel(m)"></i>
-                            <i class="fa fa-minus-square" style="color:red ;margin:10px ;cursor: pointer;"
-                              (click)="deleteModel(m)"></i>
-                          </div>
-                        </mat-panel-title>
-                      </mat-expansion-panel-header>
-                      <div class="detail" style="display: flex;flex-direction: row;">
-                        <div class="problem" style="width: 50%;">
-                          <div class="main header" style="direction: rtl;">
-                            <div>
-                              <button class="btn btn-raised btn-primary"
-                                style="margin: 10px;width: 120px;font-size: 12px;"
-                                (click)="createModelProblem(m,i,j,k)">ایجاد
-                                مشکل جدید</button>
+                    <div class="content" style="margin:5px;width: 100%;">
+                      <div class="create" *ngIf="createModelshow" style="display: flex;flex-direction: row;">
+                        <form [formGroup]="applianceForm">
+                          <mat-form-field class="full-width-input"
+                            style="margin:auto;text-align:right;width: 100%; direction:rtl;font-family:iransans ;">
+                            <input matInput placeholder="عنوان مدل" formControlName="modelName" required
+                              style="font-size: 12px;">
+                            <mat-error *ngIf="isFieldInvalid('modelName')">
+                              لطفا عنوان مدل را وارد کنید!
+                            </mat-error>
+                          </mat-form-field>
+                        </form>
+                        <button mat-raised-button color="accent" style="margin-right: 20px; width: 80px;height: 40px;"
+                          (click)="saveModel(b)">ذخیره</button>
+                        <button mat-raised-button color="primary"
+                          style="margin-top: o20px;margin-right: 10px;width: 80px;height: 40px;"
+                          (click)="cancelModel()">انصراف</button>
+                      </div>
+                      <div *ngIf="models !== []">
+                        <mat-expansion-panel *ngFor="let m of b.models; let k=index">
+                          <mat-expansion-panel-header>
+                            <mat-panel-title>
+                              <div class="title">
+                                {{m.model}}
+                              </div>
+                              <div class="actions" style="margin-right: 20px;">
+                                <i class="fa fa-edit" style="color:blue ;margin:10px ;cursor: pointer;"
+                                  (click)="editModel(m)"></i>
+                                <i class="fa fa-minus-square" style="color:red ;margin:10px ;cursor: pointer;"
+                                  (click)="deleteModel(m)"></i>
+                              </div>
+                            </mat-panel-title>
+                          </mat-expansion-panel-header>
+                          <div class="detail" style="display: flex;flex-direction: row;">
+                            <div class="problem" style="width: 50%;">
+                              <div class="main header" style="direction: rtl;">
+                                <div>
+                                  <button class="btn btn-raised btn-primary"
+                                    style="margin: 10px;width: 120px;font-size: 12px;"
+                                    (click)="createModelProblem(m,i,j,k)">ایجاد
+                                    مشکل جدید</button>
+                                </div>
+                              </div>
+                              <div class="table">
+                                <div class="container" style=" border-radius: 8px;box-shadow: rgb(102, 102, 102) 5px;">
+                                  <div class="row">
+                                    <div class="col-sm-12" style="direction: rtl;text-align: right;">
+                                      <ng2-smart-table [settings]="problemTableSetting" [source]="m.modelProblems"
+                                        id="excel-table" style="font-family: 'iransans'"
+                                        style="font-family: 'iransans';font-size: 12px;"
+                                        (custom)="modeledit($event,i,j,k)">
+                                      </ng2-smart-table>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                          <div class="table">
-                            <div class="container" style=" border-radius: 8px;box-shadow: rgb(102, 102, 102) 5px;">
-                              <div class="row">
-                                <div class="col-sm-12" style="direction: rtl;text-align: right;">
-                                  <ng2-smart-table [settings]="problemTableSetting" [source]="m.modelProblems"
-                                    id="excel-table" style="font-family: 'iransans'"
-                                    style="font-family: 'iransans';font-size: 12px;" (custom)="modeledit($event,i,j,k)">
-                                  </ng2-smart-table>
+                            <div class="problem" style="width: 50%;">
+                              <div class="main header" style="direction: rtl;">
+                                <div>
+                                  <a>چک لیست کنترلی تکنسین ها </a>
+                                  <button class="btn btn-raised btn-primary" style="margin: 10px;font-size: 12px;"
+                                    (click)="createModelChecklist(m,i,j,k)">
+                                    جدید </button>
+                                </div>
+                              </div>
+                              <div class="table">
+                                <div class="container" style=" border-radius: 8px;box-shadow: rgb(102, 102, 102) 5px;">
+                                  <div class="row">
+                                    <div class="col-sm-12" style="direction: rtl;text-align: right;">
+                                      <ng2-smart-table [settings]="checklistTableSetting" [source]="m.modelChecklist"
+                                        id="excel-table" style="font-family: 'iransans'"
+                                        style="font-family: 'iransans';font-size: 12px;"
+                                        (custom)="modelchecklistedit($event,i,j,k)"></ng2-smart-table>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                        <div class="problem" style="width: 50%;">
-                          <div class="main header" style="direction: rtl;">
-                            <div>
-                              <a>چک لیست کنترلی تکنسین ها </a>
-                              <button class="btn btn-raised btn-primary" style="margin: 10px;font-size: 12px;"
-                                (click)="createModelChecklist(m,i,j,k)">
-                                جدید </button>
-                            </div>
-                          </div>
-                          <div class="table">
-                            <div class="container" style=" border-radius: 8px;box-shadow: rgb(102, 102, 102) 5px;">
-                              <div class="row">
-                                <div class="col-sm-12" style="direction: rtl;text-align: right;">
-                                  <ng2-smart-table [settings]="checklistTableSetting" [source]="m.modelChecklist"
-                                    id="excel-table" style="font-family: 'iransans'"
-                                    style="font-family: 'iransans';font-size: 12px;"
-                                    (custom)="modelchecklistedit($event,i,j,k)"></ng2-smart-table>
+                          <mat-divider></mat-divider>
+                          <div class="detail" style="display: flex;flex-direction: row;">
+                            <div class="picture" style="width: 50%;font-size: 12px;margin-right: 10px;">
+                              <div class="main header" style="direction: rtl;">
+                                <div>
+                                  <a style="font-size:14px ;">نکات قابل توجه مرکز تماس در زمان ثبت سفارش</a>
+                                  <button *ngIf="!model_c_c_point_editable" class="btn btn-raised btn-primary"
+                                    style="margin: 10px;font-size: 12px;" (click)="modeleditccpoints()">
+                                    ویرایش</button>
+                                  <button *ngIf="model_c_c_point_editable" class="btn btn-raised btn-primary"
+                                    style="margin: 10px;font-size: 12px;" (click)="modelcallcenterpoint()">
+                                    ذخیره</button>
+                                  <button *ngIf="model_c_c_point_editable" class="btn btn-raised btn-dark"
+                                    style="margin: 10px;font-size: 12px;" (click)="modelcallcenterpointcancel()">
+                                    انصراف</button>
                                 </div>
+                              </div>
+                              <div class="table">
+                                <form [formGroup]="modelform">
+                                  <mat-form-field class="example-full-width" appearance="fill"
+                                    style="width:90%;text-align:right;">
+                                    <textarea matInput formControlName="callCernterPoint" rows="10"></textarea>
+                                  </mat-form-field>
+                                </form>
                               </div>
                             </div>
                           </div>
-                        </div>
+                        </mat-expansion-panel>
                       </div>
-                      <mat-divider></mat-divider>
-                      <div class="detail" style="display: flex;flex-direction: row;">
-                        <div class="picture" style="width: 50%;font-size: 12px;margin-right: 10px;">
-                          <div class="main header" style="direction: rtl;">
-                            <div>
-                              <a style="font-size:14px ;">نکات قابل توجه مرکز تماس در زمان ثبت سفارش</a>
-                              <button *ngIf="!model_c_c_point_editable" class="btn btn-raised btn-primary"
-                                style="margin: 10px;font-size: 12px;" (click)="modeleditccpoints()">
-                                ویرایش</button>
-                              <button *ngIf="model_c_c_point_editable" class="btn btn-raised btn-primary"
-                                style="margin: 10px;font-size: 12px;" (click)="modelcallcenterpoint()">
-                                ذخیره</button>
-                              <button *ngIf="model_c_c_point_editable" class="btn btn-raised btn-dark"
-                                style="margin: 10px;font-size: 12px;" (click)="modelcallcenterpointcancel()">
-                                انصراف</button>
-                            </div>
-                          </div>
-                          <div class="table">
-                            <form [formGroup]="modelform">
-                              <mat-form-field class="example-full-width" appearance="fill"
-                                style="width:90%;text-align:right;">
-                                <textarea matInput formControlName="callCernterPoint" rows="10"></textarea>
-                              </mat-form-field>
-                            </form>
-                          </div>
-                        </div>
-                      </div>
-                    </mat-expansion-panel>
+                    </div>
                   </div>
-                </div>
 
-              </mat-expansion-panel>
+                </mat-expansion-panel>
+              </div>
             </div>
           </div>
         </mat-expansion-panel>

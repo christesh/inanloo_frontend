@@ -6,9 +6,11 @@ import { Province } from 'src/app/mainpage/profiles/profile';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { faL } from '@fortawesome/free-solid-svg-icons';
-import { Applience, Problem } from 'src/app/mainpage/orderpage/Order';
+import { Applience, Models, Problem } from 'src/app/mainpage/orderpage/Order';
 import { LocalDataSource } from 'ng2-smart-table';
 import { environment } from 'src/environments/environment';
+import { Title } from 'chart.js';
+import { stringLength } from '@firebase/util';
 
 export interface DialogData {
   userdata: { id: string, titleName: string, titr: string, itemName: string };
@@ -140,15 +142,15 @@ export class AppliencemanagementComponent implements OnInit {
   FillTable() {
     var token = this.tokencookies.get('T')
     let dateTime = new Date()
-   // console.log(dateTime)
+    // console.log(dateTime)
     this.api.getproblemkind(token).subscribe(
       reskind => {
         this.serviceKind = reskind
-        this.api.getAllApplience(token).subscribe(
+        this.api.getappliancecategory(token).subscribe(
           res => {
             this.applience = res;
             let dateTime = new Date()
-          
+
             for (let i = 0; i < res.length; i++) {
               if (this.applience[i].pic != '')
                 this.applience[i].pic = this.picbaseurl + this.applience[i].pic
@@ -167,71 +169,76 @@ export class AppliencemanagementComponent implements OnInit {
               this.applience[i].appProblems = new LocalDataSource(appproblem)
 
               var appchecklist = []
-              for (let j = 0; j < res[i]['appCatChecklist'].length; j++) {
-                appchecklist.push({ ID: res[i]['appCatChecklist'][j]['id'], title: res[i]['appCatChecklist'][j]['checklistTitle'], description: res[i]['appCatChecklist'][j]['Description'] })
-              }
+              if (res[i]['appCatChecklist'] != null)
+                for (let j = 0; j < res[i]['appCatChecklist'].length; j++) {
+                  appchecklist.push({ ID: res[i]['appCatChecklist'][j]['id'], title: res[i]['appCatChecklist'][j]['checklistTitle'], description: res[i]['appCatChecklist'][j]['Description'] })
+                }
               this.applience[i].appChecklist = new LocalDataSource(appchecklist)
-
-
               for (let k = 0; k < res[i]['brands'].length; k++) {
-                var brand = res[i]['brands'][k];
-                var barndproblem = []
-                for (let l = 0; l < brand['brandProblem'].length; l++) {
-                  let skind = "";
-                  let pkindtemp = brand['brandProblem'][l]['problemKind']
-                  if (pkindtemp != null) {
-                    let serviceKindIndex = this.serviceKind.findIndex(item => item.id == pkindtemp)
-                    skind = this.serviceKind[serviceKindIndex].title
-                  }
-                  else
-                    skind = ""
-                  barndproblem.push({ ID: brand['brandProblem'][l]['id'], title: brand['brandProblem'][l]['problemTitle'], problemKind: skind, description: brand['brandProblem'][l]['problemDescription'], checked: false, lowprice: brand['brandProblem'][l]['lowPrice'], highprice: brand['brandProblem'][l]['highPrice'] })
-                }
-                this.applience[i].brands[k].brandProblems = new LocalDataSource(barndproblem)
-                var brandchecklist = []
-                for (let l = 0; l < brand['brandChecklist'].length; l++) {
-                  brandchecklist.push({ ID: brand['brandChecklist'][l]['id'], title: brand['brandChecklist'][l]['checklistTitle'], description: brand['brandChecklist'][l]['Description'] })
-                }
-                this.applience[i].brands[k].brandChecklist = new LocalDataSource(brandchecklist)
-                for (let l1 = 0; l1 < res[i]['brands'][k]['models'].length; l1++) {
-                  var model = res[i].brands[k].models[l1]
-
-                  var modelproblem = []
-                  for (let l2 = 0; l2 < model['modelProblem'].length; l2++) {
-                    let skind = "";
-
-                    let pkindtemp = model['modelProblem'][l2]['problemKind']
-                    if (pkindtemp != null) {
-                      let serviceKindIndex = this.serviceKind.findIndex(item => item.id == pkindtemp)
-                      skind = this.serviceKind[serviceKindIndex].title
-                    }
-                    else
-                      skind = ""
-                    modelproblem.push({ ID: model['modelProblem'][l2]['id'], title: model['modelProblem'][l2]['problemTitle'], problemKind: skind, description: model['modelProblem'][l2]['problemDescription'], checked: false, lowprice: model['modelProblem'][l2]['lowPrice'], highprice: model['modelProblem'][l2]['highPrice'] })
-                  }
-                  this.applience[i].brands[k].models[l1].modelProblems = new LocalDataSource(modelproblem)
-
-                  var modelchecklist = []
-                  for (let l2 = 0; l2 < model['modelChecklist'].length; l2++) {
-
-                    modelchecklist.push({ ID: model['modelChecklist'][l2]['id'], title: model['modelChecklist'][l2]['checklistTitle'], description: model['modelChecklist'][l2]['Description'] })
-                  }
-                  this.applience[i].brands[k].models[l1].modelChecklist = new LocalDataSource(modelchecklist)
-                }
+                this.applience[i].brands[k].brand = res[i]['brands'][k]['a_brand__a_brandName']
+                this.applience[i].brands[k].ID = res[i]['brands'][k]['id']
+                this.applience[i].brands[k].brandpic = res[i]['brands'][k]['a_brand__a_brandImage']
               }
+
+              // for (let k = 0; k < res[i]['brands'].length; k++) {
+              //   var brand = res[i]['brands'][k];
+              //   var barndproblem = []
+              //   for (let l = 0; l < brand['brandProblem'].length; l++) {
+              //     let skind = "";
+              //     let pkindtemp = brand['brandProblem'][l]['problemKind']
+              //     if (pkindtemp != null) {
+              //       let serviceKindIndex = this.serviceKind.findIndex(item => item.id == pkindtemp)
+              //       skind = this.serviceKind[serviceKindIndex].title
+              //     }
+              //     else
+              //       skind = ""
+              //     barndproblem.push({ ID: brand['brandProblem'][l]['id'], title: brand['brandProblem'][l]['problemTitle'], problemKind: skind, description: brand['brandProblem'][l]['problemDescription'], checked: false, lowprice: brand['brandProblem'][l]['lowPrice'], highprice: brand['brandProblem'][l]['highPrice'] })
+              //   }
+              //   this.applience[i].brands[k].brandProblems = new LocalDataSource(barndproblem)
+              //   var brandchecklist = []
+              //   for (let l = 0; l < brand['brandChecklist'].length; l++) {
+              //     brandchecklist.push({ ID: brand['brandChecklist'][l]['id'], title: brand['brandChecklist'][l]['checklistTitle'], description: brand['brandChecklist'][l]['Description'] })
+              //   }
+              //   this.applience[i].brands[k].brandChecklist = new LocalDataSource(brandchecklist)
+              //   for (let l1 = 0; l1 < res[i]['brands'][k]['models'].length; l1++) {
+              //     var model = res[i].brands[k].models[l1]
+
+              //     var modelproblem = []
+              //     for (let l2 = 0; l2 < model['modelProblem'].length; l2++) {
+              //       let skind = "";
+
+              //       let pkindtemp = model['modelProblem'][l2]['problemKind']
+              //       if (pkindtemp != null) {
+              //         let serviceKindIndex = this.serviceKind.findIndex(item => item.id == pkindtemp)
+              //         skind = this.serviceKind[serviceKindIndex].title
+              //       }
+              //       else
+              //         skind = ""
+              //       modelproblem.push({ ID: model['modelProblem'][l2]['id'], title: model['modelProblem'][l2]['problemTitle'], problemKind: skind, description: model['modelProblem'][l2]['problemDescription'], checked: false, lowprice: model['modelProblem'][l2]['lowPrice'], highprice: model['modelProblem'][l2]['highPrice'] })
+              //     }
+              //     this.applience[i].brands[k].models[l1].modelProblems = new LocalDataSource(modelproblem)
+
+              //     var modelchecklist = []
+              //     for (let l2 = 0; l2 < model['modelChecklist'].length; l2++) {
+
+              //       modelchecklist.push({ ID: model['modelChecklist'][l2]['id'], title: model['modelChecklist'][l2]['checklistTitle'], description: model['modelChecklist'][l2]['Description'] })
+              //     }
+              //     this.applience[i].brands[k].models[l1].modelChecklist = new LocalDataSource(modelchecklist)
+              //   }
+              // }
               let dateTime = new Date()
-             // console.log(dateTime)
-             // console.log(res)
+              // console.log(dateTime)
+              // console.log(res)
             }
           },
 
           err => {
-           console.log(err)
+            console.log(err)
           }
         )
       },
       err => {
-       console.log(err)
+        console.log(err)
       }
     )
   }
@@ -253,7 +260,7 @@ export class AppliencemanagementComponent implements OnInit {
     var aname = this.applianceForm.controls.appllianceName.value
     this.api.createAppliance(token, aname!).subscribe(
       res => {
-       // console.log(res)
+        // console.log(res)
         this.createAppliancehow = false;
         this.FillTable()
       },
@@ -281,11 +288,11 @@ export class AppliencemanagementComponent implements OnInit {
         var token = this.tokencookies.get('T')
         this.api.editAppliance(token, Appliancenewname, a.ID).subscribe(
           res => {
-           // console.log(res)
+            // console.log(res)
             this.FillTable();
           },
           err => {
-           console.log(err)
+            console.log(err)
           }
         )
       }
@@ -314,7 +321,7 @@ export class AppliencemanagementComponent implements OnInit {
         var token = this.tokencookies.get('T')
         this.api.deleteAppliance(token, a.ID).subscribe(
           res => {
-           // console.log(res)
+            // console.log(res)
             Swal.fire({
               title: name,
               text: '!با موفقیت حذف شد',
@@ -325,7 +332,7 @@ export class AppliencemanagementComponent implements OnInit {
             this.FillTable()
           },
           err => {
-           console.log(err)
+            console.log(err)
           }
         )
       }
@@ -361,7 +368,7 @@ export class AppliencemanagementComponent implements OnInit {
         var token = this.tokencookies.get('T')
         this.api.createappliancecategoryproblem(token, appid!, ptitle!, pdes!, pkind, lp!, hp!).subscribe(
           res => {
-           // console.log(res)
+            // console.log(res)
             Swal.fire({
               title: 'ایجاد مشکل جدید',
               text: '!با موفقیت انجام شد',
@@ -375,7 +382,7 @@ export class AppliencemanagementComponent implements OnInit {
             })
           },
           err => {
-           console.log(err)
+            console.log(err)
           }
         )
       }
@@ -398,7 +405,7 @@ export class AppliencemanagementComponent implements OnInit {
         var token = this.tokencookies.get('T')
         this.api.createappliancecategorychecklist(token, appid!, chtitle!, chdes!).subscribe(
           res => {
-           // console.log(res)
+            // console.log(res)
             Swal.fire({
               title: 'ایجاد چک لیست جدید',
               text: '!با موفقیت انجام شد',
@@ -412,14 +419,14 @@ export class AppliencemanagementComponent implements OnInit {
             })
           },
           err => {
-           console.log(err)
+            console.log(err)
           }
         )
       }
     });
   }
   appedit(event: any, tableIndex: any) {
-   // console.log(event.data)
+    // console.log(event.data)
     switch (event.action) {
       case 'editrecord':
         var data = { appid: tableIndex, problemId: event.data.ID, problemTitle: event.data.title, lowPrice: event.data.lowprice, highPrice: event.data.highprice, description: event.data.description, titleOfDialog: "ویرایش مشکل", buttonTitle: "ذخیره" }
@@ -466,7 +473,7 @@ export class AppliencemanagementComponent implements OnInit {
 
               },
               err => {
-               console.log(err)
+                console.log(err)
               });
           }
         });
@@ -494,7 +501,7 @@ export class AppliencemanagementComponent implements OnInit {
             var token = this.tokencookies.get('T')
             this.api.deleteappliancecategoryproblem(token, event.data.ID).subscribe(
               res => {
-               // console.log(res)
+                // console.log(res)
                 this.applience[tableIndex].appProblems.remove(event.data)
                 Swal.fire({
                   title: name,
@@ -505,7 +512,7 @@ export class AppliencemanagementComponent implements OnInit {
                 )
               },
               err => {
-               console.log(err)
+                console.log(err)
               }
             )
           }
@@ -514,7 +521,7 @@ export class AppliencemanagementComponent implements OnInit {
     }
   }
   appchecklistedit(event: any, tableIndex: any) {
-   // console.log(event.data)
+    // console.log(event.data)
     switch (event.action) {
       case 'editrecord':
         var data = { appid: tableIndex, problemId: event.data.ID, problemTitle: event.data.title, lowPrice: event.data.lowprice, highPrice: event.data.highprice, description: event.data.description, titleOfDialog: "ویرایش", buttonTitle: "ذخیره" }
@@ -552,7 +559,7 @@ export class AppliencemanagementComponent implements OnInit {
 
               },
               err => {
-               console.log(err)
+                console.log(err)
               });
           }
         });
@@ -580,7 +587,7 @@ export class AppliencemanagementComponent implements OnInit {
             var token = this.tokencookies.get('T')
             this.api.deleteappliancecategorycheckliast(token, event.data.ID).subscribe(
               res => {
-               // console.log(res)
+                // console.log(res)
                 this.applience[tableIndex].appChecklist.remove(event.data)
                 Swal.fire({
                   title: name,
@@ -591,7 +598,7 @@ export class AppliencemanagementComponent implements OnInit {
                 )
               },
               err => {
-               console.log(err)
+                console.log(err)
               }
             )
           }
@@ -600,7 +607,7 @@ export class AppliencemanagementComponent implements OnInit {
     }
   }
   onSelectFile(event: any, appindex: any) {
-   // console.log(appindex);
+    // console.log(appindex);
 
     if (event.target.files && event.target.files[0]) {
       var filesAmount = event.target.files.length;
@@ -654,17 +661,20 @@ export class AppliencemanagementComponent implements OnInit {
       })
     }
   }
-
+  Brands: any[] = []
+  fetch: boolean = false;
   openapp(id: number) {
-    var token=this.tokencookies.get('T')
-    this.api.getappliancebrand(token,id.toString()).subscribe(
-      res=>{
-
-      },
-      err=>{
-
-      }
-    )
+    // this.fetch=true;
+    // var token = this.tokencookies.get('T')
+    // this.api.getappliancebrand(token, id.toString()).subscribe(
+    //   res => {
+    //     this.fetch=false;
+    //     this.Brands=res
+    //   },
+    //   err => {
+    //     console.log(err)
+    //   }
+    // )
   }
   app_c_c_point_editable: boolean = false;
 
@@ -691,12 +701,12 @@ export class AppliencemanagementComponent implements OnInit {
   }
 
   saveBrand(brand: any) {
-   // console.log(brand)
+    // console.log(brand)
     var token = this.tokencookies.get('T');
     var bname = this.applianceForm.controls.brandName.value
     this.api.createBrand(token, bname!, brand.ID).subscribe(
       res => {
-       // console.log(res)
+        // console.log(res)
         this.createBrandshow = false;
         this.FillTable()
       },
@@ -724,11 +734,11 @@ export class AppliencemanagementComponent implements OnInit {
         var token = this.tokencookies.get('T')
         this.api.editBrand(token, brandnewname, brand.ID).subscribe(
           res => {
-           // console.log(res)
+            // console.log(res)
             this.FillTable();
           },
           err => {
-           console.log(err)
+            console.log(err)
           }
         )
       }
@@ -757,7 +767,7 @@ export class AppliencemanagementComponent implements OnInit {
         var token = this.tokencookies.get('T')
         this.api.deleteBrand(token, brand.ID).subscribe(
           res => {
-           // console.log(res)
+            // console.log(res)
             Swal.fire({
               title: name,
               text: '!با موفقیت حذف شد',
@@ -768,7 +778,7 @@ export class AppliencemanagementComponent implements OnInit {
             this.FillTable()
           },
           err => {
-           console.log(err)
+            console.log(err)
           }
         )
       }
@@ -804,7 +814,7 @@ export class AppliencemanagementComponent implements OnInit {
         var token = this.tokencookies.get('T')
         this.api.createbrandproblem(token, appid!, ptitle!, pdes!, pkind, lp!, hp!).subscribe(
           res => {
-           // console.log(res)
+            // console.log(res)
             Swal.fire({
               title: 'ایجاد مشکل جدید',
               text: '!با موفقیت انجام شد',
@@ -818,7 +828,7 @@ export class AppliencemanagementComponent implements OnInit {
             })
           },
           err => {
-           console.log(err)
+            console.log(err)
           }
         )
       }
@@ -833,7 +843,7 @@ export class AppliencemanagementComponent implements OnInit {
 
   }
   brandedit(event: any, tableIndex: any, brandindex: any) {
-   // console.log(event.data)
+    // console.log(event.data)
     switch (event.action) {
       case 'editrecord':
         var data = { appid: tableIndex, problemId: event.data.ID, problemTitle: event.data.title, lowPrice: event.data.lowprice, highPrice: event.data.highprice, description: event.data.description, titleOfDialog: "ویرایش مشکل", buttonTitle: "ذخیره" }
@@ -878,7 +888,7 @@ export class AppliencemanagementComponent implements OnInit {
                 )
               },
               err => {
-               console.log(err)
+                console.log(err)
               });
           }
         });
@@ -906,7 +916,7 @@ export class AppliencemanagementComponent implements OnInit {
             var token = this.tokencookies.get('T')
             this.api.deletebrandproblem(token, event.data.ID).subscribe(
               res => {
-               // console.log(res)
+                // console.log(res)
                 this.applience[tableIndex].brands[brandindex].brandProblems.remove(event.data)
                 Swal.fire({
                   title: name,
@@ -918,7 +928,7 @@ export class AppliencemanagementComponent implements OnInit {
                 // this.FillTable()
               },
               err => {
-               console.log(err)
+                console.log(err)
               }
             )
           }
@@ -930,8 +940,8 @@ export class AppliencemanagementComponent implements OnInit {
   }
 
   brandonSelectFile(event: any, appindex: any, brandindex: any) {
-   // console.log(event)
-   // console.log(brandindex)
+    // console.log(event)
+    // console.log(brandindex)
     var ax = this.applience.findIndex(item => item.ID == appindex.ID)
     if (event.target.files && event.target.files[0]) {
       var filesAmount = event.target.files.length;
@@ -941,7 +951,7 @@ export class AppliencemanagementComponent implements OnInit {
         reader.onload = (event: any) => {
           var bx = this.applience[ax].brands.findIndex(item => item.ID == brandindex.ID)
           this.applience[ax].brands[bx].brandpic = event.target.result;
-         // console.log(this.applience[ax].brands)
+          // console.log(this.applience[ax].brands)
         }
         reader.readAsDataURL(event.target.files[i]);
       }
@@ -987,8 +997,46 @@ export class AppliencemanagementComponent implements OnInit {
       })
     }
   }
+  brandProblem: any;
+  models: any;
+  barndopened: boolean[] = [];
+  showmodels:boolean[]=[];
+  openbarnd(brandid: any, appid: any, appindex: any,brandidx:any) {
+    this.barndopened[appindex] = true;
+    this.brandProblem = []
+    var token = this.tokencookies.get('T')
+    var bp: { id: string, title: string, problemKind: string }[] = []
+    this.api.getProblems(token, "", brandid, "").subscribe(
+      res => {
+        // console.log(res)
+        for (let i = 0; i < res.length; i++) {
+          bp.push({ id: res[i]['id'], title: res[i]['problemTitle'], problemKind: res[i]['problemKind__title'] })
+        }
+        this.brandProblem = new LocalDataSource(bp)
+        var mod: { id: string, model: string }[] = []
+        var models:Models[]=[];
+        var mp=new LocalDataSource();
+        var mc=new LocalDataSource();
+        this.api.getappliancemodel(token, brandid).subscribe(
+          res => {
+            console.log(res)
+            for (let i = 0; i < res.length; i++) {
+              models.push({ ID: res[i]['ID'], model: res[i]['model'] ,description:"",modelProblems:mp,modelChecklist:mc})
+            }
+            this.applience[appindex].brands[brandidx].models=models
+          
+          },
+          err => {
+            console.log(err)
+          }
+        )
 
-  openbarnd(id: any, appindex: any, brandindex: any) {
+      },
+      err => {
+        console.log(err)
+      }
+
+    )
   }
   brand_c_c_point_editable: boolean = false;
   brandeditccpoints() {
@@ -1014,12 +1062,12 @@ export class AppliencemanagementComponent implements OnInit {
   }
 
   saveModel(model: any) {
-   // console.log(model)
+    // console.log(model)
     var token = this.tokencookies.get('T');
     var mname = this.applianceForm.controls.modelName.value
     this.api.createModel(token, mname!, model.ID).subscribe(
       res => {
-       // console.log(res)
+        // console.log(res)
         this.createModelshow = false;
         this.FillTable()
       },
@@ -1062,7 +1110,7 @@ export class AppliencemanagementComponent implements OnInit {
         var token = this.tokencookies.get('T')
         this.api.createmodelproblem(token, appid!, ptitle!, pdes!, pkind, lp!, hp!).subscribe(
           res => {
-           // console.log(res)
+            // console.log(res)
             Swal.fire({
               title: 'ایجاد مشکل جدید',
               text: '!با موفقیت انجام شد',
@@ -1076,7 +1124,7 @@ export class AppliencemanagementComponent implements OnInit {
             })
           },
           err => {
-           console.log(err)
+            console.log(err)
           }
         )
       }
@@ -1086,7 +1134,7 @@ export class AppliencemanagementComponent implements OnInit {
   }
   createModelChecklist(model: any, tableIndex: any, brandindex: any, modelindex: any) { }
   modeledit(event: any, tableIndex: any, brandindex: any, modelindex: any) {
-   // console.log(event.data)
+    // console.log(event.data)
     switch (event.action) {
       case 'editrecord':
         var data = { appid: tableIndex, problemId: event.data.ID, problemTitle: event.data.title, lowPrice: event.data.lowprice, highPrice: event.data.highprice, description: event.data.description, titleOfDialog: "ویرایش مشکل", buttonTitle: "ذخیره" }
@@ -1131,7 +1179,7 @@ export class AppliencemanagementComponent implements OnInit {
                 )
               },
               err => {
-               console.log(err)
+                console.log(err)
               });
           }
         });
@@ -1159,7 +1207,7 @@ export class AppliencemanagementComponent implements OnInit {
             var token = this.tokencookies.get('T')
             this.api.deletemodelproblem(token, event.data.ID).subscribe(
               res => {
-               // console.log(res)
+                // console.log(res)
                 this.applience[tableIndex].brands[brandindex].brandProblems.remove(event.data)
                 Swal.fire({
                   title: name,
@@ -1171,7 +1219,7 @@ export class AppliencemanagementComponent implements OnInit {
                 // this.FillTable()
               },
               err => {
-               console.log(err)
+                console.log(err)
               }
             )
           }
@@ -1196,11 +1244,11 @@ export class AppliencemanagementComponent implements OnInit {
         var token = this.tokencookies.get('T')
         this.api.editModel(token, modelnewname, model.ID).subscribe(
           res => {
-           // console.log(res)
+            // console.log(res)
             this.FillTable();
           },
           err => {
-           console.log(err)
+            console.log(err)
           }
         )
       }
@@ -1229,7 +1277,7 @@ export class AppliencemanagementComponent implements OnInit {
         var token = this.tokencookies.get('T')
         this.api.deleteModel(token, model.ID).subscribe(
           res => {
-           // console.log(res)
+            // console.log(res)
             Swal.fire({
               title: name,
               text: '!با موفقیت حذف شد',
@@ -1240,7 +1288,7 @@ export class AppliencemanagementComponent implements OnInit {
             this.FillTable()
           },
           err => {
-           console.log(err)
+            console.log(err)
           }
         )
       }
@@ -1296,7 +1344,7 @@ export class EditApplianceItemDialog implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ) { }
   ngOnInit(): void {
-   // console.log(this.data.userdata)
+    // console.log(this.data.userdata)
     this.form.controls.itemTitle.patchValue(this.data.userdata.titleName);
     this.form.controls.itemTitle.markAsDirty();
     this.title = this.data.userdata.itemName;
@@ -1363,7 +1411,7 @@ export class CreateProblemDialog implements OnInit {
         this.serviceKind = res
       },
       err => {
-       console.log(err)
+        console.log(err)
       }
     )
   }
@@ -1374,7 +1422,7 @@ export class CreateProblemDialog implements OnInit {
     );
   }
   radioselect(event: any) {
-   // console.log(event)
+    // console.log(event)
     this.selectedKind = event.value
   }
   create() {
@@ -1431,7 +1479,7 @@ export class CreateChecklistDialog implements OnInit {
         this.serviceKind = res
       },
       err => {
-       console.log(err)
+        console.log(err)
       }
     )
   }
@@ -1442,7 +1490,7 @@ export class CreateChecklistDialog implements OnInit {
     );
   }
   radioselect(event: any) {
-   // console.log(event)
+    // console.log(event)
     this.selectedKind = event.value
   }
   create() {

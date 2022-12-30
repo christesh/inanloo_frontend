@@ -1125,7 +1125,7 @@ export class ApiServicesService {
     });
   }
   getappliancecategory(token: string): Observable<any> {
-    return this.http.get(this.baseurl + '/baseinfo/getallbrands/', {
+    return this.http.get(this.baseurl + '/baseinfo/getappliancecategoryV2/', {
       headers: new HttpHeaders({
         'Authorization': 'Token  ' + token,
         'Content-Type': 'application/json',
