@@ -155,13 +155,13 @@ export class CustomerProfileComponent implements OnInit {
         this.curentCustomer.birthDate = this.birthdate;
         for (let i = 0; i < this.address.length; i++) {
           var addtext = ""
-          if (this.address[i].province.provinceName != "")
+          if (this.address[i].province != null)
             addtext += "استان: " + this.address[i].province.provinceName;
 
-          if (this.address[i].county.countyName != "")
+          if (this.address[i].county!= null)
             addtext += ", شهرستان: " + this.address[i].county.countyName;
 
-          if (this.address[i].city.cityName != "")
+          if (this.address[i].city != null)
             addtext += ", شهر: " + this.address[i].city.cityName;
 
           if (this.address[i].region != null)
@@ -422,13 +422,13 @@ export class CustomerProfileComponent implements OnInit {
           this.shownewaddress = false;
           for (let i = 0; i < this.address.length; i++) {
             var addtext = ""
-            if (this.address[i].province.provinceName != "")
+            if (this.address[i].province != null)
               addtext += "استان: " + this.address[i].province.provinceName;
 
-            if (this.address[i].county.countyName != "")
+            if (this.address[i].county != null)
               addtext += ", شهرستان: " + this.address[i].county.countyName;
 
-            if (this.address[i].city.cityName != "")
+            if (this.address[i].city != null)
               addtext += ", شهر: " + this.address[i].city.cityName;
 
             if (this.address[i].region != null)
@@ -602,13 +602,13 @@ export class CustomerProfileComponent implements OnInit {
             this.address = res[0].address;
             for (let i = 0; i < this.address.length; i++) {
               var addtext = ""
-              if (this.address[i].province.provinceName != "")
+              if (this.address[i].province != null)
                 addtext += "استان: " + this.address[i].province.provinceName;
 
-              if (this.address[i].county.countyName != "")
+              if (this.address[i].county != null)
                 addtext += ", شهرستان: " + this.address[i].county.countyName;
 
-              if (this.address[i].city.cityName != "")
+              if (this.address[i].city != null)
                 addtext += ", شهر: " + this.address[i].city.cityName;
 
               if (this.address[i].region != null)

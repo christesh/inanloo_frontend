@@ -58,6 +58,10 @@ export interface DialogData {
     lng: number,
   }
 }
+interface output {
+  kind: string,
+  userid: number,
+}
 @Component({
   selector: 'app-orderpage',
   templateUrl: './orderpage.component.html',
@@ -71,15 +75,16 @@ export interface DialogData {
   ],
 })
 export class OrderpageComponent {
-  @Output() newOrderEvent = new EventEmitter<Order>();
+  @Output() newOrderEvent = new EventEmitter<output>();
   @Input() showBanner: boolean;
+
   baseurl = environment.API_URL;
   // baseurl = "http://localhost:8000";
   // baseurl = "http://api-is.mersa-group.ir";
   imgurl = "http://mersa-group.ir";
   // timenow:{hour: number, minute: number}={hour: 12, minute: 12};
-  wait:boolean=true;
-  ruleChecked:boolean= false;
+  wait: boolean = true;
+  ruleChecked: boolean = false;
   showbanner: boolean = true;
   mapEnable: boolean = false;
   maplat: number = 51.367918;
@@ -208,7 +213,7 @@ export class OrderpageComponent {
     public editAdd: MatDialog,
     private _snackBar: MatSnackBar,
   ) {
-    
+
     this.stepperOrientation = breakpointObserver
       .observe('(min-width: 800px)')
       .pipe(map(({ matches }) => (matches ? 'horizontal' : 'vertical')));
@@ -218,8 +223,8 @@ export class OrderpageComponent {
   order: any;
   public picurl: string = "";
   guaranteeDateForm = new FormGroup({
-    startdate: new FormControl('',Validators.required),
-    enddate: new FormControl('',Validators.required)
+    startdate: new FormControl('', Validators.required),
+    enddate: new FormControl('', Validators.required)
   })
   fromdate: string;
   todate: string;
@@ -267,7 +272,7 @@ export class OrderpageComponent {
     this.datepickeropen = false;
   }
   ngOnInit() {
-    this.wait=true;
+    this.wait = true;
     this.userid = localStorage.getItem('personID');
     // this.problemskind.push({ID:"1",title:"نصب"})
     // this.problemskind.push({ID:"2",title:"تعمیر"})
@@ -286,41 +291,41 @@ export class OrderpageComponent {
     this.api.getAllApplience(token).subscribe(
       res => {
         this.applience = res
-        this.wait=false;
-       // console.log(this.applience)
+        this.wait = false;
+        // console.log(this.applience)
         for (let i = 0; i < this.applience.length; i++) {
           this.applience[i].pic = this.imgurl + this.applience[i].pic;
           for (let j = 0; j < this.applience[i].brands.length; j++) {
             this.applience[i].brands[j].brandpic = this.imgurl + this.applience[i].brands[j].brandpic;
           }
         }
-        
+
       },
       err => {
-       console.log(err)
+        console.log(err)
       }
     )
     var userId = localStorage.getItem('personID')
     this.api.getCustomersDetails(token, userId!).subscribe(
       res => {
-       // console.log(res)
+        // console.log(res)
         this.curentCustomer = res[0];
         this.address = this.curentCustomer.address;
         for (let i = 0; i < this.address.length; i++) {
           var addtext = ""
-          if (this.address[i].province.provinceName != "")
+          if (this.address[i].province != null)
             addtext += "استان: " + this.address[i].province.provinceName;
 
-          if (this.address[i].county.countyName != "")
+          if (this.address[i].county != null)
             addtext += ", شهرستان: " + this.address[i].county.countyName;
 
-          if (this.address[i].city.cityName != "")
+          if (this.address[i].city != null)
             addtext += ", شهر: " + this.address[i].city.cityName;
 
-          if (this.address[i].region.regionName != "")
+          if (this.address[i].region != null)
             addtext += ", " + this.address[i].region.regionName;
 
-          if (this.address[i].neighbourhood.neighbourhoodName != "")
+          if (this.address[i].neighbourhood != null)
             addtext += ", " + this.address[i].neighbourhood.neighbourhoodName;
 
           if (this.address[i].addressStreet != "")
@@ -342,25 +347,85 @@ export class OrderpageComponent {
             addtext += ", طبقه: " + this.address[i].addressFloor;
           this.addresses.push({ id: this.address[i].id, text: addtext, maplat: Number(this.address[i].addressLat), maplong: Number(this.address[i].addressLong), isMainAddress: Boolean(this.address[i].isMain) })
         }
-        
+
       },
       err => {
-       console.log(err)
+        console.log(err)
       }
     )
-    
+
     this.yesterday = Jalali.parse(Jalali.now().add(-1, 'day').toString()).valueOf()
     this.initdateforcal(Jalali.now().toString().substring(0, 10))
     this.hasguarantee = false;
     // this.center.lng = 51.367918;
     // this.center.lat = 35.712706;  
     this.dateValue = new FormControl(new Date().valueOf());
-   // console.log(this.dateValue.value)
+    // console.log(this.dateValue.value)
     this.timerange = [{ ID: 1, title: "بین 9 تا 12" }, { ID: 2, title: "بین 12 تا 15" }, { ID: 3, title: "بین 15 تا 18" }, { ID: 3, title: "بین 18 تا 21" }];
   }
   shownewaddress: boolean = false;
   createaddress() {
     this.shownewaddress = true;
+  }
+  createadd(event: any) {
+    if (event.kind == 'save') {
+      var token = this.tokencookie.get('T');
+      var userId = localStorage.getItem('personID')
+      this.api.getCustomersDetails(token, userId!).subscribe(
+        res => {
+          this.addresses = []
+          this.address = res[0].address;
+          this.shownewaddress = false;
+          for (let i = 0; i < this.address.length; i++) {
+            var addtext = ""
+            if (this.address[i].province != null)
+              addtext += "استان: " + this.address[i].province.provinceName;
+
+            if (this.address[i].county != null)
+              addtext += ", شهرستان: " + this.address[i].county.countyName;
+
+            if (this.address[i].city != null)
+              addtext += ", شهر: " + this.address[i].city.cityName;
+
+            if (this.address[i].region != null)
+              addtext += ", " + this.address[i].region.regionName;
+
+            if (this.address[i].neighbourhood != null)
+              addtext += ", " + this.address[i].neighbourhood.neighbourhoodName;
+
+            if (this.address[i].addressStreet != "")
+              addtext += ", " + this.address[i].addressStreet;
+
+            if (this.address[i].addressSubStreet != "")
+              addtext += ", " + this.address[i].addressSubStreet;
+
+            if (this.address[i].addressLane != "")
+              addtext += ", " + this.address[i].addressLane;
+
+            if (this.address[i].addressBuilding != "")
+              addtext += ", " + this.address[i].addressBuilding;
+
+            if (this.address[i].addressNo != "")
+              addtext += ", پلاک: " + this.address[i].addressNo;
+
+            if (this.address[i].addressUnit != "")
+              addtext += ", واحد: " + this.address[i].addressUnit;
+
+            if (this.address[i].addressFloor != "")
+              addtext += ", طبقه: " + this.address[i].addressFloor;
+
+            this.addresses.push({ id: this.address[i].id, text: addtext, maplat: Number(this.address[i].addressLat), maplong: Number(this.address[i].addressLong), isMainAddress: Boolean(this.address[i].isMain) })
+          }
+        },
+        err => {
+          console.log(err)
+        }
+      )
+    }
+    else {
+      this.shownewaddress = false;
+    }
+
   }
   ngAfterViewChecked() {
     this.scrollHelper.doScroll();
@@ -400,7 +465,7 @@ export class OrderpageComponent {
   brandID: number;
   modelID: number;
   hasguarantee?: boolean;
-  modelselected:any;
+  modelselected: any;
   selectapplience(i: any) {
     this.title = i;
     this.showbrands = true;
@@ -425,40 +490,45 @@ export class OrderpageComponent {
 
   }
 
-  selectmodel(model:any) {
+  selectmodel(model: any) {
     //// console.log(this.firstFormGroup.controls.selectedmodel.value)
-   // console.log(model)
+    // console.log(model)
   }
   modelserial: string = "";
   serialchange(event: any) {
     // this.modelserial = event.target.value
   }
-  problemSelect(name: string, sid: any, pid: any) {
+  problemSelect(name: string, pid: any, pkid: any) {
 
-    var pki = this.problemskind.findIndex(item => item.ID == pid)
-    var si = this.problemskind[pki].problem.findIndex(item => item.ID == sid)
+    var pki = this.problemskind.findIndex(item => item.ID == pkid)
+    var si = this.problemskind[pki].problem.findIndex(item => item.pID == pid)
     let ch = this.problemskind[pki].problem[si].checked
 
     if (ch == true) {
       if (name == "سایر") {
         this.showcomment = true;
       }
-     // console.log(this.subtasks[sid].type)
-      this.selectedsubtasks.push(this.subtasks[sid])
-      if (this.isNumber(this.subtasks[sid].highprice!)) {
-        this.totlahighprice += Number(this.subtasks[sid].highprice!);
-        this.totlalowprice += Number(this.subtasks[sid].lowprice!);
+      var subtsk=this.subtasks.find(item=>item.pID=pid)
+      this.selectedsubtasks.push(subtsk!)
+      if (subtsk!.highprice != null) {
+        if (this.isNumber(subtsk!.highprice!)) {
+          this.totlahighprice += Number(subtsk!.highprice!);
+          this.totlalowprice += Number(subtsk!.lowprice!);
+        }
       }
     }
     else {
       if (name == "سایر") {
         this.showcomment = false;
       }
-      var indx = this.selectedsubtasks.indexOf(this.subtasks[sid])
+      var subtsk=this.subtasks.find(item=>item.pID=pid)
+      var indx = this.selectedsubtasks.indexOf(subtsk!)
       this.selectedsubtasks.splice(indx, 1)
-      if (this.isNumber(this.subtasks[sid].highprice!)) {
-        this.totlahighprice -= Number(this.subtasks[sid].highprice!);
-        this.totlalowprice -= Number(this.subtasks[sid].lowprice!);
+      if (subtsk!.highprice != null) {
+        if (this.isNumber(subtsk!.highprice!)) {
+          this.totlahighprice -= Number(subtsk!.highprice!);
+          this.totlalowprice -= Number(subtsk!.lowprice!);
+        }
       }
     }
     if (this.selectedsubtasks.length != 0) {
@@ -499,7 +569,7 @@ export class OrderpageComponent {
       if (this.firstFormGroup.controls.ifile.value == '') {
         this.openSnackBar(' بارگذاری تصویر فاکتور خرید الزامیست!', '', 'red-snackbar', 5)
       }
- 
+
     }
     var token = this.tokencookie.get('T')
     var app = "";
@@ -529,7 +599,7 @@ export class OrderpageComponent {
     else {
       this.order.modelID = null;
     }
-    this.modelserial=this.firstFormGroup.controls.modelserial.value!;
+    this.modelserial = this.firstFormGroup.controls.modelserial.value!;
     this.subtasks = []
     this.allsubtasks = []
     this.order.modelSerial = this.modelserial;
@@ -539,8 +609,8 @@ export class OrderpageComponent {
     if (this.hasguarantee) {
       this.order.guaranteePic = this.gimage[0];
       this.order.invoicePic = this.iimage[0];
-      this.order.guaranteeStartDate=this.fromdate;
-      this.order.guaranteeEndDate=this.todate;
+      this.order.guaranteeStartDate = this.fromdate;
+      this.order.guaranteeEndDate = this.todate;
       this.summery.Gpic = this.gurls[0];
       this.summery.Invpic = this.iurls[0];
       this.summery.GstartDate = this.fromdate;
@@ -559,9 +629,9 @@ export class OrderpageComponent {
     }
     this.api.getProblems(token, app, brand, model).subscribe(
       res => {
-       // console.log(res)
+        // console.log(res)
         for (let i = 0; i < res.length; i++) {
-         // console.log(res[i]['pkind'])
+          // console.log(res[i]['pkind'])
           var pkindex = this.problemskind.findIndex(item => item.title == res[i]['problemKind__title'])
           this.subtasks.push({ ID: i, pID: res[i]['id'], kind: res[i]['problemKind_id'], title: res[i]['problemTitle'], description: res[i]['problemDescription'], checked: false, lowprice: res[i]['lowPrice'], highprice: res[i]['highPrice'], type: res[i]['pkind'] })
           if (pkindex != -1) {
@@ -573,14 +643,14 @@ export class OrderpageComponent {
           }
 
         }
-        
+
         this.subtasks.push({ ID: res.length, pID: -1, kind: 'other', title: 'سایر', checked: false, description: '', lowprice: 'نامشخص', highprice: 'نامشخص', type: 'نامشخص' });
-        //// console.log(this.subtasks)
+        console.log(this.subtasks)
         this.allsubtasks = this.subtasks
       }
       ,
       err => {
-       console.log(err)
+        console.log(err)
       }
     )
   }
@@ -588,11 +658,11 @@ export class OrderpageComponent {
     this.problem();
     this.order.problem = this.selectedsubtasks
     this.order.problemPics = this.image;
-    this.thirdcomplete=true;
+    this.thirdcomplete = true;
   }
   seletAddress(add: any) {
     if (add.isMainAddress) {
-     // console.log(add)
+      // console.log(add)
       for (let i = 0; i < this.addresses.length; i++) {
         add.isMainAddress = true;
         if (this.addresses[i].id !== add.id)
@@ -601,7 +671,7 @@ export class OrderpageComponent {
     }
   }
   thirdstepnext() {
-   // console.log(this.selectedtime)
+    // console.log(this.selectedtime)
     this.showsummery = true;
     this.thirdcomplete = true;
     this.thirdsteperror = false;
@@ -609,10 +679,10 @@ export class OrderpageComponent {
     if (this.selectedtime == "") {
       this.thirdsteperror = true
       this.thirdcomplete = false;
-      
+
     }
-    
-   
+
+
     this.order.orderDate = this.selectedDate
     this.summery.orderDate = this.selectedDate
     this.order.timeRange = Number(timerangeid!);
@@ -629,9 +699,9 @@ export class OrderpageComponent {
         break;
       }
     }
-    
 
-   // console.log(this.order)
+
+    // console.log(this.order)
   }
   onSelectFile(event: any) {
     if (event.target.files && event.target.files[0]) {
@@ -716,7 +786,7 @@ export class OrderpageComponent {
       this.secondsteperror = false;
     }
     this.selectedsubtasks2 = this.selectedsubtasks
-   // console.log(this.selectedsubtasks2)
+    // console.log(this.selectedsubtasks2)
   }
   initdateforcal(date: string) {
     this.selectedDate = date;
@@ -763,14 +833,14 @@ export class OrderpageComponent {
     }
   }
   registerOrder() {
-    this.newOrderEvent.emit(this.order);
+    // this.newOrderEvent.emit(this.order);
     var token = this.tokencookie.get('T');
     this.order.orderConfirm = true;
-   // console.log(this.order)
+    // console.log(this.order)
     this.api.createorder(token, this.order).subscribe(
       res => {
 
-       console.log(res)
+        console.log(res)
         var orderids = res['result'].split(":", 2)
         var orderid = orderids[1]
         const swalWithBootstrapButtons = Swal.mixin({
@@ -785,7 +855,7 @@ export class OrderpageComponent {
         if (this.hasguarantee) {
           this.api.createcustomerappliance(token, this.order.customerID, this.order.modelID, this.order.modelSerial).subscribe(
             res => {
-             // console.log(res)
+              // console.log(res)
               ////فاکتور خرید///
               for (let i = 0; i < this.iimage.length; i++) {
                 var compimg = this.iimage[i]
@@ -795,7 +865,7 @@ export class OrderpageComponent {
                 var formdata1 = new FormData();
                 formdata1.append("customerAppliance", res);
                 formdata1.append("invoicePic", compimg, this.iimage[i].name);
-               // console.log("parameter to send image:" + formdata1)
+                // console.log("parameter to send image:" + formdata1)
                 this.http.post(this.baseurl + "/order/uploaduaranteeinvoicepic/", formdata1, {
                   headers: new HttpHeaders({
                     'Authorization': 'Token  ' + token
@@ -809,21 +879,21 @@ export class OrderpageComponent {
                       if (event.type == HttpEventType.UploadProgress) {
                         this.progress = Math.round((100 / event.total) * event.loaded);
                       } else if (event.type == HttpEventType.Response) {
-                       // console.log("images is uploaded:" + event.body)
+                        // console.log("images is uploaded:" + event.body)
                         var res = event.body;
                       }
                     }),
                     catchError((err: any) => {
-                     // console.log(err.message);
+                      // console.log(err.message);
                       return throwError("error1 to upload img:" + err.message);
                     })
                   )
                   .subscribe(
                     response => {
-                     // console.log(response)
+                      // console.log(response)
                     },
                     err => {
-                     // console.log("error2 to upload img:" + err)
+                      // console.log("error2 to upload img:" + err)
                     }
                   )
 
@@ -835,13 +905,13 @@ export class OrderpageComponent {
                 myHeaders.append("Authorization", "Token " + token);
                 this.progress = 1;
                 var formdata1 = new FormData();
-                var sdate=moment.from(this.order.guaranteeStartDate, 'fa', 'YYYY/MM/DD').format('YYYY/MM/DD');
-                var edate=moment.from(this.order.guaranteeEndDate, 'fa', 'YYYY/MM/DD').format('YYYY/MM/DD');
+                var sdate = moment.from(this.order.guaranteeStartDate, 'fa', 'YYYY/MM/DD').format('YYYY/MM/DD');
+                var edate = moment.from(this.order.guaranteeEndDate, 'fa', 'YYYY/MM/DD').format('YYYY/MM/DD');
                 formdata1.append("customerAppliance", res);
-                formdata1.append("guaranteeStartDate",sdate );
-                formdata1.append("guaranteeEndDate",edate);
+                formdata1.append("guaranteeStartDate", sdate);
+                formdata1.append("guaranteeEndDate", edate);
                 formdata1.append("guaranteePic", compimg, this.gimage[i].name);
-               // console.log("parameter to send image:" + formdata1)
+                // console.log("parameter to send image:" + formdata1)
                 this.http.post(this.baseurl + "/order/uploadguaranteepic/", formdata1, {
                   headers: new HttpHeaders({
                     'Authorization': 'Token  ' + token
@@ -855,44 +925,44 @@ export class OrderpageComponent {
                       if (event.type == HttpEventType.UploadProgress) {
                         this.progress = Math.round((100 / event.total) * event.loaded);
                       } else if (event.type == HttpEventType.Response) {
-                       // console.log("images is uploaded:" + event.body)
+                        // console.log("images is uploaded:" + event.body)
                         var res = event.body;
                       }
                     }),
                     catchError((err: any) => {
-                     // console.log(err.message);
+                      // console.log(err.message);
                       return throwError("error1 to upload img:" + err.message);
                     })
                   )
                   .subscribe(
                     response => {
-                     // console.log(response)
+                      // console.log(response)
                     },
                     err => {
-                     // console.log("error2 to upload img:" + err)
+                      // console.log("error2 to upload img:" + err)
                     }
                   )
 
               }
             },
             err => {
-             console.log(err)
+              console.log(err)
             }
           )
         }
         ////مشکلات////
-       // console.log(this.selectedsubtasks2)
+        // console.log(this.selectedsubtasks2)
         for (let i = 0; i < this.image.length; i++) {
           var compimg = this.image[i]
           var myHeaders = new Headers();
           myHeaders.append("Authorization", "Token " + token);
           this.progress = 1;
-          
+
           var formdata1 = new FormData();
 
           formdata1.append("order", orderid);
           formdata1.append("problemImage", compimg, this.image[i].name);
-         
+
           this.http.post(this.baseurl + "/order/uploadcustomersproblemspic/", formdata1, {
             headers: new HttpHeaders({
               'Authorization': 'Token  ' + token
@@ -906,21 +976,21 @@ export class OrderpageComponent {
                 if (event.type == HttpEventType.UploadProgress) {
                   this.progress = Math.round((100 / event.total) * event.loaded);
                 } else if (event.type == HttpEventType.Response) {
-                 // console.log("images is uploaded:" + event.body)
+                  // console.log("images is uploaded:" + event.body)
                   var res = event.body;
                 }
               }),
               catchError((err: any) => {
-               // console.log(err.message);
+                // console.log(err.message);
                 return throwError("error1 to upload img:" + err.message);
               })
             )
             .subscribe(
               response => {
-               // console.log(response)
+                // console.log(response)
               },
               err => {
-               // console.log("error2 to upload img:" + err)
+                // console.log("error2 to upload img:" + err)
               }
             )
 
@@ -932,15 +1002,21 @@ export class OrderpageComponent {
           confirmButtonText: '!متوجه شدم',
           reverseButtons: true
         })
-        this.router.navigate(['home/orderslist']);
+        var pcat = localStorage.getItem('userCat')
+        if (pcat == "مشتری") {
+          this.router.navigate(['home/orderslist']);
+        }
+        else {
+          this.newOrderEvent.emit({ kind: "create", userid: this.order.customerID })
+        }
       },
       err => {
-       console.log(err)
+        console.log(err)
       }
     )
   }
   EditAddress(id: any) {
-   // console.log(id)
+    // console.log(id)
     var index = this.address.findIndex(item => item.id == id)
     var data = {
       id: this.address[index].id,
@@ -982,13 +1058,13 @@ export class OrderpageComponent {
             this.address = res[0].address;
             for (let i = 0; i < this.address.length; i++) {
               var addtext = ""
-              if (this.address[i].province.provinceName != "")
+              if (this.address[i].province != null)
                 addtext += "استان: " + this.address[i].province.provinceName;
 
-              if (this.address[i].county.countyName != "")
+              if (this.address[i].county != null)
                 addtext += ", شهرستان: " + this.address[i].county.countyName;
 
-              if (this.address[i].city.cityName != "")
+              if (this.address[i].city != null)
                 addtext += ", شهر: " + this.address[i].city.cityName;
 
               if (this.address[i].region.regionName != "")
@@ -1018,7 +1094,7 @@ export class OrderpageComponent {
             }
           },
           err => {
-           console.log(err)
+            console.log(err)
           }
         )
       }
@@ -1068,22 +1144,22 @@ export class OrderpageComponent {
       }
     }
   }
-  openProblem(pk:any)
-  {
-    this.subtasks=pk.problem
+  openProblem(pk: any) {
+    // console.log(pk)
+    this.subtasks = pk.problem
   }
-  
-  ProblemSearchChange(event: any,pk:any) {
+
+  ProblemSearchChange(event: any, pk: any) {
     var s = [];
     if (event.target.value != "") {
       for (let i = 0; i < pk.problem.length!; i++) {
-        var protitle =  pk.problem![i].title.toLowerCase()
+        var protitle = pk.problem![i].title.toLowerCase()
         var searchv = event.target.value.toLowerCase()
         if (protitle.includes(searchv)) {
-          s.push( pk.problem![i])
+          s.push(pk.problem![i])
         }
       }
-      this.subtasks=[]
+      this.subtasks = []
       this.subtasks = s;
     }
     else {
@@ -1121,14 +1197,14 @@ export class EditAddressDialog implements OnInit {
   }
   ngOnInit() {
 
-   // console.log(this.data.addressdata)
+    // console.log(this.data.addressdata)
     this.addressforedit = this.data.addressdata
   }
   getValues(sg: any) {
-   // console.log(sg)
+    // console.log(sg)
   }
   editadd(event: any) {
-   // console.log(event);
+    // console.log(event);
     if (event.kind == "edit") {
       var data: { btn: string, addid: number } = { btn: "edit", addid: event.addid }
       this.dialogRef.close(data);

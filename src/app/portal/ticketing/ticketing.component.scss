@@ -1,0 +1,62 @@
+input[type="file"] {
+    display: none;
+}
+
+.status{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    background-color: rgb(222, 220, 220);
+    border-radius: 8px;
+    padding: 20px;
+    align-content: center;
+}
+h6{
+    text-align: center;
+    margin: auto;
+}
+.cardheader-q{
+    background-color: rgb(96, 179, 212);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 15px;
+    align-items: center;
+
+}
+.cardheader-a{
+    background-color: rgb(98, 212, 96);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 15px;
+    align-items: center;
+}
+::ng-deep .ng2-smart-pagination  ::ng-deep.ng2-smart-page-item
+::ng-deep.ng2-smart-page-link.page-link{
+    width: 30px !important;
+    height: 30px !important;
+    text-align: center !important;
+    font-size: 10px !important;
+    border: 0px solid white !important;
+    border-radius: 0px !important;
+    display: flex !important;
+    justify-items: center !important;
+    align-items: center !important;
+}
+.chats{
+    margin: 10px;
+}
+::ng-deep mat-card .chats {
+    padding: 0px !important;
+}
+.chatheader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+   
+}
+.answerticket {
+
+}

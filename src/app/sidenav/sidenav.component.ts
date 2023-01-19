@@ -21,9 +21,9 @@ export class SidenavComponent {
       { name: "داشبورد", submenu: [] },
       { name: "کاربران", submenu: [{ sub: "مشتریان" }, { sub: "تکنسین‌ها" }] },
       { name: "سفارشات", submenu: [{ sub: "ثبت سفارش" }, { sub: "گزارشات" }] },
-      { name: "مدیریت انبار", submenu: [{ sub: "انبار" }, { sub: "گزارشات" }, { sub: "تنظیمات" }] },
+      { name: "مدیریت انبار", submenu: [{ sub: "نعریف اولیه" }, { sub: "ورود کالا" }, { sub: "خروج کالا" },{ sub: "گزارشات" }] },
       { name: "مدیریت مالی", submenu: [{ sub: "مالی" }, { sub: "گزارشات" }, { sub: "تنظیمات" }] },
-      { name: "مدیریت پشتیبانی", submenu: [{ sub: "پشتیبانی" }, { sub: "گزارشات" }, { sub: "تنظیمات" }] },
+      { name: "مدیریت پشتیبانی", submenu: [{ sub: "تیکت‌ها" }, { sub: "پشتیبانی آنلاین" }, { sub: "گزارشات" }, { sub: "تنظیمات" }] },
       { name: "تنظیمات", submenu: [{ sub: "کاربران ستاد" }, { sub: "گروه های کاربری" }, { sub: "مناطق جغرافیایی" }, { sub: "مدیریت برندها" }, { sub: "مدیریت لوازم خانگی" }, { sub: "مدیریت پورسانت" }, { sub: "مدیریت اختصاص خدمت" }] },
 
     ]
@@ -32,9 +32,6 @@ export class SidenavComponent {
     switch (itemname) {
       case "داشبورد":
         this.router.navigate(['/portal/dashboard']);
-        break;
-      case "تالار گفتگو":
-        this.router.navigate(['/portal/chat']);
         break;
       case "کاربران ستاد":
         this.router.navigate(['/portal/users']);
@@ -49,20 +46,25 @@ export class SidenavComponent {
         this.router.navigate(['/portal/appliance']);
         break;
       case "مدیریت برندها":
-          this.router.navigate(['/portal/Brands']);
-          break;
+        this.router.navigate(['/portal/Brands']);
+        break;
       case "ثبت سفارش":
         this.router.navigate(['/portal/orderbystaff']);
         break;
-
       case "مشتریان":
         this.router.navigate(['/portal/Customers']);
         break;
-
-      case  "تکنسین‌ها":
+      case "تکنسین‌ها":
         this.router.navigate(['/portal/Technicians']);
         break;
-
+      case "تیکت‌ها":
+        this.router.navigate(['/portal/Ticketing']);
+        break;
+      case "پشتیبانی آنلاین":
+        this.router.navigate(['/portal/chat']);
+        break;
+        case  "نعریف اولیه":
+          this.router.navigate(['/portal/WarehousesInfo']);
     }
 
   }

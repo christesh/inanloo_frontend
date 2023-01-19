@@ -188,9 +188,9 @@ export class AppliencemanagementComponent implements OnInit {
               for (let k = 0; k < res[i]['brands'].length; k++) {
                 this.applience[i].brands[k].brand = res[i]['brands'][k]['a_brand__a_brandName']
                 this.applience[i].brands[k].ID = res[i]['brands'][k]['id']
-                this.applience[i].brands[k].brandpic = res[i]['brands'][k]['a_brand__a_brandImage']
+                this.applience[i].brands[k].brandpic =this.picbaseurl +"/media/" + res[i]['brands'][k]['a_brand__a_brandImage']
               }
-
+              this.showbrands[i]=false;
               // for (let k = 0; k < res[i]['brands'].length; k++) {
               //   var brand = res[i]['brands'][k];
               //   var barndproblem = []
@@ -238,6 +238,7 @@ export class AppliencemanagementComponent implements OnInit {
               //   }
               // }
               let dateTime = new Date()
+              // console.log(this.applience)
               // console.log(dateTime)
               // console.log(res)
             }
@@ -633,7 +634,12 @@ export class AppliencemanagementComponent implements OnInit {
       }
     }
   }
+  showbrands:boolean[]=[];
+  showbarands(i:any)
+  {
+    this.showbrands[i]=true;
 
+  }
   deleteimg(url: any, appIndex: any) {
     if (url != null) {
 
@@ -674,18 +680,9 @@ export class AppliencemanagementComponent implements OnInit {
   }
   Brands: any[] = []
   fetch: boolean = false;
-  openapp(id: number) {
-    // this.fetch=true;
-    // var token = this.tokencookies.get('T')
-    // this.api.getappliancebrand(token, id.toString()).subscribe(
-    //   res => {
-    //     this.fetch=false;
-    //     this.Brands=res
-    //   },
-    //   err => {
-    //     console.log(err)
-    //   }
-    // )
+  openapp(i: number) {
+    this.showbrands[i]=true;
+
   }
   app_c_c_point_editable: boolean = false;
 

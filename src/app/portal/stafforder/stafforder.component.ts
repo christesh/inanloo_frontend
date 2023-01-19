@@ -8,7 +8,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { ApiServicesService } from 'src/app/api-services.service';
 import { Applience } from 'src/app/mainpage/orderpage/Order';
 import { DialogData } from '../usermanagement/usermanagement.component';
-
+import * as moment from 'jalali-moment';
 @Component({
   selector: 'app-stafforder',
   templateUrl: './stafforder.component.html',
@@ -16,6 +16,7 @@ import { DialogData } from '../usermanagement/usermanagement.component';
 })
 export class StafforderComponent implements OnInit {
   searchText = ""
+  ordercount: any[] = []
   customerdetailfromstaff: boolean = false;
   shoneworder: boolean;
   constructor(
@@ -76,11 +77,11 @@ export class StafforderComponent implements OnInit {
         l_name: {
           title: "نام خانوادگی "
         },
-        orders: {
-          title: "تعداد سفارش"
+        allorders: {
+          title: "کل سفارشات"
         },
-        class: {
-          title: "کلاس"
+        complete: {
+          title: "سفارشات تکمیل"
         },
 
       },
@@ -103,7 +104,7 @@ export class StafforderComponent implements OnInit {
         // position: 'left',
         custom: [
           { name: 'viewrecord', title: '<i class="fa fa-eye"  ></i>' },
-          { name: 'editrecord', title: '&nbsp;&nbsp;<i class="fa  fa-pencil" style="color:grean" ></i>' },]
+          ]
       },
       columns: {
         status: {
@@ -152,24 +153,27 @@ export class StafforderComponent implements OnInit {
           national_id: string,
           f_name: string,
           l_name: string,
-          class: string
+          allorders: string,
+          complete:string
         }[] = []
         for (let i = 0; i < res.length; i++) {
           var mobile = ""
-          for (let j = 0; j < res[i]['mobile'].length; j++) {
-            if (res[i]['mobile'][j]['isMain'])
-              mobile += "**" + res[i]['mobile'][j]['mobileNumber'] + "** /"
-            else
-              mobile += res[i]['mobile'][j]['mobileNumber'] + " /"
-          }
-          mobile = mobile.substring(0, mobile.length - 2)
+          // for (let j = 0; j < res[i]['mobile'].length; j++) {
+          //   if (res[i]['mobile'][j]['isMain'])
+          //     mobile += "**" + res[i]['mobile'][j]['mobileNumber'] + "** /"
+          //   else
+          //     mobile += res[i]['mobile'][j]['mobileNumber'] + " /"
+          // }
+          // mobile = mobile.substring(0, mobile.length - 2)
+          mobile= res[i]['mobile__mobileNumber']
           ct.push({
             id: res[i]['id'],
             mobile: mobile,
             national_id: res[i]['nationalId'],
             f_name: res[i]['firstName'],
             l_name: res[i]['lastName'],
-            class: res[i]['idcustomerCategory']
+            allorders: res[i]['allOrders'],
+            complete:res[i]['completed']
           })
         }
         this.customertablevalue = new LocalDataSource(ct)
@@ -208,50 +212,70 @@ export class StafforderComponent implements OnInit {
       this.openOrderAccordion = true;
     }
   }
+  createOrder(personid: string, personname: string, personfamily: string) {
+    if (this.ordercount.length == 0) {
+      localStorage.setItem('personID', personid);
+      this.customerName = personname;
+      this.customerFamily = personfamily;
+      this.selectedCustomer = this.customerName + " " + this.customerFamily
+      var token = this.tokencookies.get('T');
+      var ot: { id: string, status: string, statusID: string, appliance: string, applianceID: string, date: string, technician: string, technicianID: string, payment: string }[] = [];
+      this.api.getcustomerorders(token, personid).subscribe(
+        res => {
+          ot = [];
+          for (let i = 0; i < res.length; i++) {
+            var appcat = res[i]['applianceBrand']['a_barndCategory']['a_categoryName'] + " " + res[i]['applianceBrand']['a_brand']['a_brandName']
+            var techfullname = ""
+            var techid = ""
+            if (res[i]['technician'] != null) {
+              techfullname = res[i]['technician']['firstName'] + " " + res[i]['technician']['lastName'];
+              techid = res[i]['technician']['id']
+            }
+            else {
+              techfullname = ""
+              techid = ""
+            } 
+            var odate = res[i]['orderDate']
+            odate = odate.split("T", 1)
+            var re = /-/gi;
+            odate = odate.toString().replace(re, "/")
+            odate = moment(odate).locale('fa').format('YYYY/M/D');
+            ot.push({ id: res[i]['id'], status: res[i]['orderStatus']['status'], statusID: res[i]['orderStatus']['id'], appliance: appcat, applianceID: res[i]['applianceBrand']['ID'], date: odate, technician: techfullname, technicianID: techid, payment: "" });
+       }
+          this.orderstablevalue = new LocalDataSource(ot);
+          if (ot.length != 0)
+            this.showOrders = true;
+          else
+            this.showOrders = false;
+          this.showOrderDetail = true;
+          this.openAccordion = false;
+          this.openOrderAccordion = false;
+          this.showorderdetail = false;
+          this.ordercount.push("1")
+          setTimeout(() => this.scrolltop = this.content.nativeElement.scrollHeight, 50);
+        },
+        err => {
+          console.log(err)
+        }
+
+      )
+    }
+    else {
+      this.openSnackBar("در حال حاضر یک ثبت سفارش باز است.", "", "red-snackbar", 5)
+    }
+  }
   TableAction(event: any) {
     switch (event.action) {
       case "makeorder":
-        localStorage.setItem('personID', event.data.id);
-        this.customerName = event.data.f_name;
-        this.customerFamily = event.data.l_name;
-        this.selectedCustomer = this.customerName + " " + this.customerFamily
-        var token = this.tokencookies.get('T');
-        var ot: { id: string, status: string, statusID: string, appliance: string, applianceID: string, date: string, technician: string, technicianID: string, payment: string }[] = [];
-        this.api.getcustomerorders(token, event.data.id).subscribe(
-          res => {
-            ot = [];
-            for (let i = 0; i < res.length; i++) {
-              var appcat = res[i]['applianceBrand']['a_barndCategory']['a_categoryName'] + " " + res[i]['applianceBrand']['a_brand']['a_brandName']
-              var techfullname = ""
-              var techid = ""
-              if (res[i]['technician'] != null) {
-                techfullname = res[i]['technician']['firstName'] + " " + res[i]['technician']['lastName'];
-                techid = res[i]['technician']['id']
-              }
-              else {
-                techfullname = ""
-                techid = ""
-              }
-              ot.push({ id: res[i]['id'], status: res[i]['orderStatus']['status'], statusID: res[i]['orderStatus']['id'], appliance: appcat, applianceID: res[i]['applianceBrand']['ID'], date: res[i]['orderDate'], technician: techfullname, technicianID: techid, payment: "" });
-            }
-            this.orderstablevalue = new LocalDataSource(ot);
-            if (ot.length != 0)
-              this.showOrders = true;
-            else
-              this.showOrders = false;
-            this.showOrderDetail = true;
-            this.openAccordion = false;
-            this.openOrderAccordion= false;
-            this.showorderdetail = false;
-            setTimeout(() => this.scrolltop = this.content.nativeElement.scrollHeight, 50);
-          },
-          err => {
-            console.log(err)
-          }
-
-        )
+        if (this.ordercount.length == 0) {
+          this.createOrder(event.data.id, event.data.f_name, event.data.l_name)
+        }
+        else {
+          this.openSnackBar("در حال حاضر یک ثبت سفارش باز است.", "", "red-snackbar", 5)
+        }
         break;
       case "viewrecord":
+        this.openOrderAccordion = true;
         localStorage.setItem('personID', event.data.id);
         this.customerName = event.data.f_name;
         this.customerFamily = event.data.l_name;
@@ -263,25 +287,69 @@ export class StafforderComponent implements OnInit {
     }
   }
   addOrder(event: any) {
-    this.showorder = false;
-    // console.log(event);
+
+    var personid = event.userid
+    this.shoneworder = false;
+    this.ordercount = [];
+    this.openOrderAccordion = false;
+    var token = this.tokencookies.get('T');
+    var ot: { id: string, status: string, statusID: string, appliance: string, applianceID: string, date: string, technician: string, technicianID: string, payment: string }[] = [];
+    this.api.getcustomerorders(token, personid).subscribe(
+      res => {
+        ot = [];
+        for (let i = 0; i < res.length; i++) {
+          var appcat = res[i]['applianceBrand']['a_barndCategory']['a_categoryName'] + " " + res[i]['applianceBrand']['a_brand']['a_brandName']
+          var techfullname = ""
+          var techid = ""
+          if (res[i]['technician'] != null) {
+            techfullname = res[i]['technician']['firstName'] + " " + res[i]['technician']['lastName'];
+            techid = res[i]['technician']['id']
+          }
+          else {
+            techfullname = ""
+            techid = ""
+          }
+          var odate = res[i]['orderDate']
+          odate = odate.split("T", 1)
+          var re = /-/gi;
+          odate = odate.toString().replace(re, "/")
+          odate = moment(odate).locale('fa').format('YYYY/M/D');
+          ot.push({ id: res[i]['id'], status: res[i]['orderStatus']['status'], statusID: res[i]['orderStatus']['id'], appliance: appcat, applianceID: res[i]['applianceBrand']['ID'], date: odate, technician: techfullname, technicianID: techid, payment: "" });
+        }
+        this.orderstablevalue = new LocalDataSource(ot);
+        if (ot.length != 0)
+          this.showOrders = true;
+        else
+          this.showOrders = false;
+        this.showOrderDetail = true;
+        this.openAccordion = false;
+        // this.openOrderAccordion = false;
+        // this.showorderdetail = false;
+        // this.ordercount.push("1")
+        setTimeout(() => this.scrolltop = this.content.nativeElement.scrollHeight, 50);
+      },
+      err => {
+        console.log(err)
+      }
+
+    )
   }
   CreateOrder() {
     this.shoneworder = true;
     this.showorder = true;
-    this.openOrderAccordion= true;
+    this.openOrderAccordion = true;
     setTimeout(() => this.scrolltop = this.content.nativeElement.scrollHeight, 0);
   }
   CancelOrder() {
     this.showOrderDetail = false;
     this.showorder = false;
     this.openAccordion = true;
-    this.openOrderAccordion= true;
+    this.openOrderAccordion = true;
     this.showorderdetail = false;
   }
   CancelshowOrder() {
     this.shoneworder = false;
-    this.openOrderAccordion= false;
+    this.openOrderAccordion = false;
   }
   CancelProfile() {
     this.showCustomerDetail = false;
@@ -290,9 +358,8 @@ export class StafforderComponent implements OnInit {
     this.showorderdetail = false;
   }
   public signupData!: { mn: string; nationalid: string; name: string; family: string; btn: string; userKind: number; };
-  CreateCustomer() {
-    console.log("jjh")
 
+  CreateCustomer() {
     const dialogRef = this.signupdialog.open(SignUPCustomerDialog, {
       width: '400px',
       data: { mobilenumber: "" },
@@ -302,10 +369,13 @@ export class StafforderComponent implements OnInit {
       if (result.btn == "ok") {
         this.signupData = result;
         // console.log(this.signupData)
-        this.api.register(this.signupData.mn, this.signupData.name, this.signupData.family, this.signupData.nationalid, 1).subscribe(
+        this.api.register(this.signupData.mn, this.signupData.name, this.signupData.family, this.signupData.nationalid, 2).subscribe(
           res => {
-            // console.log(res)
-            this.FillTable();
+            console.log(res)
+            if (res['key'] != "username exists") {
+              this.createOrder(res['id'], this.signupData.name, this.signupData.family)
+              this.FillTable();
+            }
           },
           err => {
             console.log(err)

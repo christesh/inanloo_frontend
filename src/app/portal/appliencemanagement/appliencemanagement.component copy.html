@@ -176,11 +176,12 @@
                 <button mat-raised-button color="primary" style="margin-right: 10px;width: 80px;height: 40px;"
                   (click)="cancelBrand()">انصراف</button>
               </div>
+              brand:{{a.brands[0].brand}}
               <mat-expansion-panel *ngFor="let b of a.brands; let j=index" (opened)="openbarnd(b.ID,i,j)">
                 <mat-expansion-panel-header>
                   <mat-panel-title>
                     <div class="title">
-                      {{b.brand}}
+                      {{b.a_brand__a_brandName}}
                     </div>
                     <div class="actions" style="margin-right: 20px;">
                       <i class="fa fa-edit" style="color:blue ;margin:10px ;cursor: pointer;"

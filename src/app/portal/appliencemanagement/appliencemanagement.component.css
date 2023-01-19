@@ -62,3 +62,27 @@ input[type="file"] {
     background-color: white !important;
     border: whitesmoke 1px solid !important;
 }
+
+::ng-deep .ng2-smart-pagination  ::ng-deep.ng2-smart-page-item
+::ng-deep.ng2-smart-page-link.page-link{
+    width: 30px !important;
+    height: 30px !important;
+    text-align: center !important;
+    font-size: 10px !important;
+    border: 0px solid white !important;
+    border-radius: 0px !important;
+    display: flex !important;
+    justify-items: center !important;
+    align-items: center !important;
+}
+
+.showbrand{
+  color: rgb(45, 45, 226);
+  cursor: pointer;
+}
+
+.showbrand:hover{
+  color: rgb(0, 0, 182);
+  font-weight: 500;
+  cursor: pointer;
+}

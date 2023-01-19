@@ -324,7 +324,7 @@
                 <ul>
                   <li *ngFor="let subtask of subtasks;let i=index">
                     <mat-checkbox [(ngModel)]="subtask.checked" color="warn"
-                      (ngModelChange)="problemSelect(subtask.title,subtask.ID,pk.ID)">
+                      (ngModelChange)="problemSelect(subtask.title,subtask.pID,pk.ID)">
                       {{subtask.title}}
                     </mat-checkbox>
                   </li>
@@ -445,7 +445,7 @@
       <div *ngIf="shownewaddress" class="addresscontent" style="margin:20px">
         <mat-card style="width: 100%;min-height:200px ;">
           <mat-card-content style="display: flex;flex-direction: row;justify-content: space-around;">
-            <app-editaddress [userId]="userid"></app-editaddress>
+            <app-editaddress [userId]="userid" (editAddressEvent)="createadd($event)"></app-editaddress>
           </mat-card-content>
         </mat-card>
       </div>

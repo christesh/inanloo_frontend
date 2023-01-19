@@ -39,7 +39,7 @@
       </div>
 
       <mat-accordion class="example-headers-align" multi style="z-index: 100;">
-        <mat-expansion-panel *ngFor="let a of applience; let i=index" (opened)="openapp(a.ID)">
+        <mat-expansion-panel *ngFor="let a of applience; let i=index" (opened)="openapp(i)">
           <mat-expansion-panel-header>
             <mat-panel-title>
               <div class="title">
@@ -152,6 +152,8 @@
 
 
           <!-- برند -->
+          <!-- <h6 class="showbrand" *ngIf="!showbrands[i]" (click)="showbarands(i)" style="width: 100px;">نمایش برندها</h6> -->
+          <div *ngIf="showbrands[i]">
           <div class="main" style="display:flex ;flex-direction: column;">
             <div class="title" style="margin:5px;width:100px">
               <h6>برند
@@ -165,7 +167,8 @@
                   <mat-form-field style="direction: rtl;text-align:right; margin: 10px;">
                     <mat-label>استان </mat-label>
                     <mat-select (selectionChange)="selectbrands($event)" [(value)]="selectedbrands">
-                      <mat-option *ngFor="let bb of allbrands;let i=index" value="{{bb.id}}">{{bb.a_brandName}}</mat-option>
+                      <mat-option *ngFor="let bb of allbrands;let i=index"
+                        value="{{bb.id}}">{{bb.a_brandName}}</mat-option>
                     </mat-select>
                   </mat-form-field>
                 </form>
@@ -174,7 +177,9 @@
                 <button mat-raised-button color="primary" style="margin-right: 10px;width: 80px;height: 40px;"
                   (click)="cancelBrand()">انصراف</button>
               </div>
-              <div *ngIf="showmodels">
+
+              
+              
                 <mat-expansion-panel *ngFor="let b of a.brands; let j=index" (opened)="openbarnd(b.ID,a.ID,i,j)">
                   <mat-expansion-panel-header>
                     <mat-panel-title>

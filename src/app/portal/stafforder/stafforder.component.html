@@ -87,7 +87,7 @@
           (click)="CancelProfile()">
           <i class="fa-regular fa-xmark" style="color: white;margin-left: 10px;"></i>بستن </button>
 
-        <app-customerProfile [showBanner]="customerdetailfromstaff"></app-customerProfile>
+        <app-customerProfile [showBanner]="customerdetailfromstaff" ></app-customerProfile>
 
       </div>
       <div *ngIf="showOrderDetail" class="orders"
@@ -127,7 +127,8 @@
               <i class="fa fa-minus" style="color: rgb(0, 0, 0);margin-left:20px;float: left;cursor: pointer;"
                 (click)="CancelshowOrder()"></i>
             </div>
-            <div style="padding: 15px;">
+            <div *ngFor="let i of ordercount" style="padding: 15px;">
+
               <app-orderpage (newOrderEvent)="addOrder($event)" [showBanner]="customerdetailfromstaff"></app-orderpage>
             </div>
           </div>

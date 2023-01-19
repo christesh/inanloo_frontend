@@ -105,24 +105,24 @@ export class UsersComponent implements OnInit {
           national_id: string,
           f_name: string,
           l_name: string,
-          class: string
+          orders: string
         }[] = []
         for (let i = 0; i < res.length; i++) {
           var mobile = ""
-          for (let j = 0; j < res[i]['mobile'].length; j++) {
-            if (res[i]['mobile'][j]['isMain'])
-              mobile += "**" + res[i]['mobile'][j]['mobileNumber'] + "** /"
-            else
-              mobile += res[i]['mobile'][j]['mobileNumber'] + " /"
-          }
-          mobile = mobile.substring(0, mobile.length - 2)
+          // for (let j = 0; j < res[i]['mobile'].length; j++) {
+          //   if (res[i]['mobile'][j]['isMain'])
+          //     mobile += "**" + res[i]['mobile'][j]['mobileNumber'] + "** /"
+          //   else
+          //     mobile += res[i]['mobile'][j]['mobileNumber'] + " /"
+          // }
+          mobile = res[i]['mobile__mobileNumber']
           ct.push({
             id: res[i]['id'],
             mobile: mobile,
             national_id: res[i]['nationalId'],
             f_name: res[i]['firstName'],
             l_name: res[i]['lastName'],
-            class: res[i]['idcustomerCategory']
+            orders: res[i]['allOrders']
           })
         }
         this.customerTablevalue = new LocalDataSource(ct)
@@ -163,12 +163,13 @@ export class UsersComponent implements OnInit {
       }
     });
   }
- 
+ usercat:string="";
   TableAction(event: any) {
     switch (event.action) {
       case "viewrecord":
         this.profiles=[]
         this.userId=event.data.id;
+        this.usercat="مشتری";
         this.showCustomerDetail = false;
         this.selectedCustomer=event.data.f_name +" " +event.data.l_name;
         this.showCustomerDetail = true;

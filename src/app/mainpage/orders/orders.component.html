@@ -13,7 +13,8 @@
 
   </div>
 </div>
-<!-- <div class="filter">
+<div class="orders" *ngIf="!showdetails">
+  <!-- <div class="filter">
   <mat-form-field style="direction: rtl;text-align:right; margin: 10px;">
     <mat-label>نوع سفارش </mat-label>
     <mat-select (selectionChange)="selectServiceKind($event)" [(value)]="selectedServiceKind">
@@ -58,209 +59,218 @@
   </div>
   <button mat-raised-button color="accent" style="margin: 10px;width: 100px;" (click)="filter()">اعمال فیلتر</button>
 </div> -->
-<div class="customer" *ngIf="customer">
-  <mat-card *ngFor="let order of orders;let i index">
-    <mat-card-content>
-      <div class="col-md-3 section1">
-        <div [ngClass]="order.statusCssClass">
-          <h5 style="margin:auto;min-width: 100px;">{{order.status}}</h5>
-        </div>
-        <div class="registerDate">
-          <h6>تاریخ ثبت سفارش: {{order.regdate}}</h6>
-        </div>
-        <div class="appliancepic">
-          <div class="apppic">
-            <img [src]="order.apppic" alt="" class="apppic">
+  <div class="customer" *ngIf="customer">
+    <mat-card *ngFor="let order of orders;let i index">
+      <mat-card-content>
+        <div class="col-md-3 section1">
+          <div [ngClass]="order.statusCssClass">
+            <h5 style="margin:auto;min-width: 100px;">{{order.status}}</h5>
           </div>
-          <div class="brandpic">
-            <img [src]="order.brandpic" alt="" class="brandpic">
+          <div class="registerDate">
+            <h6>تاریخ ثبت سفارش: {{order.regdate}}</h6>
+          </div>
+          <div class="appliancepic">
+            <div class="apppic">
+              <img [src]="order.apppic" alt="" class="apppic">
+            </div>
+            <div class="brandpic">
+              <img [src]="order.brandpic" alt="" class="brandpic">
+            </div>
           </div>
         </div>
-      </div>
-      <div class="col-md-6 section2">
-        <div class="ordertitle">
-          <h5 class="headerText">{{order.app}} {{order.brand}} {{order.model}}</h5>
-          <div class="cost">هزینه: از {{order.lcost | number}} تا {{order.hcost | number}} ريال</div>
-        </div>
-        <div class="date">
-          <h5 class="dateText">تاریخ: {{order.date}}</h5>
-          <h5 class="timerangeText">بازه زمانی: {{order.timeRange}}</h5>
-        </div>
-        <div class="address">
-          <h6 class="addressText">آدرس: {{order.address}}</h6>
-        </div>
-        <div class="problems">
-          <div class="problemtitles">
-            <h5>مشکلات:</h5>
-            <ul>
-              <li class="problemtitle" *ngFor="let problem of order.problems" style="margin-right:10px ;">
-                {{problem.title}}</li>
-            </ul>
+        <div class="col-md-6 section2">
+          <div class="ordertitle">
+            <h5 class="headerText">{{order.app}} {{order.brand}} {{order.model}}</h5>
+            <div class="cost">هزینه: از {{order.lcost | number}} تا {{order.hcost | number}} ريال</div>
           </div>
-          <a class="detaillink" [routerLink]="['/home/orderDetails',{orderID:order.id}]">جزئیات بیشتر</a>
+          <div class="date">
+            <h5 class="dateText">تاریخ: {{order.date}}</h5>
+            <h5 class="timerangeText">بازه زمانی: {{order.timeRange}}</h5>
+          </div>
+          <div class="address">
+            <h6 class="addressText">آدرس: {{order.address}}</h6>
+          </div>
+          <div class="problems">
+            <div class="problemtitles">
+              <h5>مشکلات:</h5>
+              <ul>
+                <li class="problemtitle" *ngFor="let problem of order.problems" style="margin-right:10px ;">
+                  {{problem.title}}</li>
+              </ul>
+            </div>
+            <!-- <a class="detaillink" [routerLink]="['/home/orderDetails',{orderID:order.id}]">جزئیات بیشتر</a> -->
+            <a class="detaillink" (click)="showdetail(order.id)">جزئیات بیشتر</a>
+          </div>
         </div>
-      </div>
-      <div class="col-md-3 technician" *ngIf="order.techfullname !== ''">
-        <div class="header">
-          <h5>تکنسین</h5>
-        </div>
-        <div class="techpic">
-          <img [src]="order.techpic" alt="" class="techpic" onerror="this.onerror=null; this.src='http://is.mersa-group.ir/assets/images/profile.png'">
-        </div>
-        <div class="techinfo">
-          <h5>{{order.techfullname}}</h5>
+        <div class="col-md-3 technician" *ngIf="order.techfullname !== ''">
+          <div class="header">
+            <h5>تکنسین</h5>
+          </div>
+          <div class="techpic">
+            <img [src]="order.techpic" alt="" class="techpic"
+              onerror="this.onerror=null; this.src='http://is.mersa-group.ir/assets/images/profile.png'">
+          </div>
+          <div class="techinfo">
+            <h5>{{order.techfullname}}</h5>
 
-          <div class="techrate" *ngIf="order.techrate !==''">
-            <h6>امتیاز {{order.techrate}}</h6>
+            <div class="techrate" *ngIf="order.techrate !==''">
+              <h6>امتیاز {{order.techrate}}</h6>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="col-md-3 technician" *ngIf="order.techfullname == ''">
-        <div class="header">
-          <h5 style="color: red;">هنوز کسی این سفارش را قبول نکرده است</h5>
+        <div class="col-md-3 technician" *ngIf="order.techfullname == ''">
+          <div class="header">
+            <h5 style="color: red;">هنوز کسی این سفارش را قبول نکرده است</h5>
+          </div>
         </div>
-      </div>
-    </mat-card-content>
+      </mat-card-content>
 
-  </mat-card>
+    </mat-card>
+  </div>
+  <div class="tech" *ngIf="tech">
+    <mat-tab-group style="direction: rtl;min-height: 500px;">
+      <mat-tab label="سفارشات جدید">
+        <mat-card *ngFor="let order of offers;let i index">
+          <mat-card-content>
+            <div class="col-md-3 section1">
+              <div [ngClass]="order.statusCssClass">
+                <h5 style="margin:auto;min-width: 100px;">{{order.status}}</h5>
+              </div>
+              <div class="registerDate">
+                <h6>تاریخ ثبت سفارش: {{order.regdate}}</h6>
+              </div>
+              <div class="appliancepic">
+                <div class="apppic">
+                  <img [src]="order.apppic" alt="" class="apppic">
+                </div>
+                <div class="brandpic">
+                  <img [src]="order.brandpic" alt="" class="brandpic">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 section2">
+              <div class="ordertitle">
+                <h5 class="headerText">{{order.app}} {{order.brand}} {{order.model}}</h5>
+                <div class="cost">هزینه: از {{order.lcost | number}} تا {{order.hcost | number}} ريال</div>
+              </div>
+              <div class="date">
+                <h5 class="dateText">تاریخ: {{order.date}}</h5>
+                <h5 class="timerangeText">بازه زمانی: {{order.timeRange}}</h5>
+              </div>
+              <div class="address">
+                <h6 class="addressText">آدرس: {{order.minaddress}}</h6>
+              </div>
+              <div class="problems">
+                <div class="problemtitles">
+                  <h5>مشکلات:</h5>
+                  <ul>
+                    <li class="problemtitle" *ngFor="let problem of order.problems" style="margin-right:10px ;">
+                      {{problem.title}}</li>
+                  </ul>
+                </div>
+                <!-- <a class="detaillink" [routerLink]="['/home/orderDetails',{orderID:order.id}]">جزئیات بیشتر</a> -->
+              </div>
+            </div>
+            <div class="col-md-3 technician" *ngIf="order.techfullname !== ''">
+              <div class="header">
+                <h5>تکنسین</h5>
+              </div>
+              <div class="techpic">
+                <img [src]="order.techpic" alt="" class="techpic">
+              </div>
+              <div class="techinfo">
+                <h5>{{order.techfullname}}</h5>
+
+                <div class="techrate" *ngIf="order.techrate !==''">
+                  <h6>امتیاز {{order.techrate}}</h6>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 technician" *ngIf="order.techfullname == ''">
+              <div class="header">
+                <h5 style="color: red;">هنوز کسی این سفارش را قبول نکرده است</h5>
+              </div>
+              <div style="direction: ltr;">
+                <button mat-raised-button color="accent" (click)="Accept(order)">قبول سفارش</button>
+              </div>
+            </div>
+          </mat-card-content>
+
+        </mat-card>
+      </mat-tab>
+      <mat-tab label="سفارشات من">
+        <mat-card *ngFor="let order of orders;let i index">
+          <mat-card-content>
+            <div class="col-md-3 section1">
+              <div [ngClass]="order.statusCssClass">
+                <h5 style="margin:auto;min-width: 100px;">{{order.status}}</h5>
+              </div>
+              <div class="registerDate">
+                <h6>تاریخ ثبت سفارش: {{order.regdate}}</h6>
+              </div>
+              <div class="appliancepic">
+                <div class="apppic">
+                  <img [src]="order.apppic" alt="" class="apppic">
+                </div>
+                <div class="brandpic">
+                  <img [src]="order.brandpic" alt="" class="brandpic">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 section2">
+              <div class="ordertitle">
+                <h5 class="headerText">{{order.app}} {{order.brand}} {{order.model}}</h5>
+                <div class="cost">هزینه: از {{order.lcost | number}} تا {{order.hcost | number}} ريال</div>
+              </div>
+              <div class="date">
+                <h5 class="dateText">تاریخ: {{order.date}}</h5>
+                <h5 class="timerangeText">بازه زمانی: {{order.timeRange}}</h5>
+              </div>
+              <div class="address">
+                <h6 class="addressText">آدرس: {{order.address}}</h6>
+              </div>
+              <div class="problems">
+                <div class="problemtitles">
+                  <h5>مشکلات:</h5>
+                  <ul>
+                    <li class="problemtitle" *ngFor="let problem of order.problems" style="margin-right:10px ;">
+                      {{problem.title}}</li>
+                  </ul>
+                </div>
+                <!-- <a class="detaillink" [routerLink]="['/home/orderDetails',{orderID:order.id}]">جزئیات بیشتر</a> -->
+                <a class="detaillink" (click)="showdetail(order.id)">جزئیات بیشتر</a>
+              </div>
+            </div>
+            <div class="col-md-3 technician" *ngIf="order.techfullname !== ''">
+              <div class="header">
+                <h5>تکنسین</h5>
+              </div>
+              <div class="techpic">
+                <img [src]="order.techpic" alt="" class="techpic">
+              </div>
+              <div class="techinfo">
+                <h5>{{order.techfullname}}</h5>
+
+                <div class="techrate" *ngIf="order.techrate !==''">
+                  <h6>امتیاز {{order.techrate}}</h6>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 technician" *ngIf="order.techfullname == ''">
+              <div class="header">
+                <h5 style="color: red;">هنوز کسی این سفارش را قبول نکرده است</h5>
+              </div>
+            </div>
+          </mat-card-content>
+
+        </mat-card>
+      </mat-tab>
+    </mat-tab-group>
+
+  </div>
 </div>
-<div class="tech" *ngIf="tech">
-  <mat-tab-group style="direction: rtl;min-height: 500px;">
-    <mat-tab label="سفارشات جدید">
-      <mat-card *ngFor="let order of offers;let i index">
-        <mat-card-content>
-          <div class="col-md-3 section1">
-            <div [ngClass]="order.statusCssClass">
-              <h5 style="margin:auto;min-width: 100px;">{{order.status}}</h5>
-            </div>
-            <div class="registerDate">
-              <h6>تاریخ ثبت سفارش: {{order.regdate}}</h6>
-            </div>
-            <div class="appliancepic">
-              <div class="apppic">
-                <img [src]="order.apppic" alt="" class="apppic">
-              </div>
-              <div class="brandpic">
-                <img [src]="order.brandpic" alt="" class="brandpic">
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6 section2">
-            <div class="ordertitle">
-              <h5 class="headerText">{{order.app}} {{order.brand}} {{order.model}}</h5>
-              <div class="cost">هزینه: از {{order.lcost | number}} تا {{order.hcost | number}} ريال</div>
-            </div>
-            <div class="date">
-              <h5 class="dateText">تاریخ: {{order.date}}</h5>
-              <h5 class="timerangeText">بازه زمانی: {{order.timeRange}}</h5>
-            </div>
-            <div class="address">
-              <h6 class="addressText">آدرس: {{order.minaddress}}</h6>
-            </div>
-            <div class="problems">
-              <div class="problemtitles">
-                <h5>مشکلات:</h5>
-                <ul>
-                  <li class="problemtitle" *ngFor="let problem of order.problems" style="margin-right:10px ;">
-                    {{problem.title}}</li>
-                </ul>
-              </div>
-              <!-- <a class="detaillink" [routerLink]="['/home/orderDetails',{orderID:order.id}]">جزئیات بیشتر</a> -->
-            </div>
-          </div>
-          <div class="col-md-3 technician" *ngIf="order.techfullname !== ''">
-            <div class="header">
-              <h5>تکنسین</h5>
-            </div>
-            <div class="techpic">
-              <img [src]="order.techpic" alt="" class="techpic">
-            </div>
-            <div class="techinfo">
-              <h5>{{order.techfullname}}</h5>
-
-              <div class="techrate" *ngIf="order.techrate !==''">
-                <h6>امتیاز {{order.techrate}}</h6>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 technician" *ngIf="order.techfullname == ''">
-            <div class="header">
-              <h5 style="color: red;">هنوز کسی این سفارش را قبول نکرده است</h5>
-            </div>
-            <div style="direction: ltr;">
-              <button mat-raised-button color="accent"  (click)="Accept(order)">قبول سفارش</button>
-            </div>
-          </div>
-        </mat-card-content>
-
-      </mat-card>
-    </mat-tab>
-    <mat-tab label="سفارشات من">
-      <mat-card *ngFor="let order of orders;let i index">
-        <mat-card-content>
-          <div class="col-md-3 section1">
-            <div [ngClass]="order.statusCssClass">
-              <h5 style="margin:auto;min-width: 100px;">{{order.status}}</h5>
-            </div>
-            <div class="registerDate">
-              <h6>تاریخ ثبت سفارش: {{order.regdate}}</h6>
-            </div>
-            <div class="appliancepic">
-              <div class="apppic">
-                <img [src]="order.apppic" alt="" class="apppic">
-              </div>
-              <div class="brandpic">
-                <img [src]="order.brandpic" alt="" class="brandpic">
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6 section2">
-            <div class="ordertitle">
-              <h5 class="headerText">{{order.app}} {{order.brand}} {{order.model}}</h5>
-              <div class="cost">هزینه: از {{order.lcost | number}} تا {{order.hcost | number}} ريال</div>
-            </div>
-            <div class="date">
-              <h5 class="dateText">تاریخ: {{order.date}}</h5>
-              <h5 class="timerangeText">بازه زمانی: {{order.timeRange}}</h5>
-            </div>
-            <div class="address">
-              <h6 class="addressText">آدرس: {{order.address}}</h6>
-            </div>
-            <div class="problems">
-              <div class="problemtitles">
-                <h5>مشکلات:</h5>
-                <ul>
-                  <li class="problemtitle" *ngFor="let problem of order.problems" style="margin-right:10px ;">
-                    {{problem.title}}</li>
-                </ul>
-              </div>
-              <a class="detaillink" [routerLink]="['/home/orderDetails',{orderID:order.id}]">جزئیات بیشتر</a>
-            </div>
-          </div>
-          <div class="col-md-3 technician" *ngIf="order.techfullname !== ''">
-            <div class="header">
-              <h5>تکنسین</h5>
-            </div>
-            <div class="techpic">
-              <img [src]="order.techpic" alt="" class="techpic" >
-            </div>
-            <div class="techinfo">
-              <h5>{{order.techfullname}}</h5>
-
-              <div class="techrate" *ngIf="order.techrate !==''">
-                <h6>امتیاز {{order.techrate}}</h6>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 technician" *ngIf="order.techfullname == ''">
-            <div class="header">
-              <h5 style="color: red;">هنوز کسی این سفارش را قبول نکرده است</h5>
-            </div>
-          </div>
-        </mat-card-content>
-
-      </mat-card>
-    </mat-tab>
-  </mat-tab-group>
-
+<div class="orderdetail" *ngIf="showdetails" style="direction: rtl;">
+  <button mat-raised-button color="primary"
+  style="margin-right: 10px;width: 80px;height: 40px;" (click)="return()">بازگشت</button>
+  <app-orderdetails [orderId]="orderdetail" [usercat]="usercat"></app-orderdetails>
 </div>

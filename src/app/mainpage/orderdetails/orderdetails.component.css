@@ -2,12 +2,18 @@ h5 {
     font-size: 14px;
 }
 
+input[type="file"] {
+    display: none;
+}
+
 h6 {
     font-size: 12px;
 }
+
 p {
     font-size: 12kspx;
 }
+
 .status1 {
     background-color: green;
     border-radius: 12px;
@@ -216,6 +222,22 @@ mat-card {
     --bs-popover-body-color: #212529;
     --bs-popover-arrow-width: 1rem;
     --bs-popover-arrow-height: 0.5rem;
+}
+
+.editlable {
+    margin-right: 10px;
+    color: rgb(78, 78, 218);
+    font-size: 12px;
+    cursor: pointer;
+    ;
+}
+
+.editlable:hover {
+    margin-right: 10px;
+    color: blue;
+    font-size: 12px;
+    cursor: pointer;
+    ;
 }
 
 ::ng-deep .datepicker-outer-container {

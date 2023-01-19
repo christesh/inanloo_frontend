@@ -1168,5 +1168,68 @@ export class ApiServicesService {
       })
     });
   }
+  getticketallstatusprioritysubject(token:string): Observable<any> {
+    return this.http.get(this.baseurl + '/support/getticketallstatusprioritysubject/', {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  getallusertickets(token:string): Observable<any> {
+    return this.http.get(this.baseurl + '/support/getallusertickets/', {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  getalltickets(token:string): Observable<any> {
+    return this.http.get(this.baseurl + '/support/getalltickets/', {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  createticket(token:string,orderID:string,priorityID:string,subjectID:string): Observable<any> {
+    const body={orderID:orderID,priorityID:priorityID,subjectID:subjectID}
+    return this.http.post(this.baseurl + '/support/createticket/',body,
+     {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  getordersid(token:string): Observable<any> {
+    return this.http.get(this.baseurl + '/order/getordersid/', {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  createticketchat(token:string,ticketno:string,answerto:string,title:string,comment:string): Observable<any> {
+    const body={ticketno:ticketno,answerto:answerto,title:title,comment:comment}
+    return this.http.post(this.baseurl + '/support/createticketchat/',body,
+     {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  getticketschatbyno(token:string,ticketNo:string): Observable<any> {
+    const body={ticketNo:ticketNo}
+    return this.http.post(this.baseurl + '/support/getticketschatbyno/',body,
+     {
+      headers: new HttpHeaders({
+        'Authorization': 'Token  ' + token,
+        'Content-Type': 'application/json',
+      })
+    });
+  }
+  
 }
 

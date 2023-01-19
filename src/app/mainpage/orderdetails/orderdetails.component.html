@@ -3,17 +3,7 @@
 
   <div class="discription">
     <h5>جزئیات سفارش</h5>
-    <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
-      است،
-      چاپگرها و متون بلکه
-      روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با
-      هدف
-      بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و
-      متخصصان
-      را
-      می طلبد.</p>
   </div>
-
   <mat-card *ngIf="customer">
     <mat-card-content>
       <div class="col-md-3 section1">
@@ -47,7 +37,7 @@
         <hr>
         <div class="ordertitle">
           <h5 class="headerText">{{order.applianceBrand.a_barndCategory.a_categoryName}}
-            {{order.applianceBrand.a_brandName}} </h5>
+            {{order.applianceBrand.a_brand.a_brandName}} </h5>
           <h5 *ngIf="order.applianceModel!==null">مدل دستگاه: {{order.applianceModel.model}}</h5>
           <h5 *ngIf="order.applianceSerial!==null">سریال دستگاه: {{order.applianceSerial}}</h5>
 
@@ -231,18 +221,52 @@
             <h5 class="headerText"><strong>مشتری:</strong> {{order.customer.firstName}} {{order.customer.lastName}}</h5>
             <h6> شماره تماس: {{order.customer.mobile[0].mobileNumber}}</h6>
           </div>
-          <!-- <a class="detaillink">جزئیات بیشتر</a> -->
-          <!-- <a class="detaillink" [routerLink]="['/home/survey',{orderID:order.id, sKind:sKind,appCat:order.applianceBrand.a_barndCategory.id,result:result}]">
-            {{surveyTitle}}
-          </a> -->
+
         </div>
         <hr>
         <div class="ordertitle">
           <h5 class="headerText">{{order.applianceBrand.a_barndCategory.a_categoryName}}
-            {{order.applianceBrand.a_brandName}} </h5>
-          <h5 *ngIf="order.applianceModel!==null">مدل دستگاه: {{order.applianceModel.model}}</h5>
-          <h5 *ngIf="order.applianceSerial!==null">سریال دستگاه: {{order.applianceSerial}}</h5>
+            {{order.applianceBrand.a_brand.a_brandName}} </h5>
 
+          <form [formGroup]="modelserialform">
+            <div style="display: flex;flex-direction: row; flex-wrap: nowrap;justify-content: start;">
+              <h5 *ngIf="!editmodel">مدل دستگاه: {{order.applianceModel.model}}</h5> <a *ngIf="!editmodel"
+                class="editlable" (click)="editModel()">ویرایش</a>
+            </div>
+            <mat-form-field *ngIf="editmodel" style="direction: rtl;text-align:right;width: 30%;">
+              <mat-label>مدل دستگاه</mat-label>
+              <mat-select formControlName="selectedmodel" required>
+                <mat-option *ngFor="let m of models;let i=index" [value]="m.ID">{{m.model}}</mat-option>
+              </mat-select>
+              <mat-error *ngIf="isFieldInvalid('selectedmodel')">
+                برای استفاده از گارانتی مشخص کردن مدل دستگاه الزامیست
+              </mat-error>
+            </mat-form-field>
+            <button *ngIf="editmodel" mat-raised-button color="accent"
+              style=" width: 80px;height: 40px;margin-right: 10px;" (click)="saveModel()">ذخیره</button>
+            <button *ngIf="editmodel" mat-raised-button color="primary"
+              style="margin-right: 10px;width: 80px;height: 40px;" (click)="cancelModel()">انصراف</button>
+
+
+            <div style="display: flex;flex-direction: row; flex-wrap: nowrap;justify-content: start;">
+              <h5 *ngIf="!editserial">سریال دستگاه: {{order.applianceSerial}}</h5> <a *ngIf="!editserial"
+                class="editlable" (click)="editSerial()">ویرایش</a>
+            </div>
+
+            <mat-form-field *ngIf="editserial" class="full-width-input"
+              style="margin:auto;text-align:right; direction:rtl;font-family:iransans ;width: 30%;">
+              <input matInput placeholder="شماره سریال دستگاه" formControlName="modelserial" style="font-size: 12px;"
+                required>
+              <mat-error *ngIf="isFieldInvalid('modelserial') ">
+                برای استفاده از گارانتی وارد کردن سریال دستگاه الزامیست
+              </mat-error>
+            </mat-form-field>
+
+            <button *ngIf="editserial" mat-raised-button color="accent"
+              style=" width: 80px;height: 40px;margin-right: 10px;" (click)="saveSerial()">ذخیره</button>
+            <button *ngIf="editserial" mat-raised-button color="primary"
+              style="margin-right: 10px;width: 80px;height: 40px;" (click)="cancelSerial()">انصراف</button>
+          </form>
         </div>
 
         <div *ngIf="order.hasGuarantee" class="garantee" style="float: left;">
@@ -387,10 +411,10 @@
     <div class="checklist" style="display: flex;flex-direction: column; justify-content: space-between;">
       <div class="savecheck">
         <div style="display: flex;flex-direction: row;justify-content: start;padding-right: 10px;padding-bottom:10px ;">
-          <button *ngIf="!editable" mat-raised-button color="accent"
-            style=" width: 80px;height: 40px;" (click)="editchecklist()">ویرایش</button>
-          <button *ngIf="editable" mat-raised-button color="accent"
-            style=" width: 80px;height: 40px;" (click)="savechecklist()">ذخیره</button>
+          <button *ngIf="!editable" mat-raised-button color="accent" style=" width: 80px;height: 40px;"
+            (click)="editchecklist()">ویرایش</button>
+          <button *ngIf="editable" mat-raised-button color="accent" style=" width: 80px;height: 40px;"
+            (click)="savechecklist()">ذخیره</button>
           <button *ngIf="editable" mat-raised-button color="primary"
             style="margin-right: 10px;width: 80px;height: 40px;" (click)="cancelchecklist()">انصراف</button>
         </div>
@@ -402,18 +426,81 @@
         </div>
         <div class="list" style="height: 300px;overflow: auto;">
           <div *ngFor="let checklist of techChecklist;let i=index">
-            <mat-checkbox [(ngModel)]="checklist.checked" color="warn" (ngModelChange)="ChecklistSelect(checklist)">
+            <mat-checkbox [(ngModel)]="checklist.checked" color="warn" (ngModelChange)="ChecklistSelect(checklist)"
+              [disabled]="!editable">
               {{checklist.title}}
             </mat-checkbox>
           </div>
         </div>
       </div>
-     
     </div>
+
+
+    <div class="devicePics">
+      <hr>
+      <div class="discription">
+        <h4> تصاویر دستگاه توسط تکنسین</h4>
+        <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
+          چاپگرها و متون بلکه
+          روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
+          بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان
+          را
+          می طلبد.</p>
+      </div>
+      <div class="row" style="display: flex;flex-direction: row;flex-wrap: wrap;justify-content: right;">
+        <div *ngFor="let url of technicianproblempicurls;let i=index;"
+          style="margin:20px; text-align: center;border-radius: 10px; background-color: rgb(253, 252, 250);box-shadow: 0px 0px 5px 5px rgb(238, 236, 236); width: 350px;height: 300px; ">
+          <br>
+          <img [src]="url" height="200" width="300" style="margin:10px;cursor: pointer;" (click)="openpopup(url)">
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-12 mb-2">
+          <div class="form-group col-12 mb-2" style="direction: rtl;text-align: right;margin: 10px;">
+            <label style="margin: 10px;"> لطفا تصاویر مروبط به وسیله را بارگزاری کنید:</label>
+            <br />
+            <label for="file-upload" class="btn btn-raised btn-primary" style="cursor: pointer;margin-right: 35px;">
+              <i class="fa fa-upload" style="margin-left: 5px;"></i>انتخاب فایل
+            </label>
+            <input id="file-upload" type='file' (change)="onSelectFile($event)" resize-max-height="300"
+              resize-max-width="250" resize-quality="0.7" multiple>
+          </div>
+        </div>
+        <div class="form-group col-12 mb-2">
+          <div class="progress" *ngIf="progress">
+            <div class="progress-bar" [style.width]="progress + '%'">{{progress}}%</div>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="display: flex;flex-direction: row;flex-wrap: wrap;justify-content: right;">
+        <div *ngFor="let url of urls"
+          style="margin:20px; text-align: center;border-radius: 10px; background-color: rgb(253, 252, 250);box-shadow: 0px 0px 5px 5px rgb(238, 236, 236); width: 350px;height: 300px; ">
+          <lord-icon src="../../../assets/json/bin.json" trigger="hover" (click)="deleteimg(url)"
+            style="width:40px;height:40px;cursor: pointer;margin-top: 20px;cursor: pointer;">
+          </lord-icon>
+          <br>
+          <img [src]="url" height="200" width="300" style="margin:10px;">
+        </div>
+      </div>
+    
+      <button *ngIf="urls.length !==0" mat-raised-button color="accent" style=" width: 80px;height: 40px;"
+        (click)="techuploadpic()">بارگزاری</button>
+    </div>
+
     <div class="invoice">
-
+      <hr>
+      <div class="discription">
+        <h4>صدور فاکتور</h4>
+        <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
+          چاپگرها و متون بلکه
+          روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
+          بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان
+          را
+          می طلبد.</p>
+      </div>
+      <button *ngIf="!editable" mat-raised-button color="accent" style=" width: 120px;height: 40px;"
+        (click)="invoice()">صدور فاکتور</button>
     </div>
-
 
   </mat-card>
 

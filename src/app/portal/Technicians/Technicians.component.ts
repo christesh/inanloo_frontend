@@ -35,7 +35,8 @@ export class TechniciansComponent implements OnInit {
   public signupData!: { mn: string; nationalid: string; name: string; family: string; btn: string; userKind: number; };
   userId: any;
   showCustomerDetail: boolean;
-
+  
+  usercat:string="";
   constructor(
     private _snackBar: MatSnackBar,
     public signupdialog: MatDialog,
@@ -77,9 +78,11 @@ export class TechniciansComponent implements OnInit {
           title: "نام خانوادگی "
         },
         orders: {
-          title: "تعداد سفارش"
+          title: "کل سفارش"
+        },
+        complete:{
+          title: " سفارشات تکمیل"
         }
-        
 
 
       },
@@ -104,24 +107,26 @@ export class TechniciansComponent implements OnInit {
           national_id: string,
           f_name: string,
           l_name: string,
-          class: string
+          orders: string,
+          complete:string
         }[] = []
         for (let i = 0; i < res.length; i++) {
           var mobile = ""
-          for (let j = 0; j < res[i]['mobile'].length; j++) {
-            if (res[i]['mobile'][j]['isMain'])
-              mobile += "**" + res[i]['mobile'][j]['mobileNumber'] + "** /"
-            else
-              mobile += res[i]['mobile'][j]['mobileNumber'] + " /"
-          }
-          mobile = mobile.substring(0, mobile.length - 2)
+          // for (let j = 0; j < res[i]['mobile'].length; j++) {
+          //   if (res[i]['mobile'][j]['isMain'])
+          //     mobile += "**" + res[i]['mobile'][j]['mobileNumber'] + "** /"
+          //   else
+          //     mobile += res[i]['mobile'][j]['mobileNumber'] + " /"
+          // }
+          mobile = res[i]['mobileNumber']
           ct.push({
             id: res[i]['id'],
             mobile: mobile,
             national_id: res[i]['nationalId'],
             f_name: res[i]['firstName'],
             l_name: res[i]['lastName'],
-            class: res[i]['idcustomerCategory']
+            orders: res[i]['allOrders'],
+            complete:res[i]['completed']
           })
         }
         this.technicianTablevalue = new LocalDataSource(ct)
@@ -169,6 +174,7 @@ export class TechniciansComponent implements OnInit {
       case "viewrecord":
         this.profiles = []
         this.userId = event.data.id;
+        this.usercat="تکنسین"
         this.selectedtechnician = event.data.f_name + " " + event.data.l_name;
         this.openAccordion = false;
         this.profiles.push(this.userId)

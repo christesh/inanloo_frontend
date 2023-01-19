@@ -38,6 +38,9 @@ import { SignUpUserDialog } from './users/users.component';
 import { TechniciansComponent } from './Technicians/Technicians.component';
 import { SignUpTechDialog } from './Technicians/Technicians.component';
 import { BrandsComponent } from './brands/brands.component';
+import { OrderdetailsComponent } from '../mainpage/orderdetails/orderdetails.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { InfoComponent } from './warehouse/info/info.component';
 const appRoutes: Routes = [
   { path: '', component: DashboardComponent },
   { path: 'dashboard', component: DashboardComponent },
@@ -76,6 +79,18 @@ const appRoutes: Routes = [
   {
     path: 'Brands',
     component: BrandsComponent
+  },
+  {
+    path: 'Ticketing',
+    component: TicketingComponent
+  },
+  {
+    path:'Orderdetails',
+    component: OrderdetailsComponent
+  },
+  {
+    path:'WarehousesInfo',
+    component:InfoComponent
   }
 
 ];
@@ -85,6 +100,7 @@ const appRoutes: Routes = [
     SidenavComponent,
   ],
   imports: [
+    // BrowserAnimationsModule,
     MainpageModule,
     NgChartsModule,
     NgSelectModule,
@@ -97,6 +113,8 @@ const appRoutes: Routes = [
     PerfectScrollbarModule
   ],
   declarations: [
+    InfoComponent,
+    WarehouseComponent,
     BrandsComponent,
     SignUpTechDialog,
     TechniciansComponent,
@@ -115,7 +133,7 @@ const appRoutes: Routes = [
     PortalComponent,
     SidenavComponent,
     DashboardComponent,
-    WarehouseComponent,
+   
     SettingComponent,
     BaseinfoComponent,
     AppliencemanagementComponent,

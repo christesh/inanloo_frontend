@@ -441,6 +441,7 @@ export class LoginboxComponent implements OnInit {
           res => {
             localStorage.setItem('staffID', res[0]['person'])
             localStorage.setItem('userID', res[0]['user'])
+            localStorage.setItem('userCat', res[0]['category__name'])
             this.router.navigate(['portal/dashboard'])
             this.openSnackBar('شما با موفقیت وارد شدید!', '', 'green-snackbar', 4)
             this.api.setactiveuser(token).subscribe(

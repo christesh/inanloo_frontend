@@ -1,0 +1,210 @@
+<body #content>
+    <div class="Ticket" style="direction: rtl;">
+        <div class="main header" style="direction: rtl;">
+            <div class="banner">
+            </div>
+            <div class="headerbox">
+                <div class="discription">
+                    <h2>ارسال تیکت </h2>
+                    <p align="justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان
+                        گرافیک
+                        است،
+                        چاپگرها و متون بلکه
+                        روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و
+                        کاربردهای متنوع با
+                        هدف
+                        بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان
+                        جامعه و
+                        متخصصان
+                        را
+                        می طلبد.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="!newTicket" class="ticketList">
+            <div>
+                <button mat-raised-button color="primary" style="margin: 10px;width: 150px;"
+                    (click)="Createticket()">ایجاد
+                    تیکت جدید</button>
+            </div>
+            <mat-accordion class="example-headers-align" multi style="z-index: 100;direction: rtl;">
+                <mat-expansion-panel style="margin: 10px;" [(expanded)]="openAccordion">
+                    <mat-expansion-panel-header *ngIf="!openAccordion">
+                        <mat-panel-title>
+                            <div class="title">
+                                <h6 style="margin: auto;"> مشاهده لیست پیام ها </h6>
+                            </div>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="table">
+                        <div class="container" style="background-color: white">
+                            <div class="col-sm-12" style="direction: rtl;">
+                                <ng2-smart-table [settings]="ticketTableSetting" [source]="ticketTableValue"
+                                    id="excel-table" style="font-family: 'iransans'" style="font-family: 'iransans'"
+                                    (custom)="TableAction($event)">
+                                </ng2-smart-table>
+                            </div>
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+        <div *ngIf="newTicket" class="newticket">
+            <form [formGroup]="ticketForm">
+                <mat-form-field style="direction: rtl;text-align:right; margin: 10px;">
+                    <mat-label>گیرنده پیام </mat-label>
+                    <mat-select (selectionChange)="SelectSubject($event)" [(value)]="SelectedSubject">
+                        <mat-option style="direction: rtl;text-align:right;" *ngFor="let s of subjects;let i=index"
+                            value="{{s.id}}">{{s.title}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div
+                    style="display: flex;flex-direction: row;justify-content: start;flex-wrap: wrap;margin-right:15px;">
+                    <mat-form-field class="full-width-input"
+                        style="direction: rtl;text-align:right; margin: 10px;flex:1;">
+                        <input matInput placeholder="عنوان" formControlName="title" required style="font-size: 12px;">
+                        <mat-error *ngIf="isFieldInvalid('brandname')">
+                            لطفا عنوان پیام خود را وارد کنید!
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field style="direction: rtl;text-align:right; margin: 10px;">
+                        <mat-label>موضوع پیام </mat-label>
+                        <mat-select (selectionChange)="SelectSubject($event)" [(value)]="SelectedSubject">
+                            <mat-option style="direction: rtl;text-align:right;" *ngFor="let s of subjects;let i=index"
+                                value="{{s.id}}">{{s.title}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field style="direction: rtl;text-align:right; margin: 10px;">
+                        <mat-label>میزان اولویت پیام </mat-label>
+                        <mat-select (selectionChange)="SelectPriority($event)" [(value)]="SelectedPriority">
+                            <mat-option style="direction: rtl;text-align:right;" *ngFor="let p of priority;let i=index"
+                                value="{{p.id}}">{{p.priorityTitle}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field style="direction: rtl;text-align:right; margin: 10px;">
+                        <mat-label>سفارش</mat-label>
+                        <mat-select (selectionChange)="SelectOrder($event)" [(value)]="SelectedOrder">
+                            <mat-option style="direction: rtl;text-align:right;" *ngFor="let o of orders;let i=index"
+                                value="{{o.id}}">{{o.id}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <h6 style="margin-right:15px;">لطفا نیاز و یا مشکل خود را شرح دهید:</h6>
+                <mat-form-field class="example-full-width" appearance="fill"
+                    style="width:97%;text-align:right;margin:15px;">
+                    <textarea matInput rows="10" formControlName="comment" placeholder="توضیحات"
+                        style="width: 100%;"></textarea>
+                </mat-form-field>
+            </form>
+            <div class="row">
+                <div class="form-group col-12 mb-2">
+                    <div class="form-group col-12 mb-2" style="direction: rtl;text-align: right;margin: 10px;">
+                        <label style="margin: 10px;">درصورت نیاز فایل مدنظر خود را بارگزاری نمائید</label>
+            
+                        <label for="file-upload" class="btn btn-raised btn-primary"
+                            style="cursor: pointer;margin-right: 35px;">
+                            <i class="fa fa-upload" style="margin-left: 5px;"></i>انتخاب فایل
+                        </label>
+                        <input id="file-upload" type='file' (change)="onSelectFile($event)" resize-max-height="300"
+                            resize-max-width="250" resize-quality="0.7" multiple>
+                        <div *ngFor="let url of urls;let i=index" style="margin-right: 15px;">
+                            <li>{{url}}</li>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-12 mb-2">
+                    <div class="progress" *ngIf="progress">
+                        <div class="progress-bar" [style.width]="progress + '%'">{{progress}}%</div>
+                    </div>
+                </div>
+            </div>
+            <div style="direction: ltr;">
+                <button mat-raised-button color="accent" style="margin-right:10px ;" (click)="SaveTicket()">ثبت
+                    تیکت</button>
+                <button mat-raised-button color="primary" (click)="Cancel()">انصراف </button>
+            </div>
+
+        </div>
+        <div class="ticketchats" *ngIf="showticketchats">
+            <mat-card class="ticket" style="margin:10px;box-shadow: 0px 0px 15px 5px rgba(231, 225, 225, 0.449);">
+                <mat-card-header class="chatheader">
+                    <mat-card-title>مشاهده تیکت</mat-card-title>
+                    <i class="fa fa-minus" style="color: hsl(0, 0%, 0%);margin-left:20px;float: left;cursor: pointer;"
+                        (click)="CancelTicket()"></i>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="status">
+                        <h6><strong>شماره تیکت :</strong>{{ticketno}}</h6>
+                        <h6><strong>زمان ایجاد:</strong>{{ticketdate}}</h6>
+                        <!-- <h6><strong>آخرین بروزسانی :</strong>{{ticketlastdate}}</h6> -->
+                        <h6><strong>وضعیت :</strong>{{ticketstatus}}</h6>
+                        <h6><strong>بخش :</strong>{{ticketsubject}}</h6>
+                    </div>
+
+                    <button mat-raised-button color="accent" style="margin: 10px;width: 150px;" (click)="reply()">پاسخ
+                    </button>
+                    <div class="answerticket" *ngIf="answertoticket" >
+                        <form [formGroup]="ticketFormanswer">
+                           
+                            <div
+                                style="display: flex;flex-direction: row;justify-content: start;flex-wrap: wrap;margin-right:15px;">
+                                <mat-form-field class="full-width-input"
+                                    style="direction: rtl;text-align:right; margin: 10px;flex:1;">
+                                    <input matInput placeholder="عنوان" formControlName="title" required style="font-size: 12px;">
+                                    <mat-error *ngIf="isFieldInvalid('brandname')">
+                                        لطفا عنوان پیام خود را وارد کنید!
+                                    </mat-error>
+                                </mat-form-field>
+                                
+                            </div>
+                           
+                            <mat-form-field class="example-full-width" appearance="fill"
+                                style="width:97%;text-align:right;margin:15px;">
+                                <textarea matInput rows="10" formControlName="comment" placeholder="توضیحات"
+                                    style="width: 100%;"></textarea>
+                            </mat-form-field>
+                        </form>
+                        <div class="row">
+                            <div class="form-group col-12 mb-2">
+                                <div class="form-group col-12 mb-2" style="direction: rtl;text-align: right;margin: 10px;">
+                                    <label style="margin: 10px;">درصورت نیاز فایل مدنظر خود را بارگزاری نمائید</label>
+            
+                                    <label for="file-upload" class="btn btn-raised btn-primary"
+                                        style="cursor: pointer;margin-right: 35px;">
+                                        <i class="fa fa-upload" style="margin-left: 5px;"></i>انتخاب فایل
+                                    </label>
+                                    <input id="file-upload" type='file' (change)="onSelectFile($event)" resize-max-height="300"
+                                        resize-max-width="250" resize-quality="0.7" multiple>
+                                    <div *ngFor="let url of urls;let i=index" style="margin-right: 15px;">
+                                        <li>{{url}}</li>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-12 mb-2">
+                                <div class="progress" *ngIf="progress">
+                                    <div class="progress-bar" [style.width]="progress + '%'">{{progress}}%</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="direction: ltr;">
+                            <button mat-raised-button color="accent" style="margin-right:10px ;" (click)="sendTicketChat()">
+                                ارسال</button>
+                            <button mat-raised-button color="primary" (click)="CancelTicketChat()">انصراف </button>
+                        </div>
+                    </div>
+
+                    <mat-card class="chats" *ngFor="let a of chats;let i= index">
+                        <mat-card-header [ngClass]="{'cardheader-a':a.answer == true,'cardheader-q':a.answer == false}">
+                            <h6 style="margin-right: 10px;"><strong>{{a.sender}}</strong></h6>
+                            <h6 style="margin-left: 10px;">{{a.date}}</h6>
+                        </mat-card-header>
+                        <mat-card-content style="padding: 10px;border: 1px solid gainsboro;min-height: 200px;">
+                            <p>{{a.comment}}</p>
+                        </mat-card-content>
+                    </mat-card>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</body>

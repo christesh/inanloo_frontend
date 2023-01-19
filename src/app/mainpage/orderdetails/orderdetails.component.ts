@@ -7,6 +7,9 @@ import * as moment from 'jalali-moment';
 import { Problem } from '../orderpage/Order';
 import { faLessThanEqual } from '@fortawesome/free-solid-svg-icons';
 import { ThisReceiver } from '@angular/compiler';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
+import { catchError, map, throwError } from 'rxjs';
 @Component({
   selector: 'app-orderdetails',
   templateUrl: './orderdetails.component.html',
@@ -14,21 +17,26 @@ import { ThisReceiver } from '@angular/compiler';
 })
 export class OrderdetailsComponent implements OnInit {
   @Input() orderId: string = "";
+  @Input() usercat: string = "";
+  baseurl=environment.API_URL;
   techChecklist: { id: string, title: string, description: string, category: string, checked: boolean }[] = [];
   alltechChecklist: { id: string, title: string, description: string, category: string, checked: boolean }[] = [];
   imgurl = environment.PIC_URL;
   orderID: string;
   custpmerproblempicurls: string[] = []
+  technicianproblempicurls: string[] = []
   selectedsubtasks: Problem[] = [];
   totlalowprice: number = 0;
   totlahighprice: number = 0;
   statusCssClass: string = ""
   displayedColumns: string[] = ['name', 'lowprice', 'highprice'];
+  formSubmitAttempt: any;
   constructor(
     private api: ApiServicesService,
     private tokencookie: CookieService,
     private _Activatedroute: ActivatedRoute,
     private router: Router,
+    private http: HttpClient,
   ) { }
   broodati = []
   shooyande = []
@@ -46,9 +54,45 @@ export class OrderdetailsComponent implements OnInit {
   result: any;
   customer: boolean = false;
   editable: boolean = false;
+  editmodel:boolean=false;
+  editserial:boolean=false;
+  modelserialform=new FormGroup({
+    selectedmodel:new FormControl('',Validators.required),
+    modelserial:new FormControl('',Validators.required),
+  })
+  models:{ID:string,model:string}[]=[]
+  editModel(){
+    this.editmodel=true;
+  }
+  saveModel(){
+    this.editmodel=false;
+  }
+  cancelModel(){
+    this.editmodel=false;
+  }
+
+  editSerial(){
+    this.editserial=true;
+  }
+  saveSerial(){
+    this.editserial=false;
+  }
+  cancelSerial(){
+    this.editserial=false;
+
+  }
+  isFieldInvalid(field: string) { // {6}
+    return (
+      (!this.modelserialform.get(field)?.valid && this.modelserialform.get(field)?.touched) ||
+      (this.modelserialform.get(field)?.untouched && this.formSubmitAttempt)
+    );
+  }
   ngOnInit() {
-    // alert(this.orderId)
-    var personcCat = localStorage.getItem('userCat')
+    var personcCat = ""
+    if (this.usercat == "")
+      personcCat = localStorage.getItem('userCat')!
+    else
+      personcCat = this.usercat
     if (personcCat == 'مشتری')
       this.customer = true;
     else
@@ -62,7 +106,7 @@ export class OrderdetailsComponent implements OnInit {
       this.orderID = this._Activatedroute.snapshot.paramMap.get("orderID")!
     else
       this.orderID = this.orderId
-    // console.log(this.orderID)
+    
     var token = this.tokencookie.get('T')
     this.api.getordersurvey(token, this.orderID).subscribe(
       res => {
@@ -84,7 +128,16 @@ export class OrderdetailsComponent implements OnInit {
       res => {
         // console.log(res)
         this.order = res[0]
+        this.api.getappliancemodel(token,this.order.applianceBrand.id).subscribe(
+          ress=>{
+            for(let i=0;i<ress.length;i++){
+              this.models.push({ID:ress[i]['ID'],model:ress[i]['model']})
+            }
+          },
+          err=>{
 
+          }
+        )
         if (this.order.Gaccept == null) {
           this.acceptG = false;
           this.gmsg = true;
@@ -124,6 +177,7 @@ export class OrderdetailsComponent implements OnInit {
 
         this.order.applianceBrand.a_barndCategory.a_categoryImage = this.imgurl + this.order.applianceBrand.a_barndCategory.a_categoryImage;
         this.order.applianceBrand.a_brand.a_brandImage = this.imgurl + this.order.applianceBrand.a_brand.a_brandImage
+
         if (this.order.applianceGuarantee.length != 0) {
           var gsdate = this.order.applianceGuarantee[0].guaranteeStartDate
           gsdate = gsdate.split("T", 1)
@@ -152,10 +206,7 @@ export class OrderdetailsComponent implements OnInit {
 
         for (let i = 0; i < this.order.customerProblem.length; i++) {
           var cp = this.order.customerProblem[i]
-
           this.sKind.push(cp.problemKind_id)
-
-
           this.selectedsubtasks.push({
             ID: i,
             pID: Number(cp.id),
@@ -177,6 +228,10 @@ export class OrderdetailsComponent implements OnInit {
           this.custpmerproblempicurls.push(this.imgurl + this.order.customerProblemPic[i].problemImage)
         }
 
+        for (let i = 0; i < this.order.technicianProblemPic.length; i++) {
+          this.technicianproblempicurls.push(this.imgurl + this.order.technicianProblemPic[i].problemImage)
+        }
+
         this.api.gettechnicianchecklist(token, this.order.applianceBrand.a_barndCategory.id, this.order.applianceBrand.id, null).subscribe(
           res => {
             console.log(res)
@@ -185,14 +240,14 @@ export class OrderdetailsComponent implements OnInit {
             }
             this.alltechChecklist = this.techChecklist
             if (this.order.technicianProblem != null) {
-              this.editable = true;
+              this.editable = false;
               for (let i = 0; i < this.order.technicianProblem.length; i++) {
-                var idx = this.techChecklist.findIndex(item => item.title == this.order.technicianProblem.checklistTitle)
+                var idx = this.techChecklist.findIndex(item => item.id == this.order.technicianProblem[i].id)
                 this.techChecklist[idx].checked = true;
               }
             }
             else
-              this.editable = false;
+              this.editable = true;
 
           },
           err => {
@@ -251,6 +306,77 @@ export class OrderdetailsComponent implements OnInit {
     this.editable = false;
 
   }
+  image: File[] = [];
+  urls: any = [];
+  progress: number;
+  onSelectFile(event: any) {
+    if (event.target.files && event.target.files[0]) {
+      var filesAmount = event.target.files.length;
+      for (let i = 0; i < filesAmount; i++) {
+        var reader = new FileReader();
+        this.image[i] = event.target.files[i]
+        reader.onload = (event: any) => {
+          this.urls.push(event.target.result);
+        }
+        reader.readAsDataURL(event.target.files[i]);
+      }
+    }
+  }
+  deleteimg(url: any) {
+    if (url != null) {
+      const index: number = this.urls.indexOf(url);
+      if (index !== -1) {
+        this.urls.splice(index, 1);
+      }
+    }
+  }
+  techuploadpic(){
+    var token = this.tokencookie.get('T')
+    for (let i = 0; i < this.image.length; i++) {
+      var compimg = this.image[i]
+      var myHeaders = new Headers();
+      myHeaders.append("Authorization", "Token " + token);
+      this.progress = 1;
+
+      var formdata1 = new FormData();
+
+      formdata1.append("order", this.orderID);
+      formdata1.append("problemImage", compimg, this.image[i].name);
+
+      this.http.post(this.baseurl + "/order/uploadtechnicainproblemspic/", formdata1, {
+        headers: new HttpHeaders({
+          'Authorization': 'Token  ' + token
+        }),
+        responseType: 'text',
+        reportProgress: true,
+        observe: "events"
+      })
+        .pipe(
+          map((event: any) => {
+            if (event.type == HttpEventType.UploadProgress) {
+              this.progress = Math.round((100 / event.total) * event.loaded);
+            } else if (event.type == HttpEventType.Response) {
+              console.log("images is uploaded:" + event.body)
+              var res = event.body;
+            }
+          }),
+          catchError((err: any) => {
+            console.log(err.message);
+            return throwError("error1 to upload img:" + err.message);
+          })
+        )
+        .subscribe(
+          response => {
+            console.log(response)
+          },
+          err => {
+            console.log("error2 to upload img:" + err)
+          }
+        )
+
+    }
+  }
+  invoice(){}
   isNumber(val: any) {
     return (
       !isNaN(Number(Number.parseFloat(String(val)))) &&
@@ -294,5 +420,8 @@ export class OrderdetailsComponent implements OnInit {
   survey() {
 
     this.router.navigate(['/home/survey', { orderID: this.orderID, sKind: this.sKind }]);
+  }
+  return() {
+
   }
 }

@@ -21,7 +21,7 @@
         <button mat-raised-button color="primary" style="margin: 10px;width: 150px;" (click)="CreateTech()">ایجاد
           تکنسین جدید</button>
       </div>
-    </div>   
+    </div>
   </div>
   <mat-accordion class="example-headers-align" multi style="z-index: 100;direction: rtl;">
     <mat-expansion-panel style="margin: 10px;" [(expanded)]="openAccordion">
@@ -44,18 +44,26 @@
       </div>
     </mat-expansion-panel>
   </mat-accordion>
-
-  <div class="customerdetails" style="direction: rtl;">
-    <div *ngFor="let pro of profiles" class="details"
-      style="margin: 10px; padding: 10px; border: 1px solid rgb(221, 221, 242);border-radius:8px 8px 0px 0px ;">
-      <div
-        style="width: 100%;background-color:rgb(221, 221, 242);border-radius:8px 8px 0px 0px ;height:50px;display: flex;align-items: center;">
-        <h5 style="margin: auto; text-align: center;">{{selectedtechnician}}</h5>
-        <i class="fa fa-minus" style="color: hsl(0, 0%, 0%);margin-left:20px;float: left;cursor: pointer;"
-          (click)="CancelProfile()"></i>
-      </div>
-      <app-technicianProfile [showBanner]="false" [userID]="pro"></app-technicianProfile>
+  <div *ngFor="let pro of profiles" class="details"
+    style="margin: 10px; padding: 10px; border: 1px solid rgb(221, 221, 242);border-radius:8px 8px 0px 0px ;direction: rtl;">
+    <div
+      style="width: 100%;background-color:rgb(221, 221, 242);border-radius:8px 8px 0px 0px ;height:50px;display: flex;align-items: center;">
+      <h5 style="margin: auto; text-align: center;">{{selectedtechnician}}</h5>
+      <i class="fa fa-minus" style="color: hsl(0, 0%, 0%);margin-left:20px;float: left;cursor: pointer;"
+        (click)="CancelProfile()"></i>
     </div>
+    <mat-tab-group style="direction: rtl;">
+      <mat-tab label="سفارشات">
+        <div class="techorders">
+          <app-orders [userId]="userId" [usercat]="usercat"></app-orders>
+         
+        </div>
+      </mat-tab>
+      <mat-tab label="اطلاعات شخصی">
+        <div class="techniciandetails" style="direction: rtl;">
+          <app-technicianProfile [showBanner]="false" [userID]="pro"></app-technicianProfile>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
   </div>
 </body>
-
